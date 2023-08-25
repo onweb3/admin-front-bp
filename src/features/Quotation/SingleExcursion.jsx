@@ -91,7 +91,12 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
     console.log(globalExcursion, "globak", excursion);
 
     useEffect(() => {
-        if (excursion?.value && Object?.keys(globalExcursion)?.length > 0) {
+        if (
+            excursion &&
+            excursion.value &&
+            globalExcursion &&
+            Object.keys(globalExcursion).length > 0
+        ) {
             let totalPax =
                 (!isNaN(noOfAdults) ? Number(noOfAdults) : 0) +
                 (!isNaN(noOfChildren) ? Number(noOfChildren) : 0);
@@ -134,10 +139,10 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                 } else if (excursion?.value === "private") {
                     let totalPvtTransferPrice = 0;
 
-                    for (let i = 0; i < excursion.vehicleType.length; i++) {
-                        let vehicleType = excursion.vehicleType[i];
+                    for (let i = 0; i < excursion?.vehicleType?.length; i++) {
+                        let vehicleType = excursion?.vehicleType[i];
                         totalPvtTransferPrice +=
-                            vehicleType.price * vehicleType.count;
+                            vehicleType?.price * vehicleType?.count;
                     }
                     let divVal = 1;
 
