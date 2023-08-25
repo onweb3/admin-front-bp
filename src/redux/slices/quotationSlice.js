@@ -445,7 +445,13 @@ export const quotationsSlice = createSlice({
                     ].push({
                         [action.payload?.name2]: action.payload.value,
                         count: 1,
+                        price: action.payload?.price,
                     });
+
+                    console.log(
+                        action.payload?.price,
+                        " action.payload?.price,"
+                    );
                 }
             }
         },
@@ -481,6 +487,7 @@ export const quotationsSlice = createSlice({
                     .map((item) => ({
                         count: item.count,
                         vehicle: item.vehicle._id,
+                        price: item.price,
                     }));
             }
         },
@@ -540,7 +547,8 @@ export const quotationsSlice = createSlice({
         changeExcSupplementPerPersonPrice: (state, action) => {
             for (let i = 0; i < state.selectedExcSupplements?.length; i++) {
                 if (
-                    state.selectedExcSupplements[i]?.excursionId === action.payload?._id
+                    state.selectedExcSupplements[i]?.excursionId ===
+                    action.payload?._id
                 ) {
                     state.selectedExcSupplements[i].perPersonAdultPrice =
                         action.payload?.perPersonAdultPrice;

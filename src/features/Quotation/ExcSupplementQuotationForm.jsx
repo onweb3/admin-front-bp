@@ -67,18 +67,18 @@ export default function ExcSupplementQuotationForm() {
         }
     }, [searchText, excursions, excSupplementTransferType]);
 
-    // useEffect(() => {
-    //     let adultTotal = 0;
-    //     let childTotal = 0;
+    useEffect(() => {
+        let adultTotal = 0;
+        let childTotal = 0;
 
-    //     for (let i = 0; i < selectedExcSupplements?.length; i++) {
-    //         adultTotal += selectedExcSupplements[i]?.perPersonAdultPrice || 0;
-    //         childTotal += selectedExcSupplements[i]?.perPersonChildPrice || 0;
-    //     }
-    //     setPerPersonTotal((prev) => {
-    //         return { ...prev, adult: adultTotal, child: childTotal };
-    //     });
-    // }, [selectedExcSupplements]);
+        for (let i = 0; i < selectedExcSupplements?.length; i++) {
+            adultTotal += selectedExcSupplements[i]?.perPersonAdultPrice || 0;
+            childTotal += selectedExcSupplements[i]?.perPersonChildPrice || 0;
+        }
+        setPerPersonTotal((prev) => {
+            return { ...prev, adult: adultTotal, child: childTotal };
+        });
+    }, [selectedExcSupplements]);
 
     return (
         <div>
@@ -298,6 +298,22 @@ export default function ExcSupplementQuotationForm() {
                             </div>
                         </div>
                     </div>
+                    <div className="flex items-start gap-[2em] mt-8 text-sm">
+                        <label htmlFor="" className="w-[100%] max-w-[180px]">
+                            Per Person Adult Total
+                        </label>
+                        <span className="font-medium">
+                            {perPersonTotal.adult?.toFixed(2)} AED
+                        </span>
+                    </div>
+                    <div className="flex items-start gap-[2em] mt-5 text-sm">
+                        <label htmlFor="" className="w-[100%] max-w-[180px]">
+                            Per Person Child Total
+                        </label>
+                        <span className="font-medium">
+                            {perPersonTotal.child?.toFixed(2)} AED
+                        </span>
+                    </div>
                 </>
             ) : (
                 ""
@@ -320,22 +336,6 @@ export default function ExcSupplementQuotationForm() {
                 <label htmlFor="" className="mb-0">
                     Please check this box if you don't need supplement quotation
                 </label>
-            </div> */}
-            {/* <div className="flex items-start gap-[2em] mt-8 text-sm">
-                <label htmlFor="" className="w-[100%] max-w-[180px]">
-                    Per Person Adult Total
-                </label>
-                <span className="font-medium">
-                    {perPersonTotal.adult?.toFixed(2)} AED
-                </span>
-            </div>
-            <div className="flex items-start gap-[2em] mt-5 text-sm">
-                <label htmlFor="" className="w-[100%] max-w-[180px]">
-                    Per Person Child Total
-                </label>
-                <span className="font-medium">
-                    {perPersonTotal.child?.toFixed(2)} AED
-                </span>
             </div> */}
         </div>
     );

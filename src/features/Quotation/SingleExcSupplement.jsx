@@ -264,6 +264,16 @@ export default function SingleExcSupplement({
                                                                     name2: "vehicle",
                                                                     vehicleId:
                                                                         vehicle._id,
+                                                                    price: globalExcursion?.transferPricing?.vehicleType?.find(
+                                                                        (
+                                                                            vt
+                                                                        ) => {
+                                                                            return (
+                                                                                vt?.vehicle?.toString() ===
+                                                                                vehicle?._id?.toString()
+                                                                            );
+                                                                        }
+                                                                    ).price,
                                                                 }
                                                             )
                                                         );
@@ -407,6 +417,16 @@ export default function SingleExcSupplement({
                                                                     name2: "vehicle",
                                                                     vehicleId:
                                                                         vehicle?._id,
+                                                                    price: globalExcursion?.ticketPricing?.vehicleType?.find(
+                                                                        (
+                                                                            vt
+                                                                        ) => {
+                                                                            return (
+                                                                                vt?.vehicle?.toString() ===
+                                                                                vehicle?._id?.toString()
+                                                                            );
+                                                                        }
+                                                                    ).price,
                                                                 }
                                                             )
                                                         );
@@ -480,6 +500,20 @@ export default function SingleExcSupplement({
                         ))}
                 </div>
             )}
+            <div className="mt-5 text-sm grid grid-cols-2">
+                <span className="block">
+                    Adult Price:{" "}
+                    <span className="font-medium">
+                        {excursion?.perPersonAdultPrice?.toFixed(2)} AED
+                    </span>
+                </span>
+                <span className="block">
+                    Child Price:{" "}
+                    <span className="font-medium">
+                        {excursion?.perPersonChildPrice?.toFixed(2)} AED
+                    </span>
+                </span>
+            </div>
         </div>
     );
 }

@@ -91,7 +91,7 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
     console.log(globalExcursion, "globak", excursion);
 
     useEffect(() => {
-        if (excursion?.value && Object.keys(globalExcursion)?.length > 0) {
+        if (excursion?.value && Object?.keys(globalExcursion)?.length > 0) {
             let totalPax =
                 (!isNaN(noOfAdults) ? Number(noOfAdults) : 0) +
                 (!isNaN(noOfChildren) ? Number(noOfChildren) : 0);
@@ -103,9 +103,10 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                 if (excursion?.value === "private") {
                     let totalPvtTransferPrice = 0;
 
-                    for (let i = 0; i < excursion.vehicleType.length; i++) {
-                        let vehicleType = excursion.vehicleType[i];
-                        totalPvtTransferPrice += vehicleType.price;
+                    for (let i = 0; i < excursion?.vehicleType?.length; i++) {
+                        let vehicleType = excursion?.vehicleType[i];
+                        totalPvtTransferPrice +=
+                            vehicleType?.price * vehicleType?.count;
                     }
                     let divVal = 1;
 
@@ -135,7 +136,8 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
 
                     for (let i = 0; i < excursion.vehicleType.length; i++) {
                         let vehicleType = excursion.vehicleType[i];
-                        totalPvtTransferPrice += vehicleType.price;
+                        totalPvtTransferPrice +=
+                            vehicleType.price * vehicleType.count;
                     }
                     let divVal = 1;
 
@@ -164,7 +166,7 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                 })
             );
         }
-    }, [excursion.value, noOfAdults, noOfChildren, globalExcursion, vehicles]);
+    }, [excursion, noOfAdults, noOfChildren, globalExcursion, vehicles]);
 
     return (
         <div className="mb-6 bg-[#f6f6f6] p-4">
@@ -269,6 +271,16 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                                                                     name2: "vehicle",
                                                                     vehicleId:
                                                                         vehicle._id,
+                                                                    price: globalExcursion?.transferPricing.vehicleType?.find(
+                                                                        (
+                                                                            vt
+                                                                        ) => {
+                                                                            return (
+                                                                                vt?.vehicle?.toString() ===
+                                                                                vehicle?._id?.toString()
+                                                                            );
+                                                                        }
+                                                                    ).price,
                                                                 }
                                                             )
                                                         );
@@ -315,6 +327,7 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                                                                     name2: "count",
                                                                     vehicleId:
                                                                         vehicle?._id,
+                                                                    price: vehicle?.price,
                                                                 }
                                                             )
                                                         );
@@ -412,6 +425,16 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                                                                     name2: "vehicle",
                                                                     vehicleId:
                                                                         vehicle?._id,
+                                                                    price: globalExcursion?.ticketPricing?.vehicleType?.find(
+                                                                        (
+                                                                            vt
+                                                                        ) => {
+                                                                            return (
+                                                                                vt?.vehicle?.toString() ===
+                                                                                vehicle?._id?.toString()
+                                                                            );
+                                                                        }
+                                                                    ).price,
                                                                 }
                                                             )
                                                         );
