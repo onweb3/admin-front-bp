@@ -1,0 +1,841 @@
+import React, { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+
+import { BtnLoader, RichTextEditor } from "../../components";
+import axios from "../../axios";
+import { TourTable } from "../../features/Voucher";
+import { useHandleClickOutside } from "../../hooks";
+import { config } from "../../constants";
+
+let TOC = `<p>Conditions:We at the ${config.COMPANY_NAME} will not be able to entertain any last moment
+changes, any changes in tour date or timing must be informed 24 hours prior to the given
+timing otherwise guest will be considered as a no show. Changes inTours will be subject to
+availability. Please note that the given timing for tour(s) pickups are approximate and
+guest are required to inform their presence Lobby to hotel concierge. Our tour guide will
+not be able wait for more than 10 minutes for pickup at the Hotel. Please note that if guests
+are late to reach the location between the above given timing then also, guest will be
+Considered no show.</p>
+<p><br></p>
+<ul>
+<li>Tourism Dirham fees has to be paid by the Guest directly upon check in at the hotel, if not
+    already paid byYourTravel Agent / Company in Advance
+</li>
+<li>Rooms &amp; Rates are Subject to Availability at the time of booking &amp; Standard Check IN
+    Time is 03:00 PM &amp; Early check in is subject to being booked in advance or as per hotel
+    availability &amp; in this case, may charge directly to the guest.
+</li>
+<li>It is important to note that 4 star &amp; 5 star hotels generally collect security deposit of
+    approx. USD 100 directly from the guest at the time of check in, which is then refunded at
+    the time of check out.
+</li>
+<li>Kindly provide prior information ofVeg &amp; Non-Veg meals for Group or FIT.
+</li>
+<li>At All Dhow Cruises orYacht Cruises, Upper &amp; Lower Deck at cruise will be subject to
+    availability.
+</li>
+<li>For the Lotus Mega yacht, tables are subject to first come first serve basis and only are
+    guaranteed forVIP tickets.
+</li>
+<li>All Burj Khalifa slots are to be considered as NON PRIME TIME hours (Night Slot), except
+    as mentioned in the
+    Voucher &amp; Burj Khalifa Slots are subject to availability &amp; can sold out anytime.
+</li>
+<li>Museum of Future slots are subject to availability &amp; can sold out anytime
+</li>
+<li>In case if any guest tested Covid-19 Positive, hotels can charge from USD 60 to USD 80
+    approximately to the Guest as charges to disinfect the room.
+</li>
+<li>Guest need to carry QR code vaccine certificate &amp; are required to provide a negative PCR
+    test result acquired within 48 hours. to enter Grand Mosque/Ferrari world Or any Mall
+    visit at Abu Dhabi (as Applicable)
+</li>
+<li>We can take the liberty to make any changes in a voucher if a tour gets sold out &amp; we will
+    adjust it on another day.
+</li>
+<li>Same Day Changes in theTours/transfer OR Cancellation ofTours/ Transfer consider as a
+    NO SHOW
+</li>
+<li>Please check &amp; acknowledge the visa copy same time If there is any correction kindly
+    advise us 02 days before travel date as later the company will not be responsible for any
+    kind of losses or similar</li>
+<li>For water parks Guest need to carry swim wear</li>
+</ul>
+<p><br></p>
+<p><strong>GRAND MOSQUE RULES</strong></p>
+<ul>
+<li>The Guests are requested to wear full sleeve cloths or decent cloth to follow MOSQUE
+    criteria.Women are requested not to wear tight cloth and put on the ABAYA as per the
+    GRAND MOSQUE Requirement. Hope everything in confirmation voucher is in order.
+    Please let us know 48 Hour Prior so we can assist you further so we can Update the Same</li>
+</ul>`;
+
+function AddVoucherPage() {
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState("");
+    const [initialData, setInitialData] = useState({
+        airports: [],
+        hotels: [],
+        activities: [],
+    });
+    const [data, setData] = useState({
+        passengerName: "",
+        noOfAdults: 0,
+        noOfChildren: 0,
+        childrenAges: [],
+        noOfInfants: 0,
+        infantAges: [],
+        hotelName: "",
+        confirmationNumber: "",
+        referenceNumber: "",
+        checkInDate: "",
+        checkInNote:
+            "Standard Check in Time is 1500 hrs (except at Atlantis the Palm). Early check in is subject to being booked in advance or as per hotel availability & in this case, may charge directly to the guest.",
+        checkOutDate: "",
+        checkOutNote:
+            "(Standard Check Out Time:12.00) Late checkout subject to hotel availability & hotel may charge directly to the guest.",
+        roomDetails: "",
+        noOfRooms: "",
+        buffetBreakfast: "",
+        basisOfTransfer: "",
+        arrivalAirportId: "",
+        contactName: "Mr. Atif / Mr. Kashif Jamal / Mr. Siddique",
+        contactNumber: "+971 566807610 / +971 523413561 / +971 52 906 4745",
+        printNote:
+            "The maximum waiting period for a driver, for an arrival transfer would be Forty Five Minutes after the flight lands. If guest does not inform the driver in the given waiting period our driver will move from the airport. It is thus important to share the guests contact details in advance.",
+        pagingName: "",
+        arrivalDate: "",
+        arrivalNote: "",
+        departureDate: "",
+        departureNote: "",
+        termsAndConditions: TOC,
+    });
+    const [tourData, setTourData] = useState([
+        {
+            tourName: "",
+            date: "",
+            pickupFrom: "",
+            pickupTimeFrom: "",
+            pickupTimeTo: "",
+            returnTimeFrom: "",
+        },
+    ]);
+    const [isHotelDropdownOpen, setIsHotelDropdownOpen] = useState(false);
+
+    const navigate = useNavigate();
+    const { jwtToken } = useSelector((state) => state.admin);
+    const hotelDropdownRef = useRef(null);
+    useHandleClickOutside(hotelDropdownRef, () =>
+        setIsHotelDropdownOpen(false)
+    );
+
+    const handleNoOfChildrenChange = (e) => {
+        const tempArray = Array.from(
+            { length: Number(e.target.value) },
+            () => "0"
+        );
+
+        setData((prev) => {
+            return {
+                ...prev,
+                noOfChildren: e.target.value,
+                childrenAges: [...prev.childrenAges, ...tempArray]?.slice(
+                    0,
+                    Number(e.target.value)
+                ),
+            };
+        });
+    };
+
+    const handleNoOfInfantsChange = (e) => {
+        const tempArray = Array.from(
+            { length: Number(e.target.value) },
+            () => "0"
+        );
+
+        setData((prev) => {
+            return {
+                ...prev,
+                noOfInfants: e.target.value,
+                infantAges: [...prev.infantAges, ...tempArray]?.slice(
+                    0,
+                    Number(e.target.value)
+                ),
+            };
+        });
+    };
+
+    const handleInfantAgeChange = (e, index) => {
+        setData((prev) => {
+            const updatedInfantAges = [...prev.infantAges];
+            updatedInfantAges[index] = e.target.value;
+            return { ...prev, infantAges: updatedInfantAges };
+        });
+    };
+
+    const handleChildrenAgeChange = (e, index) => {
+        setData((prev) => {
+            const updatedChildrenAges = [...prev.childrenAges];
+            updatedChildrenAges[index] = e.target.value;
+            return { ...prev, childrenAges: updatedChildrenAges };
+        });
+    };
+
+    const addExtraRow = () => {
+        setTourData((prev) => [
+            ...prev,
+            {
+                tourName: "",
+                date: "",
+                pickupFrom: "",
+                pickupTimeFrom: "",
+                pickupTimeTo: "",
+            },
+        ]);
+    };
+
+    const deleteExtraRow = ({ index }) => {
+        setTourData((prev) => {
+            const updatedTourData = [...prev];
+            updatedTourData.splice(index, 1);
+            return updatedTourData;
+        });
+    };
+
+    const handleExtraDataChange = ({ index, name, value }) => {
+        setTourData((prevState) => {
+            const updatedData = [...prevState];
+            updatedData[index] = {
+                ...updatedData[index],
+                [name]: value,
+            };
+            return updatedData;
+        });
+    };
+
+    const handleChange = (e) => {
+        setData((prev) => {
+            return { ...prev, [e.target.name]: e.target.value };
+        });
+    };
+
+    const filteredHotels = initialData.hotels?.filter((item) => {
+        return item?.hotelName
+            ?.toLowerCase()
+            ?.includes(data.hotelName?.toLowerCase());
+    });
+
+    const handleSubmit = async (e) => {
+        try {
+            e.preventDefault();
+            setIsLoading(true);
+            setError("");
+
+            const response = await axios.post(
+                "/vouchers/add",
+                { ...data, tours: tourData },
+                {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                }
+            );
+
+            setIsLoading(false);
+            navigate(`/vouchers/${response?.data?._id}`);
+        } catch (err) {
+            setError(
+                err?.response?.data?.error || "Something went wrong, Try again"
+            );
+            setIsLoading(false);
+        }
+    };
+
+    const fetchInitalData = async () => {
+        try {
+            const response = await axios.get(`/vouchers/initial-data`, {
+                headers: { authorization: `Bearer ${jwtToken}` },
+            });
+
+            setInitialData((prev) => {
+                return {
+                    ...prev,
+                    hotels: response?.data?.hotels,
+                    airports: response?.data?.airports,
+                    activities: response?.data?.activities,
+                };
+            });
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    useEffect(() => {
+        fetchInitalData();
+    }, []);
+
+    return (
+        <div>
+            <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
+                <h1 className="font-[600] text-[15px] uppercase">
+                    Add Voucher
+                </h1>
+                <div className="text-sm text-grayColor">
+                    <Link to="/" className="text-textColor">
+                        Dashboard{" "}
+                    </Link>
+                    <span>{">"} </span>
+                    <Link to="/vouchers" className="text-textColor">
+                        Vouchers{" "}
+                    </Link>
+                    <span>{">"} </span>
+                    <span>Add</span>
+                </div>
+            </div>
+            <div className="p-6">
+                <form onSubmit={handleSubmit}>
+                    <div className="bg-white rounded shadow-sm">
+                        <div className="flex items-center justify-between border-b border-dashed p-4">
+                            <h1 className="font-medium">Add Voucher</h1>
+                        </div>
+
+                        <div className="p-6">
+                            <div className="grid grid-cols-3 gap-[20px]">
+                                <div>
+                                    <label htmlFor="">Reference Number *</label>
+                                    <input
+                                        type="text"
+                                        name="referenceNumber"
+                                        onChange={handleChange}
+                                        value={data.referenceNumber || ""}
+                                        placeholder="Enter Reference Number"
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="">Passenger Name *</label>
+                                    <input
+                                        type="text"
+                                        name="passengerName"
+                                        value={data.passengerName || ""}
+                                        onChange={(e) => {
+                                            setData((prev) => {
+                                                return {
+                                                    ...prev,
+                                                    passengerName:
+                                                        e.target.value,
+                                                    pagingName: e.target.value,
+                                                };
+                                            });
+                                        }}
+                                        placeholder="Ex: Mr. John Deo"
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="">No Of Adults *</label>
+                                    <input
+                                        type="number"
+                                        name="noOfAdults"
+                                        value={data.noOfAdults || ""}
+                                        onChange={handleChange}
+                                        placeholder="0"
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="">No Of Children *</label>
+                                    <input
+                                        type="number"
+                                        name="noOfChildren"
+                                        value={data.noOfChildren || ""}
+                                        onChange={handleNoOfChildrenChange}
+                                        placeholder="0"
+                                    />
+                                </div>
+                                {data.childrenAges &&
+                                    data.childrenAges?.length > 0 && (
+                                        <div className="col-span-2">
+                                            <label
+                                                htmlFor=""
+                                                className="w-[100%] max-w-[180px]"
+                                            >
+                                                Children Ages *
+                                            </label>
+                                            <div className="flex items-center flex-wrap gap-[10px]">
+                                                {data.childrenAges?.map(
+                                                    (age, index) => {
+                                                        return (
+                                                            <select
+                                                                name=""
+                                                                className="w-[100px]"
+                                                                value={
+                                                                    age || ""
+                                                                }
+                                                                key={index}
+                                                                onChange={(e) =>
+                                                                    handleChildrenAgeChange(
+                                                                        e,
+                                                                        index
+                                                                    )
+                                                                }
+                                                            >
+                                                                <option
+                                                                    value=""
+                                                                    hidden
+                                                                >
+                                                                    None
+                                                                </option>
+                                                                {Array.from({
+                                                                    length: 18,
+                                                                }).map(
+                                                                    (
+                                                                        _,
+                                                                        arrIndex
+                                                                    ) => {
+                                                                        return (
+                                                                            <option
+                                                                                value={
+                                                                                    arrIndex
+                                                                                }
+                                                                                key={
+                                                                                    arrIndex
+                                                                                }
+                                                                            >
+                                                                                {
+                                                                                    arrIndex
+                                                                                }{" "}
+                                                                                -{" "}
+                                                                                {arrIndex +
+                                                                                    1}{" "}
+                                                                                yrs
+                                                                            </option>
+                                                                        );
+                                                                    }
+                                                                )}
+                                                            </select>
+                                                        );
+                                                    }
+                                                )}
+                                            </div>
+                                        </div>
+                                    )}
+                                <div>
+                                    <label htmlFor="">No Of Infants *</label>
+                                    <input
+                                        type="number"
+                                        name="noOfInfants"
+                                        value={data.noOfInfants || ""}
+                                        onChange={handleNoOfInfantsChange}
+                                        placeholder="0"
+                                    />
+                                </div>
+                                {data.infantAges &&
+                                    data.infantAges?.length > 0 && (
+                                        <div className="col-span-2">
+                                            <label
+                                                htmlFor=""
+                                                className="w-[100%] max-w-[180px]"
+                                            >
+                                                Infant Ages *
+                                            </label>
+                                            <div className="flex items-center flex-wrap gap-[10px]">
+                                                {data.infantAges?.map(
+                                                    (age, index) => {
+                                                        return (
+                                                            <select
+                                                                name=""
+                                                                className="w-[100px]"
+                                                                value={
+                                                                    age || ""
+                                                                }
+                                                                key={index}
+                                                                onChange={(e) =>
+                                                                    handleInfantAgeChange(
+                                                                        e,
+                                                                        index
+                                                                    )
+                                                                }
+                                                            >
+                                                                <option
+                                                                    value=""
+                                                                    hidden
+                                                                >
+                                                                    None
+                                                                </option>
+                                                                {Array.from({
+                                                                    length: 18,
+                                                                }).map(
+                                                                    (
+                                                                        _,
+                                                                        arrIndex
+                                                                    ) => {
+                                                                        return (
+                                                                            <option
+                                                                                value={
+                                                                                    arrIndex
+                                                                                }
+                                                                                key={
+                                                                                    arrIndex
+                                                                                }
+                                                                            >
+                                                                                {
+                                                                                    arrIndex
+                                                                                }{" "}
+                                                                                -{" "}
+                                                                                {arrIndex +
+                                                                                    1}{" "}
+                                                                                yrs
+                                                                            </option>
+                                                                        );
+                                                                    }
+                                                                )}
+                                                            </select>
+                                                        );
+                                                    }
+                                                )}
+                                            </div>
+                                        </div>
+                                    )}
+                            </div>
+
+                            <div className="grid grid-cols-3 gap-[20px] mt-4">
+                                <div className="col-span-2">
+                                    <label htmlFor="">Hotel Name</label>
+                                    <div
+                                        className="relative"
+                                        ref={hotelDropdownRef}
+                                    >
+                                        <input
+                                            type="text"
+                                            name="hotelName"
+                                            onChange={handleChange}
+                                            value={data.hotelName || ""}
+                                            placeholder="Enter Hotel Name"
+                                            onFocus={() =>
+                                                setIsHotelDropdownOpen(true)
+                                            }
+                                        />
+                                        {isHotelDropdownOpen && (
+                                            <div className="absolute top-[100%] left-0 w-full bg-white shadow rounded overflow-y-auto max-h-[250px]">
+                                                {filteredHotels?.map(
+                                                    (hotel, index) => {
+                                                        return (
+                                                            <div
+                                                                key={index}
+                                                                className="py-[6px] px-4 text-[15px] cursor-pointer hover:bg-[#f3f6f9]"
+                                                                onClick={() => {
+                                                                    setData(
+                                                                        (
+                                                                            prev
+                                                                        ) => {
+                                                                            return {
+                                                                                ...prev,
+                                                                                hotelName:
+                                                                                    hotel?.hotelName,
+                                                                            };
+                                                                        }
+                                                                    );
+                                                                    setIsHotelDropdownOpen(
+                                                                        false
+                                                                    );
+                                                                }}
+                                                            >
+                                                                <span>
+                                                                    {
+                                                                        hotel?.hotelName
+                                                                    }
+                                                                </span>
+                                                            </div>
+                                                        );
+                                                    }
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                                <div>
+                                    <label htmlFor="">
+                                        Confirmation Number
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="confirmationNumber"
+                                        onChange={handleChange}
+                                        value={data.confirmationNumber || ""}
+                                        placeholder="Enter Confirmation Number"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-3 gap-[20px] mt-4">
+                                <div>
+                                    <label htmlFor="">Check IN Date *</label>
+                                    <input
+                                        type="date"
+                                        name="checkInDate"
+                                        onChange={(e) => {
+                                            handleChange(e);
+                                            setData((prev) => {
+                                                return {
+                                                    ...prev,
+                                                    arrivalDate: e.target.value,
+                                                };
+                                            });
+                                        }}
+                                        value={data.checkInDate || ""}
+                                    />
+                                </div>
+                                <div className="col-span-2">
+                                    <label htmlFor="">CheckIn Note</label>
+                                    <input
+                                        type="text"
+                                        name="checkInNote"
+                                        onChange={handleChange}
+                                        value={data.checkInNote || ""}
+                                        placeholder="Enter CheckIn Note"
+                                    />
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-3 gap-[20px] mt-4">
+                                <div>
+                                    <label htmlFor="">Check Out Date *</label>
+                                    <input
+                                        type="date"
+                                        name="checkOutDate"
+                                        onChange={(e) => {
+                                            handleChange(e);
+                                            setData((prev) => {
+                                                return {
+                                                    ...prev,
+                                                    departureDate:
+                                                        e.target.value,
+                                                };
+                                            });
+                                        }}
+                                        value={data.checkOutDate || ""}
+                                    />
+                                </div>
+                                <div className="col-span-2">
+                                    <label htmlFor="">CheckOut Note</label>
+                                    <input
+                                        type="text"
+                                        name="checkOutNote"
+                                        onChange={handleChange}
+                                        value={data.checkOutNote || ""}
+                                    />
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-3 gap-[20px] mt-4">
+                                <div>
+                                    <label htmlFor="">Room Details</label>
+                                    <input
+                                        type="text"
+                                        name="roomDetails"
+                                        onChange={handleChange}
+                                        value={data.roomDetails || ""}
+                                        placeholder="Ex: Deluxe Room"
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="">No Of Rooms</label>
+                                    <input
+                                        type="text"
+                                        name="noOfRooms"
+                                        onChange={handleChange}
+                                        value={data.noOfRooms || ""}
+                                        placeholder="Enter No Of Rooms"
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="">Buffet Breakfast</label>
+                                    <input
+                                        type="text"
+                                        name="buffetBreakfast"
+                                        onChange={handleChange}
+                                        value={data.buffetBreakfast || ""}
+                                        placeholder="Enter Buffet Breakfast"
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="">Basis Of Transfer</label>
+                                    <input
+                                        type="text"
+                                        name="basisOfTransfer"
+                                        onChange={handleChange}
+                                        value={data.basisOfTransfer || ""}
+                                        placeholder="Enter Basis Of Transfer"
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="">Paging Name *</label>
+                                    <input
+                                        type="text"
+                                        name="pagingName"
+                                        onChange={handleChange}
+                                        value={data.pagingName || ""}
+                                        placeholder="Enter Paging Name"
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="">Arrival Airport</label>
+                                    <select
+                                        name="arrivalAirportId"
+                                        value={data.arrivalAirportId || ""}
+                                        onChange={handleChange}
+                                        id=""
+                                        className="capitalize"
+                                    >
+                                        <option value="" hidden>
+                                            Select Airport
+                                        </option>
+                                        {initialData?.airports?.map(
+                                            (airport, index) => {
+                                                return (
+                                                    <option
+                                                        value={airport?._id}
+                                                        key={index}
+                                                    >
+                                                        {airport?.airportName}
+                                                    </option>
+                                                );
+                                            }
+                                        )}
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-3 gap-[20px] mt-4">
+                                <div>
+                                    <label htmlFor="">Arrival Date</label>
+                                    <input
+                                        type="date"
+                                        name="arrivalDate"
+                                        value={data.arrivalDate || ""}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                                <div className="col-span-2">
+                                    <label htmlFor="">Arrival At</label>
+                                    <input
+                                        type="text"
+                                        name="arrivalNote"
+                                        onChange={handleChange}
+                                        value={data.arrivalNote || ""}
+                                        placeholder="Enter Arrival At"
+                                    />
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-3 gap-[20px] mt-4">
+                                <div>
+                                    <label htmlFor="">Departure Date</label>
+                                    <input
+                                        type="date"
+                                        name="departureDate"
+                                        value={data.departureDate || ""}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                                <div className="col-span-2">
+                                    <label htmlFor="">Departure At</label>
+                                    <input
+                                        type="text"
+                                        name="departureNote"
+                                        onChange={handleChange}
+                                        value={data.departureNote || ""}
+                                        placeholder="Enter Departure At"
+                                    />
+                                </div>
+                            </div>
+                            <div className="mt-4">
+                                <label htmlFor="">Print Note</label>
+                                <textarea
+                                    name="printNote"
+                                    id=""
+                                    value={data.printNote || ""}
+                                    placeholder="Enter Print Note"
+                                ></textarea>
+                            </div>
+                            <div className="mt-4">
+                                <h2 className="font-medium mb-2 underline">
+                                    Emergency Contact Info
+                                </h2>
+                                <div className="grid grid-cols-3 gap-[20px]">
+                                    <div>
+                                        <label htmlFor="">Contact Name *</label>
+                                        <input
+                                            type="text"
+                                            name="contactName"
+                                            onChange={handleChange}
+                                            value={data.contactName || ""}
+                                            placeholder="Enter Contact Name"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor="">
+                                            Contact Number *
+                                        </label>
+                                        <input
+                                            type="text"
+                                            name="contactNumber"
+                                            onChange={handleChange}
+                                            value={data.contactNumber || ""}
+                                            placeholder="Enter Contact Number"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <TourTable
+                                addExtraRow={addExtraRow}
+                                deleteExtraRow={deleteExtraRow}
+                                tourData={tourData}
+                                handleExtraDataChange={handleExtraDataChange}
+                                activities={initialData.activities || []}
+                            />
+                            <div className="mt-4">
+                                <h1 className="text-[14px]">
+                                    Terms And Conditions *
+                                </h1>
+                                <div className="mt-2">
+                                    <div className="border border-t-0">
+                                        <RichTextEditor
+                                            getValue={(value) =>
+                                                setData((prev) => {
+                                                    return {
+                                                        ...prev,
+                                                        termsAndConditions:
+                                                            value,
+                                                    };
+                                                })
+                                            }
+                                            initialValue={
+                                                data?.termsAndConditions || ""
+                                            }
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            {error && (
+                                <span className="text-sm block text-red-500 mt-3">
+                                    {error}
+                                </span>
+                            )}
+                            <div className="flex items-center justify-end gap-[12px] mt-5">
+                                <button
+                                    className="bg-slate-300 text-textColor px-[15px]"
+                                    type="button"
+                                    onClick={() => navigate(-1)}
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    className="w-[140px] bg-primaryColor"
+                                    type="button"
+                                    onClick={handleSubmit}
+                                >
+                                    {isLoading ? <BtnLoader /> : "Add Voucher"}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+}
+
+export default AddVoucherPage;
