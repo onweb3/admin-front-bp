@@ -1,4 +1,8 @@
-import { AdminLayout, EditProfileLayout, SingleResellerLayout } from "../layouts";
+import {
+    AdminLayout,
+    EditProfileLayout,
+    SingleResellerLayout,
+} from "../layouts";
 import A2aAddTicketPage from "../pages/A2A/A2aAddTicketPage";
 import A2AEditTicketPage from "../pages/A2A/A2aEditTicketPage";
 import A2AEnquiryPage from "../pages/A2A/A2AEnquiryPage";
@@ -163,6 +167,8 @@ import B2cVisaNationalityPage from "../pages/Visa/VisaNationalityPage";
 import AddVisaTypeNationality from "../pages/Visa/AddVisaTypeNationality";
 import AddSubAgentPage from "../pages/Resellers/AddSubAgentPage";
 import SubAgentsListPage from "../pages/Resellers/SubAgentsListPage";
+import InsuranceListingPage from "../pages/Insurance/InsuranceListingPage";
+import InsursanceEnquiryPage from "../pages/Insurance/InsuranceEnquiryPage";
 
 const ThemeRoutes = [
     {
@@ -838,6 +844,15 @@ const ThemeRoutes = [
             {
                 path: "/quotations/add",
                 element: <AddQuotationPage />,
+            },
+
+            {
+                path: "/insurance",
+                element: <InsuranceListingPage />,
+            },
+            {
+                path: "/insurance/enquiries",
+                element: <InsursanceEnquiryPage />,
             },
         ],
     },
