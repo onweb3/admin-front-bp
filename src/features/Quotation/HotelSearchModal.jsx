@@ -144,8 +144,8 @@ export default function HotelSearchModal({
         rooms: [
             {
                 noOfAdults: 1,
-                noOfChildren: noOfChildren > 1 ? 1 : 0,
-                childrenAges: noOfChildren > 1 ? [childrenAges[0]] : [],
+                noOfChildren: noOfChildren > 0 ? 1 : 0,
+                childrenAges: noOfChildren > 0 ? [childrenAges[0]] : [],
             },
         ],
     });
