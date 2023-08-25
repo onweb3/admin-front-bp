@@ -113,6 +113,12 @@ const adminRoles = [
 
     // FLIGHT
     {
+        name: "flight-bookings",
+        displayName: "Flight Bookings",
+        category: "flight",
+        permissions: [],
+    },
+    {
         name: "airports",
         displayName: "Airports",
         category: "flight",

@@ -183,6 +183,12 @@ const sidebarMenus = {
     ],
     Flight: [
         {
+            name: "Bookings",
+            icon: <AiOutlineShoppingCart />,
+            link: "/flights/bookings",
+            permission: ["flight-bookings", "view"],
+        },
+        {
             name: "Airports",
             icon: <MdLocalAirport />,
             link: "/airports",
