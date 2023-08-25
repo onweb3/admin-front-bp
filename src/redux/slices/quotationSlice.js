@@ -1009,22 +1009,22 @@ export const quotationsSlice = createSlice({
         },
         handleIsAddTransferDataChange: (state, action) => {
             let selectedTransferIndex =
-                state.transferQuotation.transfers.findIndex((stayTf) => {
+                state?.transferQuotation?.transfers?.findIndex((stayTf) => {
                     return (
-                        Number(stayTf.stayNo) ===
-                        Number(action.payload.stayIndex) + 1
+                        Number(stayTf?.stayNo) ===
+                        Number(action?.payload?.stayIndex) + 1
                     );
                 });
 
             if (selectedTransferIndex !== -1) {
-                let selectedStayIndex = state.transferQuotation.transfers[
+                let selectedStayIndex = state?.transferQuotation?.transfers[
                     selectedTransferIndex
                 ].stays.findIndex((stay) => {
                     return (
-                        stay.transferFrom.toString() ===
-                            action.payload.data.transferFrom.toString() &&
-                        stay.transferTo.toString() ===
-                            action.payload.data.transferTo.toString()
+                        stay?.transferFrom?.toString() ===
+                            action?.payload?.data?.transferFrom?.toString() &&
+                        stay?.transferTo?.toString() ===
+                            action.payload.data?.transferTo?.toString()
                     );
                 });
 
@@ -1037,7 +1037,7 @@ export const quotationsSlice = createSlice({
                     state.transferQuotation.transfers[
                         selectedTransferIndex
                     ].stays[selectedStayIndex].isAddTransfer =
-                        action.payload.value;
+                        action.payload?.value;
                 }
             }
         },
