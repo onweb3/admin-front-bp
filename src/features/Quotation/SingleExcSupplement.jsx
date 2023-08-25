@@ -83,6 +83,82 @@ export default function SingleExcSupplement({
         onTransferChange();
     }, [excSupplementTransferType]);
 
+    useEffect(() => {
+        if (excursion.value && Object.keys(globalExcursion)?.length > 0) {
+            let totalPax =
+                (!isNaN(noOfAdults) ? Number(noOfAdults) : 0) +
+                (!isNaN(noOfChildren) ? Number(noOfChildren) : 0);
+
+            let calculatedAdultPrice = 0;
+            let calculatedChildPrice = 0;
+
+            if (excursion?.excursionType === "transfer") {
+                if (excursion?.value === "private") {
+                    let totalPvtTransferPrice = 0;
+
+                    for (let i = 0; i < excursion.vehicleType.length; i++) {
+                        let vehicleType = excursion.vehicleType[i];
+                        totalPvtTransferPrice += vehicleType.price;
+                    }
+                    let divVal = 1;
+
+                    divVal = totalPax;
+
+                    calculatedAdultPrice = totalPvtTransferPrice / divVal;
+                    calculatedChildPrice = totalPvtTransferPrice / divVal;
+                } else if (excursion?.value === "shared") {
+                    calculatedAdultPrice =
+                        globalExcursion?.transferPricing?.sicPrice;
+                    calculatedChildPrice =
+                        globalExcursion?.transferPricing?.sicPrice;
+                }
+            } else if (excursion?.excursionType === "ticket") {
+                if (excursion?.value === "ticket") {
+                    calculatedAdultPrice =
+                        globalExcursion?.ticketPricing?.adultPrice;
+                    calculatedChildPrice =
+                        globalExcursion?.ticketPricing?.childPrice;
+                } else if (excursion?.value === "shared") {
+                    calculatedAdultPrice =
+                        globalExcursion?.ticketPricing?.sicWithTicketAdultPrice;
+                    calculatedChildPrice =
+                        globalExcursion?.ticketPricing?.sicWithTicketChildPrice;
+                } else if (excursion?.value === "private") {
+                    let totalPvtTransferPrice = 0;
+
+                    for (let i = 0; i < excursion.vehicleType.length; i++) {
+                        let vehicleType = excursion.vehicleType[i];
+                        totalPvtTransferPrice += vehicleType.price;
+                    }
+                    let divVal = 1;
+
+                    divVal = totalPax;
+
+                    let totalPvtPrice = totalPvtTransferPrice / divVal;
+
+                    calculatedAdultPrice =
+                        totalPvtPrice +
+                        (globalExcursion?.ticketPricing?.adultPrice
+                            ? globalExcursion?.ticketPricing?.adultPrice
+                            : 0);
+                    calculatedChildPrice =
+                        totalPvtPrice +
+                        (globalExcursion?.ticketPricing?.childPrice
+                            ? globalExcursion?.ticketPricing?.childPrice
+                            : 0);
+                }
+            }
+
+            dispatch(
+                changeExcSupplementPerPersonPrice({
+                    _id: excursion?.excursionId,
+                    perPersonAdultPrice: calculatedAdultPrice,
+                    perPersonChildPrice: calculatedChildPrice,
+                })
+            );
+        }
+    }, [excursion.value, noOfAdults, noOfChildren, globalExcursion, vehicles]);
+
     return (
         <div className="mb-6 bg-[#f6f6f6] p-4">
             <div className="flex items-start gap-[10px] ">

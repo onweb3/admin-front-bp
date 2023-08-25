@@ -294,6 +294,22 @@ export default function ExcursionQuotationForm() {
                             </div>
                         </div>
                     </div>
+                    <div className="flex items-start gap-[2em] mt-8 text-sm">
+                        <label htmlFor="" className="w-[100%] max-w-[180px]">
+                            Per Person Adult Total
+                        </label>
+                        <span className="font-medium">
+                            {perPersonTotal?.adult?.toFixed(2)} AED
+                        </span>
+                    </div>
+                    <div className="flex items-start gap-[2em] mt-5 text-sm">
+                        <label htmlFor="" className="w-[100%] max-w-[180px]">
+                            Per Person Child Total
+                        </label>
+                        <span className="font-medium">
+                            {perPersonTotal?.child?.toFixed(2)} AED
+                        </span>
+                    </div>
                 </>
             ) : (
                 ""
@@ -315,22 +331,6 @@ export default function ExcursionQuotationForm() {
                 <label htmlFor="" className="mb-0">
                     Please check this box if you don't need supplement quotation
                 </label>
-            </div> */}
-            {/* <div className="flex items-start gap-[2em] mt-8 text-sm">
-                <label htmlFor="" className="w-[100%] max-w-[180px]">
-                    Per Person Adult Total
-                </label>
-                <span className="font-medium">
-                    {perPersonTotal.adult?.toFixed(2)} AED
-                </span>
-            </div>
-            <div className="flex items-start gap-[2em] mt-5 text-sm">
-                <label htmlFor="" className="w-[100%] max-w-[180px]">
-                    Per Person Child Total
-                </label>
-                <span className="font-medium">
-                    {perPersonTotal.child?.toFixed(2)} AED
-                </span>
             </div> */}
         </div>
     );
