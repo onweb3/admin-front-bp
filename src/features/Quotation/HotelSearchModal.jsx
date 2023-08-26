@@ -430,24 +430,26 @@ export default function HotelSearchModal({
                                                 ? new Date(data?.checkInDate)
                                                       .toJSON()
                                                       .slice(0, 10)
-                                                : new Date()
-                                                      .toJSON()
-                                                      .slice(0, 10)
+                                                : formatDate(checkInDate)
                                         }
                                         max={
                                             data?.checkOutDate
                                                 ? new Date(data?.checkOutDate)
                                                       .toJSON()
                                                       .slice(0, 10)
-                                                : new Date()
-                                                      .toJSON()
-                                                      .slice(0, 10)
+                                                : formatDate(checkOutDate)
                                         }
                                         onChange={(e) => {
                                             onChangeSearchData(e);
                                         }}
                                         name="checkInDate"
                                         value={data?.checkInDate || ""}
+                                        // onFocus={(e) =>
+                                        //     (e.currentTarget.type = "date")
+                                        // }
+                                        // onBlur={(e) =>
+                                        //     (e.currentTarget.type = "text")
+                                        // }
                                     />
                                 </div>
                             </div>
@@ -467,18 +469,14 @@ export default function HotelSearchModal({
                                                 ? new Date(data?.checkInDate)
                                                       .toJSON()
                                                       .slice(0, 10)
-                                                : new Date()
-                                                      .toJSON()
-                                                      .slice(0, 10)
+                                                : formatDate(checkInDate)
                                         }
                                         max={
                                             data?.checkOutDate
                                                 ? new Date(data?.checkOutDate)
                                                       .toJSON()
                                                       .slice(0, 10)
-                                                : new Date()
-                                                      .toJSON()
-                                                      .slice(0, 10)
+                                                : formatDate(checkOutDate)
                                         }
                                         name="checkOutDate"
                                         onChange={(e) => {

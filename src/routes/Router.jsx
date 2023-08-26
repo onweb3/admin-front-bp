@@ -169,6 +169,8 @@ import AddSubAgentPage from "../pages/Resellers/AddSubAgentPage";
 import SubAgentsListPage from "../pages/Resellers/SubAgentsListPage";
 import InsuranceListingPage from "../pages/Insurance/InsuranceListingPage";
 import InsursanceEnquiryPage from "../pages/Insurance/InsuranceEnquiryPage";
+import AddVisaTypeNationalityPage from "../pages/Visa/AddVisaTypeNationalityPage";
+import EditVisaTypeNationalityPage from "../pages/Visa/EditVisaTypeNationalityPage";
 
 const ThemeRoutes = [
     {
@@ -377,7 +379,14 @@ const ThemeRoutes = [
                 path: "/visa/nationalities/:id/edit",
                 element: <AddVisaTypeNationality />,
             },
-
+            {
+                path: "/visa/nationalities/:id/edit/:section/add",
+                element: <AddVisaTypeNationalityPage />,
+            },
+            {
+                path: "/visa/nationalities/:id/edit/:section/edit/:visaId",
+                element: <EditVisaTypeNationalityPage />,
+            },
             {
                 path: "/visa/add",
                 element: <VisaAddPage />,

@@ -19,7 +19,7 @@ export default function AddVisaTypeNationality() {
         limit: 10,
         totalVisaTypes: 0,
         searchQuery: "",
-        requestedBy: "b2c",
+        section: "b2c",
     });
     const [error, setError] = useState("");
 
@@ -31,6 +31,7 @@ export default function AddVisaTypeNationality() {
     const { jwtToken } = useSelector((state) => state.admin);
     const [searchParams, setSearchParams] = useSearchParams();
     const [selectedVisaType, setSelectedVisaType] = useState({});
+    const [sections, setSection] = useState("b2c");
 
     const prevSearchParams = (e) => {
         let params = {};
@@ -72,12 +73,12 @@ export default function AddVisaTypeNationality() {
         }
     };
 
-    const fetchVisaTypes = async ({ skip, limit, searchQuery }) => {
+    const fetchVisaTypes = async ({ skip, limit, searchQuery, section }) => {
         try {
             setIsLoading(true);
 
             const response = await axios.get(
-                `/visa/nationality/visa-types/${id}`,
+                `/visa/nationality/visa-types/${id}/${section}`,
                 {
                     headers: { authorization: `Bearer ${jwtToken}` },
                 }
@@ -110,12 +111,18 @@ export default function AddVisaTypeNationality() {
                 ? Number(searchParams.get("limit"))
                 : 10;
         let searchQuery = searchParams.get("searchQuery") || "";
+        let section = searchParams.get("section") || sections;
 
         setFilters((prev) => {
-            return { ...prev, skip, limit, searchQuery };
+            return { ...prev, skip, limit, searchQuery, section };
         });
-        fetchVisaTypes({ skip, limit, searchQuery });
-    }, []);
+        fetchVisaTypes({ skip, limit, searchQuery, section });
+    }, [searchParams]);
+
+    const handleSectionChange = (e, value) => {
+        e.preventDefault();
+        setSection(value);
+    };
 
     return (
         <div>
@@ -136,7 +143,7 @@ export default function AddVisaTypeNationality() {
                     <span> Nationality - Visa Types</span>
                 </div>
             </div>
-
+            {/* 
             {nationalityModal?.isOpen && (
                 <AddVisaTypeModal
                     nationalityModal={nationalityModal}
@@ -145,7 +152,7 @@ export default function AddVisaTypeNationality() {
                     visaTypes={visaTypes}
                     setVisaTypes={setVisaTypes}
                 />
-            )}
+            )} */}
 
             {isLoading ? (
                 <div>
@@ -158,21 +165,60 @@ export default function AddVisaTypeNationality() {
                             <h1 className="font-medium capitalize">
                                 Nationality - (Visa Types)
                             </h1>
+                            <Link to={`${filters.section}/add`}>
+                                <button className="w-[120px] bg-orange-500">
+                                    + Add Visa
+                                </button>
+                            </Link>
+                        </div>
+                        <div className="flex items-center gap-[13px] px-4 border-b border-b-dahsed">
                             <button
-                                className="px-3"
-                                onClick={() => {
-                                    setNationalityModal({
-                                        isOpen: true,
-                                        isEdit: false,
+                                className={
+                                    "px-2 py-4 h-auto bg-transparent text-primaryColor font-medium rounded-none " +
+                                    (filters.section === "b2c"
+                                        ? "border-b border-b-orange-500"
+                                        : "")
+                                }
+                                onClick={(e) => {
+                                    setSearchParams((prev) => {
+                                        return { ...prev, section: "b2c" };
                                     });
-                                    // setSelectedTerminal({
-                                    //     terminalCode: "",
-                                    //     terminalName: "",
-                                    //     access: [],
-                                    // });
                                 }}
                             >
-                                + Add Visa Type
+                                B2C
+                            </button>
+                            <button
+                                className={
+                                    "px-2 py-4 h-auto bg-transparent text-primaryColor font-medium rounded-none " +
+                                    (filters.section === "b2b"
+                                        ? "border-b border-b-orange-500"
+                                        : "")
+                                }
+                                onClick={(e) => {
+                                    setSearchParams((prev) => {
+                                        return { ...prev, section: "b2b" };
+                                    });
+                                }}
+                            >
+                                B2B
+                            </button>
+                            <button
+                                className={
+                                    "px-2 py-4 h-auto bg-transparent text-primaryColor font-medium rounded-none " +
+                                    (filters.section === "quotation"
+                                        ? "border-b border-b-orange-500"
+                                        : "")
+                                }
+                                onClick={(e) => {
+                                    setSearchParams((prev) => {
+                                        return {
+                                            ...prev,
+                                            section: "quotation",
+                                        };
+                                    });
+                                }}
+                            >
+                                Quotation
                             </button>
                         </div>
                         {!visaTypes || visaTypes?.length < 1 ? (
@@ -247,22 +293,11 @@ export default function AddVisaTypeNationality() {
                                                         >
                                                             <MdDelete />
                                                         </button>
-                                                        <button
-                                                            className="h-auto bg-transparent text-green-500 text-xl"
-                                                            onClick={() => {
-                                                                setSelectedVisaType(
-                                                                    visaType
-                                                                );
-                                                                setNationalityModal(
-                                                                    {
-                                                                        isOpen: true,
-                                                                        isEdit: true,
-                                                                    }
-                                                                );
-                                                            }}
+                                                        <Link
+                                                            to={`${filters.section}/edit/${visaType.visaId}`}
                                                         >
                                                             <BiEditAlt />
-                                                        </button>
+                                                        </Link>{" "}
                                                     </div>
                                                 </td>
                                             </tr>
