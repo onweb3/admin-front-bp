@@ -349,8 +349,8 @@ const adminRoles = [
     //Insurance
 
     {
-        name: "insurance",
-        displayName: "Insurance",
+        name: "insurance plans",
+        displayName: "Insurance Plans",
         category: "insurance",
         permissions: [],
     },
