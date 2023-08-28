@@ -5,6 +5,7 @@ import isPdfValid from "./isPdfValid";
 import convertMinutesTo12HourTime from "./convertMinutesTo12HourTime";
 import convertMinutesTo24HourTime from "./convertMinutesTo24HourTime";
 import hasPermission from "./hasPermission";
+import getFormatedDuration from "./getFormatedDuration";
 
 export {
     isImageValid,
@@ -14,4 +15,5 @@ export {
     convertMinutesTo12HourTime,
     convertMinutesTo24HourTime,
     hasPermission,
+    getFormatedDuration,
 };
