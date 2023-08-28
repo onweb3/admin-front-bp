@@ -351,6 +351,21 @@ const adminRoles = [
         category: "transfer",
         permissions: [],
     },
+
+    //Insurance
+
+    {
+        name: "insurance",
+        displayName: "Insurance",
+        category: "insurance",
+        permissions: [],
+    },
+    {
+        name: "enquiries",
+        displayName: "Insurance Enquiries",
+        category: "insurance",
+        permissions: [],
+    },
 ];
 
 export default adminRoles;

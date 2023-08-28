@@ -299,6 +299,20 @@ const sidebarMenus = {
             ],
         },
     ],
+    Insurance: [
+        {
+            name: "Insurance",
+            icon: <MdOutlineSummarize />,
+            link: "/insurance",
+            permission: ["insurance", "view"],
+        },
+        {
+            name: "Insurance Enquiries",
+            icon: <HiOutlineDocumentText />,
+            link: "/insurance/enquiries",
+            permission: ["enquiries", "view"],
+        },
+    ],
     Transfer: [
         {
             name: "Transfer",

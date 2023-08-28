@@ -85,7 +85,7 @@ function QuotationSingleEmailPage() {
                 </div>
 
                 <div
-                    className="container mx-auto p-10  text-blue-900"
+                    className="container mx-auto p-10  text-black"
                     id="email-wrapper"
                 >
                     <span className="text-[12px]">
