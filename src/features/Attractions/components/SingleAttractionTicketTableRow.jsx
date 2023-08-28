@@ -2,7 +2,7 @@ import React from "react";
 import { FiDownload } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import axios from "../../../axios";
 import { formatDate } from "../../../utils";
@@ -13,17 +13,15 @@ export default function SingleAttractionTicketTableRow({
     deleteTicket,
 }) {
     const { jwtToken } = useSelector((state) => state.admin);
+    const { id, activityId } = useParams();
 
     const deleteAttractionTicket = async () => {
         try {
             const isConfirm = window.confirm("Are you sure to delete?");
             if (isConfirm) {
-                await axios.delete(
-                    `/attractions/tickets/delete/${ticket?._id}`,
-                    {
-                        headers: { authorization: `Bearer ${jwtToken}` },
-                    }
-                );
+                await axios.delete(`/attractions/tickets/delete/${ticket?._id}`, {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                });
                 deleteTicket(ticket?._id);
             }
         } catch (err) {
@@ -31,15 +29,33 @@ export default function SingleAttractionTicketTableRow({
         }
     };
 
+    const handleMouseDownOnTicketNumber = async () => {
+        try {
+            await axios.post(
+                "/attractions/tickets/log",
+                {
+                    ticketNumber: ticket?.ticketNo,
+                    attraction: id,
+                    activity: activityId,
+                },
+                {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                }
+            );
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     return (
         <tr className="border-b border-tableBorderColor">
-            <td className="p-3">{ticket?.ticketNo}</td>
+            <td className="p-3" onMouseDown={handleMouseDownOnTicketNumber}>
+                {ticket?.ticketNo}
+            </td>
             <td className="p-3">{ticket?.lotNo}</td>
             <td className="p-3">{ticket?.ticketFor}</td>
             <td className="p-3">{ticket?.details || "N/A"}</td>
-            <td className="p-3">
-                {ticket?.validity ? formatDate(ticket?.validTill) : "N/A"}
-            </td>
+            <td className="p-3">{ticket?.validity ? formatDate(ticket?.validTill) : "N/A"}</td>
             <td className="p-3">{ticket?.ticketCost} AED</td>
             <td className="p-3">
                 {ticket?.status !== "ok" ? (
@@ -48,8 +64,7 @@ export default function SingleAttractionTicketTableRow({
                             {ticket?.status}
                         </span>
                     </div>
-                ) : ticket?.validity === true &&
-                  new Date(ticket.validTill) < new Date() ? (
+                ) : ticket?.validity === true && new Date(ticket.validTill) < new Date() ? (
                     <span className="bg-[#f065481A] text-[#f06548] text-[13px] px-3 py-[2px] rounded capitalize">
                         Expired
                     </span>

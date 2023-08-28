@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { HiOutlineTicket } from "react-icons/hi";
 
 import axios from "../../axios";
 import { PageLoader } from "../../components";
 import Pagination from "../../components/Pagination";
-import {
-    SingleAttractionTicketTableRow,
-    UploadTicketModal,
-} from "../../features/Attractions";
-import { HiOutlineTicket } from "react-icons/hi";
+import { SingleAttractionTicketTableRow, UploadTicketModal } from "../../features/Attractions";
 
 export default function AttractionsTicketsPage() {
-    const [isUploadTicketModalOpen, setIsUploadTicketModalOpen] =
-        useState(false);
+    const [isUploadTicketModalOpen, setIsUploadTicketModalOpen] = useState(false);
     const [tickets, setTickets] = useState([]);
     const [activity, setActivity] = useState({});
     const [filters, setFilters] = useState({
@@ -189,10 +185,7 @@ export default function AttractionsTicketsPage() {
                         {id?.slice(0, 2)}...{id?.slice(-3)}
                     </span>
                     <span>{">"} </span>
-                    <Link
-                        to={`/attractions/${id}/edit`}
-                        className="text-textColor"
-                    >
+                    <Link to={`/attractions/${id}/edit`} className="text-textColor">
                         Edit
                     </Link>
                     <span>{">"} </span>
@@ -219,10 +212,7 @@ export default function AttractionsTicketsPage() {
                 <div className="bg-white rounded shadow-sm">
                     <div className="flex items-center justify-between border-b border-dashed p-4">
                         <h1 className="font-medium">{activity?.name}</h1>
-                        <button
-                            className="px-3"
-                            onClick={() => setIsUploadTicketModalOpen(true)}
-                        >
+                        <button className="px-3" onClick={() => setIsUploadTicketModalOpen(true)}>
                             + Upload Ticket
                         </button>
                     </div>
@@ -237,13 +227,11 @@ export default function AttractionsTicketsPage() {
                                     {statistics?.totalTickets || 0}
                                 </span>
                                 <span className="text-sm block mt-1">
-                                    Adults: {statistics?.totalAdultTickets || 0}
-                                    , Children:{" "}
+                                    Adults: {statistics?.totalAdultTickets || 0}, Children:{" "}
                                     {statistics?.totalChildTickets || 0},
                                 </span>
                                 <span className="text-sm block mt-1">
-                                    Common:{" "}
-                                    {statistics?.totalCommonTickets || 0}
+                                    Common: {statistics?.totalCommonTickets || 0}
                                 </span>
                             </div>
                             <span className="text-2xl w-[40px] h-[40px] min-w-[40px] min-h-[40px] bg-primaryColor text-white rounded-full flex items-center justify-center">
@@ -259,8 +247,7 @@ export default function AttractionsTicketsPage() {
                                     {statistics?.soldTickets || 0}
                                 </span>
                                 <span className="text-sm block mt-1">
-                                    Adults: {statistics?.adultSoldTickets || 0},
-                                    Children:{" "}
+                                    Adults: {statistics?.adultSoldTickets || 0}, Children:{" "}
                                     {statistics?.childSoldTickets || 0},
                                 </span>
                                 <span className="text-sm block mt-1">
@@ -280,9 +267,8 @@ export default function AttractionsTicketsPage() {
                                     {statistics?.expiredTickets || 0}
                                 </span>
                                 <span className="text-sm block mt-1">
-                                    Adults:{" "}
-                                    {statistics?.adultExpiredTickets || 0},
-                                    Children: {statistics?.childExpiredTickets},
+                                    Adults: {statistics?.adultExpiredTickets || 0}, Children:{" "}
+                                    {statistics?.childExpiredTickets},
                                 </span>
                                 <span className="text-sm block mt-1">
                                     Common: {statistics?.commonExpiredTickets}
@@ -301,14 +287,11 @@ export default function AttractionsTicketsPage() {
                                     {statistics?.availableTickets || 0}
                                 </span>
                                 <span className="text-sm block mt-1">
-                                    Adults:{" "}
-                                    {statistics?.adultAvailableTickets || 0},
-                                    Children:{" "}
+                                    Adults: {statistics?.adultAvailableTickets || 0}, Children:{" "}
                                     {statistics?.childAvailableTickets || 0},
                                 </span>
                                 <span className="text-sm block mt-1">
-                                    Common:{" "}
-                                    {statistics?.commonAvailableTickets || 0}
+                                    Common: {statistics?.commonAvailableTickets || 0}
                                 </span>
                             </div>
                             <span className="text-2xl w-[40px] h-[40px] min-w-[40px] min-h-[40px] bg-green-500 text-white rounded-full flex items-center justify-center">
@@ -321,7 +304,7 @@ export default function AttractionsTicketsPage() {
                         <PageLoader />
                     ) : tickets?.length < 1 ? (
                         <div className="p-6 flex flex-col items-center">
-                            <span className="text-sm text-sm text-grayColor block mt-[6px]">
+                            <span className="text-sm text-grayColor block mt-[6px]">
                                 Oops.. No Tickets found
                             </span>
                         </div>
@@ -330,30 +313,14 @@ export default function AttractionsTicketsPage() {
                             <table className="w-full">
                                 <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                     <tr>
-                                        <th className="font-[500] p-3">
-                                            Ticket No
-                                        </th>
-                                        <th className="font-[500] p-3">
-                                            Lot No
-                                        </th>
-                                        <th className="font-[500] p-3">
-                                            Ticket For
-                                        </th>
-                                        <th className="font-[500] p-3">
-                                            Details
-                                        </th>
-                                        <th className="font-[500] p-3">
-                                            Validity
-                                        </th>
-                                        <th className="font-[500] p-3">
-                                            Ticket Cost
-                                        </th>
-                                        <th className="font-[500] p-3">
-                                            Status
-                                        </th>
-                                        <th className="font-[500] p-3">
-                                            Action
-                                        </th>
+                                        <th className="font-[500] p-3">Ticket No</th>
+                                        <th className="font-[500] p-3">Lot No</th>
+                                        <th className="font-[500] p-3">Ticket For</th>
+                                        <th className="font-[500] p-3">Details</th>
+                                        <th className="font-[500] p-3">Validity</th>
+                                        <th className="font-[500] p-3">Ticket Cost</th>
+                                        <th className="font-[500] p-3">Status</th>
+                                        <th className="font-[500] p-3">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody className="text-sm">
@@ -362,9 +329,7 @@ export default function AttractionsTicketsPage() {
                                             <SingleAttractionTicketTableRow
                                                 key={index}
                                                 ticket={ticket}
-                                                updateTicketStatus={
-                                                    updateTicketStatus
-                                                }
+                                                updateTicketStatus={updateTicketStatus}
                                                 deleteTicket={deleteTicket}
                                             />
                                         );

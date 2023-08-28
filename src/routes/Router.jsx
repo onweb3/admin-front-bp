@@ -167,6 +167,8 @@ import B2cVisaNationalityPage from "../pages/Visa/VisaNationalityPage";
 import AddVisaTypeNationality from "../pages/Visa/AddVisaTypeNationality";
 import AddSubAgentPage from "../pages/Resellers/AddSubAgentPage";
 import SubAgentsListPage from "../pages/Resellers/SubAgentsListPage";
+import FlightBookingsListPage from "../pages/Flight/FlightBookingsListPage";
+import SingleFlightBookingDetailsPage from "../pages/Flight/SingleFlightBookingDetailsPage";
 import InsuranceListingPage from "../pages/Insurance/InsuranceListingPage";
 import InsursanceEnquiryPage from "../pages/Insurance/InsuranceEnquiryPage";
 import AddVisaTypeNationalityPage from "../pages/Visa/AddVisaTypeNationalityPage";
@@ -743,6 +745,14 @@ const ThemeRoutes = [
             {
                 path: "/attractions/itineraries/:id/edit",
                 element: <EditAttractionItineraryPage />,
+            },
+            {
+                path: "/flights/bookings",
+                element: <FlightBookingsListPage />,
+            },
+            {
+                path: "/flights/bookings/:bookingId",
+                element: <SingleFlightBookingDetailsPage />,
             },
             {
                 path: "/airports",
