@@ -31,6 +31,7 @@ export default function SingleAttractionTicketTableRow({
 
     const handleMouseDownOnTicketNumber = async () => {
         try {
+            console.log(ticket?.ticketNo);
             await axios.post(
                 "/attractions/tickets/log",
                 {
