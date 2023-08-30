@@ -301,7 +301,7 @@ const sidebarMenus = {
     ],
     Insurance: [
         {
-            name: "Insurance",
+            name: "Insurance Plans",
             icon: <MdOutlineSummarize />,
             link: "/insurance",
             permission: ["insurance", "view"],

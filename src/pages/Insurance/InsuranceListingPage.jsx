@@ -5,6 +5,8 @@ import { Link, useSearchParams } from "react-router-dom";
 import { PageLoader, Pagination } from "../../components";
 import { A2AIndexTable, AddA2AModal } from "../../features/A2A";
 import axios from "../../axios";
+import { MdDelete } from "react-icons/md";
+import { BiEditAlt } from "react-icons/bi";
 
 export default function InsuranceListingPage() {
     const [isLoading, setIsLoading] = useState(false);
@@ -14,26 +16,88 @@ export default function InsuranceListingPage() {
     const [filters, setFilters] = useState({
         skip: 0,
         limit: 10,
-        searchInput: "",
-        totalA2aList: 0,
+        searchQuery: "",
+        totalPlans: 0,
     });
+    const [plans, setPlans] = useState([]);
+    const { jwtToken } = useSelector((state) => state.admin);
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const prevSearchParams = (e) => {
+        let params = {};
+        for (let [key, value] of searchParams.entries()) {
+            params[key] = value;
+        }
+        return params;
+    };
+
+    const fetchInsurance = async ({ skip, limit, searchQuery }) => {
+        try {
+            setIsLoading(true);
+
+            const response = await axios.get(
+                `/insurance/list/all/?skip=${skip}&limit=${limit}&searchQuery=${searchQuery}`,
+                {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                }
+            );
+
+            console.log(response.data, "response");
+
+            setPlans(response?.data?.plans);
+            setFilters((prev) => {
+                return {
+                    ...prev,
+                    totalPlans: response.data?.totalPlans,
+                };
+            });
+            setIsLoading(false);
+        } catch (err) {
+            console.log(err);
+            setPlans([]);
+            setIsLoading(false);
+        }
+    };
+
+    console.log(plans, "plans");
+
+    useEffect(() => {
+        let skip =
+            Number(searchParams.get("skip")) > 0
+                ? Number(searchParams.get("skip")) - 1
+                : 0;
+        let limit =
+            Number(searchParams.get("limit")) > 0
+                ? Number(searchParams.get("limit"))
+                : 10;
+        let searchQuery = searchParams.get("searchQuery") || "";
+
+        setFilters((prev) => {
+            return { ...prev, skip, limit, searchQuery };
+        });
+        fetchInsurance({ skip, limit, searchQuery });
+    }, [searchParams]);
+
+    console.log(plans, "plans");
 
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">Insurance</h1>
+                <h1 className="font-[600] text-[15px] uppercase">
+                    Insurance Plans
+                </h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
                     </Link>
                     <span>{">"} </span>
-                    <span>Insurance</span>
+                    <span>Insurance Plans</span>
                 </div>
             </div>
             <div className="p-6">
                 <div className="bg-white rounded shadow-sm">
                     <div className="flex items-center justify-between border-b border-dashed p-4">
-                        <h1 className="font-medium">All Insurance</h1>
+                        <h1 className="font-medium">All Insurance Plans</h1>
                         <div className="flex items-center gap-[15px]">
                             <form
                                 action=""
@@ -89,7 +153,7 @@ export default function InsuranceListingPage() {
                     </div>
                     {isLoading ? (
                         <PageLoader />
-                    ) : result?.length < 1 ? (
+                    ) : plans?.length < 1 ? (
                         <div className="p-6 flex flex-col items-center">
                             <span className="text-sm  text-grayColor block mt-[6px]">
                                 Oops.. No Enquiries found
@@ -100,28 +164,64 @@ export default function InsuranceListingPage() {
                             <table className="w-full">
                                 <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                     <tr>
-                                        <th className="font-[500] p-3">#</th>
                                         <th className="font-[500] p-3">
-                                            Depart Destination
+                                            Index
+                                        </th>
+                                        <th className="font-[500] p-3">Name</th>
+                                        <th className="font-[500] p-3">Type</th>
+                                        <th className="font-[500] p-3">
+                                            Category
                                         </th>
                                         <th className="font-[500] p-3">
-                                            Return Destination
+                                            Price
                                         </th>
-                                        <th className="font-[500] p-3">
+                                        {/* <th className="font-[500] p-3">
                                             Action
-                                        </th>
+                                        </th> */}
                                     </tr>
                                 </thead>
                                 <tbody className="text-sm">
-                                    {result?.map((a2a, index) => {
+                                    {plans?.map((plan, index) => {
+                                        console.log(plan, index);
                                         return (
-                                            <A2AIndexTable
-                                                key={a2a?._id}
-                                                a2a={a2a}
-                                                index={index}
-                                                setResult={setResult}
-                                                result={result}
-                                            />
+                                            <tr className="border-b border-tableBorderColor">
+                                                <td className="p-3">
+                                                    {index + 1}
+                                                </td>
+                                                <td className="p-3 capitalize">
+                                                    {plan.name}
+                                                </td>
+                                                <td className="p-3">
+                                                    {plan.type}
+                                                </td>
+                                                <td className="p-3">
+                                                    {plan.category}
+                                                </td>
+                                                <td className="p-3">
+                                                    {plan.price}
+                                                </td>
+                                                {/* <td className="p-3">
+                                                    <div className="flex items-center gap-[10px]">
+                                                        <button
+                                                            className="h-auto bg-transparent text-red-500 text-xl"
+                                                            // onClick={() =>
+                                                            //     deleteA2A(
+                                                            //         plan?._id
+                                                            //     )
+                                                            // }
+                                                        >
+                                                            <MdDelete />
+                                                        </button>
+                                                        <Link
+                                                            to={`/a2a/${plan?._id}`}
+                                                        >
+                                                            <button className="h-auto bg-transparent text-green-500 text-xl">
+                                                                <BiEditAlt />
+                                                            </button>
+                                                        </Link>
+                                                    </div>
+                                                </td> */}
+                                            </tr>
                                         );
                                     })}
                                 </tbody>

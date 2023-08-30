@@ -6,6 +6,7 @@ import {
     handleOkToBoardChange,
     updateSelectedVisa,
     handleQuotationDisableChange,
+    updateSelectedVisNationality,
 } from "../../redux/slices/quotationSlice";
 
 export default function VisaQuotaionForm() {
@@ -15,15 +16,35 @@ export default function VisaQuotaionForm() {
         selectedVisaCountry,
         otbPrice,
         isVisaQuotationDisabled,
+        selectedVisaNationality,
     } = useSelector((state) => state.quotations);
     const { jwtToken } = useSelector((state) => state.admin);
 
     const [visa, setVisa] = useState([]);
+    const [nationalities, setNationalitiies] = useState([]);
+    const [selectedNationality, setSelectedNationality] = useState();
+    const [isLoading, setIsLoading] = useState(false);
+    const dispatch = useDispatch();
 
+    const fetchVisasNationality = async () => {
+        try {
+            setIsLoading(true);
+            const res = await axios.get(`/quotations/inital/nationality`, {
+                headers: { Authorization: `Bearer ${jwtToken}` },
+            });
+
+            setNationalitiies(res.data || []);
+            setIsLoading(false);
+        } catch (err) {
+            setIsLoading(false);
+
+            console.log(err);
+        }
+    };
     const fetchVisaData = async () => {
         try {
             const res = await axios.get(
-                `/quotations/inital/visa-type/${visas[0]._id}`,
+                `/quotations/inital/visa-type/${selectedVisaNationality}`,
                 {
                     headers: { Authorization: `Bearer ${jwtToken}` },
                 }
@@ -36,12 +57,14 @@ export default function VisaQuotaionForm() {
     };
 
     useEffect(() => {
-        if (visas.length > 0) {
+        fetchVisasNationality();
+    }, []);
+
+    useEffect(() => {
+        if (nationalities.length > 0) {
             fetchVisaData();
         }
-    }, [visas]);
-
-    const dispatch = useDispatch();
+    }, [selectedVisaNationality, nationalities]);
 
     return (
         <div>
@@ -69,36 +92,79 @@ export default function VisaQuotaionForm() {
                         <label htmlFor="" className="w-[100%] max-w-[180px]">
                             Visas
                         </label>
-                        <div className="flex flex-wrap items-center gap-[30px]">
-                            {visa?.map((visa, index) => {
-                                return (
-                                    <div
-                                        className="flex items-center gap-[10px]"
-                                        key={index}
-                                    >
-                                        <input
-                                            type="radio"
-                                            className="w-[18px] h-[18px]"
-                                            name="visa"
-                                            value={visa?._id}
-                                            onChange={() =>
-                                                dispatch(
-                                                    updateSelectedVisa(visa)
-                                                )
-                                            }
-                                            defaultChecked={
-                                                selectedVisa === visa?._id
-                                            }
-                                        />
-                                        <label className="mb-0">
-                                            {visa?.visaName}{" "}
-                                            <span className="text-sm text-gray-500">
-                                                ({visa?.visaPrice} AED)
-                                            </span>
-                                        </label>
-                                    </div>
-                                );
-                            })}
+                        <div className=" gap-[2em]">
+                            {
+                                <select
+                                    name="selected"
+                                    value={selectedVisaNationality || ""}
+                                    onChange={(e) => {
+                                        setSelectedNationality(e.target.value);
+                                        dispatch(
+                                            updateSelectedVisNationality(
+                                                e.target.value
+                                            )
+                                        );
+                                        setVisa([]);
+                                    }}
+                                    id=""
+                                    required
+                                    className="w-[300px] mb-5"
+                                >
+                                    {" "}
+                                    <option value="">select</option>
+                                    {nationalities.map((nationality, index) => (
+                                        <option
+                                            key={index}
+                                            value={nationality._id}
+                                        >
+                                            {nationality.nationality}
+                                        </option>
+                                    ))}
+                                </select>
+                            }
+                            {selectedVisaNationality ? (
+                                <div className="flex flex-wrap items-center gap-[30px]">
+                                    {isLoading
+                                        ? "Loading ..."
+                                        : visa?.map((visa, index) => {
+                                              return (
+                                                  <div
+                                                      className="flex items-center gap-[10px]"
+                                                      key={index}
+                                                  >
+                                                      <input
+                                                          type="radio"
+                                                          className="w-[18px] h-[18px]"
+                                                          name="visa"
+                                                          value={visa?.visaId}
+                                                          onChange={() =>
+                                                              dispatch(
+                                                                  updateSelectedVisa(
+                                                                      visa
+                                                                  )
+                                                              )
+                                                          }
+                                                          defaultChecked={
+                                                              selectedVisa ===
+                                                              visa?.visaId
+                                                          }
+                                                      />
+                                                      <label className="mb-0">
+                                                          {visa?.visaName}{" "}
+                                                          <span className="text-sm text-gray-500"></span>
+                                                          <span className="text-sm text-gray-500">
+                                                              (
+                                                              {visa?.adultPrice}{" "}
+                                                              AED)
+                                                          </span>
+                                                      </label>
+                                                  </div>
+                                              );
+                                          })}
+                                </div>
+                            ) : (
+                                ""
+                            )}
                         </div>
                     </div>
                     {selectedVisa && Object.keys(selectedVisa)?.length > 0 && (

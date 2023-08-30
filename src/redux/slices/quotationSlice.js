@@ -58,7 +58,7 @@ const initialState = {
     isVisaQuotationDisabled: true,
     excSupplementTransferType: "all",
     selectedVisa: {},
-    selectedVisaCountry: "",
+    selectedVisaNationality: "",
     otbPrice: "",
     isTransferQuotationDisabled: true,
     isHotelQuotationDisabled: true,
@@ -72,6 +72,9 @@ const initialState = {
             price: 0,
         },
     ],
+    isCustomMarkup: false,
+    customMarkupType: "flat",
+    customMarkup: 0,
 };
 
 export const quotationsSlice = createSlice({
@@ -690,21 +693,19 @@ export const quotationsSlice = createSlice({
             // } else {
             //     let visa = { ...action.payload };
             //     visa.visaId = action.payload?._id;
-            state.selectedVisa = action.payload?._id;
+            state.selectedVisa = action.payload?.visaId;
             // }
         },
         handleQuotationCurrencyChange: (state, action) => {
             state.quotationCurrency = action.payload;
         },
         handleMarkupChange: (state, action) => {
-            state.markup = action.payload;
+            state.customMarkup = action.payload;
         },
         handleMarkupTypeChange: (state, action) => {
-            state.markupType = action.payload;
+            state.customMarkupType = action.payload;
         },
         setQuotationData: (state, action) => {
-            console.log("action.payload?.action.payload?. ", action.payload);
-
             state.clientName =
                 action.payload?.amendment?.clientName || "Sir / Madam";
             state.paxType = action.payload?.amendment?.paxType;
@@ -790,6 +791,8 @@ export const quotationsSlice = createSlice({
                     action.payload?.amendment?.visa?.price || "";
                 state.otbPrice =
                     action.payload?.amendment?.visa?.otbPrice || "";
+                state.selectedVisaNationality =
+                    action.payload?.amendment?.visa?.nationality;
             }
             state.selectedVisa = action.payload?.amendment?.visa?.visaId;
             // state.transferQuotation =
@@ -805,6 +808,12 @@ export const quotationsSlice = createSlice({
                 action?.payload?.amendment?.reseller?.companyName;
             state.isResellerDisabled =
                 action?.payload?.amendment?.isResellerDisabled;
+            state.isCustomMarkup = action?.payload?.amendment?.isCustomMarkup;
+            if (action?.payload?.amendment?.customMarkup) {
+                state.customMarkup = action?.payload?.amendment?.customMarkup;
+                state.customMarkupType =
+                    action?.payload?.amendment?.customMarkupType;
+            }
         },
         setExcursionsTotalPrice: (state, action) => {
             state.excursionTotalPrice = action.payload;
@@ -856,7 +865,7 @@ export const quotationsSlice = createSlice({
             state.checkOutDate = "";
             state.childrenAges = [];
             state.paxType = "solo";
-
+            state.selectedReseller = {};
             state.isArrivalAirportDisabled = true;
             state.arrivalAirport = "";
             state.arrivalAirportName = "";
@@ -893,6 +902,9 @@ export const quotationsSlice = createSlice({
             state.quotationCurrency = "AED";
 
             state.hotelDisabledRemark = "";
+            state.isCustomMarkup = false;
+            state.customMarkup = 0;
+            state.customMarkupType = "flat";
         },
         handleClientNameChange: (state, action) => {
             state.clientName = action.payload;
@@ -1210,6 +1222,12 @@ export const quotationsSlice = createSlice({
                 state.noOfChildren = 0;
             }
         },
+        updateSelectedVisNationality: (state, action) => {
+            state.selectedVisaNationality = action.payload;
+        },
+        handleCustomMarkupChange: (state, action) => {
+            state.isCustomMarkup = action.payload.value;
+        },
     },
 });
 
@@ -1283,6 +1301,8 @@ export const {
     updateVehicleTransfer,
     updateSupplVehicleTransfer,
     handleIsAddTransferDataChange,
+    updateSelectedVisNationality,
+    handleCustomMarkupChange,
 } = quotationsSlice.actions;
 
 export default quotationsSlice.reducer;

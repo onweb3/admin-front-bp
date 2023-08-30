@@ -10,12 +10,14 @@ import {
     handleMarkupChange,
     handleMarkupTypeChange,
     handleQuotationCurrencyChange,
+    handleCustomMarkupChange,
 } from "../../redux/slices/quotationSlice";
 
 export default function QuotationSubmissionForm({ isEdit = false }) {
     const [markupError, setMarkupError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
+    const { isCustomMarkup } = useSelector((state) => state.quotations);
 
     const { jwtToken } = useSelector((state) => state.admin);
     const {
@@ -61,6 +63,9 @@ export default function QuotationSubmissionForm({ isEdit = false }) {
         arrivalTerminalCode,
         departureTerminalId,
         departureTerminalCode,
+        selectedVisaNationality,
+        customMarkupType,
+        customMarkup,
     } = useSelector((state) => state.quotations);
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -102,6 +107,7 @@ export default function QuotationSubmissionForm({ isEdit = false }) {
                             transfer: transferQuotation?.transfers,
                             isVisaQuotationDisabled,
                             visaId: selectedVisa,
+                            selectedVisaNationality,
                             selectedExcursionType: selectedExcursions,
                             selectedExcursionTypeSuppliments:
                                 selectedExcSupplements,
@@ -166,6 +172,10 @@ export default function QuotationSubmissionForm({ isEdit = false }) {
                                 : "",
                             isResellerDisabled,
                             resellerId: selectedReseller.resellerId,
+                            selectedVisaNationality,
+                            isCustomMarkup,
+                            customMarkupType,
+                            customMarkup,
                         },
                         {
                             headers: { Authorization: `Bearer ${jwtToken}` },
@@ -200,6 +210,92 @@ export default function QuotationSubmissionForm({ isEdit = false }) {
 
     return (
         <div>
+            <div className="flex items-center mb-7 gap-4">
+                <input
+                    type="checkbox"
+                    className="w-[16px] h-[16px]"
+                    checked={isCustomMarkup}
+                    onChange={(e) =>
+                        dispatch(
+                            handleCustomMarkupChange({
+                                name: "isSupplimentQuotationDisabled",
+                                value: e.target.checked,
+                            })
+                        )
+                    }
+                />
+                <h1 className="text-base font-[600] text-blue-500">
+                    Custom Markup
+                </h1>
+            </div>
+
+            {isCustomMarkup && (
+                <div className="flex items-start gap-[2em] mt-6">
+                    <label htmlFor="" className="w-[100%] max-w-[180px]">
+                        Markup <br />
+                        (Min: 4% - Max: 15%)
+                    </label>
+
+                    <div className="w-full ">
+                        <div className="flex items-start gap-[2em] mb-[10px]">
+                            <div className="flex items-center gap-[10px]">
+                                <input
+                                    type="radio"
+                                    name="markup-type"
+                                    className="w-[18px] h-[18px]"
+                                    onChange={() =>
+                                        dispatch(
+                                            dispatch(
+                                                handleMarkupTypeChange(
+                                                    "percentage"
+                                                )
+                                            )
+                                        )
+                                    }
+                                    checked={customMarkupType === "percentage"}
+                                />
+                                <label htmlFor="" className="mb-0">
+                                    Percentage
+                                </label>
+                            </div>
+                            <div className="flex items-center gap-[10px]">
+                                <input
+                                    type="radio"
+                                    name="markup-type"
+                                    className="w-[18px] h-[18px]"
+                                    onChange={() =>
+                                        dispatch(handleMarkupTypeChange("flat"))
+                                    }
+                                    checked={customMarkupType === "flat"}
+                                />
+                                <label htmlFor="" className="mb-0">
+                                    Flat
+                                </label>
+                            </div>
+                        </div>
+
+                        <input
+                            type="number"
+                            required
+                            onChange={(e) => {
+                                dispatch(handleMarkupChange(e.target.value));
+                            }}
+                            value={customMarkup || ""}
+                            placeholder="Enter Markup"
+                            onWheel={(e) => e.target.blur()}
+                        />
+                        <span className="text-sm block mt-[7px] text-gray-500">
+                            Add your markup in {quotationCurrency}
+                        </span>
+                        {markupError && (
+                            <span className="text-sm text-red-500 block mt-[7px]">
+                                The markup value should be 4% to 15%
+                            </span>
+                        )}
+                    </div>
+                </div>
+            )}
+
             <div className="flex items-start gap-[2em] mt-[15px]">
                 <label htmlFor="" className="w-[100%] max-w-[180px]">
                     Create Quotation in
@@ -235,67 +331,6 @@ export default function QuotationSubmissionForm({ isEdit = false }) {
                     </div>
                 </div>
             </div>
-            {/* 
-            <div className="flex items-start gap-[2em] mt-6">
-                <label htmlFor="" className="w-[100%] max-w-[180px]">
-                    Markup <br />
-                    (Min: 4% - Max: 15%)
-                </label>
-
-                <div className="w-full ">
-                    <div className="flex items-start gap-[2em] mb-[10px]">
-                        <div className="flex items-center gap-[10px]">
-                            <input
-                                type="radio"
-                                name="markup-type"
-                                className="w-[18px] h-[18px]"
-                                onChange={() =>
-                                    dispatch(
-                                        handleMarkupTypeChange("percentage")
-                                    )
-                                }
-                                checked={markupType === "percentage"}
-                            />
-                            <label htmlFor="" className="mb-0">
-                                Percentage
-                            </label>
-                        </div>
-                        <div className="flex items-center gap-[10px]">
-                            <input
-                                type="radio"
-                                name="markup-type"
-                                className="w-[18px] h-[18px]"
-                                onChange={() =>
-                                    dispatch(handleMarkupTypeChange("flat"))
-                                }
-                                checked={markupType === "flat"}
-                            />
-                            <label htmlFor="" className="mb-0">
-                                Flat
-                            </label>
-                        </div>
-                    </div>
-
-                    <input
-                        type="number"
-                        required
-                        onChange={(e) => {
-                            dispatch(handleMarkupChange(e.target.value));
-                        }}
-                        value={markup || ""}
-                        placeholder="Enter Markup"
-                        onWheel={(e) => e.target.blur()}
-                    />
-                    <span className="text-sm block mt-[7px] text-gray-500">
-                        Add your markup in {quotationCurrency}
-                    </span>
-                    {markupError && (
-                        <span className="text-sm text-red-500 block mt-[7px]">
-                            The markup value should be 4% to 15%
-                        </span>
-                    )}
-                </div>
-            </div> */}
 
             {error && (
                 <div className="flex items-start gap-[2em]">
