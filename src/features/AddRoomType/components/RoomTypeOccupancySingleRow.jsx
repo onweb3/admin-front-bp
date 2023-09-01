@@ -30,7 +30,8 @@ export default function RoomTypeOccupancySingleRow({
     };
 
     const removeSingleOccupancyRow = (index) => {
-        const filteredRoomOccupancies = roomOccupancies?.filter((_, tIndex) => {
+        const tempRoomOccupancies = roomOccupancies;
+        const filteredRoomOccupancies = tempRoomOccupancies?.filter((_, tIndex) => {
             return index !== tIndex;
         });
         setRoomOccupancies(filteredRoomOccupancies);
@@ -67,7 +68,8 @@ export default function RoomTypeOccupancySingleRow({
     const updateSingleOccupancyAllDetails = (index, defOccupIndex) => {
         let tempRoomOccupancies = roomOccupancies;
         let tempDefRmOccupancies = defRmOccupancies;
-        let tempOccupany = tempDefRmOccupancies[defOccupIndex];
+        let tempOccupany = { ...tempDefRmOccupancies[defOccupIndex], _id: item?._id || undefined };
+
         tempOccupany.isActive = true;
         tempRoomOccupancies[index] = tempOccupany;
         setRoomOccupancies(() => {
