@@ -18,6 +18,7 @@ export default function InsuranceListingPage() {
         limit: 10,
         searchQuery: "",
         totalPlans: 0,
+        category: "SG",
     });
     const [plans, setPlans] = useState([]);
     const { jwtToken } = useSelector((state) => state.admin);
@@ -31,12 +32,12 @@ export default function InsuranceListingPage() {
         return params;
     };
 
-    const fetchInsurance = async ({ skip, limit, searchQuery }) => {
+    const fetchInsurance = async ({ skip, limit, searchQuery, category }) => {
         try {
             setIsLoading(true);
 
             const response = await axios.get(
-                `/insurance/list/all/?skip=${skip}&limit=${limit}&searchQuery=${searchQuery}`,
+                `/insurance/list/all/?category=${category}&skip=${skip}&limit=${limit}&searchQuery=${searchQuery}`,
                 {
                     headers: { authorization: `Bearer ${jwtToken}` },
                 }
@@ -71,11 +72,11 @@ export default function InsuranceListingPage() {
                 ? Number(searchParams.get("limit"))
                 : 10;
         let searchQuery = searchParams.get("searchQuery") || "";
-
+        let category = searchParams.get("category") || "SG";
         setFilters((prev) => {
-            return { ...prev, skip, limit, searchQuery };
+            return { ...prev, skip, limit, searchQuery, category };
         });
-        fetchInsurance({ skip, limit, searchQuery });
+        fetchInsurance({ skip, limit, searchQuery, category });
     }, [searchParams]);
 
     console.log(plans, "plans");
@@ -113,7 +114,7 @@ export default function InsuranceListingPage() {
                                 // }}
                                 className="flex items-center gap-[10px]"
                             >
-                                <input
+                                {/* <input
                                     type="text"
                                     placeholder="Search here..."
                                     value={filters.searchInput || ""}
@@ -125,8 +126,26 @@ export default function InsuranceListingPage() {
                                             };
                                         })
                                     }
-                                />
-                                <button className="px-5">Search</button>
+                                /> */}
+                                <div>
+                                    {/* <label htmlFor="">Type</label> */}
+                                    <select
+                                        name="bookingType"
+                                        value={filters.category || ""}
+                                        onChange={(e) => {
+                                            setSearchParams((prev) => {
+                                                return {
+                                                    ...prev,
+                                                    category: e.target.value,
+                                                };
+                                            });
+                                        }}
+                                    >
+                                        <option value="SG">Single</option>
+                                        <option value="FM">Family</option>
+                                    </select>
+                                </div>
+                                {/* <button className="px-5">Search</button> */}
                             </form>
                             {/* <div>
                                 <Link to={`add`}>

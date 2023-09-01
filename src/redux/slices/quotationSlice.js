@@ -19,7 +19,7 @@ const initialState = {
         resellerName: "",
     },
     paxType: "solo",
-    isResellerDisabled: false,
+    isResellerDisabled: true,
     initialDataFetching: true,
     clientName: "Sir / Madam",
     noOfAdults: 1,
