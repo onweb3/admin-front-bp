@@ -40,7 +40,10 @@ export default function FlightBookingsTableRow({ booking }) {
                     "D MMM YYYY HH:mm"
                 )}
             </td>
-            <td className="p-3 capitalize">{booking?.tripType || "N/A"}</td>
+            <td className="p-3 capitalize">
+                {booking?.tripType || "N/A"}
+                <span className="block text-grayColor text-sm">{booking?.travelClass}</span>
+            </td>
             <td className="p-3">
                 <div className="flex items-center">
                     {booking?.trips?.map((trip) => {

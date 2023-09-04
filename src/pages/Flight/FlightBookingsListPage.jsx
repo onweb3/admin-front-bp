@@ -26,6 +26,10 @@ export default function FlightBookingsListPage() {
         status: "",
         totalFlightBookings: 0,
     });
+    const [initialData, setInitialData] = useState({
+        airports: [],
+        airlines: [],
+    });
 
     const { jwtToken } = useSelector((state) => state.admin);
 
@@ -59,11 +63,67 @@ export default function FlightBookingsListPage() {
         }
     };
 
-    const clearFilters = () => {};
+    const fetchInitialData = async () => {
+        try {
+            const response = await axios.get("/flights/bookings/initial-data", {
+                headers: { authorization: `Bearer ${jwtToken}` },
+            });
+            setInitialData((prev) => {
+                return {
+                    ...prev,
+                    airlines: response?.data?.airlines,
+                    airports: response?.data?.airports,
+                };
+            });
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const clearFilters = () => {
+        setFilters((prev) => {
+            return {
+                ...prev,
+                skip: 0,
+                limit: 10,
+                referenceNumber: "",
+                agentCode: "",
+                departureDateFrom: "",
+                departureDateTo: "",
+                bookingDateFrom: "",
+                bookingDateTo: "",
+                airlineCode: "",
+                fromAirportCode: "",
+                toAirportCode: "",
+                status: "",
+            };
+        });
+        if (filters.skip === 0) {
+            fetchFlightBookings({
+                skip: 0,
+                limit: 10,
+                referenceNumber: "",
+                agentCode: "",
+                departureDateFrom: "",
+                departureDateTo: "",
+                bookingDateFrom: "",
+                bookingDateTo: "",
+                airlineCode: "",
+                fromAirportCode: "",
+                toAirportCode: "",
+                status: "",
+                totalFlightBookings: 0,
+            });
+        }
+    };
 
     useEffect(() => {
         fetchFlightBookings({ ...filters });
     }, [filters.skip]);
+
+    useEffect(() => {
+        fetchInitialData();
+    }, []);
 
     return (
         <div>
@@ -167,6 +227,13 @@ export default function FlightBookingsListPage() {
                                 onChange={handleChange}
                             >
                                 <option value="">All</option>
+                                {initialData?.airlines?.map((item, index) => {
+                                    return (
+                                        <option value={item?.airlineCode} key={index}>
+                                            {item?.airlineName}
+                                        </option>
+                                    );
+                                })}
                             </select>
                         </div>
                         <div>
@@ -178,6 +245,13 @@ export default function FlightBookingsListPage() {
                                 onChange={handleChange}
                             >
                                 <option value="">All</option>
+                                {initialData?.airports?.map((item, index) => {
+                                    return (
+                                        <option value={item?.iataCode} key={index}>
+                                            {item?.iataCode}
+                                        </option>
+                                    );
+                                })}
                             </select>
                         </div>
                         <div>
@@ -189,6 +263,13 @@ export default function FlightBookingsListPage() {
                                 onChange={handleChange}
                             >
                                 <option value="">All</option>
+                                {initialData?.airports?.map((item, index) => {
+                                    return (
+                                        <option value={item?.iataCode} key={index}>
+                                            {item?.iataCode}
+                                        </option>
+                                    );
+                                })}
                             </select>
                         </div>
                         <div>

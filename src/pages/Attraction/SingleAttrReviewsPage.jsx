@@ -36,8 +36,7 @@ export default function SingleAttrReviewsPage() {
             setFilters((prev) => {
                 return {
                     ...prev,
-                    totalAttractionReviews:
-                        response.data?.totalAttractionReviews,
+                    totalAttractionReviews: response.data?.totalAttractionReviews,
                 };
             });
             setIsLoading(false);
@@ -100,7 +99,7 @@ export default function SingleAttrReviewsPage() {
 
                         {reviews?.length < 1 ? (
                             <div className="p-6 flex flex-col items-center">
-                                <span className="text-sm text-sm text-grayColor block mt-[6px]">
+                                <span className="text-sm text-grayColor block mt-[6px]">
                                     Oops.. No Reviews found
                                 </span>
                             </div>
@@ -109,24 +108,12 @@ export default function SingleAttrReviewsPage() {
                                 <table className="w-full">
                                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                         <tr>
-                                            <th className="font-[500] p-3">
-                                                User
-                                            </th>
-                                            <th className="font-[500] p-3">
-                                                Title
-                                            </th>
-                                            <th className="font-[500] p-3">
-                                                Description
-                                            </th>
-                                            <th className="font-[500] p-3">
-                                                Rating
-                                            </th>
-                                            <th className="font-[500] p-3">
-                                                Date
-                                            </th>
-                                            <th className="font-[500] p-3">
-                                                Action
-                                            </th>
+                                            <th className="font-[500] p-3">User</th>
+                                            <th className="font-[500] p-3">Title</th>
+                                            <th className="font-[500] p-3">Description</th>
+                                            <th className="font-[500] p-3">Rating</th>
+                                            <th className="font-[500] p-3">Date</th>
+                                            <th className="font-[500] p-3">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody className="text-sm">
@@ -140,35 +127,22 @@ export default function SingleAttrReviewsPage() {
                                                         <span className="block capitalize">
                                                             {review?.user?.name}
                                                         </span>
-                                                        <span>
-                                                            {
-                                                                review?.user
-                                                                    ?.email
-                                                            }
-                                                        </span>
+                                                        <span>{review?.user?.email}</span>
                                                     </td>
-                                                    <td className="p-3">
-                                                        {review?.title}
-                                                    </td>
-                                                    <td className="p-3">
-                                                        {review?.description}
-                                                    </td>
+                                                    <td className="p-3">{review?.title}</td>
+                                                    <td className="p-3">{review?.description}</td>
                                                     <td className="p-3">
                                                         {review?.rating} &#9734;
                                                     </td>
                                                     <td className="p-3">
-                                                        {formatDate(
-                                                            review?.createdAt
-                                                        )}
+                                                        {formatDate(review?.createdAt)}
                                                     </td>
                                                     <td className="p-3">
                                                         <div className="flex gap-[10px]">
                                                             <button
                                                                 className="h-auto bg-transparent text-red-500 text-xl"
                                                                 onClick={() =>
-                                                                    handleDelete(
-                                                                        review?._id
-                                                                    )
+                                                                    handleDelete(review?._id)
                                                                 }
                                                             >
                                                                 <MdDelete />

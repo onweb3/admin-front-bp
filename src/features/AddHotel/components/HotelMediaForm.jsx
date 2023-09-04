@@ -6,11 +6,7 @@ import { isImageValid } from "../../../utils";
 import { removeHotelImage } from "../../../redux/slices/hotelFormSlice";
 import { config } from "../../../constants";
 
-export default function HotelMediaForm({
-    selectedSection,
-    newImages,
-    setNewImages,
-}) {
+export default function HotelMediaForm({ selectedSection, newImages, setNewImages }) {
     const { images } = useSelector((state) => state.hotelForm);
     const dispatch = useDispatch();
 
@@ -37,11 +33,7 @@ export default function HotelMediaForm({
         <div className={selectedSection === "-media" ? "block" : "hidden"}>
             <div className="mt-4">
                 <label htmlFor="">Image *</label>
-                <input
-                    type="file"
-                    onChange={handleImageChange}
-                    multiple={true}
-                />
+                <input type="file" onChange={handleImageChange} multiple={true} />
             </div>
 
             <div className="flex flex-wrap items-center gap-[1.5em] mt-5">
@@ -55,12 +47,14 @@ export default function HotelMediaForm({
                             <img
                                 src={
                                     item?.isRelative === false
-                                        ? item?.path
-                                        : config.SERVER_URL +
-                                          item?.path
+                                        ? item?.path?.replace("/original/", "/medium/")
+                                        : config.SERVER_URL + item?.path
                                 }
                                 alt=""
-                                className="w-full h-full object-cover"
+                                className="object-cover"
+                                loading="lazy"
+                                width="130px"
+                                height="70px"
                             />
                             <div className="hidden group-hover:flex absolute inset-0 bg-[#0005] text-xl items-center justify-center cursor-pointer text-red-500">
                                 <MdDelete />

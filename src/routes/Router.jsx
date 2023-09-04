@@ -1,8 +1,4 @@
-import {
-    AdminLayout,
-    EditProfileLayout,
-    SingleResellerLayout,
-} from "../layouts";
+import { AdminLayout, EditProfileLayout, SingleResellerLayout } from "../layouts";
 import A2aAddTicketPage from "../pages/A2A/A2aAddTicketPage";
 import A2AEditTicketPage from "../pages/A2A/A2aEditTicketPage";
 import A2AEnquiryPage from "../pages/A2A/A2AEnquiryPage";
@@ -169,10 +165,11 @@ import AddSubAgentPage from "../pages/Resellers/AddSubAgentPage";
 import SubAgentsListPage from "../pages/Resellers/SubAgentsListPage";
 import FlightBookingsListPage from "../pages/Flight/FlightBookingsListPage";
 import SingleFlightBookingDetailsPage from "../pages/Flight/SingleFlightBookingDetailsPage";
-import InsuranceListingPage from "../pages/Insurance/InsuranceListingPage";
+import InsurancePlanListingPage from "../pages/Insurance/InsurancePlanListingPage";
 import InsursanceEnquiryPage from "../pages/Insurance/InsuranceEnquiryPage";
 import AddVisaTypeNationalityPage from "../pages/Visa/AddVisaTypeNationalityPage";
 import EditVisaTypeNationalityPage from "../pages/Visa/EditVisaTypeNationalityPage";
+import SingelInsuranceEnquiryDetailsPage from "../pages/Insurance/SingelInsuranceEnquiryDetailsPage";
 
 const ThemeRoutes = [
     {
@@ -667,25 +664,25 @@ const ThemeRoutes = [
                 path: "/sub-agents",
                 element: <SubAgentsListPage />,
             },
-            {
-                path: "/sub-agents/:id",
-                element: <SingleResellerLayout />,
-                children: [
-                    { path: "details", element: <SingleResellerDetailsPage /> },
-                    {
-                        path: "transactions",
-                        element: <SingleResellerTransactionsPage />,
-                    },
-                    {
-                        path: "attractions-ticket-orders",
-                        element: <SingleResellerAttractionTicketOrdersPage />,
-                    },
-                    {
-                        path: "attractions-booking-orders",
-                        element: <SingleResellerAttractionBookingOrdersPage />,
-                    },
-                ],
-            },
+            // {
+            //     path: "/sub-agents/:id",
+            //     element: <SingleResellerLayout />,
+            //     children: [
+            //         { path: "details", element: <SingleResellerDetailsPage /> },
+            //         {
+            //             path: "transactions",
+            //             element: <SingleResellerTransactionsPage />,
+            //         },
+            //         {
+            //             path: "attractions-ticket-orders",
+            //             element: <SingleResellerAttractionTicketOrdersPage />,
+            //         },
+            //         {
+            //             path: "attractions-booking-orders",
+            //             element: <SingleResellerAttractionBookingOrdersPage />,
+            //         },
+            //     ],
+            // },
             {
                 path: "/email-settings",
                 element: <EmailSettingsPage />,
@@ -865,13 +862,18 @@ const ThemeRoutes = [
                 element: <AddQuotationPage />,
             },
 
+            // Insurance
             {
-                path: "/insurance",
-                element: <InsuranceListingPage />,
+                path: "/insurance/plans",
+                element: <InsurancePlanListingPage />,
             },
             {
                 path: "/insurance/enquiries",
                 element: <InsursanceEnquiryPage />,
+            },
+            {
+                path: "/insurance/enquiries/:contractId",
+                element: <SingelInsuranceEnquiryDetailsPage />,
             },
         ],
     },

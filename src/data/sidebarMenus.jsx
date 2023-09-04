@@ -303,14 +303,14 @@ const sidebarMenus = {
         {
             name: "Insurance Plans",
             icon: <MdOutlineSummarize />,
-            link: "/insurance",
-            permission: ["insurance", "view"],
+            link: "/insurance/plans",
+            permission: ["insurance-plans", "view"],
         },
         {
             name: "Insurance Enquiries",
             icon: <HiOutlineDocumentText />,
             link: "/insurance/enquiries",
-            permission: ["enquiries", "view"],
+            permission: ["insurance-enquiries", "view"],
         },
     ],
     Transfer: [

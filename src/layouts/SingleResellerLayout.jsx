@@ -207,9 +207,13 @@ export default function SingleResellerLayout() {
                                     )}
                                 </div>
                             )}
-                            <Link to={`/b2b/${id}/sub-agents/add`}>
-                                <button className="px-3 w-[120px] bg-red-500">+ Sub Agent</button>
-                            </Link>
+                            {reseller?.role === "reseller" && (
+                                <Link to={`/b2b/${id}/sub-agents/add`}>
+                                    <button className="px-3 w-[120px] bg-red-500">
+                                        + Sub Agent
+                                    </button>
+                                </Link>
+                            )}
                             <div className="flex items-center gap-2">
                                 <Link to={`/b2b/${id}/edit`}>
                                     <button className="h-[35px] w-[35px] flex items-center justify-center text-lg">

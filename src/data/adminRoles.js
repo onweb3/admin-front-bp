@@ -353,15 +353,14 @@ const adminRoles = [
     },
 
     //Insurance
-
     {
-        name: "insurance plans",
+        name: "insurance-plans",
         displayName: "Insurance Plans",
         category: "insurance",
         permissions: [],
     },
     {
-        name: "enquiries",
+        name: "insurance-enquiries",
         displayName: "Insurance Enquiries",
         category: "insurance",
         permissions: [],

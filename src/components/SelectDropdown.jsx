@@ -11,6 +11,7 @@ export default function SelectDropdown({
     displayName,
     placeholder,
     bracketValue,
+    disabled = false,
 }) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [selectedDataInfo, setSelectedDataInfo] = useState({});
@@ -49,7 +50,7 @@ export default function SelectDropdown({
                     setIsDropdownOpen(true);
                 }}
             >
-                {isDropdownOpen ? (
+                {isDropdownOpen && disabled === false ? (
                     <div className="relative w-full h-full">
                         <input
                             type="text"
@@ -83,7 +84,7 @@ export default function SelectDropdown({
                     </div>
                 )}
             </div>
-            {isDropdownOpen && (
+            {isDropdownOpen && disabled === false && (
                 <div className="absolute top-[100%] left-0 right-0 bg-white shadow-lg rounded max-h-[300px] overflow-y-auto z-10 text-[14px]">
                     {filteredData?.length < 1 ? (
                         <div className="p-2">

@@ -1,54 +1,90 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Link, useSearchParams } from "react-router-dom";
+
 import { PageLoader, Pagination } from "../../components";
-import { A2AIndexTable, AddA2AModal } from "../../features/A2A";
 import axios from "../../axios";
+import { formatDate } from "../../utils";
 
 export default function InsursanceEnquiryPage() {
     const [isLoading, setIsLoading] = useState(false);
-    const [result, setResult] = useState([]);
-    const [isAddA2AModalOpen, setIsAddA2AModalOpen] = useState(false);
-    const [airports, setAirports] = useState([]);
+    const [insuranceContracts, setInsuranceContracts] = useState([]);
     const [filters, setFilters] = useState({
         skip: 0,
         limit: 10,
-        searchInput: "",
-        totalA2aList: 0,
+        totalInsuranceContracts: 0,
+        referenceNumber: "",
+        plan: "",
+        fromDateStart: "",
+        fromDateEnd: "",
+        toDateStart: "",
+        toDateEnd: "",
+        reseller: "",
+        status: "",
     });
+
+    const { jwtToken } = useSelector((state) => state.admin);
+    const navigate = useNavigate();
+
+    const fetchAllInsuranceEnquiries = async () => {
+        try {
+            setIsLoading(true);
+
+            const response = await axios.get(
+                `/insurance/contracts/all?skip=${filters.skip}&limit=${filters.limit}`,
+                {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                }
+            );
+
+            setInsuranceContracts(response?.data?.insuranceContracts);
+            setFilters((prev) => {
+                return {
+                    ...prev,
+                    totalInsuranceContracts: response?.data?.totalInsuranceContracts,
+                };
+            });
+            setIsLoading(false);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    useEffect(() => {
+        fetchAllInsuranceEnquiries();
+    }, [filters.skip]);
 
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">
-                    Insurance Enquiry
-                </h1>
+                <h1 className="font-[600] text-[15px] uppercase">Insurance Enquiries</h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
                     </Link>
                     <span>{">"} </span>
-                    <span>Insurance Enquiry</span>
+                    <span>Insurance </span>
+                    <span>{">"} </span>
+                    <span>Enquiries</span>
                 </div>
             </div>
             <div className="p-6">
                 <div className="bg-white rounded shadow-sm">
                     <div className="flex items-center justify-between border-b border-dashed p-4">
-                        <h1 className="font-medium">All Insurance Enquiry</h1>
-                        <div className="flex items-center gap-[15px]">
+                        <h1 className="font-medium">All Insurance Enquiries</h1>
+                        {/* <div className="flex items-center gap-[15px]">
                             <form
                                 action=""
-                                // onSubmit={(e) => {
-                                //     e.preventDefault();
-                                //     fetchA2A({ ...filters });
-                                //     let params = prevSearchParams();
-                                //     setSearchParams({
-                                //         ...params,
-                                //         search: filters.searchInput,
-                                //         skip: 0,
-                                //     });
-                                // }}
+                                onSubmit={(e) => {
+                                    e.preventDefault();
+                                    fetchA2A({ ...filters });
+                                    let params = prevSearchParams();
+                                    setSearchParams({
+                                        ...params,
+                                        search: filters.searchInput,
+                                        skip: 0,
+                                    });
+                                }}
                                 className="flex items-center gap-[10px]"
                             >
                                 <input
@@ -66,35 +102,14 @@ export default function InsursanceEnquiryPage() {
                                 />
                                 <button className="px-5">Search</button>
                             </form>
-                            {/* <div>
-                                <Link to={`add`}>
-                                    <button
-                                        className="w-[160px] bg-orange-500"
-                                        // onClick={() => setIsAddA2AModalOpen(true)}
-                                    >
-                                        + Add A2A
-                                    </button>
-                                </Link>
-                                {isAddA2AModalOpen && (
-                                    <AddA2AModal
-                                        setIsAddA2AModalOpen={
-                                            setIsAddA2AModalOpen
-                                        }
-                                        isAddA2AModalOpen={isAddA2AModalOpen}
-                                        airports={airports}
-                                        result={result}
-                                        setResult={setResult}
-                                    />
-                                )}
-                            </div> */}
-                        </div>
+                        </div> */}
                     </div>
                     {isLoading ? (
                         <PageLoader />
-                    ) : result?.length < 1 ? (
+                    ) : insuranceContracts?.length < 1 ? (
                         <div className="p-6 flex flex-col items-center">
                             <span className="text-sm  text-grayColor block mt-[6px]">
-                                Oops.. No Enquiries found
+                                Oops.. No Insurance Enquiries found
                             </span>
                         </div>
                     ) : (
@@ -102,54 +117,82 @@ export default function InsursanceEnquiryPage() {
                             <table className="w-full">
                                 <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                     <tr>
-                                        <th className="font-[500] p-3">#</th>
-                                        <th className="font-[500] p-3">
-                                            Depart Destination
-                                        </th>
-                                        <th className="font-[500] p-3">
-                                            Return Destination
-                                        </th>
-                                        <th className="font-[500] p-3">
-                                            Action
-                                        </th>
+                                        <th className="font-[500] p-3">Ref.No</th>
+                                        <th className="font-[500] p-3">Plan</th>
+                                        <th className="font-[500] p-3">From Date</th>
+                                        <th className="font-[500] p-3">To Date</th>
+                                        <th className="font-[500] p-3">Destination</th>
+                                        <th className="font-[500] p-3">Reseller</th>
+                                        <th className="font-[500] p-3">Price</th>
+                                        <th className="font-[500] p-3">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody className="text-sm">
-                                    {result?.map((a2a, index) => {
+                                    {insuranceContracts?.map((iContract, index) => {
                                         return (
-                                            <A2AIndexTable
-                                                key={a2a?._id}
-                                                a2a={a2a}
-                                                index={index}
-                                                setResult={setResult}
-                                                result={result}
-                                            />
+                                            <tr
+                                                key={index}
+                                                className="border-b border-tableBorderColor transition-all cursor-pointer hover:bg-[#f3f6f9]"
+                                                onClick={() => navigate(`${iContract?._id}`)}
+                                            >
+                                                <td className="p-3">
+                                                    {iContract?.referenceNumber}
+                                                </td>
+                                                <td className="p-3">{iContract?.planName}</td>
+                                                <td className="p-3">
+                                                    {formatDate(iContract?.travelFrom)}
+                                                </td>
+                                                <td className="p-3">
+                                                    {formatDate(iContract?.travelTo)}
+                                                </td>
+                                                <td className="p-3">{iContract?.destination}</td>
+                                                <td className="p-3 capitalize">
+                                                    {iContract?.reseller?.companyName} (
+                                                    {iContract?.reseller?.agentCode})
+                                                </td>
+                                                <td className="p-3">
+                                                    {iContract?.totalAmount} AED
+                                                </td>
+                                                <td className="p-3">
+                                                    <span
+                                                        className={
+                                                            "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
+                                                            (iContract?.status === "cancelled"
+                                                                ? "bg-[#f065481A] text-[#f06548]"
+                                                                : iContract?.status === "completed"
+                                                                ? "text-[#0ab39c] bg-[#0ab39c1A]"
+                                                                : "bg-[#f7b84b1A] text-[#f7b84b]")
+                                                        }
+                                                    >
+                                                        {iContract?.status}
+                                                    </span>
+                                                </td>
+                                            </tr>
                                         );
                                     })}
                                 </tbody>
                             </table>
 
-                            {/* <div className="p-4">
+                            <div className="p-4">
                                 <Pagination
                                     limit={filters?.limit}
                                     skip={filters?.skip}
-                                    total={filters?.totalA2aList}
-                                    incOrDecSkip={(number) => {
-                                        let params = prevSearchParams();
-                                        setSearchParams({
-                                            ...params,
-                                            skip: filters.skip + number + 1,
-                                        });
-                                    }}
-                                    updateSkip={(skip) => {
-                                        let params = prevSearchParams();
-                                        setSearchParams({
-                                            ...params,
-                                            skip: skip + 1,
-                                        });
-                                    }}
+                                    total={filters?.totalInsuranceContracts}
+                                    incOrDecSkip={(number) =>
+                                        setFilters((prev) => {
+                                            return {
+                                                ...prev,
+                                                skip: prev.skip + number,
+                                            };
+                                        })
+                                    }
+                                    updateSkip={(skip) =>
+                                        setFilters((prev) => {
+                                            return { ...prev, skip };
+                                        })
+                                    }
                                 />
-                            </div> */}
+                            </div>
                         </div>
                     )}
                 </div>

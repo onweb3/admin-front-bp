@@ -14,25 +14,17 @@ export default function AirportsListPage() {
         skip: 0,
         limit: 10,
         totalAirports: 0,
+        searchQuery: "",
     });
 
-    const prevSearchParams = (e) => {
-        let params = {};
-        for (let [key, value] of searchParams.entries()) {
-            params[key] = value;
-        }
-        return params;
-    };
-
     const { jwtToken } = useSelector((state) => state.admin);
-    const [searchParams, setSearchParams] = useSearchParams();
 
-    const fetchAirports = async ({ skip, limit }) => {
+    const fetchAirports = async () => {
         try {
             setIsLoading(true);
 
             const response = await axios.get(
-                `/airports/all?skip=${skip}&limit=${limit}`,
+                `/airports/all?skip=${filters.skip}&limit=${filters.limit}&searchQuery=${filters.searchQuery}`,
                 {
                     headers: { authorization: `Bearer ${jwtToken}` },
                 }
@@ -70,21 +62,8 @@ export default function AirportsListPage() {
     };
 
     useEffect(() => {
-        let skip =
-            Number(searchParams.get("skip")) > 0
-                ? Number(searchParams.get("skip")) - 1
-                : 0;
-        let limit =
-            Number(searchParams.get("limit")) > 0
-                ? Number(searchParams.get("limit"))
-                : 10;
-        let searchInput = searchParams.get("search") || "";
-
-        setFilters((prev) => {
-            return { ...prev, skip, limit, searchInput };
-        });
-        fetchAirports({ skip, limit });
-    }, [searchParams]);
+        fetchAirports();
+    }, [filters.skip, filters.limit]);
 
     return (
         <div>
@@ -103,15 +82,50 @@ export default function AirportsListPage() {
                 <div className="bg-white rounded shadow-sm">
                     <div className="flex items-center justify-between border-b border-dashed p-4">
                         <h1 className="font-medium">All Airports</h1>
-                        <Link to="add">
-                            <button className="px-3">+ Add Airport</button>
-                        </Link>
+                        <div className="flex items-center gap-3">
+                            <form
+                                onSubmit={(e) => {
+                                    e.preventDefault();
+                                    if (filters?.skip !== 0) {
+                                        setFilters((prev) => {
+                                            return {
+                                                ...prev,
+                                                skip: 0,
+                                            };
+                                        });
+                                    } else {
+                                        fetchAirports();
+                                    }
+                                }}
+                                className="flex items-center gap-3"
+                            >
+                                <input
+                                    type="text"
+                                    placeholder="Search here..."
+                                    onChange={(e) => {
+                                        setFilters((prev) => {
+                                            return {
+                                                ...prev,
+                                                searchQuery: e.target.value,
+                                            };
+                                        });
+                                    }}
+                                    value={filters.searchQuery || ""}
+                                />
+                                <button type="submit" className="px-3 bg-primaryColor">
+                                    Search
+                                </button>
+                            </form>
+                            <Link to="add">
+                                <button className="px-3">+ Add Airport</button>
+                            </Link>
+                        </div>
                     </div>
                     {isLoading ? (
                         <PageLoader />
                     ) : airports?.length < 1 ? (
                         <div className="p-6 flex flex-col items-center">
-                            <span className="text-sm text-sm text-grayColor block mt-[6px]">
+                            <span className="text-sm text-grayColor block mt-[6px]">
                                 Oops.. No Airports Found
                             </span>
                         </div>
@@ -120,21 +134,11 @@ export default function AirportsListPage() {
                             <table className="w-full">
                                 <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                     <tr>
-                                        <th className="font-[500] p-3">
-                                            Airport
-                                        </th>
-                                        <th className="font-[500] p-3">
-                                            IATA Code
-                                        </th>
-                                        <th className="font-[500] p-3">
-                                            ICAO Code
-                                        </th>
-                                        <th className="font-[500] p-3">
-                                            Country
-                                        </th>
-                                        <th className="font-[500] p-3">
-                                            Action
-                                        </th>
+                                        <th className="font-[500] p-3">Airport</th>
+                                        <th className="font-[500] p-3">IATA Code</th>
+                                        <th className="font-[500] p-3">ICAO Code</th>
+                                        <th className="font-[500] p-3">Country</th>
+                                        <th className="font-[500] p-3">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody className="text-sm">
@@ -159,16 +163,11 @@ export default function AirportsListPage() {
                                                     {airport?.icaoCode}
                                                 </td>
                                                 <td className="p-3 capitalize">
-                                                    {
-                                                        airport?.country
-                                                            ?.countryName
-                                                    }
+                                                    {airport?.country?.countryName}
                                                 </td>
                                                 <td className="p-3">
                                                     <div className="flex gap-[10px]">
-                                                        <Link
-                                                            to={`${airport?._id}/terminal`}
-                                                        >
+                                                        <Link to={`${airport?._id}/terminal`}>
                                                             <button className="h-auto bg-transparent text-green-500 text-xl">
                                                                 <BsEyeFill />
                                                             </button>
@@ -176,16 +175,12 @@ export default function AirportsListPage() {
                                                         <button
                                                             className="h-auto bg-transparent text-red-500 text-xl"
                                                             onClick={() =>
-                                                                deleteAirport(
-                                                                    airport?._id
-                                                                )
+                                                                deleteAirport(airport?._id)
                                                             }
                                                         >
                                                             <MdDelete />
                                                         </button>
-                                                        <Link
-                                                            to={`${airport?._id}/edit`}
-                                                        >
+                                                        <Link to={`${airport?._id}/edit`}>
                                                             <button className="h-auto bg-transparent text-green-500 text-xl">
                                                                 <BiEditAlt />
                                                             </button>
@@ -203,20 +198,19 @@ export default function AirportsListPage() {
                                     limit={filters?.limit}
                                     skip={filters?.skip}
                                     total={filters?.totalAirports}
-                                    incOrDecSkip={(number) => {
-                                        let params = prevSearchParams();
-                                        setSearchParams({
-                                            ...params,
-                                            skip: filters.skip + number + 1,
-                                        });
-                                    }}
-                                    updateSkip={(skip) => {
-                                        let params = prevSearchParams();
-                                        setSearchParams({
-                                            ...params,
-                                            skip: skip + 1,
-                                        });
-                                    }}
+                                    incOrDecSkip={(number) =>
+                                        setFilters((prev) => {
+                                            return {
+                                                ...prev,
+                                                skip: prev.skip + number,
+                                            };
+                                        })
+                                    }
+                                    updateSkip={(skip) =>
+                                        setFilters((prev) => {
+                                            return { ...prev, skip };
+                                        })
+                                    }
                                 />
                             </div>
                         </div>
