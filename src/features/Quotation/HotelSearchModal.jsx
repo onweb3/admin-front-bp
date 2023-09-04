@@ -80,6 +80,51 @@ export default function HotelSearchModal({
         hotelQt,
     } = useSelector((state) => state.quotations);
 
+    const { jwtToken } = useSelector((state) => state.admin);
+
+    const handleSubmit = async () => {
+        try {
+            let response = await axioss.post(
+                `/quotations/hotels/room-type/rate`,
+                {
+                    noOfAdults,
+                    noOfChildren,
+                    childrenAges,
+                    checkInDate: data?.checkInDate,
+                    checkOutDate: data?.checkInDate,
+                    hotelId: data?.checkInDate,
+                    roomTypeId: data?.checkInDate,
+                    boardTypeCode: data?.checkInDate,
+                },
+                {
+                    headers: { Authorization: `Bearer ${jwtToken}` },
+                }
+            );
+
+            onClickHandler({
+                name: "roomOccupancies",
+                value: response.data.rates,
+            });
+
+            console.log(response.data, "daat");
+            setIsModal(false);
+            dispatch(
+                handleHotelsDataChange({
+                    data: data,
+                    hotelIndex: hotelIndex,
+                    stayIndex: stayIndex,
+                    edit: edit,
+                })
+            );
+
+            dispatch(handleTransferClear());
+            setIsEdit(false);
+            setNext(false);
+        } catch (e) {
+            setError("availabilty not found");
+        }
+    };
+
     function formatDateToYYYYMMDD(inputDate) {
         console.log(inputDate, "imput date");
         // Extract the day and month from the given date
@@ -149,8 +194,6 @@ export default function HotelSearchModal({
             },
         ],
     });
-
-    const { jwtToken } = useSelector((state) => state.admin);
 
     const [searchedHotels, setSearchedHotels] = useState([]);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -833,20 +876,7 @@ export default function HotelSearchModal({
                                         <button
                                             className="w-[150px] bg-green-500"
                                             onClick={() => {
-                                                setIsModal(false);
-
-                                                dispatch(
-                                                    handleHotelsDataChange({
-                                                        data: data,
-                                                        hotelIndex: hotelIndex,
-                                                        stayIndex: stayIndex,
-                                                        edit: edit,
-                                                    })
-                                                );
-
-                                                dispatch(handleTransferClear());
-                                                setIsEdit(false);
-                                                setNext(false);
+                                                handleSubmit();
                                             }}
                                             disabled={isLoading}
                                         >
