@@ -183,7 +183,7 @@ export default function EditTransferPage() {
                                         Transfer From
                                     </option>
                                     {data.transferType === "airport-airport" ||
-                                    data.transferType === "airport-city"
+                                    data.transferType === "airport-group"
                                         ? airports?.map((airport, index) => {
                                               return (
                                                   <option

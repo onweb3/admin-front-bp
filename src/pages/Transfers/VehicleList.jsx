@@ -45,7 +45,7 @@ export default function VehicleListPage() {
         try {
             const isConfirm = window.confirm("Are you sure to delete?");
             if (isConfirm) {
-                await axios.delete(`/airlines/delete/${id}`, {
+                await axios.delete(`/transfer/vehicle/delete/${id}`, {
                     headers: { authorization: `Bearer ${jwtToken}` },
                 });
 
@@ -61,7 +61,7 @@ export default function VehicleListPage() {
 
     useEffect(() => {
         fetchCategory();
-    }, []);
+    }, [filters?.skip]);
 
     return (
         <div>
