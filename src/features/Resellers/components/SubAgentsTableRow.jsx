@@ -34,7 +34,7 @@ export default function SubAgentsTableRow({ reseller, referredBy = true }) {
     return (
         <tr
             className="border-b border-tableBorderColor transition-all cursor-pointer hover:bg-[#f3f6f9]"
-            onClick={() => navigate(`${reseller?._id}/details`)}
+            onClick={() => navigate(`/b2b/${reseller?._id}/details`)}
         >
             <td className="p-3">{reseller?.agentCode}</td>
             <td className="p-3">
