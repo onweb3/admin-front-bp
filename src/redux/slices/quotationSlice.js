@@ -1228,6 +1228,26 @@ export const quotationsSlice = createSlice({
         handleCustomMarkupChange: (state, action) => {
             state.isCustomMarkup = action.payload.value;
         },
+        handleHotelCustomMarkupChange: (state, action) => {
+            const { stayIndex, hotelIndex, value } = action.payload;
+            state.hotelQt.stays[stayIndex].hotels[
+                hotelIndex
+            ].isCustomHotelMarkup = value;
+        },
+        handleRoomTypeChange: (state, action) => {
+            const { stayIndex, hotelIndex, name, value } = action.payload;
+
+            const roomOccupancies =
+                state.hotelQt.stays[stayIndex].hotels[hotelIndex]
+                    .roomOccupancies;
+
+            for (let i = 0; i < roomOccupancies.length; i++) {
+                if (roomOccupancies[i].occupancyShortName === name) {
+                    roomOccupancies[i].price = value;
+                    break; // Exit the loop once the match is found
+                }
+            }
+        },
     },
 });
 
@@ -1303,6 +1323,8 @@ export const {
     handleIsAddTransferDataChange,
     updateSelectedVisNationality,
     handleCustomMarkupChange,
+    handleHotelCustomMarkupChange,
+    handleRoomTypeChange,
 } = quotationsSlice.actions;
 
 export default quotationsSlice.reducer;

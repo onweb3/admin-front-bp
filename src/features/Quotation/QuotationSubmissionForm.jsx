@@ -127,6 +127,9 @@ export default function QuotationSubmissionForm({ isEdit = false }) {
                             checkOutDate: checkOutDate
                                 ? moment(checkOutDate).format().substring(0, 10)
                                 : "",
+                            isCustomMarkup,
+                            customMarkupType,
+                            customMarkup,
                         },
                         {
                             headers: { Authorization: `Bearer ${jwtToken}` },
