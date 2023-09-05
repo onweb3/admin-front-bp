@@ -14,6 +14,7 @@ import VisaProfileListTable from "../../features/MarkupProfile/components/VisaPr
 import A2aProfileListTable from "../../features/MarkupProfile/components/A2aProfileListTable";
 import HotelStarCategoryTable from "../../features/MarkupProfile/components/HotelStarCategoryTable";
 import QuotationProfileTable from "../../features/MarkupProfile/components/QuotationProfileTable";
+import FlightProfileTable from "../../features/MarkupProfile/components/FlightProfileTable";
 
 export default function AddMarkupProfilePage() {
     const [error, setError] = useState("");
@@ -219,6 +220,41 @@ export default function AddMarkupProfilePage() {
         }
     };
 
+    const fetchFlightInitialData = async () => {
+        try {
+            setIsPageLoading(true);
+            // const searchQuery = `skip=${filters?.skip}&limit=${filters.limit}`;
+            const response = await axios.get("/profile/get-all-flights", {
+                headers: { authorization: `Bearer ${jwtToken}` },
+            });
+
+            setA2aTypeList((prevA2a) => [
+                ...prevA2a,
+                ...response.data.map((data) => {
+                    return {
+                        ...data,
+                        markupType: "flat",
+                        markup: 0,
+                    };
+                }),
+            ]);
+
+            setA2a(() => {
+                return response.data.map((data) => {
+                    return {
+                        atoa: data._id,
+                        markupType: "flat",
+                        markup: 0,
+                    };
+                });
+            });
+
+            setIsPageLoading(false);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     const fetchHotelInitialData = async () => {
         try {
             setIsPageLoading(true);
@@ -261,6 +297,7 @@ export default function AddMarkupProfilePage() {
         fetchVisaInitialData();
         fetchA2aInitialData();
         fetchHotelInitialData();
+        fetchFlightInitialData();
     }, []);
 
     const onHandleSubmit = async (e) => {
@@ -496,6 +533,19 @@ export default function AddMarkupProfilePage() {
                             >
                                 Quotation
                             </button>
+                            <button
+                                className={
+                                    "px-2 py-4 h-auto bg-transparent text-primaryColor font-medium rounded-none " +
+                                    (section === "quotation"
+                                        ? "border-b border-b-orange-500"
+                                        : "")
+                                }
+                                onClick={(e) => {
+                                    handleSectionChange(e, "flight");
+                                }}
+                            >
+                                Flight
+                            </button>
                         </div>
 
                         <div
@@ -565,6 +615,14 @@ export default function AddMarkupProfilePage() {
                                 quotation={quotation}
                                 setQuotation={setQuotation}
                             />
+                        </div>
+                        <div
+                            className={
+                                section === "flight" ? "block pt-10" : "hidden"
+                            }
+                        >
+                            {" "}
+                            <FlightProfileTable />
                         </div>
                         {/* <div className="pt-10">
                                 <AttractionProfileListTable

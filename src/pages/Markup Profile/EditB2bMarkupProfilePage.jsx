@@ -15,6 +15,7 @@ import A2aProfileListTable from "../../features/MarkupProfile/components/A2aProf
 import HotelStarCategoryTable from "../../features/MarkupProfile/components/HotelStarCategoryTable";
 import QuotationProfileTable from "../../features/MarkupProfile/components/QuotationProfileTable";
 import HotelRoomTypeTable from "../../features/MarkupProfile/components/HotelRoomTypeTable";
+import FlightProfileTable from "../../features/MarkupProfile/components/FlightProfileTable";
 
 export default function EditB2bMarkupProfilePage({ selectedProfile }) {
     const [error, setError] = useState("");
@@ -152,6 +153,19 @@ export default function EditB2bMarkupProfilePage({ selectedProfile }) {
                             >
                                 Quotation
                             </button>
+                            <button
+                                className={
+                                    "px-2 py-4 h-auto bg-transparent text-primaryColor font-medium rounded-none " +
+                                    (section === "flight"
+                                        ? "border-b border-b-orange-500"
+                                        : "")
+                                }
+                                onClick={(e) => {
+                                    handleSectionChange(e, "flight");
+                                }}
+                            >
+                                Flight
+                            </button>
                         </div>
 
                         {section === "attraction" && (
@@ -265,6 +279,18 @@ export default function EditB2bMarkupProfilePage({ selectedProfile }) {
                             >
                                 {" "}
                                 <QuotationProfileTable />
+                            </div>
+                        )}
+                        {section === "flight" && (
+                            <div
+                                className={
+                                    section === "flight"
+                                        ? "block pt-10"
+                                        : "hidden"
+                                }
+                            >
+                                {" "}
+                                <FlightProfileTable />
                             </div>
                         )}
 

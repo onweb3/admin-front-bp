@@ -85,6 +85,7 @@ export default function ResellerSelectionModal({ profileId, setIsModalOpen }) {
                 );
             }
             setIsLoading(false);
+            setIsModalOpen(false);
         } catch (err) {
             console.log(err);
         }
