@@ -41,6 +41,8 @@ export default function HotelSearchModal({
     const dispatch = useDispatch();
     const wrapperRef = useRef();
     const [isLoading, setIsLoading] = useState(false);
+    const [isSubmitLoading, setIsSubmitLoading] = useState(false);
+
     const [suggestions, setSuggestions] = useState([]);
     const [value, setValue] = useState(hotel?.hotelName?.toString() || "");
     const [datalist, setDatalist] = useState(false);
@@ -82,55 +84,6 @@ export default function HotelSearchModal({
     } = useSelector((state) => state.quotations);
 
     const { jwtToken } = useSelector((state) => state.admin);
-
-    const handleSubmit = async () => {
-        try {
-            let response = await axioss.post(
-                `/quotations/hotels/room-type/rate`,
-                {
-                    noOfAdults,
-                    noOfChildren,
-                    childrenAges,
-                    checkInDate: data?.checkInDate,
-                    checkOutDate: data?.checkOutDate,
-                    hotelId: data?.hotelId,
-                    roomTypeId: data?.roomTypeId,
-                    boardTypeCode: data?.boardTypeCode,
-                },
-                {
-                    headers: { Authorization: `Bearer ${jwtToken}` },
-                }
-            );
-
-            await dispatch(
-                handleHotelsDataChange({
-                    data: data,
-                    hotelIndex: hotelIndex,
-                    stayIndex: stayIndex,
-                    edit: edit,
-                })
-            );
-
-            dispatch(
-                handleRoomOccupancy({
-                    name: "roomOccupancies",
-                    value: response.data.rates,
-                    stayIndex,
-                    hotelIndex,
-                })
-            );
-
-            console.log(response.data, "daat");
-            setIsModal(false);
-
-            dispatch(handleTransferClear());
-            setIsEdit(false);
-            setNext(false);
-        } catch (e) {
-            console.log(e);
-            setError("availabilty not found");
-        }
-    };
 
     function formatDateToYYYYMMDD(inputDate) {
         console.log(inputDate, "imput date");
@@ -190,6 +143,7 @@ export default function HotelSearchModal({
         cityId: hotel?.city?._id || "",
         areaId: hotel?.area?._id || "",
         areaName: hotel?.area?.areaName || "",
+        roomOccupancies: hotel?.roomOccupancies || "gasdgh",
 
         hotelData: hotel?.hotelData || "",
 
@@ -355,6 +309,50 @@ export default function HotelSearchModal({
             [name]: value,
         }));
     };
+
+    const handleSubmit = async () => {
+        try {
+            setIsSubmitLoading(true);
+            let response = await axioss.post(
+                `/quotations/hotels/room-type/rate`,
+                {
+                    noOfAdults,
+                    noOfChildren,
+                    childrenAges,
+                    checkInDate: data?.checkInDate,
+                    checkOutDate: data?.checkOutDate,
+                    hotelId: data?.hotelId,
+                    roomTypeId: data?.roomTypeId,
+                    boardTypeCode: data?.boardTypeCode,
+                },
+                {
+                    headers: { Authorization: `Bearer ${jwtToken}` },
+                }
+            );
+
+            dispatch(
+                handleHotelsDataChange({
+                    data: { ...data, roomOccupancies: response?.data?.rates },
+                    hotelIndex: hotelIndex,
+                    stayIndex: stayIndex,
+                    edit: edit,
+                })
+            );
+
+            setIsSubmitLoading(false);
+
+            setIsModal(false);
+
+            dispatch(handleTransferClear());
+            setIsEdit(false);
+            setNext(false);
+        } catch (e) {
+            setIsSubmitLoading(false);
+            setError("something went wrong");
+        }
+    };
+
+    console.log(data, "data");
 
     useEffect(() => {
         console.log("fetchAvailableHotels1");
@@ -885,9 +883,9 @@ export default function HotelSearchModal({
                                             onClick={() => {
                                                 handleSubmit();
                                             }}
-                                            disabled={isLoading}
+                                            disabled={isSubmitLoading}
                                         >
-                                            {isLoading ? (
+                                            {isSubmitLoading ? (
                                                 <BtnLoader />
                                             ) : (
                                                 "Confirm Hotel "
