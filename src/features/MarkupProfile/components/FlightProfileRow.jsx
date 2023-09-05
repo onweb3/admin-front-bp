@@ -8,7 +8,7 @@ export default function FlightProfileRow({ airline, index, a2a, setA2a }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const [formData, setFormData] = useState({
-        airlineId: airline._id,
+        airlineCode: airline.airlineCode,
         markupType: airline.markupType || "falt",
         markup: airline.markup || 0,
         isEdit: airline?.isEdit || false,
