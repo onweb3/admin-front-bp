@@ -5,11 +5,7 @@ import { BiEditAlt } from "react-icons/bi";
 import { Link, useParams } from "react-router-dom";
 
 import axios from "../../axios";
-import {
-    addArea,
-    deleteArea,
-    updateArea,
-} from "../../redux/slices/generalSlice";
+import { addArea, deleteArea, updateArea } from "../../redux/slices/generalSlice";
 import { PageLoader } from "../../components";
 import { AreasModal } from "../../features/Areas";
 
@@ -21,6 +17,8 @@ export default function AreasPage() {
     const [selectedArea, setSelectedArea] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState({ areas: [], city: {} });
+    const [filteredAreas, setFilteredAreas] = useState([]);
+    const [searchQuery, setSearchQuery] = useState("");
 
     const { jwtToken } = useSelector((state) => state.admin);
     const dispatch = useDispatch();
@@ -89,6 +87,16 @@ export default function AreasPage() {
     };
 
     useEffect(() => {
+        const tempFilteredAreas = data.areas?.filter((item) => {
+            return (
+                item?.areaName?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
+                item?.areaCode?.toLowerCase()?.includes(searchQuery?.toLowerCase())
+            );
+        });
+        setFilteredAreas(tempFilteredAreas);
+    }, [data.areas, searchQuery]);
+
+    useEffect(() => {
         fetchAreas();
     }, []);
 
@@ -109,10 +117,7 @@ export default function AreasPage() {
                         {countryId?.slice(0, 3)}...{countryId?.slice(-3)}
                     </span>
                     <span>{">"} </span>
-                    <Link
-                        to={`/countries/${countryId}/states`}
-                        className="text-textColor"
-                    >
+                    <Link to={`/countries/${countryId}/states`} className="text-textColor">
                         States{" "}
                     </Link>
                     <span>{">"} </span>
@@ -154,25 +159,34 @@ export default function AreasPage() {
                     <div className="bg-white rounded shadow-sm">
                         <div className="flex items-center justify-between border-b border-dashed p-4">
                             <h1 className="font-medium capitalize">
-                                All Areas - ({data.city?.cityName} -{" "}
-                                {data.city?.state?.stateName} -{" "}
+                                All Areas - ({data.city?.cityName} - {data.city?.state?.stateName} -{" "}
                                 {data.city?.country?.countryName})
                             </h1>
-                            <button
-                                className="px-3"
-                                onClick={() =>
-                                    setAreasModal({
-                                        isOpen: true,
-                                        isEdit: false,
-                                    })
-                                }
-                            >
-                                + Add Area
-                            </button>
+                            <div className="flex items-center gap-[10px]">
+                                <input
+                                    type="text"
+                                    placeholder="Search here..."
+                                    className="min-w-[200px]"
+                                    name="searchQuery"
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    value={searchQuery || ""}
+                                />
+                                <button
+                                    className="w-[150px]"
+                                    onClick={() =>
+                                        setAreasModal({
+                                            isOpen: true,
+                                            isEdit: false,
+                                        })
+                                    }
+                                >
+                                    + Add Area
+                                </button>
+                            </div>
                         </div>
-                        {!data.areas || data.areas?.length < 1 ? (
+                        {!filteredAreas || filteredAreas?.length < 1 ? (
                             <div className="p-6 flex flex-col items-center">
-                                <span className="text-sm text-sm text-grayColor block mt-[6px]">
+                                <span className="text-sm text-grayColor block mt-[6px]">
                                     Oops.. No Areas Found
                                 </span>
                             </div>
@@ -180,48 +194,32 @@ export default function AreasPage() {
                             <table className="w-full">
                                 <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                     <tr>
-                                        <th className="font-[500] p-3">
-                                            Area Code
-                                        </th>
-                                        <th className="font-[500] p-3">
-                                            Area Name
-                                        </th>
-                                        <th className="font-[500] p-3">
-                                            Action
-                                        </th>
+                                        <th className="font-[500] p-3">Area Code</th>
+                                        <th className="font-[500] p-3">Area Name</th>
+                                        <th className="font-[500] p-3">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody className="text-sm">
-                                    {data.areas?.map((area, index) => {
+                                    {filteredAreas?.map((area, index) => {
                                         return (
                                             <tr
                                                 key={index}
                                                 className="border-b border-tableBorderColor"
                                             >
-                                                <td className="p-3">
-                                                    {area?.areaCode}
-                                                </td>
-                                                <td className="p-3 capitalize">
-                                                    {area?.areaName}
-                                                </td>
+                                                <td className="p-3">{area?.areaCode}</td>
+                                                <td className="p-3 capitalize">{area?.areaName}</td>
                                                 <td className="p-3">
                                                     <div className="flex gap-[10px]">
                                                         <button
                                                             className="h-auto bg-transparent text-red-500 text-xl"
-                                                            onClick={() =>
-                                                                delArea(
-                                                                    area?._id
-                                                                )
-                                                            }
+                                                            onClick={() => delArea(area?._id)}
                                                         >
                                                             <MdDelete />
                                                         </button>
                                                         <button
                                                             className="h-auto bg-transparent text-green-500 text-xl"
                                                             onClick={() => {
-                                                                setSelectedArea(
-                                                                    area
-                                                                );
+                                                                setSelectedArea(area);
                                                                 setAreasModal({
                                                                     isOpen: true,
                                                                     isEdit: true,
