@@ -12,6 +12,7 @@ import {
     clearTransferDetails,
     handleHotelsTransferDataChange,
     handleTransferClear,
+    handleRoomOccupancy,
 } from "../../redux/slices/quotationSlice";
 import { useHandleClickOutside } from "../../hooks";
 import { IoMdClose } from "react-icons/io";
@@ -91,24 +92,17 @@ export default function HotelSearchModal({
                     noOfChildren,
                     childrenAges,
                     checkInDate: data?.checkInDate,
-                    checkOutDate: data?.checkInDate,
-                    hotelId: data?.checkInDate,
-                    roomTypeId: data?.checkInDate,
-                    boardTypeCode: data?.checkInDate,
+                    checkOutDate: data?.checkOutDate,
+                    hotelId: data?.hotelId,
+                    roomTypeId: data?.roomTypeId,
+                    boardTypeCode: data?.boardTypeCode,
                 },
                 {
                     headers: { Authorization: `Bearer ${jwtToken}` },
                 }
             );
 
-            onClickHandler({
-                name: "roomOccupancies",
-                value: response.data.rates,
-            });
-
-            console.log(response.data, "daat");
-            setIsModal(false);
-            dispatch(
+            await dispatch(
                 handleHotelsDataChange({
                     data: data,
                     hotelIndex: hotelIndex,
@@ -117,10 +111,23 @@ export default function HotelSearchModal({
                 })
             );
 
+            dispatch(
+                handleRoomOccupancy({
+                    name: "roomOccupancies",
+                    value: response.data.rates,
+                    stayIndex,
+                    hotelIndex,
+                })
+            );
+
+            console.log(response.data, "daat");
+            setIsModal(false);
+
             dispatch(handleTransferClear());
             setIsEdit(false);
             setNext(false);
         } catch (e) {
+            console.log(e);
             setError("availabilty not found");
         }
     };

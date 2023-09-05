@@ -1248,6 +1248,12 @@ export const quotationsSlice = createSlice({
                 }
             }
         },
+        handleRoomOccupancy: (state, action) => {
+            const { stayIndex, hotelIndex, name, value } = action.payload;
+
+            state.hotelQt.stays[stayIndex].hotels[hotelIndex].roomOccupancies =
+                value;
+        },
     },
 });
 
@@ -1325,6 +1331,7 @@ export const {
     handleCustomMarkupChange,
     handleHotelCustomMarkupChange,
     handleRoomTypeChange,
+    handleRoomOccupancy,
 } = quotationsSlice.actions;
 
 export default quotationsSlice.reducer;
