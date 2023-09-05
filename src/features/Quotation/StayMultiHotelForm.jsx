@@ -11,6 +11,8 @@ import {
     updateHotelIsRefundable,
     clearTransferDetails,
     handleTransferClear,
+    handleHotelCustomMarkupChange,
+    handleRoomTypeChange,
 } from "../../redux/slices/quotationSlice";
 import { useHandleClickOutside } from "../../hooks";
 import { IoMdClose } from "react-icons/io";
@@ -115,11 +117,11 @@ export default function StayMultiHotelForm({
         setIsModal(true);
     };
 
-    console.log(selectedIndex, "selected index");
+    console.log(hotel, "selected hotel index");
 
     return (
         <>
-            <div className="h-[200px]  border-dashed border bg-stone-200 mb-5 ">
+            <div className="h-min-[200px]  border-dashed border bg-stone-200 mb-5 ">
                 <div className=" w-full h-full p-4">
                     <div className=" flex items-center justify-between gap-[10px] px-2">
                         <h2 className="text-[15px] font-[500]">
@@ -225,6 +227,72 @@ export default function StayMultiHotelForm({
                                                     .substring(0, 10)}{" "}
                                             </span>
                                         </p>
+                                    </div>
+                                    <div className="h-full p-2 flex gap-2  items-center w-full">
+                                        <div className="flex items-center justify-center gap-[10px]">
+                                            <input
+                                                type="checkbox"
+                                                className="w-[16px] h-[16px]"
+                                                checked={
+                                                    hotel.isCustomHotelMarkup
+                                                }
+                                                onChange={(e) => {
+                                                    dispatch(
+                                                        handleHotelCustomMarkupChange(
+                                                            {
+                                                                stayIndex,
+                                                                hotelIndex,
+                                                                value: e.target
+                                                                    .checked,
+                                                            }
+                                                        )
+                                                    );
+                                                }}
+                                            />
+                                        </div>{" "}
+                                        <label>Custom Price</label>
+                                    </div>
+                                    <div className="flex gap-4">
+                                        {hotel?.roomOccupancies.map(
+                                            (roomOccup) => {
+                                                return (
+                                                    <div className="">
+                                                        <label htmlFor="">
+                                                            {
+                                                                roomOccup?.occupancyShortName
+                                                            }
+                                                        </label>
+                                                        <input
+                                                            type="number"
+                                                            placeholder="Ex: 60"
+                                                            // name="adultAgeLimit"
+                                                            value={
+                                                                roomOccup?.price ||
+                                                                ""
+                                                            }
+                                                            onChange={(e) => {
+                                                                dispatch(
+                                                                    handleRoomTypeChange(
+                                                                        {
+                                                                            stayIndex,
+                                                                            hotelIndex,
+                                                                            value: e
+                                                                                .target
+                                                                                .value,
+                                                                            name: roomOccup.occupancyShortName,
+                                                                        }
+                                                                    )
+                                                                );
+                                                            }}
+                                                            disabled={
+                                                                !hotel.isCustomHotelMarkup
+                                                            }
+                                                            required
+                                                        />
+                                                    </div>
+                                                );
+                                            }
+                                        )}
                                     </div>
                                 </div>
                             </div>

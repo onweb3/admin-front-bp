@@ -12,6 +12,7 @@ export default function InsuranceListingPage() {
         limit: 10,
         searchQuery: "",
         totalPlans: 0,
+        category: "SG",
     });
     const [plans, setPlans] = useState([]);
     const { jwtToken } = useSelector((state) => state.admin);
@@ -76,7 +77,7 @@ export default function InsuranceListingPage() {
                                 // }}
                                 className="flex items-center gap-[10px]"
                             >
-                                <input
+                                {/* <input
                                     type="text"
                                     placeholder="Search here..."
                                     value={filters.searchInput || ""}
@@ -88,8 +89,26 @@ export default function InsuranceListingPage() {
                                             };
                                         })
                                     }
-                                />
-                                <button className="px-5">Search</button>
+                                /> */}
+                                <div>
+                                    {/* <label htmlFor="">Type</label> */}
+                                    <select
+                                        name="bookingType"
+                                        value={filters.category || ""}
+                                        onChange={(e) => {
+                                            setSearchParams((prev) => {
+                                                return {
+                                                    ...prev,
+                                                    category: e.target.value,
+                                                };
+                                            });
+                                        }}
+                                    >
+                                        <option value="SG">Single</option>
+                                        <option value="FM">Family</option>
+                                    </select>
+                                </div>
+                                {/* <button className="px-5">Search</button> */}
                             </form>
                         </div>
                     </div>
