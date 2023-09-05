@@ -158,8 +158,14 @@ function A2ATicketListPage() {
                         <div className="bg-white rounded shadow-sm">
                             <div className="flex items-center justify-between border-b border-dashed p-4">
                                 <h1 className="font-medium">
-                                    {result[0]?.airportToName} {""}-{""}
-                                    {result[0]?.airportFromName}{" "}
+                                    {result?.length > 0 ? (
+                                        <>
+                                            {result[0]?.airportToName} -{" "}
+                                            {result[0]?.airportFromName}{" "}
+                                        </>
+                                    ) : (
+                                        "A2a Tickets"
+                                    )}
                                 </h1>
                                 <div>
                                     <button
