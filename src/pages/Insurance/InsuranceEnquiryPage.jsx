@@ -138,7 +138,9 @@ export default function InsursanceEnquiryPage() {
                                                 <td className="p-3">
                                                     {iContract?.referenceNumber}
                                                 </td>
-                                                <td className="p-3">{iContract?.planName}</td>
+                                                <td className="p-3">
+                                                    {iContract?.planName || "N/A"}
+                                                </td>
                                                 <td className="p-3">
                                                     {formatDate(iContract?.travelFrom)}
                                                 </td>

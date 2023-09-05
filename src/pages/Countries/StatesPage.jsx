@@ -6,11 +6,7 @@ import { Link, useParams } from "react-router-dom";
 import { AiFillEye } from "react-icons/ai";
 
 import axios from "../../axios";
-import {
-    addState,
-    deleteState,
-    updateState,
-} from "../../redux/slices/generalSlice";
+import { addState, deleteState, updateState } from "../../redux/slices/generalSlice";
 import { PageLoader } from "../../components";
 import { StatesModal } from "../../features/States";
 
@@ -22,6 +18,8 @@ export default function StatesPage() {
     const [selectedState, setSelectedState] = useState({});
     const [data, setData] = useState({ states: [], country: {} });
     const [isLoading, setIsLoading] = useState(true);
+    const [filteredStates, setFilteredStates] = useState([]);
+    const [searchQuery, setSearchQuery] = useState("");
 
     const { jwtToken } = useSelector((state) => state.admin);
     const { countryId } = useParams();
@@ -91,6 +89,16 @@ export default function StatesPage() {
     };
 
     useEffect(() => {
+        const tempFilteredStates = data.states?.filter((item) => {
+            return (
+                item?.stateName?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
+                item?.stateCode?.toLowerCase()?.includes(searchQuery?.toLowerCase())
+            );
+        });
+        setFilteredStates(tempFilteredStates);
+    }, [data.states, searchQuery]);
+
+    useEffect(() => {
         fetchStates();
     }, []);
 
@@ -108,7 +116,7 @@ export default function StatesPage() {
                     </Link>
                     <span>{">"} </span>
                     <span>
-                        {countryId?.slice(0, 3)}...{countryId?.slice(-3)} 
+                        {countryId?.slice(0, 3)}...{countryId?.slice(-3)}
                     </span>
                     <span>{">"} </span>
                     <span>States</span>
@@ -136,21 +144,31 @@ export default function StatesPage() {
                             <h1 className="font-medium capitalize">
                                 All States - ({data?.country?.countryName})
                             </h1>
-                            <button
-                                className="px-3"
-                                onClick={() =>
-                                    setStatesModal({
-                                        isOpen: true,
-                                        isEdit: false,
-                                    })
-                                }
-                            >
-                                + Add State
-                            </button>
+                            <div className="flex items-center gap-[10px]">
+                                <input
+                                    type="text"
+                                    placeholder="Search here..."
+                                    className="min-w-[200px]"
+                                    name="searchQuery"
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    value={searchQuery || ""}
+                                />
+                                <button
+                                    className="w-[150px]"
+                                    onClick={() =>
+                                        setStatesModal({
+                                            isOpen: true,
+                                            isEdit: false,
+                                        })
+                                    }
+                                >
+                                    + Add State
+                                </button>
+                            </div>
                         </div>
-                        {!data.states || data.states?.length < 1 ? (
+                        {!filteredStates || filteredStates?.length < 1 ? (
                             <div className="p-6 flex flex-col items-center">
-                                <span className="text-sm text-sm text-grayColor block mt-[6px]">
+                                <span className="text-sm text-grayColor block mt-[6px]">
                                     Oops.. No States Found
                                 </span>
                             </div>
@@ -160,16 +178,12 @@ export default function StatesPage() {
                                     <tr>
                                         <th className="font-[500] p-3">Code</th>
                                         <th className="font-[500] p-3">Name</th>
-                                        <th className="font-[500] p-3">
-                                            Cities
-                                        </th>
-                                        <th className="font-[500] p-3">
-                                            Action
-                                        </th>
+                                        <th className="font-[500] p-3">Cities</th>
+                                        <th className="font-[500] p-3">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody className="text-sm">
-                                    {data.states?.map((state, index) => {
+                                    {filteredStates?.map((state, index) => {
                                         return (
                                             <tr
                                                 key={index}
@@ -182,9 +196,7 @@ export default function StatesPage() {
                                                     {state?.stateName}
                                                 </td>
                                                 <td className="p-3">
-                                                    <Link
-                                                        to={`${state?._id}/cities`}
-                                                    >
+                                                    <Link to={`${state?._id}/cities`}>
                                                         <button className="h-auto bg-transparent text-[#333] text-xl">
                                                             <AiFillEye />
                                                         </button>
@@ -194,20 +206,14 @@ export default function StatesPage() {
                                                     <div className="flex gap-[10px]">
                                                         <button
                                                             className="h-auto bg-transparent text-red-500 text-xl"
-                                                            onClick={() =>
-                                                                delState(
-                                                                    state?._id
-                                                                )
-                                                            }
+                                                            onClick={() => delState(state?._id)}
                                                         >
                                                             <MdDelete />
                                                         </button>
                                                         <button
                                                             className="h-auto bg-transparent text-green-500 text-xl"
                                                             onClick={() => {
-                                                                setSelectedState(
-                                                                    state
-                                                                );
+                                                                setSelectedState(state);
                                                                 setStatesModal({
                                                                     isOpen: true,
                                                                     isEdit: true,

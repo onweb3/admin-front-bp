@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { MdDelete } from "react-icons/md";
@@ -17,12 +17,22 @@ export default function CountriesPage() {
         isEdit: false,
     });
     const [selectedCountry, setSelectedCountry] = useState({});
+    const [searchQuery, setSearchQuery] = useState("");
+    const [filteredCountries, setFilteredCountries] = useState([]);
 
-    const { countries, isGeneralLoading } = useSelector(
-        (state) => state.general
-    );
+    const { countries, isGeneralLoading } = useSelector((state) => state.general);
     const { jwtToken, admin } = useSelector((state) => state.admin);
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        const tempFilteredCountries = countries?.filter((item) => {
+            return (
+                item?.countryName?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
+                item?.isocode?.toLowerCase()?.includes(searchQuery?.toLowerCase())
+            );
+        });
+        setFilteredCountries(tempFilteredCountries);
+    }, [countries, searchQuery]);
 
     const handleDelete = async (id) => {
         try {
@@ -68,27 +78,38 @@ export default function CountriesPage() {
                     <div className="bg-white rounded shadow-sm">
                         <div className="flex items-center justify-between border-b border-dashed p-4">
                             <h1 className="font-medium">All Countries</h1>
-                            {hasPermission({
-                                roles: admin?.roles,
-                                name: "countries",
-                                permission: "create",
-                            }) && (
-                                <button
-                                    className="px-3"
-                                    onClick={() =>
-                                        setCountryModal({
-                                            isEdit: false,
-                                            isOpen: true,
-                                        })
-                                    }
-                                >
-                                    + Add Country
-                                </button>
-                            )}
+                            <div className="flex items-center gap-[10px]">
+                                <input
+                                    type="text"
+                                    placeholder="Search here..."
+                                    className="min-w-[200px]"
+                                    name="searchQuery"
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    value={searchQuery || ""}
+                                />
+
+                                {hasPermission({
+                                    roles: admin?.roles,
+                                    name: "countries",
+                                    permission: "create",
+                                }) && (
+                                    <button
+                                        className="w-[200px]"
+                                        onClick={() =>
+                                            setCountryModal({
+                                                isEdit: false,
+                                                isOpen: true,
+                                            })
+                                        }
+                                    >
+                                        + Add Country
+                                    </button>
+                                )}
+                            </div>
                         </div>
-                        {!countries || countries?.length < 1 ? (
+                        {!filteredCountries || filteredCountries?.length < 1 ? (
                             <div className="p-6 flex flex-col items-center">
-                                <span className="text-sm text-sm text-grayColor block mt-[6px]">
+                                <span className="text-sm text-grayColor block mt-[6px]">
                                     Oops.. No Countries Found
                                 </span>
                             </div>
@@ -97,18 +118,10 @@ export default function CountriesPage() {
                                 <table className="w-full">
                                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                         <tr>
-                                            <th className="font-[500] p-3">
-                                                ISO code
-                                            </th>
-                                            <th className="font-[500] p-3">
-                                                Country
-                                            </th>
-                                            <th className="font-[500] p-3">
-                                                Phonecode
-                                            </th>
-                                            <th className="font-[500] p-3">
-                                                States
-                                            </th>
+                                            <th className="font-[500] p-3">ISO code</th>
+                                            <th className="font-[500] p-3">Country</th>
+                                            <th className="font-[500] p-3">Phonecode</th>
+                                            <th className="font-[500] p-3">States</th>
                                             {(hasPermission({
                                                 roles: admin?.roles,
                                                 name: "countries",
@@ -118,46 +131,32 @@ export default function CountriesPage() {
                                                     roles: admin?.roles,
                                                     name: "countries",
                                                     permission: "delete",
-                                                })) && (
-                                                <th className="font-[500] p-3">
-                                                    Action
-                                                </th>
-                                            )}
+                                                })) && <th className="font-[500] p-3">Action</th>}
                                         </tr>
                                     </thead>
                                     <tbody className="text-sm">
-                                        {countries?.map((country, index) => {
+                                        {filteredCountries?.map((country, index) => {
                                             return (
                                                 <tr
                                                     key={index}
                                                     className="border-b border-tableBorderColor"
                                                 >
-                                                    <td className="p-3">
-                                                        {country?.isocode}
-                                                    </td>
+                                                    <td className="p-3">{country?.isocode}</td>
                                                     <td className="p-3">
                                                         <div className="flex items-center gap-[10px]">
                                                             <img
-                                                                src={
-                                                                    country?.flag
-                                                                }
+                                                                src={country?.flag}
                                                                 alt=""
                                                                 className="w-[30px]"
                                                             />
                                                             <span className="capitalize">
-                                                                {
-                                                                    country?.countryName
-                                                                }
+                                                                {country?.countryName}
                                                             </span>
                                                         </div>
                                                     </td>
+                                                    <td className="p-3">{country?.phonecode}</td>
                                                     <td className="p-3">
-                                                        {country?.phonecode}
-                                                    </td>
-                                                    <td className="p-3">
-                                                        <Link
-                                                            to={`${country?._id}/states`}
-                                                        >
+                                                        <Link to={`${country?._id}/states`}>
                                                             <button className="h-auto bg-transparent text-[#333] text-xl">
                                                                 <AiFillEye />
                                                             </button>
@@ -171,16 +170,14 @@ export default function CountriesPage() {
                                                         hasPermission({
                                                             roles: admin?.roles,
                                                             name: "countries",
-                                                            permission:
-                                                                "delete",
+                                                            permission: "delete",
                                                         })) && (
                                                         <td className="p-3">
                                                             <div className="flex gap-[10px]">
                                                                 {hasPermission({
                                                                     roles: admin?.roles,
                                                                     name: "countries",
-                                                                    permission:
-                                                                        "delete",
+                                                                    permission: "delete",
                                                                 }) && (
                                                                     <button
                                                                         className="h-auto bg-transparent text-red-500 text-xl"
@@ -196,8 +193,7 @@ export default function CountriesPage() {
                                                                 {hasPermission({
                                                                     roles: admin?.roles,
                                                                     name: "countries",
-                                                                    permission:
-                                                                        "update",
+                                                                    permission: "update",
                                                                 }) && (
                                                                     <button
                                                                         className="h-auto bg-transparent text-green-500 text-xl"
@@ -205,12 +201,10 @@ export default function CountriesPage() {
                                                                             setSelectedCountry(
                                                                                 country
                                                                             );
-                                                                            setCountryModal(
-                                                                                {
-                                                                                    isOpen: true,
-                                                                                    isEdit: true,
-                                                                                }
-                                                                            );
+                                                                            setCountryModal({
+                                                                                isOpen: true,
+                                                                                isEdit: true,
+                                                                            });
                                                                         }}
                                                                     >
                                                                         <BiEditAlt />
