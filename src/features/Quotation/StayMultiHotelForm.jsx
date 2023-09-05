@@ -253,7 +253,7 @@ export default function StayMultiHotelForm({
                                         <label>Custom Price</label>
                                     </div>
                                     <div className="flex gap-4">
-                                        {hotel?.roomOccupancies.map(
+                                        {hotel?.roomOccupancies?.map(
                                             (roomOccup) => {
                                                 return (
                                                     <div className="">
