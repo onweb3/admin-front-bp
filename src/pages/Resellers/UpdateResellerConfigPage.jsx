@@ -185,8 +185,8 @@ export default function UpdateResellerConfigPage() {
                                     value={data.showQuotaion || false}
                                 />
                             </div>
-                            <div>
-                                <label htmlFor="">Show Attraction</label>
+                            <div className="">
+                                <label htmlFor="">Show Insurance</label>
                                 <Toggle
                                     onChange={(e) =>
                                         handleToggleChange("showInsurance", e.target.checked)
