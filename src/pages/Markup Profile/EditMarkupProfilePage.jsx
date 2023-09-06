@@ -16,6 +16,7 @@ import HotelStarCategoryTable from "../../features/MarkupProfile/components/Hote
 import QuotationProfileTable from "../../features/MarkupProfile/components/QuotationProfileTable";
 import HotelRoomTypeTable from "../../features/MarkupProfile/components/HotelRoomTypeTable";
 import FlightProfileTable from "../../features/MarkupProfile/components/FlightProfileTable";
+import InsuranceProfileTable from "../../features/MarkupProfile/components/InsuranceProfileTable";
 
 export default function EditMarkupProfilePage() {
     const [error, setError] = useState("");
@@ -205,6 +206,19 @@ export default function EditMarkupProfilePage() {
                             >
                                 Flight
                             </button>
+                            <button
+                                className={
+                                    "px-2 py-4 h-auto bg-transparent text-primaryColor font-medium rounded-none " +
+                                    (section === "insurance"
+                                        ? "border-b border-b-orange-500"
+                                        : "")
+                                }
+                                onClick={(e) => {
+                                    handleSectionChange(e, "insurance");
+                                }}
+                            >
+                                Insurance
+                            </button>
                         </div>
 
                         {section === "attraction" && (
@@ -333,6 +347,18 @@ export default function EditMarkupProfilePage() {
                             >
                                 {" "}
                                 <FlightProfileTable />
+                            </div>
+                        )}
+                        {section === "insurance" && (
+                            <div
+                                className={
+                                    section === "insurance"
+                                        ? "block pt-10"
+                                        : "hidden"
+                                }
+                            >
+                                {" "}
+                                <InsuranceProfileTable />
                             </div>
                         )}
 
