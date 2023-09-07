@@ -186,6 +186,24 @@ export default function HotelSearchModal({
             // e.preventDefault();
             setError("");
             setIsAvailablityLoading(true);
+            setData((prev) => ({
+                ...prev,
+                hotelId: "",
+                roomTypeId: "",
+                boardTypeCode: "",
+                hotelName: "",
+                starCategory: "",
+                cityId: "",
+                areaId: "",
+                areaName: "",
+                roomOccupancies: "",
+                hotelData: "",
+            }));
+
+            setNext(false);
+
+            setSelectedHotel("");
+
             const response = await axioss.post(
                 `/quotations/hotels/availability?skip=${filters.skip}&limit=${filters.limit}`,
                 {
@@ -235,6 +253,8 @@ export default function HotelSearchModal({
 
             setIsAvailablityLoading(false);
         } catch (err) {
+            setAvailableHotels([]);
+
             setError(err?.response?.data.error);
             console.log(err);
             setIsAvailablityLoading(false);
@@ -474,18 +494,18 @@ export default function HotelSearchModal({
                                     <input
                                         type="date"
                                         min={
-                                            data?.checkInDate
-                                                ? new Date(data?.checkInDate)
+                                            checkInDate
+                                                ? formatDate(checkInDate)
+                                                : new Date(data?.checkInDate)
                                                       .toJSON()
                                                       .slice(0, 10)
-                                                : formatDate(checkInDate)
                                         }
                                         max={
-                                            data?.checkOutDate
-                                                ? new Date(data?.checkOutDate)
+                                            checkOutDate
+                                                ? formatDate(checkOutDate)
+                                                : new Date(data?.checkOutDate)
                                                       .toJSON()
                                                       .slice(0, 10)
-                                                : formatDate(checkOutDate)
                                         }
                                         onChange={(e) => {
                                             onChangeSearchData(e);
@@ -513,18 +533,18 @@ export default function HotelSearchModal({
                                     <input
                                         type="date"
                                         min={
-                                            data?.checkInDate
-                                                ? new Date(data?.checkInDate)
+                                            checkInDate
+                                                ? formatDate(checkInDate)
+                                                : new Date(data?.checkInDate)
                                                       .toJSON()
                                                       .slice(0, 10)
-                                                : formatDate(checkInDate)
                                         }
                                         max={
-                                            data?.checkOutDate
-                                                ? new Date(data?.checkOutDate)
+                                            checkOutDate
+                                                ? formatDate(checkOutDate)
+                                                : new Date(data?.checkOutDate)
                                                       .toJSON()
                                                       .slice(0, 10)
-                                                : formatDate(checkOutDate)
                                         }
                                         name="checkOutDate"
                                         onChange={(e) => {
