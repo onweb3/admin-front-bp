@@ -1,4 +1,8 @@
-import { AdminLayout, EditProfileLayout, SingleResellerLayout } from "../layouts";
+import {
+    AdminLayout,
+    EditProfileLayout,
+    SingleResellerLayout,
+} from "../layouts";
 import A2aAddTicketPage from "../pages/A2A/A2aAddTicketPage";
 import A2AEditTicketPage from "../pages/A2A/A2aEditTicketPage";
 import A2AEnquiryPage from "../pages/A2A/A2AEnquiryPage";
@@ -170,6 +174,8 @@ import InsursanceEnquiryPage from "../pages/Insurance/InsuranceEnquiryPage";
 import AddVisaTypeNationalityPage from "../pages/Visa/AddVisaTypeNationalityPage";
 import EditVisaTypeNationalityPage from "../pages/Visa/EditVisaTypeNationalityPage";
 import SingelInsuranceEnquiryDetailsPage from "../pages/Insurance/SingelInsuranceEnquiryDetailsPage";
+import AddAttrReviewPage from "../pages/Attraction/AddAttReviewPage";
+import EditAttrReviewPage from "../pages/Attraction/EditAttrReviewPage";
 
 const ThemeRoutes = [
     {
@@ -191,6 +197,16 @@ const ThemeRoutes = [
                 path: "/attractions/:id/reviews",
                 element: <SingleAttrReviewsPage />,
             },
+
+            {
+                path: "/attractions/:id/reviews/add",
+                element: <AddAttrReviewPage />,
+            },
+            {
+                path: "/attractions/:id/reviews/:reviewId/edit",
+                element: <EditAttrReviewPage />,
+            },
+
             {
                 path: "/attractions/:id/activities/:activityId/tickets",
                 element: <AttractionsTicketsPage />,

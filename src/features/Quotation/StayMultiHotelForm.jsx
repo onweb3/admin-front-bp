@@ -267,8 +267,7 @@ export default function StayMultiHotelForm({
                                                             placeholder="Ex: 60"
                                                             // name="adultAgeLimit"
                                                             value={
-                                                                roomOccup?.price ||
-                                                                ""
+                                                                roomOccup?.price
                                                             }
                                                             onChange={(e) => {
                                                                 dispatch(

@@ -6,6 +6,7 @@ import { MdDelete } from "react-icons/md";
 import axios from "../../axios";
 import { formatDate } from "../../utils";
 import { PageLoader, Pagination } from "../../components";
+import { BiEditAlt } from "react-icons/bi";
 
 export default function SingleAttrReviewsPage() {
     const [reviews, setReviews] = useState([]);
@@ -25,7 +26,7 @@ export default function SingleAttrReviewsPage() {
             setIsLoading(true);
 
             const response = await axios.get(
-                `/attractions/${id}/reviews?skip=${filters.skip}&limit=${filters.limit}`,
+                `/attractions/reviews/attraction/${id}?skip=${filters.skip}&limit=${filters.limit}`,
                 {
                     headers: { authorization: `Bearer ${jwtToken}` },
                 }
@@ -36,7 +37,8 @@ export default function SingleAttrReviewsPage() {
             setFilters((prev) => {
                 return {
                     ...prev,
-                    totalAttractionReviews: response.data?.totalAttractionReviews,
+                    totalAttractionReviews:
+                        response.data?.totalAttractionReviews,
                 };
             });
             setIsLoading(false);
@@ -95,6 +97,13 @@ export default function SingleAttrReviewsPage() {
                     <div className="bg-white rounded shadow-sm">
                         <div className="flex items-center justify-between border-b border-dashed p-4">
                             <h1 className="font-medium">{attraction?.title}</h1>
+                            <div className="flex items-center gap-[15px]">
+                                <Link to={`add`}>
+                                    <button className="w-[150px] bg-orange-500">
+                                        + Add Review
+                                    </button>
+                                </Link>
+                            </div>
                         </div>
 
                         {reviews?.length < 1 ? (
@@ -108,12 +117,24 @@ export default function SingleAttrReviewsPage() {
                                 <table className="w-full">
                                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                         <tr>
-                                            <th className="font-[500] p-3">User</th>
-                                            <th className="font-[500] p-3">Title</th>
-                                            <th className="font-[500] p-3">Description</th>
-                                            <th className="font-[500] p-3">Rating</th>
-                                            <th className="font-[500] p-3">Date</th>
-                                            <th className="font-[500] p-3">Action</th>
+                                            <th className="font-[500] p-3">
+                                                User
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Title
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Description
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Rating
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Date
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Action
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="text-sm">
@@ -125,28 +146,53 @@ export default function SingleAttrReviewsPage() {
                                                 >
                                                     <td className="p-3">
                                                         <span className="block capitalize">
-                                                            {review?.user?.name}
+                                                            {review?.createdBy ===
+                                                            "user"
+                                                                ? review.user
+                                                                      ?.name
+                                                                : review.userName}
                                                         </span>
-                                                        <span>{review?.user?.email}</span>
+                                                        <span>
+                                                            ({review?.createdBy}
+                                                            )
+                                                        </span>
                                                     </td>
-                                                    <td className="p-3">{review?.title}</td>
-                                                    <td className="p-3">{review?.description}</td>
+                                                    <td className="p-3">
+                                                        {review?.title}
+                                                    </td>
+                                                    <td className="p-3">
+                                                        {review?.description}
+                                                    </td>
                                                     <td className="p-3">
                                                         {review?.rating} &#9734;
                                                     </td>
                                                     <td className="p-3">
-                                                        {formatDate(review?.createdAt)}
+                                                        {formatDate(
+                                                            review?.createdAt
+                                                        )}
                                                     </td>
                                                     <td className="p-3">
                                                         <div className="flex gap-[10px]">
                                                             <button
                                                                 className="h-auto bg-transparent text-red-500 text-xl"
                                                                 onClick={() =>
-                                                                    handleDelete(review?._id)
+                                                                    handleDelete(
+                                                                        review?._id
+                                                                    )
                                                                 }
                                                             >
                                                                 <MdDelete />
                                                             </button>
+                                                            {review.createdBy ===
+                                                                "admin" && (
+                                                                <Link
+                                                                    to={`${review?._id}/edit`}
+                                                                >
+                                                                    <button className="h-auto bg-transparent text-green-500 text-xl">
+                                                                        <BiEditAlt />
+                                                                    </button>
+                                                                </Link>
+                                                            )}
                                                         </div>
                                                     </td>
                                                 </tr>

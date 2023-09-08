@@ -368,7 +368,7 @@ export default function HotelSearchModal({
             setNext(false);
         } catch (e) {
             setIsSubmitLoading(false);
-            setError("something went wrong");
+            setError(err?.response?.data.error);
         }
     };
 
@@ -496,16 +496,12 @@ export default function HotelSearchModal({
                                         min={
                                             checkInDate
                                                 ? formatDate(checkInDate)
-                                                : new Date(data?.checkInDate)
-                                                      .toJSON()
-                                                      .slice(0, 10)
+                                                : ""
                                         }
                                         max={
                                             checkOutDate
                                                 ? formatDate(checkOutDate)
-                                                : new Date(data?.checkOutDate)
-                                                      .toJSON()
-                                                      .slice(0, 10)
+                                                : ""
                                         }
                                         onChange={(e) => {
                                             onChangeSearchData(e);
@@ -535,16 +531,12 @@ export default function HotelSearchModal({
                                         min={
                                             checkInDate
                                                 ? formatDate(checkInDate)
-                                                : new Date(data?.checkInDate)
-                                                      .toJSON()
-                                                      .slice(0, 10)
+                                                : ""
                                         }
                                         max={
                                             checkOutDate
                                                 ? formatDate(checkOutDate)
-                                                : new Date(data?.checkOutDate)
-                                                      .toJSON()
-                                                      .slice(0, 10)
+                                                : ""
                                         }
                                         name="checkOutDate"
                                         onChange={(e) => {
