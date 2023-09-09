@@ -106,6 +106,33 @@ const sidebarMenus = {
                 },
             ],
         },
+        {
+            name: "Affiliate ",
+            icon: <HiOutlineShoppingCart />,
+            link: "#",
+            dropdown: [
+                {
+                    name: "Affiliate Settings",
+                    link: "/attractions/orders/bookings",
+                    permission: ["affiliate-settings", "view"],
+                },
+                {
+                    name: "Affiliate Reports",
+                    link: "/attractions/orders/tickets",
+                    permission: ["affiliate-reports", "view"],
+                },
+                {
+                    name: "Affiliate Products",
+                    link: "/attractions/statistics",
+                    permission: ["affiliate-products", "view"],
+                },
+                {
+                    name: "Reedem Request",
+                    link: "/attractions/statistics",
+                    permission: ["affiliate-reedem", "view"],
+                },
+            ],
+        },
     ],
     Hotel: [
         {

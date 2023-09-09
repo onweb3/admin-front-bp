@@ -36,6 +36,12 @@ const adminRoles = [
         category: "attraction",
         permissions: [],
     },
+    {
+        name: "affiliate",
+        displayName: "Affiliate",
+        category: "attraction",
+        permissions: [],
+    },
 
     // HOTEL
     {
