@@ -106,30 +106,27 @@ const sidebarMenus = {
                 },
             ],
         },
+    ],
+    Marketing: [
         {
-            name: "Affiliate ",
+            name: "Affiliate",
             icon: <HiOutlineShoppingCart />,
             link: "#",
             dropdown: [
                 {
                     name: "Affiliate Settings",
-                    link: "/attractions/orders/bookings",
+                    link: "/affiliate/settings",
                     permission: ["affiliate-settings", "view"],
                 },
                 {
-                    name: "Affiliate Reports",
-                    link: "/attractions/orders/tickets",
-                    permission: ["affiliate-reports", "view"],
-                },
-                {
                     name: "Affiliate Products",
-                    link: "/attractions/statistics",
+                    link: "/affiliate/products",
                     permission: ["affiliate-products", "view"],
                 },
                 {
-                    name: "Reedem Request",
-                    link: "/attractions/statistics",
-                    permission: ["affiliate-reedem", "view"],
+                    name: "Affiliate Reports",
+                    link: "/affiliate/reports",
+                    permission: ["affiliate-reports", "view"],
                 },
             ],
         },

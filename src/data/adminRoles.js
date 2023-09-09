@@ -36,12 +36,6 @@ const adminRoles = [
         category: "attraction",
         permissions: [],
     },
-    {
-        name: "affiliate",
-        displayName: "Affiliate",
-        category: "attraction",
-        permissions: [],
-    },
 
     // HOTEL
     {
@@ -369,6 +363,27 @@ const adminRoles = [
         name: "insurance-enquiries",
         displayName: "Insurance Enquiries",
         category: "insurance",
+        permissions: [],
+    },
+
+    //Affiliation
+
+    {
+        name: "affiliate-settings",
+        displayName: "Affiliate Settings",
+        category: "marketing",
+        permissions: [],
+    },
+    {
+        name: "affiliate-reports",
+        displayName: "Affiliate Reports",
+        category: "marketing",
+        permissions: [],
+    },
+    {
+        name: "affiliate-products",
+        displayName: "Affiliate Products",
+        category: "marketing",
         permissions: [],
     },
 ];
