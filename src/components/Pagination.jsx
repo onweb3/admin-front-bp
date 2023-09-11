@@ -1,18 +1,11 @@
 import React from "react";
 
-export default function Pagination({
-    skip,
-    limit,
-    total,
-    incOrDecSkip,
-    updateSkip,
-}) {
+export default function Pagination({ skip, limit, total, incOrDecSkip, updateSkip }) {
     return (
         <div className="flex flex-wrap gap-[10px] items-center justify-between">
             <span className="text-[13px]">
                 Showing {skip * limit + 1} to{" "}
-                {(skip + 1) * limit > total ? total : (skip + 1) * limit} of{" "}
-                {total} entries
+                {(skip + 1) * limit > total ? total : (skip + 1) * limit} of {total} entries
             </span>
             <div className="flex items-center gap-[5px]">
                 <button
@@ -29,6 +22,10 @@ export default function Pagination({
 
                     if (
                         index === skip ||
+                        index === skip + 1 ||
+                        index === skip + 2 ||
+                        index === skip - 1 ||
+                        index === skip - 2 ||
                         index === 0 ||
                         index === numberOfButtons - 1
                     ) {
@@ -49,15 +46,11 @@ export default function Pagination({
                     }
 
                     if (
-                        (skip + 1 !== numberOfButtons - 1 &&
-                            skip + 1 === index) ||
-                        (skip - 1 !== 0 && skip - 1 === index)
+                        (skip + 1 !== numberOfButtons - 1 && skip + 3 === index) ||
+                        (skip - 1 !== 0 && skip - 3 === index)
                     ) {
                         return (
-                            <button
-                                key={index}
-                                className="h-[32px] min-w-[32px] px-[10px]"
-                            >
+                            <button key={index} className="h-[32px] min-w-[32px] px-[10px]">
                                 ...
                             </button>
                         );
