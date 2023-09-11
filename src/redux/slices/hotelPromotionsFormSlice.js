@@ -98,6 +98,7 @@ const initialState = {
     mealUpgrades: [],
     roomDiscounts: [],
     cancellationPolicies: [],
+    excludedDates: [],
 };
 
 export const hotelPromotionsFormSlice = createSlice({
@@ -244,6 +245,13 @@ export const hotelPromotionsFormSlice = createSlice({
             });
         },
 
+        addExcludedDatesRows: (state, action) => {
+            state.excludedDates.push({
+                fromDate: "",
+                toDate: "",
+            });
+        },
+
         handlePromotionRowDataChange: (state, action) => {
             const { typeName, index, name, value } = action.payload;
             state[typeName][index][name] = value;
@@ -338,6 +346,7 @@ export const hotelPromotionsFormSlice = createSlice({
                 validDays,
                 combinedPromotions,
                 cancellationPolicies,
+                excludedDates,
                 roomDiscounts,
                 discounts,
                 stayPays,
@@ -556,6 +565,12 @@ export const hotelPromotionsFormSlice = createSlice({
                     cancellationCharge: policies.cancellationCharge,
                 })) || [];
 
+            state.excludedDates =
+                excludedDates?.map((dateRange) => ({
+                    fromDate: dateRange.fromDate ? convertIsoDateToYMD(dateRange.fromDate) : "",
+                    toDate: dateRange.toDate ? convertIsoDateToYMD(dateRange.toDate) : "",
+                })) || [];
+
             state.isPromotionLoading = false;
         },
     },
@@ -569,6 +584,7 @@ export const {
     addMealUpgradesRows,
     addRoomDiscountsRows,
     addCancellationPoliciesRows,
+    addExcludedDatesRows,
     addRoomTypeUpgradesRows,
     resetPromotionForm,
     handlePromotionRowDataChange,

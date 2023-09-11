@@ -20,6 +20,7 @@ export default function PromoAddFormButtons() {
         mealUpgrades,
         roomDiscounts,
         cancellationPolicies,
+        excludedDates,
     } = useSelector((state) => state.hotelPromotionsForm);
     const navigate = useNavigate();
     const { id } = useParams();
@@ -39,6 +40,7 @@ export default function PromoAddFormButtons() {
                 stayPays,
                 mealUpgrades,
                 roomTypeUpgrades,
+                excludedDates,
             };
 
             await axios.post("/hotels/promotions/add", formData, {
@@ -48,18 +50,14 @@ export default function PromoAddFormButtons() {
             setIsLoading(false);
             navigate(-1);
         } catch (err) {
-            setError(
-                err?.response?.data?.error || "Something went wrong, Try again"
-            );
+            setError(err?.response?.data?.error || "Something went wrong, Try again");
             setIsLoading(false);
         }
     };
 
     return (
         <div>
-            {error && (
-                <span className="text-sm text-red-500 block mt-4">{error}</span>
-            )}
+            {error && <span className="text-sm text-red-500 block mt-4">{error}</span>}
 
             <div className="mt-4 flex items-center justify-end gap-[12px]">
                 <button

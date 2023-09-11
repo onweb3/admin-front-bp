@@ -12,6 +12,7 @@ import {
     PromoRoomDiscountForm,
     PromoStayPayForm,
     PromotionEditFormButtons,
+    PromoExcludedDatesForm,
 } from "../../features/HotelPromotion";
 import {
     fetchInitialDataWithPromotion,
@@ -25,6 +26,7 @@ const sections = {
     "-roomtype-upgrade": "Room Type Upgrade",
     "-meal-upgrade": "Meal Upgrade",
     // "-room-discount": "Room Discount",
+    "-excluded-dates": "Excluded Dates",
     "-cancel-policy": "Cancellation Policy",
     // "-tandc": "Terms & Conditions",
 };
@@ -126,6 +128,7 @@ export default function EditPromotionPage() {
                             {/* {selectedSection === "-room-discount" && (
                                 <PromoRoomDiscountForm />
                             )} */}
+                            {selectedSection === "-excluded-dates" && <PromoExcludedDatesForm />}
                             {selectedSection === "-cancel-policy" && <PromoCancellationForm />}
                             {/* {selectedSection === "-tandc" && <PromoStayPayForm />} */}
                             <PromotionEditFormButtons />

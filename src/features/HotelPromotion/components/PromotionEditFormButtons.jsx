@@ -20,6 +20,7 @@ export default function PromotionEditFormButtons() {
         mealUpgrades,
         roomDiscounts,
         cancellationPolicies,
+        excludedDates,
     } = useSelector((state) => state.hotelPromotionsForm);
     const navigate = useNavigate();
     const { id, promotionId } = useParams();
@@ -39,31 +40,24 @@ export default function PromotionEditFormButtons() {
                 stayPays,
                 mealUpgrades,
                 roomTypeUpgrades,
+                excludedDates,
             };
 
-            await axios.patch(
-                `/hotels/promotions/update/${promotionId}`,
-                formData,
-                {
-                    headers: { authorization: `Bearer ${jwtToken}` },
-                }
-            );
+            await axios.patch(`/hotels/promotions/update/${promotionId}`, formData, {
+                headers: { authorization: `Bearer ${jwtToken}` },
+            });
 
             setIsLoading(false);
             navigate(-1);
         } catch (err) {
-            setError(
-                err?.response?.data?.error || "Something went wrong, Try again"
-            );
+            setError(err?.response?.data?.error || "Something went wrong, Try again");
             setIsLoading(false);
         }
     };
 
     return (
         <div>
-            {error && (
-                <span className="text-sm text-red-500 block mt-4">{error}</span>
-            )}
+            {error && <span className="text-sm text-red-500 block mt-4">{error}</span>}
 
             <div className="mt-4 flex items-center justify-end gap-[12px]">
                 <button
