@@ -166,7 +166,7 @@ export default function AddVehiclePage() {
                                 Cancel
                             </button>
                             <button className="w-[120px]">
-                                {isLoading ? <BtnLoader /> : "Add Transfer"}
+                                {isLoading ? <BtnLoader /> : "Add Vehicle"}
                             </button>
                         </div>
                     </form>

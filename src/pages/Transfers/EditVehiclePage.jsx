@@ -188,7 +188,7 @@ export default function EditVehiclePage() {
                                 Cancel
                             </button>
                             <button className="w-[120px]">
-                                {isLoading ? <BtnLoader /> : "Add Transfer"}
+                                {isLoading ? <BtnLoader /> : "Update Vehicle"}
                             </button>
                         </div>
                     </form>
