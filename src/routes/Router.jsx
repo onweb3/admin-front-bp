@@ -177,6 +177,8 @@ import SingelInsuranceEnquiryDetailsPage from "../pages/Insurance/SingelInsuranc
 import AddAttrReviewPage from "../pages/Attraction/AddAttReviewPage";
 import EditAttrReviewPage from "../pages/Attraction/EditAttrReviewPage";
 import AffiliateSettingsPage from "../pages/Affiliate/AffiliateSettingsPage";
+import AffiliateProductPage from "../pages/Affiliate/AffiliateProductPage";
+import AffiliateReportPage from "../pages/Affiliate/AffiliateReportsPages";
 
 const ThemeRoutes = [
     {
@@ -898,6 +900,15 @@ const ThemeRoutes = [
             {
                 path: "/affiliate/settings",
                 element: <AffiliateSettingsPage />,
+            },
+
+            {
+                path: "/affiliate/products",
+                element: <AffiliateProductPage />,
+            },
+            {
+                path: "/affiliate/reports",
+                element: <AffiliateReportPage />,
             },
         ],
     },

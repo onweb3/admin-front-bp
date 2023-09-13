@@ -3,20 +3,28 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
 import axios from "../../axios";
-import { BtnLoader, RichTextEditor } from "../../components";
+import {
+    BtnLoader,
+    MultipleSelectDropdown,
+    RichTextEditor,
+} from "../../components";
 import { useImageChange } from "../../hooks";
 
 export default function AffiliateSettingsPage() {
     const [data, setData] = useState({
-        airlineName: "",
         termsAndConditions: "",
-        iataCode: "",
-        airlineCode: "",
-        api: "",
+        redeemOptions: [],
+        policy: "",
+        pointValue: "",
     });
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
-    const [apis, setApis] = useState([]);
+    const options = [
+        { name: "cash in hand", value: "cashInHand" },
+        { name: "cash in bank", value: "cashInBank" },
+        { name: "crypto", value: "crypto" },
+        { name: "ticket-booking", value: "ticket-booking" },
+    ];
 
     const { jwtToken } = useSelector((state) => state.admin);
     const navigate = useNavigate();
@@ -34,20 +42,21 @@ export default function AffiliateSettingsPage() {
             setIsLoading(true);
             setError("");
 
-            const formData = new FormData();
-            formData.append("airlineName", data.airlineName);
-            formData.append("airlineCode", data.airlineCode);
-            formData.append("iataCode", data.iataCode);
-            formData.append("icaoCode", data.icaoCode);
-            formData.append("api", data.api);
-            formData.append("image", image);
-
-            await axios.post("/airlines/add", formData, {
-                headers: { authorization: `Bearer ${jwtToken}` },
-            });
+            await axios.post(
+                "/affiliate/settings/upsert",
+                {
+                    termsAndConditions: data.termsAndConditions,
+                    redeemOptions: data.redeemOptions,
+                    policy: data.policy,
+                    pointValue: data.pointValue,
+                },
+                {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                }
+            );
 
             setIsLoading(false);
-            navigate("/airlines");
+            navigate("/affiliate/products");
         } catch (err) {
             setError(
                 err?.response?.data?.error || "Something went wrong, Try again"
@@ -56,19 +65,25 @@ export default function AffiliateSettingsPage() {
         }
     };
 
-    const fetchFlightApis = async () => {
+    const fetchAffiliateSetting = async () => {
         try {
-            const response = await axios.get(`/api-master/all/flight`, {
+            const response = await axios.get(`/affiliate/settings/list`, {
                 headers: { authorization: `Bearer ${jwtToken}` },
             });
-            setApis(response.data);
+            setData(response.data);
         } catch (err) {
             console.log(err);
         }
     };
 
+    const handleAccessChange = (selectedData, transferType) => {
+        setData((prev) => {
+            return { ...prev, [transferType]: selectedData };
+        });
+    };
+
     useEffect(() => {
-        fetchFlightApis();
+        fetchAffiliateSetting();
     }, []);
 
     return (
@@ -92,37 +107,31 @@ export default function AffiliateSettingsPage() {
                     <form action="" onSubmit={handleSubmit}>
                         <div className="grid grid-cols-3 gap-4">
                             <div>
-                                <label htmlFor="">Airline Name</label>
+                                <label htmlFor="">Point Values(1 AED)</label>
                                 <input
                                     type="text"
-                                    placeholder="Enter airline name"
-                                    name="airlineName"
-                                    value={data.airlineName || ""}
+                                    placeholder="Enter points"
+                                    name="pointValue"
+                                    value={data.pointValue || ""}
                                     onChange={handleChange}
                                     required
                                 />
                             </div>
+                            <div>
+                                <label htmlFor="">Reedem options </label>
 
-                            <div>
-                                <label htmlFor="">IATA Code</label>
-                                <input
-                                    type="text"
-                                    placeholder="Enter IATA code"
-                                    name="iataCode"
-                                    value={data.iataCode || ""}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="">ICAO Code</label>
-                                <input
-                                    type="text"
-                                    placeholder="Enter ICAO code"
-                                    name="icaoCode"
-                                    value={data.icaoCode || ""}
-                                    onChange={handleChange}
-                                    required
+                                <MultipleSelectDropdown
+                                    data={options}
+                                    displayName={"name"}
+                                    valueName={"value"}
+                                    selectedData={data?.redeemOptions}
+                                    setSelectedData={(selAccess) => {
+                                        handleAccessChange(
+                                            selAccess,
+                                            "redeemOptions"
+                                        );
+                                    }}
+                                    randomIndex={"name" + 1}
                                 />
                             </div>
                         </div>
@@ -148,28 +157,25 @@ export default function AffiliateSettingsPage() {
                                 </div>
                             </div>
                         </div>
-                        <div className="mt-4">
-                            <label htmlFor="">Image</label>
-                            <input
-                                type="file"
-                                onChange={handleImageChange}
-                                required
-                            />
-                            {imageError && (
-                                <span className="block text-sm text-red-500 mt-2">
-                                    {imageError}
-                                </span>
-                            )}
-                            {image && (
-                                <div className="mt-4 w-[50px] h-[50px]">
-                                    <img
-                                        src={URL.createObjectURL(image)}
-                                        alt=""
-                                        className="w-[100%] h-[100%] object-cover"
+                        <div className="my-10">
+                            <h1 className="text-[14px]">Policy</h1>
+                            <div className="mt-2">
+                                <div className="border border-t-0">
+                                    <RichTextEditor
+                                        getValue={(value) =>
+                                            setData((prev) => {
+                                                return {
+                                                    ...prev,
+                                                    policy: value,
+                                                };
+                                            })
+                                        }
+                                        initialValue={data?.policy || ""}
                                     />
                                 </div>
-                            )}
+                            </div>
                         </div>
+
                         {error && (
                             <span className="text-sm block text-red-500 mt-2">
                                 {error}
@@ -184,7 +190,7 @@ export default function AffiliateSettingsPage() {
                                 Cancel
                             </button>
                             <button className="w-[120px]">
-                                {isLoading ? <BtnLoader /> : "Add Airline"}
+                                {isLoading ? <BtnLoader /> : "Add Affiliate"}
                             </button>
                         </div>
                     </form>
