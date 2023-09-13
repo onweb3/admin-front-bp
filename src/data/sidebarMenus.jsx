@@ -107,6 +107,30 @@ const sidebarMenus = {
             ],
         },
     ],
+    Marketing: [
+        {
+            name: "Affiliate",
+            icon: <HiOutlineShoppingCart />,
+            link: "#",
+            dropdown: [
+                {
+                    name: "Affiliate Settings",
+                    link: "/affiliate/settings",
+                    permission: ["affiliate-settings", "view"],
+                },
+                {
+                    name: "Affiliate Products",
+                    link: "/affiliate/products",
+                    permission: ["affiliate-products", "view"],
+                },
+                {
+                    name: "Affiliate Reports",
+                    link: "/affiliate/reports",
+                    permission: ["affiliate-reports", "view"],
+                },
+            ],
+        },
+    ],
     Hotel: [
         {
             name: "Hotels List",
