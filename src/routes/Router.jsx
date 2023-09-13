@@ -179,6 +179,7 @@ import EditAttrReviewPage from "../pages/Attraction/EditAttrReviewPage";
 import AffiliateSettingsPage from "../pages/Affiliate/AffiliateSettingsPage";
 import AffiliateProductPage from "../pages/Affiliate/AffiliateProductPage";
 import AffiliateReportPage from "../pages/Affiliate/AffiliateReportsPages";
+import AffiliateReedemRequestPage from "../pages/Affiliate/AffiliateReedemRequestPage";
 
 const ThemeRoutes = [
     {
@@ -910,6 +911,12 @@ const ThemeRoutes = [
                 path: "/affiliate/reports",
                 element: <AffiliateReportPage />,
             },
+            {
+                path: "/affiliate/redeem/requests",
+                element: <AffiliateReedemRequestPage />,
+            },
+
+            ,
         ],
     },
     {

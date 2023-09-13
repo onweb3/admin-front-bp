@@ -386,6 +386,12 @@ const adminRoles = [
         category: "marketing",
         permissions: [],
     },
+    {
+        name: "affiliate-redeem-requests",
+        displayName: "Affiliate Redeem Requests",
+        category: "marketing",
+        permissions: [],
+    },
 ];
 
 export default adminRoles;

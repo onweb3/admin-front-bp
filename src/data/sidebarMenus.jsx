@@ -128,6 +128,11 @@ const sidebarMenus = {
                     link: "/affiliate/reports",
                     permission: ["affiliate-reports", "view"],
                 },
+                {
+                    name: "Affiliate Reedem Requests",
+                    link: "/affiliate/redeem/requests",
+                    permission: ["affiliate-redeem-requests", "view"],
+                },
             ],
         },
     ],

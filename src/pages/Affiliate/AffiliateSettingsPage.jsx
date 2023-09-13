@@ -16,6 +16,7 @@ export default function AffiliateSettingsPage() {
         redeemOptions: [],
         policy: "",
         pointValue: "",
+        deductionFee: "",
     });
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
@@ -49,6 +50,7 @@ export default function AffiliateSettingsPage() {
                     redeemOptions: data.redeemOptions,
                     policy: data.policy,
                     pointValue: data.pointValue,
+                    deductionFee: data.deductionFee,
                 },
                 {
                     headers: { authorization: `Bearer ${jwtToken}` },
@@ -132,6 +134,17 @@ export default function AffiliateSettingsPage() {
                                         );
                                     }}
                                     randomIndex={"name" + 1}
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="">Deduction Fee %</label>
+                                <input
+                                    type="text"
+                                    placeholder="Enter deduction Fee percentage"
+                                    name="deductionFee"
+                                    value={data.deductionFee || ""}
+                                    onChange={handleChange}
+                                    required
                                 />
                             </div>
                         </div>
