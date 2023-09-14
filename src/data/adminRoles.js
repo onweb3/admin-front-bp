@@ -392,6 +392,15 @@ const adminRoles = [
         category: "marketing",
         permissions: [],
     },
+
+    //Users
+
+    {
+        name: "users",
+        displayName: "Users",
+        category: "users",
+        permissions: [],
+    },
 ];
 
 export default adminRoles;

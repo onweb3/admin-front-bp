@@ -537,6 +537,14 @@ const sidebarMenus = {
     //     link: "/users",
     //     icon: <HiOutlineUsers />,
     // },
+    Users: [
+        {
+            name: "Users",
+            link: "/users",
+            icon: <HiOutlineUsers />,
+            permission: ["users", "view"],
+        },
+    ],
     settings: [
         {
             name: "Markup Profile",

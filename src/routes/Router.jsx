@@ -180,6 +180,10 @@ import AffiliateSettingsPage from "../pages/Affiliate/AffiliateSettingsPage";
 import AffiliateProductPage from "../pages/Affiliate/AffiliateProductPage";
 import AffiliateReportPage from "../pages/Affiliate/AffiliateReportsPages";
 import AffiliateReedemRequestPage from "../pages/Affiliate/AffiliateReedemRequestPage";
+import SingleUserLayout from "../layouts/SingleUserLayout";
+import SingleUserDetailsPage from "../pages/Users/SingleUserDetailsPage";
+import SingleUserAttractionBookingOrdersPage from "../pages/Users/SingleUserAttractionBooking";
+import SingleUserAttractionTicketOrdersPage from "../pages/Users/SingleUserAttractionTicketOrderPage";
 
 const ThemeRoutes = [
     {
@@ -916,6 +920,27 @@ const ThemeRoutes = [
                 element: <AffiliateReedemRequestPage />,
             },
 
+            //users
+
+            {
+                path: "/users/:id",
+                element: <SingleUserLayout />,
+                children: [
+                    { path: "details", element: <SingleUserDetailsPage /> },
+                    {
+                        path: "transactions",
+                        element: <SingleResellerTransactionsPage />,
+                    },
+                    {
+                        path: "attractions-ticket-orders",
+                        element: <SingleUserAttractionTicketOrdersPage />,
+                    },
+                    {
+                        path: "attractions-booking-orders",
+                        element: <SingleUserAttractionBookingOrdersPage />,
+                    },
+                ],
+            },
             ,
         ],
     },

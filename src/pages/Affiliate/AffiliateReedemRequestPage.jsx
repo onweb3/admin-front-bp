@@ -7,10 +7,11 @@ import { PageLoader, Pagination } from "../../components";
 import VisaApplicationTable from "../../features/Visa/components/VisaApplicationTable";
 import { formatDate } from "../../utils";
 import AddNationalityModal from "../../features/Visa/components/AddNationalityModal";
-import { MdDelete } from "react-icons/md";
+import { MdClose, MdDelete } from "react-icons/md";
 import { BiEditAlt } from "react-icons/bi";
 import AddActivityPointModal from "../../features/Affiliate/components/AddActivityPointModal";
 import { BsEyeFill, BsEyeSlash } from "react-icons/bs";
+import { FiCheck } from "react-icons/fi";
 
 export default function AffiliateReedemRequestPage() {
     const [nationalities, setNationalities] = useState([]);
@@ -22,7 +23,7 @@ export default function AffiliateReedemRequestPage() {
         searchQuery: "",
     });
 
-    const [activities, setActivities] = useState([]);
+    const [requests, setRequests] = useState([]);
     const [error, setError] = useState("");
 
     const [isModal, setIsModal] = useState(false);
@@ -48,13 +49,12 @@ export default function AffiliateReedemRequestPage() {
         });
     };
 
-    const changeActiveStatus = async (activityId, value) => {
+    const changeStatus = async ({ reedemId, value }) => {
         try {
-            console.log(activityId, "activityId");
             const response = await axios.patch(
-                `/affiliate/activity/status`,
+                `/affiliate/reedem/status`,
                 {
-                    activityId,
+                    requestId: reedemId,
                     value,
                 },
                 {
@@ -62,21 +62,19 @@ export default function AffiliateReedemRequestPage() {
                 }
             );
 
-            setActivities((prev) => {
-                const updatedActivities = prev.map((activity) => {
-                    if (activity._id === activityId) {
+            setRequests((prev) => {
+                const updatedRequest = prev.map((request) => {
+                    if (request._id === reedemId) {
                         return {
-                            ...activity,
-                            adultPoint: activity?.adultPoint || 0,
-                            childPoint: activity?.childPoint || 0,
-                            isActive: value,
+                            ...request,
+                            status: value,
                         };
                     } else {
-                        return activity;
+                        return request;
                     }
                 });
 
-                return updatedActivities;
+                return updatedRequest;
             });
         } catch (err) {
             setError(
@@ -87,31 +85,31 @@ export default function AffiliateReedemRequestPage() {
         }
     };
 
-    // const fetchActivities = async ({ skip, limit, searchQuery }) => {
-    //     try {
-    //         setIsLoading(true);
+    const fetchReedemRequest = async ({ skip, limit, searchQuery }) => {
+        try {
+            setIsLoading(true);
 
-    //         const response = await axios.get(
-    //             `/affiliate/activity/list?skip=${skip}&limit=${limit}&searchQuery=${searchQuery}`,
-    //             {
-    //                 headers: { authorization: `Bearer ${jwtToken}` },
-    //             }
-    //         );
-    //         setActivities(response.data.activities);
+            const response = await axios.get(
+                `/affiliate/reedem/all?skip=${skip}&limit=${limit}&searchQuery=${searchQuery}`,
+                {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                }
+            );
+            setRequests(response?.data?.redeemRequests);
 
-    //         setFilters((prev) => {
-    //             return {
-    //                 ...prev,
-    //                 totalActivites: response.data?.totalActivites,
-    //             };
-    //         });
-    //         setIsLoading(false);
-    //     } catch (err) {
-    //         console.log(err);
-    //         setNationalities([]);
-    //         setIsLoading(false);
-    //     }
-    // };
+            setFilters((prev) => {
+                return {
+                    ...prev,
+                    totalRequests: response.data?.totalRequests,
+                };
+            });
+            setIsLoading(false);
+        } catch (err) {
+            console.log(err);
+            setNationalities([]);
+            setIsLoading(false);
+        }
+    };
 
     useEffect(() => {
         let skip =
@@ -127,7 +125,7 @@ export default function AffiliateReedemRequestPage() {
         setFilters((prev) => {
             return { ...prev, skip, limit, searchQuery };
         });
-        // fetchActivities({ skip, limit, searchQuery });
+        fetchReedemRequest({ skip, limit, searchQuery });
     }, [searchParams]);
 
     return (
@@ -150,14 +148,14 @@ export default function AffiliateReedemRequestPage() {
                 </div>
             </div>
 
-            {isModal && (
+            {/* {isModal && (
                 <AddActivityPointModal
                     setIsModal={setIsModal}
                     selectedActivity={selectedActivity}
                     activities={activities}
                     setActivities={setActivities}
                 />
-            )}
+            )} */}
 
             <div className="p-6">
                 <div className="bg-white rounded shadow-sm">
@@ -182,10 +180,10 @@ export default function AffiliateReedemRequestPage() {
                         </div>
                     ) : (
                         <>
-                            {!activities || activities?.length < 1 ? (
+                            {!requests || requests?.length < 1 ? (
                                 <div className="p-6 flex flex-col items-center">
                                     <span className="text-sm text-sm text-grayColor block mt-[6px]">
-                                        Oops.. No Activities Found
+                                        Oops.. No Requests Found
                                     </span>
                                 </div>
                             ) : (
@@ -196,21 +194,31 @@ export default function AffiliateReedemRequestPage() {
                                                 Index
                                             </th>
                                             <th className="font-[500] p-3">
-                                                Activity Name
+                                                Name
                                             </th>
                                             <th className="font-[500] p-3">
-                                                Adult Points
+                                                Reedem Options
                                             </th>
                                             <th className="font-[500] p-3">
-                                                Child Points
+                                                Points
                                             </th>
+                                            <th className="font-[500] p-3">
+                                                Currency
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Fee Deduction
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Amount
+                                            </th>
+
                                             <th className="font-[500] p-3">
                                                 Action
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody className="text-sm">
-                                        {activities?.map((activity, index) => {
+                                        {requests?.map((request, index) => {
                                             return (
                                                 <tr
                                                     key={index}
@@ -220,71 +228,67 @@ export default function AffiliateReedemRequestPage() {
                                                         {index + 1}
                                                     </td>
                                                     <td className="p-3">
-                                                        {activity?.name}
+                                                        {request?.user.name}
                                                     </td>
                                                     <td className="p-3 capitalize">
-                                                        {activity?.adultPoint ||
+                                                        {request?.redeemOption ||
                                                             0}
                                                     </td>
                                                     <td className="p-3 capitalize">
-                                                        {activity?.childPoint ||
+                                                        {request?.points || 0}
+                                                    </td>
+                                                    <td className="p-3 capitalize">
+                                                        {request?.currency || 0}
+                                                    </td>
+                                                    <td className="p-3 capitalize">
+                                                        {request?.feeDeduction ||
                                                             0}
                                                     </td>
-
-                                                    <td className="p-3">
-                                                        <div className="flex gap-[10px]">
-                                                            {activity?.isActive ? (
-                                                                <button
-                                                                    className="h-auto bg-transparent text-green-500  text-xl"
-                                                                    onClick={() =>
-                                                                        changeActiveStatus(
-                                                                            activity?._id,
-                                                                            false
-                                                                        )
-                                                                    }
-                                                                >
-                                                                    <BsEyeFill />
-                                                                </button>
-                                                            ) : (
-                                                                <button
-                                                                    className="h-auto bg-transparent text-green-500  text-xl"
-                                                                    onClick={() =>
-                                                                        changeActiveStatus(
-                                                                            activity?._id,
-                                                                            true
-                                                                        )
-                                                                    }
-                                                                >
-                                                                    <BsEyeSlash />
-                                                                </button>
-                                                            )}
-
-                                                            <button
-                                                                className="h-auto bg-transparent text-red-500 text-xl"
-                                                                // onClick={() =>
-                                                                //     deleteNationality(
-                                                                //         activity?._id
-                                                                //     )
-                                                                // }
-                                                            >
-                                                                <MdDelete />
-                                                            </button>
-
-                                                            <button
-                                                                className="h-auto bg-transparent text-green-500 text-xl"
-                                                                onClick={() => {
-                                                                    setSelectedActivity(
-                                                                        activity
-                                                                    );
-                                                                    setIsModal(
-                                                                        true
-                                                                    );
-                                                                }}
-                                                            >
-                                                                <BiEditAlt />
-                                                            </button>
-                                                        </div>
+                                                    <td className="p-3 capitalize">
+                                                        {request?.amount || 0}
                                                     </td>
+
+                                                    {request?.status ===
+                                                    "pending" ? (
+                                                        <td className="p-3">
+                                                            <div className="flex gap-[10px]">
+                                                                <button
+                                                                    className="h-auto bg-transparent text-green-500 text-lg"
+                                                                    onClick={() =>
+                                                                        changeStatus(
+                                                                            {
+                                                                                reedemId:
+                                                                                    request?._id,
+                                                                                value: "approved",
+                                                                            }
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <FiCheck />
+                                                                </button>
+
+                                                                <button
+                                                                    className="h-auto bg-transparent text-red-500 text-lg"
+                                                                    onClick={() => {
+                                                                        changeStatus(
+                                                                            {
+                                                                                reedemId:
+                                                                                    request?._id,
+                                                                                value: "cancelled",
+                                                                            }
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <MdClose />
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    ) : (
+                                                        <td className="p-3 capitalize">
+                                                            {request?.status ||
+                                                                "N/A"}
+                                                        </td>
+                                                    )}
                                                 </tr>
                                             );
                                         })}
@@ -298,7 +302,7 @@ export default function AffiliateReedemRequestPage() {
                     <Pagination
                         limit={filters?.limit}
                         skip={filters?.skip}
-                        total={filters?.totalActivites}
+                        total={filters?.totalRequests}
                         incOrDecSkip={(number) => {
                             let params = prevSearchParams();
                             setSearchParams({
