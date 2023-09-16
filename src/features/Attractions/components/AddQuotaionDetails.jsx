@@ -4,11 +4,21 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "../../../axios";
 import { BtnLoader } from "../../../components";
 import QuotationTransferTable from "./QuotationTransferTable";
+import QuotationVehiclePricingTable from "./QuotationVehiclePricngTable";
+import QuotationPricingTable from "./QuotatoinPricingTable";
 
-export default function AddQuotationDetails({ data, setData }) {
+export default function AddQuotationDetails({}) {
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [vehicles, setVehicles] = useState([]);
+    const [data, setData] = useState({
+        isQuotation: true,
+        isCarousel: true,
+    });
+
+    const [ticketPricing, setTicketPricing] = useState([]);
+    const [sicWithTicket, setSicWithTicket] = useState([]);
+    const [transferPricing, setTransferPricing] = useState([]);
 
     const { jwtToken } = useSelector((state) => state.admin);
     const navigate = useNavigate();
@@ -201,30 +211,7 @@ export default function AddQuotationDetails({ data, setData }) {
                                     <h1 className="text-[16px] py-2 font-[600] underline pb-4">
                                         Shared Transfer Price
                                     </h1>
-
-                                    <div className="grid grid-cols-3 gap-4 mb-5">
-                                        <div className="price mb-5">
-                                            <label htmlFor="input-price">
-                                                Price
-                                            </label>
-                                            <input
-                                                type="number"
-                                                placeholder="Enter price"
-                                                id="input-price"
-                                                name="sicPrice"
-                                                value={
-                                                    data?.transferPricing
-                                                        ?.sicPrice
-                                                }
-                                                onChange={(e) => {
-                                                    handleDataChange(
-                                                        e,
-                                                        "transferPricing"
-                                                    );
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
+                                    <QuotationPricingTable />
                                 </>
                             )}
 
@@ -233,99 +220,18 @@ export default function AddQuotationDetails({ data, setData }) {
                                     <h1 className="text-[16px] py-2 font-[600] underline pb-4">
                                         Ticket Price
                                     </h1>
-                                    <div className="grid grid-cols-3 gap-4 mb-5">
-                                        <div className="price mb-5">
-                                            <label htmlFor="input-price">
-                                                Adult Price{" "}
-                                            </label>
-                                            <input
-                                                type="number"
-                                                placeholder="Enter price"
-                                                id="input-price"
-                                                name="adultPrice"
-                                                value={
-                                                    data?.ticketPricing
-                                                        ?.adultPrice || ""
-                                                }
-                                                onChange={(e) => {
-                                                    handleDataChange(
-                                                        e,
-                                                        "ticketPricing"
-                                                    );
-                                                }}
-                                            />
-                                        </div>
-                                        <div className="price mb-5">
-                                            <label htmlFor="input-price">
-                                                Child Price{" "}
-                                            </label>
-                                            <input
-                                                type="number"
-                                                placeholder="Enter price"
-                                                id="input-price"
-                                                name="childPrice"
-                                                value={
-                                                    data?.ticketPricing
-                                                        ?.childPrice || ""
-                                                }
-                                                onChange={(e) => {
-                                                    handleDataChange(
-                                                        e,
-                                                        "ticketPricing"
-                                                    );
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
+                                    <QuotationPricingTable
+                                        setPricing={setTicketPricing}
+                                        pricing={ticketPricing}
+                                    />
+
                                     <h1 className="text-[16px] py-2 font-[600] underline  pb-4">
                                         Shared Transfer With Ticket Price
                                     </h1>
-                                    <div className="grid grid-cols-3 gap-4 mb-5">
-                                        <div className="price mb-5">
-                                            <label htmlFor="input-price">
-                                                Adult Price{" "}
-                                            </label>
-                                            <input
-                                                type="number"
-                                                placeholder="Enter price"
-                                                id="input-price"
-                                                name="sicWithTicketAdultPrice"
-                                                value={
-                                                    data?.ticketPricing
-                                                        ?.sicWithTicketAdultPrice ||
-                                                    ""
-                                                }
-                                                onChange={(e) => {
-                                                    handleDataChange(
-                                                        e,
-                                                        "ticketPricing"
-                                                    );
-                                                }}
-                                            />
-                                        </div>
-                                        <div className="price mb-5">
-                                            <label htmlFor="input-price">
-                                                Child Price
-                                            </label>
-                                            <input
-                                                type="number"
-                                                placeholder="Enter price"
-                                                id="input-price"
-                                                name="sicWithTicketChildPrice"
-                                                value={
-                                                    data?.ticketPricing
-                                                        ?.sicWithTicketChildPrice ||
-                                                    ""
-                                                }
-                                                onChange={(e) => {
-                                                    handleDataChange(
-                                                        e,
-                                                        "ticketPricing"
-                                                    );
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
+                                    <QuotationPricingTable
+                                        setPricing={setSicWithTicket}
+                                        pricing={sicWithTicket}
+                                    />
                                 </>
                             )}
 
@@ -333,11 +239,13 @@ export default function AddQuotationDetails({ data, setData }) {
                                 Private Transfer Price
                             </h1>
 
-                            <QuotationTransferTable
+                            <QuotationVehiclePricingTable
                                 vehicles={vehicles}
-                                setVehicles={setVehicles}
-                                data={data}
-                                setData={setData}
+                                pricing={transferPricing}
+                                setPricing={setTransferPricing}
+                                // setVehicles={setVehicles}
+                                // data={data}
+                                // setData={setData}
                             />
                         </>
                     ) : (
