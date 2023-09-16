@@ -129,7 +129,7 @@ const sidebarMenus = {
                     permission: ["affiliate-reports", "view"],
                 },
                 {
-                    name: "Affiliate Reedem Requests",
+                    name: "Affiliate Redeem Requests",
                     link: "/affiliate/redeem/requests",
                     permission: ["affiliate-redeem-requests", "view"],
                 },
@@ -545,6 +545,7 @@ const sidebarMenus = {
             permission: ["users", "view"],
         },
     ],
+
     settings: [
         {
             name: "Markup Profile",

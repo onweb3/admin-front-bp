@@ -49,6 +49,7 @@ export default function AddExcursionPage() {
             setIsLoading(false);
         }
     };
+    
 
     return (
         <div>

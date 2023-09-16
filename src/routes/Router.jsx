@@ -179,11 +179,13 @@ import EditAttrReviewPage from "../pages/Attraction/EditAttrReviewPage";
 import AffiliateSettingsPage from "../pages/Affiliate/AffiliateSettingsPage";
 import AffiliateProductPage from "../pages/Affiliate/AffiliateProductPage";
 import AffiliateReportPage from "../pages/Affiliate/AffiliateReportsPages";
-import AffiliateReedemRequestPage from "../pages/Affiliate/AffiliateReedemRequestPage";
+import AffiliateRedeemRequestPage from "../pages/Affiliate/AffiliateRedeemRequestPage";
 import SingleUserLayout from "../layouts/SingleUserLayout";
 import SingleUserDetailsPage from "../pages/Users/SingleUserDetailsPage";
 import SingleUserAttractionBookingOrdersPage from "../pages/Users/SingleUserAttractionBooking";
 import SingleUserAttractionTicketOrdersPage from "../pages/Users/SingleUserAttractionTicketOrderPage";
+import SingleUserTransactionsPage from "../pages/Users/SingleUserTransationPage";
+import SingleUserPointHistoryPage from "../pages/Users/SingleUserPointHistoryPage";
 
 const ThemeRoutes = [
     {
@@ -917,7 +919,7 @@ const ThemeRoutes = [
             },
             {
                 path: "/affiliate/redeem/requests",
-                element: <AffiliateReedemRequestPage />,
+                element: <AffiliateRedeemRequestPage />,
             },
 
             //users
@@ -929,7 +931,7 @@ const ThemeRoutes = [
                     { path: "details", element: <SingleUserDetailsPage /> },
                     {
                         path: "transactions",
-                        element: <SingleResellerTransactionsPage />,
+                        element: <SingleUserTransactionsPage />,
                     },
                     {
                         path: "attractions-ticket-orders",
@@ -939,6 +941,12 @@ const ThemeRoutes = [
                         path: "attractions-booking-orders",
                         element: <SingleUserAttractionBookingOrdersPage />,
                     },
+                    {
+                        path: "point-history",
+                        element: <SingleUserPointHistoryPage />,
+                    },
+
+                    ,
                 ],
             },
             ,

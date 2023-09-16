@@ -12,8 +12,9 @@ import { BiEditAlt } from "react-icons/bi";
 import AddActivityPointModal from "../../features/Affiliate/components/AddActivityPointModal";
 import { BsEyeFill, BsEyeSlash } from "react-icons/bs";
 import { FiCheck } from "react-icons/fi";
+import AffiliateRedeemRequestModal from "../../features/Affiliate/components/AfiiliateRedeemRequestModal";
 
-export default function AffiliateReedemRequestPage() {
+export default function AffiliateRedeemRequestPage() {
     const [nationalities, setNationalities] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [filters, setFilters] = useState({
@@ -27,6 +28,7 @@ export default function AffiliateReedemRequestPage() {
     const [error, setError] = useState("");
 
     const [isModal, setIsModal] = useState(false);
+    const [value, setValue] = useState("");
     const { id } = useParams();
     const { jwtToken } = useSelector((state) => state.admin);
     const [searchParams, setSearchParams] = useSearchParams();
@@ -49,48 +51,19 @@ export default function AffiliateReedemRequestPage() {
         });
     };
 
-    const changeStatus = async ({ reedemId, value }) => {
+    const changeStatus = async ({ redeemId, value }) => {
         try {
-            const response = await axios.patch(
-                `/affiliate/reedem/status`,
-                {
-                    requestId: reedemId,
-                    value,
-                },
-                {
-                    headers: { authorization: `Bearer ${jwtToken}` },
-                }
-            );
-
-            setRequests((prev) => {
-                const updatedRequest = prev.map((request) => {
-                    if (request._id === reedemId) {
-                        return {
-                            ...request,
-                            status: value,
-                        };
-                    } else {
-                        return request;
-                    }
-                });
-
-                return updatedRequest;
-            });
-        } catch (err) {
-            setError(
-                err?.response?.data?.error ||
-                    "Something went wrong! try again.."
-            );
-            // setErrorStatus(true);
-        }
+            setIsModal(true);
+            setValue(value);
+        } catch (err) {}
     };
 
-    const fetchReedemRequest = async ({ skip, limit, searchQuery }) => {
+    const fetchRedeemRequest = async ({ skip, limit, searchQuery }) => {
         try {
             setIsLoading(true);
 
             const response = await axios.get(
-                `/affiliate/reedem/all?skip=${skip}&limit=${limit}&searchQuery=${searchQuery}`,
+                `/affiliate/redeem/all?skip=${skip}&limit=${limit}&searchQuery=${searchQuery}`,
                 {
                     headers: { authorization: `Bearer ${jwtToken}` },
                 }
@@ -125,14 +98,14 @@ export default function AffiliateReedemRequestPage() {
         setFilters((prev) => {
             return { ...prev, skip, limit, searchQuery };
         });
-        fetchReedemRequest({ skip, limit, searchQuery });
+        fetchRedeemRequest({ skip, limit, searchQuery });
     }, [searchParams]);
 
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
                 <h1 className="font-[600] text-[15px] uppercase">
-                    Afffiliate Reedem Request
+                    Afffiliate Redeem Request
                 </h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
@@ -144,7 +117,7 @@ export default function AffiliateReedemRequestPage() {
                     </Link>
                     <span>{">"} </span>
 
-                    <span> Reedem </span>
+                    <span> Redeem </span>
                 </div>
             </div>
 
@@ -161,7 +134,7 @@ export default function AffiliateReedemRequestPage() {
                 <div className="bg-white rounded shadow-sm">
                     <div className="flex items-center justify-between border-b border-dashed p-4">
                         <h1 className="font-medium capitalize">
-                            Afffiliate Reedem Request{" "}
+                            Afffiliate Redeem Request{" "}
                         </h1>
                         <div className="flex items-center gap-[10px]">
                             <input
@@ -194,10 +167,13 @@ export default function AffiliateReedemRequestPage() {
                                                 Index
                                             </th>
                                             <th className="font-[500] p-3">
+                                                Transation Number
+                                            </th>
+                                            <th className="font-[500] p-3">
                                                 Name
                                             </th>
                                             <th className="font-[500] p-3">
-                                                Reedem Options
+                                                Redeem Options
                                             </th>
                                             <th className="font-[500] p-3">
                                                 Points
@@ -210,6 +186,9 @@ export default function AffiliateReedemRequestPage() {
                                             </th>
                                             <th className="font-[500] p-3">
                                                 Amount
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Reason
                                             </th>
 
                                             <th className="font-[500] p-3">
@@ -228,6 +207,10 @@ export default function AffiliateReedemRequestPage() {
                                                         {index + 1}
                                                     </td>
                                                     <td className="p-3">
+                                                        {request?.transactionNo}
+                                                    </td>
+
+                                                    <td className="p-3">
                                                         {request?.user.name}
                                                     </td>
                                                     <td className="p-3 capitalize">
@@ -244,10 +227,16 @@ export default function AffiliateReedemRequestPage() {
                                                         {request?.feeDeduction ||
                                                             0}
                                                     </td>
-                                                    <td className="p-3 capitalize">
-                                                        {request?.amount || 0}
-                                                    </td>
 
+                                                    <td className="p-3 capitalize">
+                                                        {request?.amount.toFixed(
+                                                            2
+                                                        ) || 0}
+                                                    </td>
+                                                    <td className="p-3 capitalize">
+                                                        {request?.reason ||
+                                                            "N/A"}
+                                                    </td>
                                                     {request?.status ===
                                                     "pending" ? (
                                                         <td className="p-3">
@@ -257,7 +246,7 @@ export default function AffiliateReedemRequestPage() {
                                                                     onClick={() =>
                                                                         changeStatus(
                                                                             {
-                                                                                reedemId:
+                                                                                redeemId:
                                                                                     request?._id,
                                                                                 value: "approved",
                                                                             }
@@ -272,7 +261,7 @@ export default function AffiliateReedemRequestPage() {
                                                                     onClick={() => {
                                                                         changeStatus(
                                                                             {
-                                                                                reedemId:
+                                                                                redeemId:
                                                                                     request?._id,
                                                                                 value: "cancelled",
                                                                             }
@@ -281,6 +270,23 @@ export default function AffiliateReedemRequestPage() {
                                                                 >
                                                                     <MdClose />
                                                                 </button>
+
+                                                                {isModal && (
+                                                                    <AffiliateRedeemRequestModal
+                                                                        setIsModal={
+                                                                            setIsModal
+                                                                        }
+                                                                        redeemId={
+                                                                            request?._id
+                                                                        }
+                                                                        value={
+                                                                            value
+                                                                        }
+                                                                        setRequests={
+                                                                            setRequests
+                                                                        }
+                                                                    />
+                                                                )}
                                                             </div>
                                                         </td>
                                                     ) : (

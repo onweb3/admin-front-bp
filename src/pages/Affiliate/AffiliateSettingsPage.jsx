@@ -120,7 +120,7 @@ export default function AffiliateSettingsPage() {
                                 />
                             </div>
                             <div>
-                                <label htmlFor="">Reedem options </label>
+                                <label htmlFor="">Redeem options </label>
 
                                 <MultipleSelectDropdown
                                     data={options}
