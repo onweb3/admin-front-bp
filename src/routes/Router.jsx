@@ -176,6 +176,14 @@ import EditVisaTypeNationalityPage from "../pages/Visa/EditVisaTypeNationalityPa
 import SingelInsuranceEnquiryDetailsPage from "../pages/Insurance/SingelInsuranceEnquiryDetailsPage";
 import AddAttrReviewPage from "../pages/Attraction/AddAttReviewPage";
 import EditAttrReviewPage from "../pages/Attraction/EditAttrReviewPage";
+import AffiliateSettingsPage from "../pages/Affiliate/AffiliateSettingsPage";
+import AffiliateProductPage from "../pages/Affiliate/AffiliateProductPage";
+import AffiliateReportPage from "../pages/Affiliate/AffiliateReportsPages";
+import AffiliateReedemRequestPage from "../pages/Affiliate/AffiliateReedemRequestPage";
+import SingleUserLayout from "../layouts/SingleUserLayout";
+import SingleUserDetailsPage from "../pages/Users/SingleUserDetailsPage";
+import SingleUserAttractionBookingOrdersPage from "../pages/Users/SingleUserAttractionBooking";
+import SingleUserAttractionTicketOrdersPage from "../pages/Users/SingleUserAttractionTicketOrderPage";
 
 const ThemeRoutes = [
     {
@@ -891,6 +899,49 @@ const ThemeRoutes = [
                 path: "/insurance/enquiries/:contractId",
                 element: <SingelInsuranceEnquiryDetailsPage />,
             },
+
+            //affiliate
+
+            {
+                path: "/affiliate/settings",
+                element: <AffiliateSettingsPage />,
+            },
+
+            {
+                path: "/affiliate/products",
+                element: <AffiliateProductPage />,
+            },
+            {
+                path: "/affiliate/reports",
+                element: <AffiliateReportPage />,
+            },
+            {
+                path: "/affiliate/redeem/requests",
+                element: <AffiliateReedemRequestPage />,
+            },
+
+            //users
+
+            {
+                path: "/users/:id",
+                element: <SingleUserLayout />,
+                children: [
+                    { path: "details", element: <SingleUserDetailsPage /> },
+                    {
+                        path: "transactions",
+                        element: <SingleResellerTransactionsPage />,
+                    },
+                    {
+                        path: "attractions-ticket-orders",
+                        element: <SingleUserAttractionTicketOrdersPage />,
+                    },
+                    {
+                        path: "attractions-booking-orders",
+                        element: <SingleUserAttractionBookingOrdersPage />,
+                    },
+                ],
+            },
+            ,
         ],
     },
     {

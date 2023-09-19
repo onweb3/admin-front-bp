@@ -582,7 +582,7 @@ function QuotationSingleEmailPage() {
                                         {quotationList?.noOfAdults && (
                                             <div>
                                                 Per person Adult price:{" "}
-                                                {amendment?.perPersonAdultPrice?.toFixed(
+                                                {quotationList?.perPersonAdultPrice?.toFixed(
                                                     2
                                                 )}{" "}
                                                 {
@@ -593,198 +593,15 @@ function QuotationSingleEmailPage() {
                                         {quotationList?.noOfChildren ? (
                                             <div className="mt-1">
                                                 Per person Child price:{" "}
-                                                {amendment?.perPersonChildPrice?.toFixed(
+                                                {quotationList?.perPersonChildPrice?.toFixed(
                                                     2
                                                 )}{" "}
-                                                {amendment?.quotationCurrency}
+                                                {
+                                                    quotationList?.quotationCurrency
+                                                }
                                             </div>
                                         ) : (
                                             ""
-                                        )}
-                                    </div>
-                                    <div className="cust-border">
-                                        {quotationList?.hotelQuotation?.stays?.map(
-                                            (stay, index) => {
-                                                return (
-                                                    <div className="mt-6">
-                                                        <h2 className="cust-border mb-2 text-[12px] font-bold">
-                                                            Stay Option{" "}
-                                                            {index + 1}
-                                                        </h2>
-                                                        <table className="w-full text-left">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th className=" text-[12px] font-bold border px-[8px] py-[8px]">
-                                                                        Checkin
-                                                                        Date
-                                                                    </th>
-                                                                    <th className="text-[12px] font-bold border px-[8px] py-[8px]">
-                                                                        Checkout
-                                                                        Date
-                                                                    </th>
-                                                                    <th className="text-[12px] font-bold border px-[8px] py-[8px]">
-                                                                        Star
-                                                                        Category
-                                                                    </th>
-                                                                    <th className="text-[12px] font-bold border px-[8px] py-[8px]">
-                                                                        Name of
-                                                                        Hotel
-                                                                    </th>
-                                                                    <th className="text-[12px] font-bold border px-[8px] py-[8px]">
-                                                                        Location
-                                                                    </th>
-                                                                    {quotationList
-                                                                        ?.hotelQuotation
-                                                                        ?.stays
-                                                                        ?.length >
-                                                                        0 &&
-                                                                        quotationList?.hotelQuotation?.stays[0]?.roomOccupancyList?.map(
-                                                                            (
-                                                                                roomOccupancy,
-                                                                                index
-                                                                            ) => {
-                                                                                return (
-                                                                                    <th
-                                                                                        key={
-                                                                                            index
-                                                                                        }
-                                                                                        className="text-[12px] font-bold border px-[8px]"
-                                                                                    >
-                                                                                        {
-                                                                                            roomOccupancy?.occupancyShortName
-                                                                                        }
-                                                                                    </th>
-                                                                                );
-                                                                            }
-                                                                        )}
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody className="text-[12px]">
-                                                                {stay?.hotels?.map(
-                                                                    (
-                                                                        item,
-                                                                        multiHotelIndex
-                                                                    ) => {
-                                                                        return (
-                                                                            <tr
-                                                                                key={
-                                                                                    multiHotelIndex
-                                                                                }
-                                                                                className=""
-                                                                            >
-                                                                                <td className="border px-[8px] py-[5px]">
-                                                                                    {item?.checkInDate
-                                                                                        ? new Date(
-                                                                                              item?.checkInDate
-                                                                                          ).toDateString()
-                                                                                        : "N/A"}
-                                                                                </td>
-                                                                                <td className="border px-[10px] py-[5px]">
-                                                                                    {item?.checkOutDate
-                                                                                        ? new Date(
-                                                                                              item?.checkOutDate
-                                                                                          ).toDateString()
-                                                                                        : "N/A"}
-                                                                                </td>
-                                                                                <td className="border px-[10px] py-[5px]">
-                                                                                    {item?.starCategory
-                                                                                        ? item?.starCategory
-                                                                                        : "N/A"}
-                                                                                </td>
-                                                                                <td className="border px-[10px]">
-                                                                                    {item?.hotelName ||
-                                                                                        "N/A"}
-                                                                                    <br />
-                                                                                    {item?.roomOccupancyName && (
-                                                                                        <>
-                                                                                            <span className="">
-                                                                                                *{" "}
-                                                                                                {
-                                                                                                    item?.roomOccupancyName
-                                                                                                }
-                                                                                            </span>
-                                                                                            <br />
-                                                                                        </>
-                                                                                    )}
-                                                                                    {/* <span className="block mt-1">
-                                                                *{" "}
-                                                                {item.isBreakfastIncluded
-                                                                    ? "Breakfast Included"
-                                                                    : "Room Only"}
-                                                            </span>
-                                                            <span className="block mt-1">
-                                                                *{" "}
-                                                                {item?.isRefundable
-                                                                    ? "Refundable"
-                                                                    : "Non Refundable"}
-                                                            </span> */}
-                                                                                    <span className="block mt-1">
-                                                                                        *{" "}
-                                                                                        Room
-                                                                                        Type
-                                                                                        :{" "}
-                                                                                        {
-                                                                                            item?.roomTypeName
-                                                                                        }
-                                                                                    </span>
-                                                                                    <span className="block mt-1">
-                                                                                        *{" "}
-                                                                                        Board
-                                                                                        Type
-                                                                                        :{" "}
-                                                                                        {
-                                                                                            item?.boardTypeCode
-                                                                                        }
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td className="border px-[10px]">
-                                                                                    {item?.city ||
-                                                                                        "N/A"}
-                                                                                </td>
-                                                                                {multiHotelIndex <
-                                                                                    1 &&
-                                                                                    stay?.roomOccupancyList?.map(
-                                                                                        (
-                                                                                            roomOccupancy,
-                                                                                            index
-                                                                                        ) => {
-                                                                                            return (
-                                                                                                <td
-                                                                                                    rowSpan={
-                                                                                                        stay
-                                                                                                            ?.hotels
-                                                                                                            ?.length >
-                                                                                                        0
-                                                                                                            ? stay
-                                                                                                                  ?.hotels
-                                                                                                                  ?.length
-                                                                                                            : 0
-                                                                                                    }
-                                                                                                    key={
-                                                                                                        index
-                                                                                                    }
-                                                                                                    className="border px-[10px]"
-                                                                                                >
-                                                                                                    {roomOccupancy?.priceWithTransfer
-                                                                                                        ? roomOccupancy?.priceWithTransfer?.toFixed(
-                                                                                                              2
-                                                                                                          ) +
-                                                                                                          " " +
-                                                                                                          quotationList?.quotationCurrency
-                                                                                                        : "N/A"}
-                                                                                                </td>
-                                                                                            );
-                                                                                        }
-                                                                                    )}
-                                                                            </tr>
-                                                                        );
-                                                                    }
-                                                                )}
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                );
-                                            }
                                         )}
                                     </div>
                                 </>

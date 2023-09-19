@@ -365,6 +365,42 @@ const adminRoles = [
         category: "insurance",
         permissions: [],
     },
+
+    //Affiliation
+
+    {
+        name: "affiliate-settings",
+        displayName: "Affiliate Settings",
+        category: "marketing",
+        permissions: [],
+    },
+    {
+        name: "affiliate-reports",
+        displayName: "Affiliate Reports",
+        category: "marketing",
+        permissions: [],
+    },
+    {
+        name: "affiliate-products",
+        displayName: "Affiliate Products",
+        category: "marketing",
+        permissions: [],
+    },
+    {
+        name: "affiliate-redeem-requests",
+        displayName: "Affiliate Redeem Requests",
+        category: "marketing",
+        permissions: [],
+    },
+
+    //Users
+
+    {
+        name: "users",
+        displayName: "Users",
+        category: "users",
+        permissions: [],
+    },
 ];
 
 export default adminRoles;

@@ -127,7 +127,7 @@ export default function SingleResellerAdminAccessPage() {
                                                 "attractions"
                                             );
                                         }}
-                                        randomIndex={"access"}
+                                        randomIndex={"attractions"}
                                     />
                                 </div>
                                 <div>
@@ -144,7 +144,7 @@ export default function SingleResellerAdminAccessPage() {
                                                 "a2as"
                                             );
                                         }}
-                                        randomIndex={"access"}
+                                        randomIndex={"a2as"}
                                     />
                                 </div>
                                 <div>
@@ -161,7 +161,7 @@ export default function SingleResellerAdminAccessPage() {
                                                 "hotels"
                                             );
                                         }}
-                                        randomIndex={"access"}
+                                        randomIndex={"hotels"}
                                     />
                                 </div>
                                 <div>
@@ -178,7 +178,7 @@ export default function SingleResellerAdminAccessPage() {
                                                 "fligths"
                                             );
                                         }}
-                                        randomIndex={"access"}
+                                        randomIndex={"fligths"}
                                     />
                                 </div>
                                 <div>
@@ -195,7 +195,7 @@ export default function SingleResellerAdminAccessPage() {
                                                 "quotations"
                                             );
                                         }}
-                                        randomIndex={"access"}
+                                        randomIndex={"quotations"}
                                     />
                                 </div>{" "}
                                 <div>
@@ -212,7 +212,7 @@ export default function SingleResellerAdminAccessPage() {
                                                 "visas"
                                             );
                                         }}
-                                        randomIndex={"access"}
+                                        randomIndex={"visas"}
                                     />
                                 </div>{" "}
                             </div>

@@ -226,7 +226,7 @@ export default function EditTransferStayQuotation({
                         className="w-full flex justify-center items-center bg-stone-200/40 "
                         // onClick={fetchvehicles}
                     >
-                        <div className="flex justify-between items-top gap-[20px] p-4 ">
+                        <div className="grid grid-cols-5 items-top gap-[20px] p-4 ">
                             {vehicles.length > 0 ? (
                                 vehicles.map((veh) => {
                                     return (

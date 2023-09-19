@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import axios from "../../axios";
@@ -17,6 +17,7 @@ export default function UsersPage() {
     });
 
     const { jwtToken } = useSelector((state) => state.admin);
+    const navigate = useNavigate();
 
     const fetchUsers = async () => {
         try {
@@ -98,6 +99,11 @@ export default function UsersPage() {
                                                 <tr
                                                     key={index}
                                                     className="border-b border-tableBorderColor"
+                                                    onClick={() =>
+                                                        navigate(
+                                                            `/users/${user?._id}/details`
+                                                        )
+                                                    }
                                                 >
                                                     <td className="p-3">
                                                         <div className="flex items-center gap-[10px]">

@@ -107,6 +107,35 @@ const sidebarMenus = {
             ],
         },
     ],
+    Marketing: [
+        {
+            name: "Affiliate",
+            icon: <HiOutlineShoppingCart />,
+            link: "#",
+            dropdown: [
+                {
+                    name: "Affiliate Settings",
+                    link: "/affiliate/settings",
+                    permission: ["affiliate-settings", "view"],
+                },
+                {
+                    name: "Affiliate Products",
+                    link: "/affiliate/products",
+                    permission: ["affiliate-products", "view"],
+                },
+                {
+                    name: "Affiliate Reports",
+                    link: "/affiliate/reports",
+                    permission: ["affiliate-reports", "view"],
+                },
+                {
+                    name: "Affiliate Reedem Requests",
+                    link: "/affiliate/redeem/requests",
+                    permission: ["affiliate-redeem-requests", "view"],
+                },
+            ],
+        },
+    ],
     Hotel: [
         {
             name: "Hotels List",
@@ -508,6 +537,14 @@ const sidebarMenus = {
     //     link: "/users",
     //     icon: <HiOutlineUsers />,
     // },
+    Users: [
+        {
+            name: "Users",
+            link: "/users",
+            icon: <HiOutlineUsers />,
+            permission: ["users", "view"],
+        },
+    ],
     settings: [
         {
             name: "Markup Profile",

@@ -12,6 +12,7 @@ export default function EditVehiclePage() {
         name: "",
         normalOccupancy: "",
         airportOccupancy: "",
+        vehicleType: "",
         image: "",
     });
 
@@ -55,6 +56,7 @@ export default function EditVehiclePage() {
             formData.append("name", data.name);
             formData.append("normalOccupancy", data.normalOccupancy);
             formData.append("airportOccupancy", data.airportOccupancy);
+            formData.append("vehicleType", data.vehicleType);
             formData.append("image", image);
 
             await axios.patch(`/transfer/vehicle/update/${id}`, formData, {
@@ -126,6 +128,24 @@ export default function EditVehiclePage() {
                                     required
                                 />
                             </div>
+                            <div>
+                                <label htmlFor="">Vehcile Type</label>
+
+                                <select
+                                    name="vehicleType"
+                                    value={data?.vehicleType || ""}
+                                    onChange={handleChange}
+                                    id=""
+                                    required
+                                    className="capitalize"
+                                >
+                                    <option value="" hidden>
+                                        Select
+                                    </option>
+                                    <option value="normal">Normal</option>
+                                    <option value="luxury">Luxury</option>
+                                </select>
+                            </div>
                             <div className="">
                                 <label htmlFor="">Image</label>
                                 <input
@@ -168,7 +188,7 @@ export default function EditVehiclePage() {
                                 Cancel
                             </button>
                             <button className="w-[120px]">
-                                {isLoading ? <BtnLoader /> : "Add Transfer"}
+                                {isLoading ? <BtnLoader /> : "Update Vehicle"}
                             </button>
                         </div>
                     </form>

@@ -11,6 +11,7 @@ export default function AddVehiclePage() {
         name: "",
         normalOccupancy: "",
         airportOccupancy: "",
+        vehicleType: "normal",
     });
 
     const [isLoading, setIsLoading] = useState(false);
@@ -37,6 +38,7 @@ export default function AddVehiclePage() {
             formData.append("name", data.name);
             formData.append("normalOccupancy", data.normalOccupancy);
             formData.append("airportOccupancy", data.airportOccupancy);
+            formData.append("vehicleType", data.vehicleType);
             formData.append("image", image);
 
             await axios.post(`/transfer/vehicle/new`, formData, {
@@ -108,6 +110,24 @@ export default function AddVehiclePage() {
                                     required
                                 />
                             </div>
+                            <div>
+                                <label htmlFor="">Vehcile Type</label>
+
+                                <select
+                                    name="vehcileType"
+                                    value={data?.vehicleType || ""}
+                                    onChange={handleChange}
+                                    id=""
+                                    required
+                                    className="capitalize"
+                                >
+                                    <option value="" hidden>
+                                        Select
+                                    </option>
+                                    <option value="normal">Normal</option>
+                                    <option value="luxury">Luxury</option>
+                                </select>
+                            </div>
                             <div className="">
                                 <label htmlFor="">Image</label>
                                 <input
@@ -146,7 +166,7 @@ export default function AddVehiclePage() {
                                 Cancel
                             </button>
                             <button className="w-[120px]">
-                                {isLoading ? <BtnLoader /> : "Add Transfer"}
+                                {isLoading ? <BtnLoader /> : "Add Vehicle"}
                             </button>
                         </div>
                     </form>
