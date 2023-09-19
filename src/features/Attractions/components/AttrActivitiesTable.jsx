@@ -56,10 +56,7 @@ export default function AttrActivitiesTable({ section }) {
                 }
             );
 
-            console.log(
-                response.data.balanceDetails,
-                "response.data.balanceDetails"
-            );
+            console.log(response.data.balanceDetails, "response.data.balanceDetails");
 
             setBalanceDetail(response.data.balanceDetails);
             setIsBalanceModalOpen(true);
@@ -74,30 +71,18 @@ export default function AttrActivitiesTable({ section }) {
                     <div className="flex gap-4">
                         {data.isApiConnected === true ? (
                             <div>
-                                <button
-                                    className="px-3 bg-orange-500"
-                                    onClick={onHandleConnect}
-                                >
-                                    {isConnetLoading ? (
-                                        <BtnLoader />
-                                    ) : (
-                                        "Connect"
-                                    )}{" "}
+                                <button className="px-3 bg-orange-500" onClick={onHandleConnect}>
+                                    {isConnetLoading ? <BtnLoader /> : "Connect"}{" "}
                                 </button>
                             </div>
                         ) : (
                             <Link to="activities/add">
-                                <button className="px-3 bg-orange-500">
-                                    + Add Activity
-                                </button>
+                                <button className="px-3 bg-orange-500">+ Add Activity</button>
                             </Link>
                         )}
                         {data.isApiConnected === true ? (
                             <div>
-                                <button
-                                    className="px-3 bg-orange-500"
-                                    onClick={onHandleBalance}
-                                >
+                                <button className="px-3 bg-orange-500" onClick={onHandleBalance}>
                                     {isLoading ? <BtnLoader /> : "Balance"}
                                 </button>
                             </div>
@@ -114,34 +99,29 @@ export default function AttrActivitiesTable({ section }) {
                         <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                             <tr>
                                 <th className="font-[500] p-3">Name</th>
+                                <th className="font-[500] p-3">Type</th>
                                 <th className="font-[500] p-3">Adult Cost</th>
                                 <th className="font-[500] p-3">Child Cost</th>
                                 <th className="font-[500] p-3">Infant Cost</th>
-                                <th className="font-[500] p-3">Vat</th>
+                                <th className="font-[500] p-3">Hourly Cost</th>
+                                {/* <th className="font-[500] p-3">Vat</th>
                                 <th className="font-[500] p-3">
                                     Shared Transfer
                                 </th>
                                 <th className="font-[500] p-3">
                                     Private Transfer
-                                </th>
+                                </th> */}
                                 {data?.bookingType === "ticket" && (
                                     <th className="font-[500] p-3">Tickets</th>
                                 )}
-                                <th className="font-[500] p-3">Promo Code</th>
-
+                                {/* <th className="font-[500] p-3">Promo Code</th> */}
                                 <th className="font-[500] p-3">B2c Markup</th>
-
                                 <th className="font-[500] p-3">Action</th>
                             </tr>
                         </thead>
                         <tbody className="text-sm">
                             {activities?.map((activity, index) => {
-                                return (
-                                    <SingleActivityRow
-                                        activity={activity}
-                                        key={index}
-                                    />
-                                );
+                                return <SingleActivityRow activity={activity} key={index} />;
                             })}
                         </tbody>
                     </table>
