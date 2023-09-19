@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 import axios from "../../../axios";
-import { BtnLoader } from "../../../components";
 import QuotationTransferTable from "./QuotationTransferTable";
 
 export default function AddQuotationDetails({ data, setData }) {
@@ -40,9 +40,7 @@ export default function AddQuotationDetails({ data, setData }) {
 
             navigate("/admin/excursions");
         } catch (err) {
-            setError(
-                err?.response?.data?.error || "something went wrong, Try again"
-            );
+            setError(err?.response?.data?.error || "something went wrong, Try again");
             setIsLoading(false);
         }
     };
@@ -93,7 +91,7 @@ export default function AddQuotationDetails({ data, setData }) {
 
     return (
         <div className="">
-            <div className="bg-white rounded p-6 shadow-sm">
+            <div className="">
                 <form action="" onSubmit={submitHandler}>
                     <div className="flex items-center gap-[10px] pb-6">
                         <input
@@ -111,10 +109,7 @@ export default function AddQuotationDetails({ data, setData }) {
                             className="w-[17px] h-[17px]"
                             id="isQuotation"
                         />
-                        <label
-                            htmlFor="isQuotation"
-                            className="mb-0 font-[600px] text-[16px]"
-                        >
+                        <label htmlFor="isQuotation" className="mb-0 font-[600px]">
                             Do you need to add this activity to quotation ??
                         </label>
                     </div>
@@ -136,19 +131,14 @@ export default function AddQuotationDetails({ data, setData }) {
                                 id="isCarousel"
                             />
 
-                            <label
-                                htmlFor="isCarousel"
-                                className="mb-0 font-[600px] text-[16px]"
-                            >
+                            <label htmlFor="isCarousel" className="mb-0 font-[600px]">
                                 Do you need to add this to carousel ??
                             </label>
                         </div>
                         {data.isCarousel && (
                             <div className="grid grid-cols-3 gap-4 mb-5">
                                 <div className="price mb-5">
-                                    <label htmlFor="input-price">
-                                        Carousel Position{" "}
-                                    </label>
+                                    <label htmlFor="input-price">Carousel Position </label>
                                     <input
                                         type="number"
                                         placeholder="Enter position of carousel"
@@ -170,9 +160,7 @@ export default function AddQuotationDetails({ data, setData }) {
 
                             <div className="grid grid-cols-3 gap-4 mb-5">
                                 <div>
-                                    <label htmlFor="input-descriptions">
-                                        Excursion Type
-                                    </label>
+                                    <label htmlFor="input-descriptions">Excursion Type</label>
                                     <select
                                         className="w-full"
                                         name="qtnActivityType"
@@ -180,17 +168,14 @@ export default function AddQuotationDetails({ data, setData }) {
                                             setData((prev) => {
                                                 return {
                                                     ...prev,
-                                                    qtnActivityType:
-                                                        e.target.value,
+                                                    qtnActivityType: e.target.value,
                                                 };
                                             });
                                         }}
                                         value={data.qtnActivityType}
                                         required
                                     >
-                                        <option value={"transfer"}>
-                                            Transfer
-                                        </option>
+                                        <option value={"transfer"}>Transfer</option>
                                         <option value={"ticket"}>Ticket</option>
                                         {/* <option value={"regular"}>Regular</option> */}
                                     </select>
@@ -204,23 +189,15 @@ export default function AddQuotationDetails({ data, setData }) {
 
                                     <div className="grid grid-cols-3 gap-4 mb-5">
                                         <div className="price mb-5">
-                                            <label htmlFor="input-price">
-                                                Price
-                                            </label>
+                                            <label htmlFor="input-price">Price</label>
                                             <input
                                                 type="number"
                                                 placeholder="Enter price"
                                                 id="input-price"
                                                 name="sicPrice"
-                                                value={
-                                                    data?.transferPricing
-                                                        ?.sicPrice
-                                                }
+                                                value={data?.transferPricing?.sicPrice}
                                                 onChange={(e) => {
-                                                    handleDataChange(
-                                                        e,
-                                                        "transferPricing"
-                                                    );
+                                                    handleDataChange(e, "transferPricing");
                                                 }}
                                             />
                                         </div>
@@ -235,44 +212,28 @@ export default function AddQuotationDetails({ data, setData }) {
                                     </h1>
                                     <div className="grid grid-cols-3 gap-4 mb-5">
                                         <div className="price mb-5">
-                                            <label htmlFor="input-price">
-                                                Adult Price{" "}
-                                            </label>
+                                            <label htmlFor="input-price">Adult Price </label>
                                             <input
                                                 type="number"
                                                 placeholder="Enter price"
                                                 id="input-price"
                                                 name="adultPrice"
-                                                value={
-                                                    data?.ticketPricing
-                                                        ?.adultPrice || ""
-                                                }
+                                                value={data?.ticketPricing?.adultPrice || ""}
                                                 onChange={(e) => {
-                                                    handleDataChange(
-                                                        e,
-                                                        "ticketPricing"
-                                                    );
+                                                    handleDataChange(e, "ticketPricing");
                                                 }}
                                             />
                                         </div>
                                         <div className="price mb-5">
-                                            <label htmlFor="input-price">
-                                                Child Price{" "}
-                                            </label>
+                                            <label htmlFor="input-price">Child Price </label>
                                             <input
                                                 type="number"
                                                 placeholder="Enter price"
                                                 id="input-price"
                                                 name="childPrice"
-                                                value={
-                                                    data?.ticketPricing
-                                                        ?.childPrice || ""
-                                                }
+                                                value={data?.ticketPricing?.childPrice || ""}
                                                 onChange={(e) => {
-                                                    handleDataChange(
-                                                        e,
-                                                        "ticketPricing"
-                                                    );
+                                                    handleDataChange(e, "ticketPricing");
                                                 }}
                                             />
                                         </div>
@@ -282,46 +243,34 @@ export default function AddQuotationDetails({ data, setData }) {
                                     </h1>
                                     <div className="grid grid-cols-3 gap-4 mb-5">
                                         <div className="price mb-5">
-                                            <label htmlFor="input-price">
-                                                Adult Price{" "}
-                                            </label>
+                                            <label htmlFor="input-price">Adult Price </label>
                                             <input
                                                 type="number"
                                                 placeholder="Enter price"
                                                 id="input-price"
                                                 name="sicWithTicketAdultPrice"
                                                 value={
-                                                    data?.ticketPricing
-                                                        ?.sicWithTicketAdultPrice ||
+                                                    data?.ticketPricing?.sicWithTicketAdultPrice ||
                                                     ""
                                                 }
                                                 onChange={(e) => {
-                                                    handleDataChange(
-                                                        e,
-                                                        "ticketPricing"
-                                                    );
+                                                    handleDataChange(e, "ticketPricing");
                                                 }}
                                             />
                                         </div>
                                         <div className="price mb-5">
-                                            <label htmlFor="input-price">
-                                                Child Price
-                                            </label>
+                                            <label htmlFor="input-price">Child Price</label>
                                             <input
                                                 type="number"
                                                 placeholder="Enter price"
                                                 id="input-price"
                                                 name="sicWithTicketChildPrice"
                                                 value={
-                                                    data?.ticketPricing
-                                                        ?.sicWithTicketChildPrice ||
+                                                    data?.ticketPricing?.sicWithTicketChildPrice ||
                                                     ""
                                                 }
                                                 onChange={(e) => {
-                                                    handleDataChange(
-                                                        e,
-                                                        "ticketPricing"
-                                                    );
+                                                    handleDataChange(e, "ticketPricing");
                                                 }}
                                             />
                                         </div>
@@ -344,11 +293,7 @@ export default function AddQuotationDetails({ data, setData }) {
                         ""
                     )}
 
-                    {error && (
-                        <span className="text-sm block text-red-500 mt-2">
-                            {error}
-                        </span>
-                    )}
+                    {error && <span className="text-sm block text-red-500 mt-2">{error}</span>}
                     {/* <div className="mt-4 flex items-center justify-end gap-[12px]">
                         <button
                             className="bg-slate-300 text-textColor px-[15px]"

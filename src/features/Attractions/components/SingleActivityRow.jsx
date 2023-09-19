@@ -35,12 +35,9 @@ export default function SingleActivityRow({ activity }) {
         try {
             const isConfirm = window.confirm("Are you sure to delete?");
             if (isConfirm) {
-                await axios.delete(
-                    `/attractions/activities/delete/${activity?._id}`,
-                    {
-                        headers: { authorization: `Bearer ${jwtToken}` },
-                    }
-                );
+                await axios.delete(`/attractions/activities/delete/${activity?._id}`, {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                });
                 dispatch(deleteAttractionActivity(activity?._id));
             }
         } catch (err) {
@@ -68,34 +65,36 @@ export default function SingleActivityRow({ activity }) {
             <td className="p-3">
                 <span className="block">{activity?.name}</span>
             </td>
-            <td className="p-3">
-                {priceConversion(activity?.adultCost, selectedCurrency, true)}
+            <td className="p-3 capitalize">
+                {activity?.activityType} ({activity?.base})
             </td>
             <td className="p-3">
-                {priceConversion(activity?.childCost, selectedCurrency, true)}
+                {activity?.adultCost
+                    ? priceConversion(activity?.adultCost, selectedCurrency, true)
+                    : "N/A"}
+            </td>
+            <td className="p-3">
+                {activity?.childCost
+                    ? priceConversion(activity?.childCost, selectedCurrency, true)
+                    : "N/A"}
             </td>
             <td className="p-3">
                 {activity?.infantCost
-                    ? priceConversion(
-                          activity?.infantCost,
-                          selectedCurrency,
-                          true
-                      )
+                    ? priceConversion(activity?.infantCost, selectedCurrency, true)
                     : "N/A"}
             </td>
             <td className="p-3">
-                {activity?.isVat ? activity?.vat + "%" : "N/A"}
-            </td>
-            <td className="p-3">
-                {activity?.sharedTransferPrice
-                    ? activity?.sharedTransferPrice + " AED"
+                {activity?.hourlyCost
+                    ? priceConversion(activity?.hourlyCost, selectedCurrency, true)
                     : "N/A"}
             </td>
+            {/* <td className="p-3">{activity?.isVat ? activity?.vat + "%" : "N/A"}</td>
             <td className="p-3">
-                {activity?.privateTransferPrice
-                    ? activity?.privateTransferPrice + " AED"
-                    : "N/A"}
+                {activity?.sharedTransferPrice ? activity?.sharedTransferPrice + " AED" : "N/A"}
             </td>
+            <td className="p-3">
+                {activity?.privateTransferPrice ? activity?.privateTransferPrice + " AED" : "N/A"}
+            </td> */}
             {data?.bookingType === "ticket" && (
                 <td className="p-3">
                     <Link
@@ -106,12 +105,10 @@ export default function SingleActivityRow({ activity }) {
                     </Link>
                 </td>
             )}
-            <td className="p-3 items-center">
+            {/* <td className="p-3 items-center">
                 {activity.isPromoCode ? (
                     <>
-                        <span className="block">
-                            {activity?.promoCode || "N/A"}
-                        </span>
+                        <span className="block">{activity?.promoCode || "N/A"}</span>
                         <span className="block">
                             ({activity?.promoAmount + "AED" || "N/A"})
                         </span>{" "}
@@ -119,14 +116,12 @@ export default function SingleActivityRow({ activity }) {
                 ) : (
                     <span className="block">{"N/A"}</span>
                 )}
-            </td>
+            </td> */}
             <td className="font-[500] p-3 text-left">
                 <div className="flex items-center gap-[15px]">
                     {b2cmarkup?.adultMarkup
                         ? b2cmarkup?.adultMarkup +
-                          (b2cmarkup?.adultMarkupType === "percentage"
-                              ? "%"
-                              : " AED")
+                          (b2cmarkup?.adultMarkupType === "percentage" ? "%" : " AED")
                         : "N/A"}
 
                     <button
@@ -152,11 +147,7 @@ export default function SingleActivityRow({ activity }) {
                         className="h-auto bg-transparent text-grayColor text-xl"
                         onClick={changeActiveStatus}
                     >
-                        {isActiveStatus === true ? (
-                            <AiFillEye />
-                        ) : (
-                            <AiFillEyeInvisible />
-                        )}
+                        {isActiveStatus === true ? <AiFillEye /> : <AiFillEyeInvisible />}
                     </button>
                     <button
                         className="h-auto bg-transparent text-red-500 text-xl"
