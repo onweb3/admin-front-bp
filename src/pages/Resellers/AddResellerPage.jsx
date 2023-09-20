@@ -22,7 +22,7 @@ export default function AddResellerPage() {
         trnNumber: "",
         companyRegistration: "",
         telephoneNumber: "",
-        status: "ok",
+        status: "pending",
     });
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
