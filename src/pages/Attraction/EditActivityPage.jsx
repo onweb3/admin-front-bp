@@ -334,7 +334,7 @@ export default function EditActivityPage() {
                                             onChange={handleChange}
                                         />
                                     </div>
-                                    {data.activityType === "normal" && data.base === "hourly" ? (
+                                    {data.base === "hourly" ? (
                                         <>
                                             <div className="">
                                                 <label htmlFor="">Purchase Cost (Hourly)</label>
@@ -348,7 +348,7 @@ export default function EditActivityPage() {
                                                 />
                                             </div>
                                         </>
-                                    ) : data.activityType === "normal" ? (
+                                    ) : (
                                         <>
                                             <div className="">
                                                 <label htmlFor="">Purchase Cost (Adult)</label>
@@ -383,8 +383,6 @@ export default function EditActivityPage() {
                                                 />
                                             </div>
                                         </>
-                                    ) : (
-                                        <></>
                                     )}
                                 </div>
                                 <div className="mt-5 grid grid-cols-3 gap-5 items-end">

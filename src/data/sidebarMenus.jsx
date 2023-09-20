@@ -107,35 +107,6 @@ const sidebarMenus = {
             ],
         },
     ],
-    Marketing: [
-        {
-            name: "Affiliate",
-            icon: <HiOutlineShoppingCart />,
-            link: "#",
-            dropdown: [
-                {
-                    name: "Affiliate Settings",
-                    link: "/affiliate/settings",
-                    permission: ["affiliate-settings", "view"],
-                },
-                {
-                    name: "Affiliate Products",
-                    link: "/affiliate/products",
-                    permission: ["affiliate-products", "view"],
-                },
-                {
-                    name: "Affiliate Reports",
-                    link: "/affiliate/reports",
-                    permission: ["affiliate-reports", "view"],
-                },
-                {
-                    name: "Affiliate Reedem Requests",
-                    link: "/affiliate/redeem/requests",
-                    permission: ["affiliate-redeem-requests", "view"],
-                },
-            ],
-        },
-    ],
     Hotel: [
         {
             name: "Hotels List",
@@ -302,6 +273,12 @@ const sidebarMenus = {
             icon: <MdOutlineSummarize />,
             link: "/a2a/summary",
             permission: ["a2a-summary", "view"],
+        },
+        {
+            name: "A2A Staistics",
+            icon: <MdOutlineSummarize />,
+            link: "/a2a/statistics",
+            permission: ["a2a-statistics", "view"],
         },
     ],
     Quotation: [
@@ -476,6 +453,35 @@ const sidebarMenus = {
             icon: <HiOutlineDocumentReport />,
             link: "/vouchers/daily-reports",
             permission: ["daily-reports", "view"],
+        },
+    ],
+    Marketing: [
+        {
+            name: "Affiliate",
+            icon: <HiOutlineShoppingCart />,
+            link: "#",
+            dropdown: [
+                {
+                    name: "Affiliate Settings",
+                    link: "/affiliate/settings",
+                    permission: ["affiliate-settings", "view"],
+                },
+                {
+                    name: "Affiliate Products",
+                    link: "/affiliate/products",
+                    permission: ["affiliate-products", "view"],
+                },
+                {
+                    name: "Affiliate Reports",
+                    link: "/affiliate/reports",
+                    permission: ["affiliate-reports", "view"],
+                },
+                {
+                    name: "Affiliate Reedem Requests",
+                    link: "/affiliate/redeem/requests",
+                    permission: ["affiliate-redeem-requests", "view"],
+                },
+            ],
         },
     ],
     Account: [

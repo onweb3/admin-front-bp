@@ -1,8 +1,4 @@
-import {
-    AdminLayout,
-    EditProfileLayout,
-    SingleResellerLayout,
-} from "../layouts";
+import { AdminLayout, EditProfileLayout, SingleResellerLayout } from "../layouts";
 import A2aAddTicketPage from "../pages/A2A/A2aAddTicketPage";
 import A2AEditTicketPage from "../pages/A2A/A2aEditTicketPage";
 import A2AEnquiryPage from "../pages/A2A/A2AEnquiryPage";
@@ -184,6 +180,7 @@ import SingleUserLayout from "../layouts/SingleUserLayout";
 import SingleUserDetailsPage from "../pages/Users/SingleUserDetailsPage";
 import SingleUserAttractionBookingOrdersPage from "../pages/Users/SingleUserAttractionBooking";
 import SingleUserAttractionTicketOrdersPage from "../pages/Users/SingleUserAttractionTicketOrderPage";
+import A2aStatisticsPage from "../pages/A2A/A2aStatisticsPage";
 
 const ThemeRoutes = [
     {
@@ -473,6 +470,10 @@ const ThemeRoutes = [
             {
                 path: "/a2a/summary",
                 element: <A2aSummaryPage />,
+            },
+            {
+                path: "/a2a/statistics",
+                element: <A2aStatisticsPage />,
             },
             {
                 path: "/vouchers",
