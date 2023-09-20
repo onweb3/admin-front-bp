@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import axios from "../../axios";
 import { PageLoader, Pagination } from "../../components";
 import { ResellersTableRow } from "../../features/Resellers";
+import moment from "moment";
+import BtnLoader from "../../components/BtnLoader";
 
 export default function B2bListPage() {
     const [resellers, setResellers] = useState([]);
@@ -16,6 +18,7 @@ export default function B2bListPage() {
         searchQuery: "",
         status: "",
     });
+    const [isSheetLoading, setIsSheetLoading] = useState(false)
 
     const [searchParams, setSearchParams] = useSearchParams();
     const { jwtToken } = useSelector((state) => state.admin);
@@ -79,6 +82,40 @@ export default function B2bListPage() {
         fetchResellers({ skip, limit, searchQuery, status });
     }, [searchParams]);
 
+    const getExcelSheet = async () => {
+        try {
+            let skip = Number(searchParams.get("skip")) > 0 ? Number(searchParams.get("skip")) - 1 : 0;
+            let limit = Number(searchParams.get("limit")) > 0 ? Number(searchParams.get("limit")) : 10;
+            let searchQuery = searchParams.get("searchQuery") || "";
+            let status = searchParams.get("status") || "";
+
+            setIsSheetLoading(true)
+            const res = await axios.get(`/resellers/all-excelSheet?role=reseller&skip=${skip}&limit=${limit}&status=${status}&searchQuery=${searchQuery}`, {
+                headers: { authorization: `Bearer ${jwtToken}` }, 
+            })
+           
+            let currentDate = new Date()
+            let formatedDate = moment(currentDate).format('YYYY-MM-DD')
+
+            const url = window.URL.createObjectURL(
+                new Blob([res.data], { type: "application/xlsx" })
+              );
+        
+              const link = document.createElement("a");
+              link.href = url;
+              link.setAttribute("download", `B2BList${formatedDate}.xlsx`);
+              document.body.appendChild(link);
+              link.click();
+
+              setIsSheetLoading(false)
+
+        } catch (error) {
+            setIsSheetLoading(false)
+           console.log(error,"fentch error"); 
+        }
+    }
+
+
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
@@ -135,6 +172,20 @@ export default function B2bListPage() {
                                     <button className="w-[150px]">+ Add New</button>
                                 </Link>
                             </div>
+                        <div>
+                            {
+                                !isSheetLoading ? (
+                                    <button 
+                                    className="w-[150px]"
+                                    onClick={()=>getExcelSheet()}
+                                    >Excel sheet</button>
+                                ) : (
+                                    <button 
+                                    className="w-[150px]"
+                                    > <BtnLoader/> </button>
+                                )
+                            }
+                        </div>
                         </div>
                     </div>
                     {isLoading ? (
