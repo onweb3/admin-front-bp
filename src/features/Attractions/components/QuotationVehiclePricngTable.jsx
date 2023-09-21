@@ -7,6 +7,7 @@ export default function QuotationVehiclePricingTable({
     setPricing,
     pricing,
     vehicles,
+    seasons,
 }) {
     const addNewRow = (e) => {
         e.preventDefault();
@@ -15,12 +16,11 @@ export default function QuotationVehiclePricingTable({
             {
                 fromDate: "",
                 toDate: "",
-                vehicles: [],
+                vehicleType: [],
             },
         ]);
     };
-
-  
+   
 
     return (
         <div className="mt-4">
@@ -38,6 +38,7 @@ export default function QuotationVehiclePricingTable({
                                 </button>
                             </div>
                         </th>
+                        <th className="font-[500] p-2 border">Season</th>
                         <th className="font-[500] p-2 border">From Date</th>
                         <th className="font-[500] p-2 border">To Date</th>
                         <th className="font-[500] p-2 border">
@@ -56,6 +57,7 @@ export default function QuotationVehiclePricingTable({
                                 pricing={pricing}
                                 index={index}
                                 addNewRow={addNewRow}
+                                seasons={seasons}
                             />
                         );
                     })}

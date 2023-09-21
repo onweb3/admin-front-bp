@@ -13,11 +13,12 @@ export default function ActivityProfileRow({
     setInitalAttractionList,
     rowClass,
     index,
+    type,
 }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const { selectedCurrency } = useSelector((state) => state.general);
-    const { profileId } = useParams();
+    const { profileId, marketId } = useParams();
     const { id } = useParams();
 
     const { jwtToken } = useSelector((state) => state.admin);
@@ -36,23 +37,44 @@ export default function ActivityProfileRow({
     };
 
     const handleSubmit = async () => {
-        if (profileId) {
-            const response = await axios.post(
-                `/profile/update-activities-profile/${profileId}`,
-                formData,
-                {
-                    headers: { authorization: `Bearer ${jwtToken}` },
-                }
-            );
+        if (type === "market") {
+            if (marketId) {
+                const response = await axios.post(
+                    `/market/update-activities-profile/${marketId}`,
+                    formData,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+            } else {
+                const response = await axios.post(
+                    `/market/b2b/update-activities-profile/${id}`,
+                    formData,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+            }
         } else {
-            const response = await axios.post(
-                `/profile/b2b/update-activities-profile/${id}`,
-                formData,
-                {
-                    headers: { authorization: `Bearer ${jwtToken}` },
-                }
-            );
+            if (profileId) {
+                const response = await axios.post(
+                    `/profile/update-activities-profile/${profileId}`,
+                    formData,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+            } else {
+                const response = await axios.post(
+                    `/profile/b2b/update-activities-profile/${id}`,
+                    formData,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+            }
         }
+
         // Find the index of the existing activity in the `activity` array
 
         setAttractionList((preAttr) => {

@@ -4,7 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "../../../axios";
 // import BookingsOrdersSingleRow from "./BookingsOrdersSingleRow";
 
-export default function FlightProfileRow({ airline, index, a2a, setA2a }) {
+export default function FlightProfileRow({
+    airline,
+    index,
+    a2a,
+    setA2a,
+    type,
+}) {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const [formData, setFormData] = useState({
@@ -16,7 +22,7 @@ export default function FlightProfileRow({ airline, index, a2a, setA2a }) {
     const { id } = useParams();
 
     const [isPageLoading, setIsPageLoading] = useState(false);
-    const { profileId } = useParams();
+    const { profileId, marketId } = useParams();
     const navigate = useNavigate();
     const { jwtToken } = useSelector((state) => state.admin);
 
@@ -29,24 +35,46 @@ export default function FlightProfileRow({ airline, index, a2a, setA2a }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (profileId) {
-            const response = await axios.post(
-                `/profile/update-flight-profile/${profileId}`,
-                formData,
-                {
-                    headers: { authorization: `Bearer ${jwtToken}` },
-                }
-            );
-            setIsModalOpen(false);
+        if (type === "market") {
+            if (marketId) {
+                const response = await axios.post(
+                    `/market/update-flight-profile/${marketId}`,
+                    formData,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+                setIsModalOpen(false);
+            } else {
+                const response = await axios.post(
+                    `/market/b2b/update-flight-profile/${id}`,
+                    formData,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+                setIsModalOpen(false);
+            }
         } else {
-            const response = await axios.post(
-                `/profile/b2b/update-flight-profile/${id}`,
-                formData,
-                {
-                    headers: { authorization: `Bearer ${jwtToken}` },
-                }
-            );
-            setIsModalOpen(false);
+            if (profileId) {
+                const response = await axios.post(
+                    `/profile/update-flight-profile/${profileId}`,
+                    formData,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+                setIsModalOpen(false);
+            } else {
+                const response = await axios.post(
+                    `/profile/b2b/update-flight-profile/${id}`,
+                    formData,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+                setIsModalOpen(false);
+            }
         }
 
         // setData(formData);

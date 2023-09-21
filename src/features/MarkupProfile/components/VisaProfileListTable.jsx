@@ -5,13 +5,13 @@ import axios from "../../../axios";
 import VisaProfileRow from "./visaProfileRow";
 // import BookingsOrdersSingleRow from "./BookingsOrdersSingleRow";
 
-export default function VisaProfileListTable({}) {
+export default function VisaProfileListTable({ type }) {
     const [visaTypeList, setVisaTypeList] = useState([]);
     const [visa, setVisa] = useState([]);
     const [activity, setActivity] = useState([]);
 
     const [isPageLoading, setIsPageLoading] = useState(false);
-    const { profileId } = useParams();
+    const { profileId, marketId } = useParams();
     const { id } = useParams();
 
     const navigate = useNavigate();
@@ -20,24 +20,46 @@ export default function VisaProfileListTable({}) {
     const fetchVisaInitialData = async () => {
         try {
             setIsPageLoading(true);
-            if (profileId) {
-                const response = await axios.get(
-                    `/profile/get-all-visatype/${profileId}`,
-                    {
-                        headers: { authorization: `Bearer ${jwtToken}` },
-                    }
-                );
+            if (type === "market") {
+                if (marketId) {
+                    const response = await axios.get(
+                        `/market/get-all-visatype/${marketId}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
 
-                setVisaTypeList(response.data);
+                    setVisaTypeList(response.data);
+                } else {
+                    const response = await axios.get(
+                        `/market/b2b/get-all-visatype/${id}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
+
+                    setVisaTypeList(response.data);
+                }
             } else {
-                const response = await axios.get(
-                    `/profile/b2b/get-all-visatype/${id}`,
-                    {
-                        headers: { authorization: `Bearer ${jwtToken}` },
-                    }
-                );
+                if (profileId) {
+                    const response = await axios.get(
+                        `/profile/get-all-visatype/${profileId}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
 
-                setVisaTypeList(response.data);
+                    setVisaTypeList(response.data);
+                } else {
+                    const response = await axios.get(
+                        `/profile/b2b/get-all-visatype/${id}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
+
+                    setVisaTypeList(response.data);
+                }
             }
 
             setIsPageLoading(false);
@@ -76,6 +98,7 @@ export default function VisaProfileListTable({}) {
                                     visa={visa}
                                     setVisa={setVisa}
                                     // section={section}
+                                    type={type}
                                 />
                             );
                         })}

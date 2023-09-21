@@ -787,6 +787,27 @@ export default function EditActivityPage() {
                                         />
                                     </div>
                                 </div>
+                                {error && (
+                                    <span className="text-sm block text-red-500 mt-2">
+                                        {error}
+                                    </span>
+                                )}
+                                <div className="mt-4 flex items-center justify-end gap-[12px]">
+                                    <button
+                                        className="bg-slate-300 text-textColor px-[15px]"
+                                        type="button"
+                                        onClick={() => navigate(-1)}
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button className="w-[150px]">
+                                        {isLoading ? (
+                                            <BtnLoader />
+                                        ) : (
+                                            "Update Activity"
+                                        )}
+                                    </button>
+                                </div>
                             </div>
                             <div
                                 className={` ${
@@ -805,27 +826,6 @@ export default function EditActivityPage() {
                                         setData={setData}
                                     />
                                 </div>
-                            </div>
-                            {error && (
-                                <span className="text-sm block text-red-500 mt-2">
-                                    {error}
-                                </span>
-                            )}
-                            <div className="mt-4 flex items-center justify-end gap-[12px]">
-                                <button
-                                    className="bg-slate-300 text-textColor px-[15px]"
-                                    type="button"
-                                    onClick={() => navigate(-1)}
-                                >
-                                    Cancel
-                                </button>
-                                <button className="w-[150px]">
-                                    {isLoading ? (
-                                        <BtnLoader />
-                                    ) : (
-                                        "Update Activity"
-                                    )}
-                                </button>
                             </div>
                         </form>
                     </div>

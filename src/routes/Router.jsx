@@ -186,6 +186,12 @@ import SingleUserAttractionBookingOrdersPage from "../pages/Users/SingleUserAttr
 import SingleUserAttractionTicketOrdersPage from "../pages/Users/SingleUserAttractionTicketOrderPage";
 import SingleUserTransactionsPage from "../pages/Users/SingleUserTransationPage";
 import SingleUserPointHistoryPage from "../pages/Users/SingleUserPointHistoryPage";
+import MarketProfileListPage from "../pages/Market Profiles/MarketProfileListPage";
+import EditMarkupStrategyPage from "../pages/Market Profiles/EditMarketStrategyPage";
+import ResellerMarketStrategyPage from "../pages/Market Profiles/ResellerMarketStrategyPage";
+import SeasonsListPage from "../pages/Seasons/SeasonsListPage";
+import AddSeasonsPage from "../pages/Seasons/AddSeasonsPage";
+import EditSeasonsPage from "../pages/Seasons/EditSeasonPage";
 
 const ThemeRoutes = [
     {
@@ -528,6 +534,19 @@ const ThemeRoutes = [
                 path: "/markup/profile/:profileId/edit",
                 element: <EditMarkupProfilePage />,
             },
+
+            {
+                path: "/market/startegy",
+                element: <MarketProfileListPage />,
+            },
+            {
+                path: "/market/startegy/add",
+                element: <AddMarkupProfilePage />,
+            },
+            {
+                path: "/market/startegy/:marketId/edit",
+                element: <EditMarkupStrategyPage />,
+            },
             {
                 path: "/refund/list",
                 element: <RefundPage />,
@@ -676,6 +695,11 @@ const ThemeRoutes = [
                         path: "admin-access",
                         element: <SingleResellerAdminAccessPage />,
                     },
+                    {
+                        path: "market-strategy",
+                        element: <ResellerMarketStrategyPage />,
+                    },
+                    ,
                 ],
             },
             {
@@ -949,6 +973,21 @@ const ThemeRoutes = [
                     ,
                 ],
             },
+
+            //seasons
+            {
+                path: "/seasons",
+                element: <SeasonsListPage />,
+            },
+            {
+                path: "/seasons/add",
+                element: <AddSeasonsPage />,
+            },
+            {
+                path: "/seasons/:id/edit",
+                element: <EditSeasonsPage />,
+            },
+
             ,
         ],
     },

@@ -796,19 +796,6 @@ export default function AddActivityPage() {
                                     </table>
                                 </div>
                             </div>
-
-                            <div
-                                className={` ${
-                                    section === "quotation"
-                                        ? "w-full pt-6"
-                                        : "hidden"
-                                }`}
-                            >
-                                <AddQuotationDetails
-                                    data={data}
-                                    setData={setData}
-                                />
-                            </div>
                             {error && (
                                 <span className="text-sm block text-red-500 mt-2">
                                     {error}
@@ -827,6 +814,16 @@ export default function AddActivityPage() {
                                 </button>
                             </div>
                         </form>
+
+                        <div
+                            className={` ${
+                                section === "quotation"
+                                    ? "w-full pt-6"
+                                    : "hidden"
+                            }`}
+                        >
+                            <AddQuotationDetails />
+                        </div>
                     </div>
                 </div>
             )}

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "../../../axios";
 import { BtnLoader } from "../../../components";
+import QuotationPricingTransferTable from "./QuotationPricingTransferTable";
 import QuotationTransferTable from "./QuotationTransferTable";
 import QuotationVehiclePricingTable from "./QuotationVehiclePricngTable";
 import QuotationPricingTable from "./QuotatoinPricingTable";
@@ -14,11 +15,17 @@ export default function AddQuotationDetails({}) {
     const [data, setData] = useState({
         isQuotation: true,
         isCarousel: true,
+        carouselPosition: "",
+        excursionType: "transfer",
     });
+    const [seasons, setSeasons] = useState([]);
 
-    const [ticketPricing, setTicketPricing] = useState([]);
+    const { id, activityId } = useParams();
+
+    const [ticketPrice, setTicketPrice] = useState([]);
     const [sicWithTicket, setSicWithTicket] = useState([]);
-    const [transferPricing, setTransferPricing] = useState([]);
+    const [privateTransfer, setPrivateTransfer] = useState([]);
+    const [sicPrice, setSicPrice] = useState([]);
 
     const { jwtToken } = useSelector((state) => state.admin);
     const navigate = useNavigate();
@@ -42,14 +49,29 @@ export default function AddQuotationDetails({}) {
             e.preventDefault();
             setError("");
             setIsLoading(true);
-            console.log("tokens", jwtToken);
 
-            await axios.post(`/quotation/excursion/add`, data, {
-                headers: { authorization: `Bearer ${jwtToken}` },
-            });
+            await axios.patch(
+                `/quotations/excursion/update/${activityId}`,
+                {
+                    ...data,
+                    ticketPrice,
+                    sicWithTicket,
+                    privateTransfer,
+                    sicPrice,
+                },
+                {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                }
+            );
 
-            navigate("/admin/excursions");
+            setIsLoading(true);
+            setError("");
+
+            navigate(-1);
+
+            // navigate("/attractions");
         } catch (err) {
+            console.log(err);
             setError(
                 err?.response?.data?.error || "something went wrong, Try again"
             );
@@ -71,40 +93,68 @@ export default function AddQuotationDetails({}) {
                     };
                 })
             );
-
-            // const mapVehicleData = (vehicleData) =>
-            //     vehicleData?.map((veh) => ({
-            //         vehicle: veh?._id,
-            //         adultPrice: 0,
-            //         childPrice: 0,
-            //     }));
-
-            // console.log(mapVehicleData, "mapped data");
-
-            // setData((prev) => ({
-            //     ...prev,
-            //     ticketPricing: {
-            //         ...prev.ticketPricing,
-            //         vehicleType: mapVehicleData(response?.data),
-            //     },
-            //     transferPricing: {
-            //         ...prev.transferPricing,
-            //         vehicleType: mapVehicleData(response?.data),
-            //     },
-            // }));
         } catch (err) {
             console.log(err);
         }
     };
 
+    const fetchSeasons = async () => {
+        try {
+            const response = await axios.get(`/season/all`, {
+                headers: { authorization: `Bearer ${jwtToken}` },
+            });
+
+            setSeasons(response.data.seasons);
+        } catch (err) {}
+    };
+
+    const fetchQuoatationData = async () => {
+        try {
+            const response = await axios.get(
+                `/quotations/excursion/single/${activityId}`,
+                {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                }
+            );
+
+            const {
+                excursionType,
+                isQuotation,
+                isCarousel,
+                carouselPosition,
+                ticketPricing,
+                transferPricing,
+            } = response.data;
+
+            setData({
+                excursionType,
+                isQuotation,
+                isCarousel,
+                carouselPosition,
+            });
+
+            setTicketPrice(ticketPricing?.ticketPrice || []);
+
+            setSicWithTicket(ticketPricing?.sicWithTicket || []);
+            setSicPrice(transferPricing?.sicPrice || []);
+            if (excursionType === "ticket") {
+                setPrivateTransfer(ticketPricing.privateTransfer || []);
+            } else if (excursionType === "transfer") {
+                setPrivateTransfer(transferPricing.privateTransfer || []);
+            }
+        } catch (err) {}
+    };
+
     useEffect(() => {
         fetchVehicles();
+        fetchQuoatationData();
+        fetchSeasons();
     }, []);
 
     return (
         <div className="">
             <div className="bg-white rounded p-6 shadow-sm">
-                <form action="" onSubmit={submitHandler}>
+                <form>
                     <div className="flex items-center gap-[10px] pb-6">
                         <input
                             type="checkbox"
@@ -185,17 +235,17 @@ export default function AddQuotationDetails({}) {
                                     </label>
                                     <select
                                         className="w-full"
-                                        name="qtnActivityType"
+                                        name="excursionType"
                                         onChange={(e) => {
                                             setData((prev) => {
                                                 return {
                                                     ...prev,
-                                                    qtnActivityType:
+                                                    excursionType:
                                                         e.target.value,
                                                 };
                                             });
                                         }}
-                                        value={data.qtnActivityType}
+                                        value={data.excursionType}
                                         required
                                     >
                                         <option value={"transfer"}>
@@ -206,23 +256,28 @@ export default function AddQuotationDetails({}) {
                                     </select>
                                 </div>
                             </div>
-                            {data.qtnActivityType === "transfer" && (
+                            {data.excursionType === "transfer" && (
                                 <>
                                     <h1 className="text-[16px] py-2 font-[600] underline pb-4">
                                         Shared Transfer Price
                                     </h1>
-                                    <QuotationPricingTable />
+                                    <QuotationPricingTransferTable
+                                        setPricing={setSicPrice}
+                                        pricing={sicPrice}
+                                        seasons={seasons}
+                                    />
                                 </>
                             )}
 
-                            {data.qtnActivityType === "ticket" && (
+                            {data.excursionType === "ticket" && (
                                 <>
                                     <h1 className="text-[16px] py-2 font-[600] underline pb-4">
                                         Ticket Price
                                     </h1>
                                     <QuotationPricingTable
-                                        setPricing={setTicketPricing}
-                                        pricing={ticketPricing}
+                                        setPricing={setTicketPrice}
+                                        pricing={ticketPrice}
+                                        seasons={seasons}
                                     />
 
                                     <h1 className="text-[16px] py-2 font-[600] underline  pb-4">
@@ -231,6 +286,7 @@ export default function AddQuotationDetails({}) {
                                     <QuotationPricingTable
                                         setPricing={setSicWithTicket}
                                         pricing={sicWithTicket}
+                                        seasons={seasons}
                                     />
                                 </>
                             )}
@@ -241,8 +297,10 @@ export default function AddQuotationDetails({}) {
 
                             <QuotationVehiclePricingTable
                                 vehicles={vehicles}
-                                pricing={transferPricing}
-                                setPricing={setTransferPricing}
+                                pricing={privateTransfer}
+                                setPricing={setPrivateTransfer}
+                                seasons={seasons}
+
                                 // setVehicles={setVehicles}
                                 // data={data}
                                 // setData={setData}
@@ -257,7 +315,7 @@ export default function AddQuotationDetails({}) {
                             {error}
                         </span>
                     )}
-                    {/* <div className="mt-4 flex items-center justify-end gap-[12px]">
+                    <div className="mt-4 flex items-center justify-end gap-[12px]">
                         <button
                             className="bg-slate-300 text-textColor px-[15px]"
                             type="button"
@@ -265,10 +323,21 @@ export default function AddQuotationDetails({}) {
                         >
                             Cancel
                         </button>
-                        <button className="w-[120px]">
-                            {isLoading ? <BtnLoader /> : "Add Transfer"}
-                        </button>
-                    </div> */}
+                        {isLoading ? (
+                            <button className="w-[170px]">
+                                <BtnLoader />
+                            </button>
+                        ) : (
+                            <button
+                                className="w-[170px]"
+                                onClick={(e) => {
+                                    submitHandler(e);
+                                }}
+                            >
+                                Update Quotation
+                            </button>
+                        )}
+                    </div>
                 </form>
             </div>
         </div>

@@ -10,6 +10,7 @@ export default function HotelStarCategoryMarkupModal({
     setIsModalOpen,
     category,
     setCategories,
+    type,
 }) {
     const [formData, setFormData] = useState({
         name: category.name || "",
@@ -22,7 +23,7 @@ export default function HotelStarCategoryMarkupModal({
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [isPageLoading, setIsPageLoading] = useState(false);
-    const { profileId } = useParams();
+    const { profileId, marketId } = useParams();
     const navigate = useNavigate();
     const { id } = useParams();
 
@@ -33,22 +34,42 @@ export default function HotelStarCategoryMarkupModal({
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (profileId) {
-            const response = await axios.post(
-                `/profile/update-starCategory-profile/${profileId}`,
-                formData,
-                {
-                    headers: { authorization: `Bearer ${jwtToken}` },
-                }
-            );
+        if (type === "market") {
+            if (marketId) {
+                const response = await axios.post(
+                    `/market/update-starCategory-profile/${marketId}`,
+                    formData,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+            } else {
+                const response = await axios.post(
+                    `/market/b2b/update-starCategory-profile/${id}`,
+                    formData,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+            }
         } else {
-            const response = await axios.post(
-                `/profile/b2b/update-starCategory-profile/${id}`,
-                formData,
-                {
-                    headers: { authorization: `Bearer ${jwtToken}` },
-                }
-            );
+            if (profileId) {
+                const response = await axios.post(
+                    `/profile/update-starCategory-profile/${profileId}`,
+                    formData,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+            } else {
+                const response = await axios.post(
+                    `/profile/b2b/update-starCategory-profile/${id}`,
+                    formData,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+            }
         }
 
         setCategories((previous) => {

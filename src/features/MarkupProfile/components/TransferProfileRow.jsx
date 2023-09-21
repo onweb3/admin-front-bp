@@ -4,14 +4,19 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "../../../axios";
 // import BookingsOrdersSingleRow from "./BookingsOrdersSingleRow";
 
-export default function A2aProfileRow({ a2aType, index, a2a, setA2a, type }) {
+export default function TransferProfileRow({
+    setTransfers,
+    transfer,
+    index,
+    type,
+}) {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const [formData, setFormData] = useState({
-        atoa: a2aType._id,
-        markupType: a2aType.markupType || "falt",
-        markup: a2aType.markup || 0,
-        isEdit: a2aType?.isEdit || false,
+        transferId: transfer?.transferId,
+        markupType: transfer?.markupType || "flat",
+        markup: transfer?.markup || 0,
+        isEdit: transfer?.isEdit || false,
     });
     const { id } = useParams();
 
@@ -31,7 +36,7 @@ export default function A2aProfileRow({ a2aType, index, a2a, setA2a, type }) {
         if (type === "market") {
             if (marketId) {
                 const response = await axios.post(
-                    `/market/update-a2a-profile/${marketId}`,
+                    `/market/update-transfer-profile/${marketId}`,
                     formData,
                     {
                         headers: { authorization: `Bearer ${jwtToken}` },
@@ -40,7 +45,7 @@ export default function A2aProfileRow({ a2aType, index, a2a, setA2a, type }) {
                 setIsModalOpen(false);
             } else {
                 const response = await axios.post(
-                    `/market/b2b/update-a2a-profile/${id}`,
+                    `/market/b2b/update-transfer-profile/${id}`,
                     formData,
                     {
                         headers: { authorization: `Bearer ${jwtToken}` },
@@ -51,7 +56,7 @@ export default function A2aProfileRow({ a2aType, index, a2a, setA2a, type }) {
         } else {
             if (profileId) {
                 const response = await axios.post(
-                    `/profile/update-a2a-profile/${profileId}`,
+                    `/profile/update-transfer-profile/${profileId}`,
                     formData,
                     {
                         headers: { authorization: `Bearer ${jwtToken}` },
@@ -60,7 +65,7 @@ export default function A2aProfileRow({ a2aType, index, a2a, setA2a, type }) {
                 setIsModalOpen(false);
             } else {
                 const response = await axios.post(
-                    `/profile/b2b/update-a2a-profile/${id}`,
+                    `/profile/b2b/update-transfer-profile/${id}`,
                     formData,
                     {
                         headers: { authorization: `Bearer ${jwtToken}` },
@@ -69,6 +74,24 @@ export default function A2aProfileRow({ a2aType, index, a2a, setA2a, type }) {
                 setIsModalOpen(false);
             }
         }
+
+        setTransfers((prev) => {
+            return prev.map((transfer) => {
+                if (
+                    transfer?.transferId?.toString() ===
+                    formData?.transferId?.toString()
+                ) {
+                    return {
+                        ...transfer,
+                        markupType: formData?.markupType,
+                        markup: formData?.markup,
+                        isEdit: true,
+                    };
+                } else {
+                    return transfer;
+                }
+            });
+        });
 
         // setData(formData);
     };
@@ -81,8 +104,8 @@ export default function A2aProfileRow({ a2aType, index, a2a, setA2a, type }) {
             >
                 {" "}
                 <td className="p-3 "> {index + 1} </td>
-                <td className="p-3 "> {a2aType?.airportFrom?.airportName} </td>
-                <td className="p-3"> {a2aType?.airportTo?.airportName} </td>
+                <td className="p-3 "> {transfer?.transferFrom} </td>
+                <td className="p-3 "> {transfer?.transferTo} </td>
                 {isModalOpen ? (
                     <td className="p-3">
                         <select
@@ -100,7 +123,7 @@ export default function A2aProfileRow({ a2aType, index, a2a, setA2a, type }) {
                 ) : (
                     <td className="p-3 capitalize">
                         <span>
-                            {formData?.markupType ? formData.markupType : "N/A"}{" "}
+                            {transfer?.markupType ? transfer.markupType : "N/A"}{" "}
                         </span>
                     </td>
                 )}
@@ -116,7 +139,7 @@ export default function A2aProfileRow({ a2aType, index, a2a, setA2a, type }) {
                     </td>
                 ) : (
                     <td className="p-3 capitalize">
-                        <span>{formData?.markup}</span>
+                        <span>{transfer?.markup}</span>
                     </td>
                 )}
                 {isModalOpen ? (

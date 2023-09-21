@@ -9,7 +9,7 @@ import axios from "../../../axios";
 import { BtnLoader } from "../../../components";
 import { useHandleClickOutside } from "../../../hooks";
 
-export default function AddProfileMarkupModal({ setIsModalOpen }) {
+export default function AddProfileMarkupModal({ setIsModalOpen, type }) {
     const [formData, setFormData] = useState({
         name: "",
         // markup: data?.markup || "",
@@ -37,15 +37,27 @@ export default function AddProfileMarkupModal({ setIsModalOpen }) {
             e.preventDefault();
             setError("");
             setIsLoading(true);
-            const response = await axios.post(
-                "/profile/add-profile",
-                formData,
-                {
-                    headers: { authorization: `Bearer ${jwtToken}` },
-                }
-            );
+            if (type === "market") {
+                const response = await axios.post(
+                    "/market/add-profile",
+                    formData,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
 
-            navigate(`/markup/profile/${response.data.profileId}/edit`);
+                navigate(`/markup/profile/${response.data.profileId}/edit`);
+            } else {
+                const response = await axios.post(
+                    "/profile/add-profile",
+                    formData,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+
+                navigate(`/markup/profile/${response.data.profileId}/edit`);
+            }
 
             setIsLoading(false);
             setIsModalOpen(false);

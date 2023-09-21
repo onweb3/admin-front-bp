@@ -12,12 +12,18 @@ export default function QuotationProfileTable({}) {
     const [quotation, setQuotation] = useState({
         hotelMarkupType: "flat",
         hotelMarkup: 0,
-        landmarkMarkupType: "flat",
-        landmarkMarkup: 0,
+        landAttractionMarkupType: "flat",
+        landAttractionMarkup: 0,
+        landTransferMarkupType: "flat",
+        landTransferMarkup: 0,
         visaMarkupType: "flat",
         visaMarkup: 0,
     });
-    const [isLandMarkModalOpen, setIsLandmarkModalOpen] = useState(false);
+    const [isLandTransferModalOpen, setIsLandTransferModalOpen] =
+        useState(false);
+    const [isLandAttractionModalOpen, setIsLandAttractionModalOpen] =
+        useState(false);
+
     const [isHotelModalOpen, setIsHotelModalOpen] = useState(false);
     const [isPageLoading, setIsPageLoading] = useState(false);
 
@@ -97,8 +103,10 @@ export default function QuotationProfileTable({}) {
             setIsVisaModalOpen(false);
         } else if (value === "hotel") {
             setIsHotelModalOpen(false);
-        } else if (value === "landmark") {
-            setIsLandmarkModalOpen(false);
+        } else if (value === "landAttraction") {
+            setIsLandAttractionModalOpen(false);
+        } else if (value === "landTransfer") {
+            setIsLandTransferModalOpen(false);
         }
     };
 
@@ -120,13 +128,14 @@ export default function QuotationProfileTable({}) {
                     <tbody className="text-sm">
                         <tr className="border-b border-tableBorderColor">
                             <td className="p-3">1</td>
-                            <td className="p-3">Landmark</td>
-                            {isLandMarkModalOpen ? (
+                            <td className="p-3">Land Attraction</td>
+                            {isLandAttractionModalOpen ? (
                                 <td className="p-3">
                                     <select
-                                        name="landmarkMarkupType"
+                                        name="landAttractionMarkupType"
                                         value={
-                                            quotation?.landmarkMarkupType || ""
+                                            quotation?.landAttractionMarkupType ||
+                                            ""
                                         }
                                         onChange={handleChange}
                                     >
@@ -142,32 +151,37 @@ export default function QuotationProfileTable({}) {
                             ) : (
                                 <td className="p-3 capitalize">
                                     <span>
-                                        {quotation?.landmarkMarkupType
-                                            ? quotation?.landmarkMarkupType
+                                        {quotation?.landAttractionMarkupType
+                                            ? quotation?.landAttractionMarkupType
                                             : "N/A"}{" "}
                                     </span>
                                 </td>
                             )}
-                            {isLandMarkModalOpen ? (
+                            {isLandAttractionModalOpen ? (
                                 <td className="p-3">
                                     <input
                                         type="number"
-                                        name="landmarkMarkup"
-                                        value={quotation?.landmarkMarkup || ""}
+                                        name="landAttractionMarkup"
+                                        value={
+                                            quotation?.landAttractionMarkup ||
+                                            ""
+                                        }
                                         onChange={handleChange}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-1 w-[150px]"
                                     />
                                 </td>
                             ) : (
                                 <td className="p-3 capitalize">
-                                    <span>{quotation?.landmarkMarkup}</span>
+                                    <span>
+                                        {quotation?.landAttractionMarkup}
+                                    </span>
                                 </td>
                             )}
-                            {isLandMarkModalOpen ? (
+                            {isLandAttractionModalOpen ? (
                                 <td
                                     className="p-3"
                                     onClick={(e) => {
-                                        handleSubmit("landmark");
+                                        handleSubmit("landAttraction");
                                     }}
                                 >
                                     <button className="w-[50px] bg-green-500">
@@ -177,12 +191,85 @@ export default function QuotationProfileTable({}) {
                             ) : (
                                 <td
                                     className="p-3"
-                                    onClick={() => setIsLandmarkModalOpen(true)}
+                                    onClick={() =>
+                                        setIsLandAttractionModalOpen(true)
+                                    }
                                 >
                                     <button className="w-[50px]">Edit </button>
                                 </td>
                             )}
                         </tr>
+                        <tr className="border-b border-tableBorderColor">
+                            <td className="p-3">1</td>
+                            <td className="p-3">Landmark Transfer</td>
+                            {isLandTransferModalOpen ? (
+                                <td className="p-3">
+                                    <select
+                                        name="landTranferMarkupType"
+                                        value={
+                                            quotation?.landTransferMarkupType ||
+                                            ""
+                                        }
+                                        onChange={handleChange}
+                                    >
+                                        <option value="" hidden>
+                                            Markup Type
+                                        </option>
+                                        <option value="flat">flat</option>
+                                        <option value="percentage">
+                                            percentage
+                                        </option>
+                                    </select>{" "}
+                                </td>
+                            ) : (
+                                <td className="p-3 capitalize">
+                                    <span>
+                                        {quotation?.landTransferMarkupType
+                                            ? quotation?.landTransferMarkupType
+                                            : "N/A"}{" "}
+                                    </span>
+                                </td>
+                            )}
+                            {isLandTransferModalOpen ? (
+                                <td className="p-3">
+                                    <input
+                                        type="number"
+                                        name="landTransferMarkup"
+                                        value={
+                                            quotation?.landTransferMarkup || ""
+                                        }
+                                        onChange={handleChange}
+                                        className="h-[100%] arrow-hidden p-0 px-2 border-1 w-[150px]"
+                                    />
+                                </td>
+                            ) : (
+                                <td className="p-3 capitalize">
+                                    <span>{quotation?.landTransferMarkup}</span>
+                                </td>
+                            )}
+                            {isLandTransferModalOpen ? (
+                                <td
+                                    className="p-3"
+                                    onClick={(e) => {
+                                        handleSubmit("landTransfer");
+                                    }}
+                                >
+                                    <button className="w-[50px] bg-green-500">
+                                        Apply{" "}
+                                    </button>
+                                </td>
+                            ) : (
+                                <td
+                                    className="p-3"
+                                    onClick={() =>
+                                        setIsLandTransferModalOpen(true)
+                                    }
+                                >
+                                    <button className="w-[50px]">Edit </button>
+                                </td>
+                            )}
+                        </tr>
+
                         <tr className="border-b border-tableBorderColor">
                             <td className="p-3">2</td>
                             <td className="p-3">Hotel</td>

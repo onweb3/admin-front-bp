@@ -6,9 +6,15 @@ import axios from "../../../axios";
 import { Pagination } from "../../../components";
 // import BookingsOrdersSingleRow from "./BookingsOrdersSingleRow";
 
-export default function VisaProfileRow({ visaType, index, visa, setVisa }) {
+export default function VisaProfileRow({
+    visaType,
+    index,
+    visa,
+    setVisa,
+    type,
+}) {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { profileId } = useParams();
+    const { profileId, marketId } = useParams();
     const { id } = useParams();
 
     const { jwtToken } = useSelector((state) => state.admin);
@@ -28,22 +34,43 @@ export default function VisaProfileRow({ visaType, index, visa, setVisa }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (profileId) {
-            const response = await axios.post(
-                `/profile/update-visa-profile/${profileId}`,
-                formData,
-                {
-                    headers: { authorization: `Bearer ${jwtToken}` },
-                }
-            );
+
+        if (type === "market") {
+            if (marketId) {
+                const response = await axios.post(
+                    `/market/update-visa-profile/${marketId}`,
+                    formData,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+            } else {
+                const response = await axios.post(
+                    `/market/b2b/update-visa-profile/${id}`,
+                    formData,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+            }
         } else {
-            const response = await axios.post(
-                `/profile/b2b/update-visa-profile/${id}`,
-                formData,
-                {
-                    headers: { authorization: `Bearer ${jwtToken}` },
-                }
-            );
+            if (profileId) {
+                const response = await axios.post(
+                    `/profile/update-visa-profile/${profileId}`,
+                    formData,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+            } else {
+                const response = await axios.post(
+                    `/profile/b2b/update-visa-profile/${id}`,
+                    formData,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+            }
         }
 
         setIsModalOpen(false);

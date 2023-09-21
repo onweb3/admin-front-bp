@@ -8,6 +8,8 @@ export default function QuotationTransferTable({
     data,
     setData,
 }) {
+
+    
     const deleteExtraRow = (e, id) => {
         if (data?.qtnActivityType === "ticket") {
             setData((prev) => ({
@@ -159,6 +161,26 @@ export default function QuotationTransferTable({
                 }));
             }
         }
+    };
+
+    const handleSeasonChange = (e, index) => {
+        const selectedSeason = seasons.find(
+            (season) => season._id.toString() === e.target.value.toString()
+        );
+
+        if (selectedSeason) {
+            setPricing((prev) => {
+                const updatedPricing = [...prev]; // Create a copy of the previous state array
+                updatedPricing[index] = {
+                    ...updatedPricing[index], // Create a copy of the object at the specified index
+                    fromDate: formatDate(selectedSeason.fromDate),
+                    toDate: formatDate(selectedSeason.toDate),
+                };
+                return updatedPricing; // Return the updated array as the new state
+            });
+        }
+
+        setData(selectedSeason._id);
     };
 
     return (

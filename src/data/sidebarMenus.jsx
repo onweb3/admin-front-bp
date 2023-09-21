@@ -44,6 +44,7 @@ import { RiRefund2Line, RiProfileLine } from "react-icons/ri";
 import { GiWavyItinerary } from "react-icons/gi";
 import { FaGlobe } from "react-icons/fa";
 import { BsFillChatLeftQuoteFill } from "react-icons/bs";
+import { IoBusiness } from "react-icons/io5";
 
 const sidebarMenus = {
     Home: [
@@ -558,6 +559,24 @@ const sidebarMenus = {
                     permission: ["markup-profile", "view"],
                 },
             ],
+        },
+        {
+            name: "Market Strategy",
+            icon: <IoBusiness />,
+            link: "#",
+            dropdown: [
+                {
+                    name: "Market Strategy List",
+                    link: "/market/startegy",
+                    permission: ["market-startegy", "view"],
+                },
+            ],
+        },
+        {
+            name: "Seasons",
+            icon: <AiOutlineApi />,
+            link: "/seasons",
+            permission: ["seasons", "view"],
         },
         {
             name: "API Master",

@@ -8,7 +8,7 @@ import HotelStarCategoryRow from "./HotelStarCategoryRow";
 import HotelRoomTypeTableRow from "./HotelRoomTableRow";
 // import BookingsOrdersSingleRow from "./BookingsOrdersSingleRow";
 
-export default function HotelRoomTypeTable() {
+export default function HotelRoomTypeTable({ type }) {
     const [isPageLoading, setIsPageLoading] = useState(false);
     const [filters, setFilters] = useState({
         skip: 0,
@@ -20,40 +20,72 @@ export default function HotelRoomTypeTable() {
     const [hotels, setHotels] = useState([]);
     const navigate = useNavigate();
     const { jwtToken } = useSelector((state) => state.admin);
-    const { profileId } = useParams();
+    const { profileId, marketId } = useParams();
     const { id } = useParams();
 
     const fetchHotelInitialData = async () => {
         try {
             setIsPageLoading(true);
-            if (profileId) {
-                const response = await axios.get(
-                    `/profile/get-all-hotels?skip=${filters.skip}&limit=${filters.limit}&searchInput=${filters.searchInput}`,
-                    {
-                        headers: { authorization: `Bearer ${jwtToken}` },
-                    }
-                );
-                setFilters((prev) => {
-                    return {
-                        ...prev,
-                        total: response?.data?.total,
-                    };
-                });
-                setHotels(response.data.hotels);
+            if (type === "market") {
+                if (marketId) {
+                    const response = await axios.get(
+                        `/profile/get-all-hotels?skip=${filters.skip}&limit=${filters.limit}&searchInput=${filters.searchInput}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
+                    setFilters((prev) => {
+                        return {
+                            ...prev,
+                            total: response?.data?.total,
+                        };
+                    });
+                    setHotels(response.data.hotels);
+                } else {
+                    const response = await axios.get(
+                        `/profile/b2b/get-all-hotels?skip=${filters.skip}&limit=${filters.limit}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
+                    setFilters((prev) => {
+                        return {
+                            ...prev,
+                            total: response?.data?.total,
+                        };
+                    });
+                    setHotels(response.data.hotels);
+                }
             } else {
-                const response = await axios.get(
-                    `/profile/b2b/get-all-hotels?skip=${filters.skip}&limit=${filters.limit}`,
-                    {
-                        headers: { authorization: `Bearer ${jwtToken}` },
-                    }
-                );
-                setFilters((prev) => {
-                    return {
-                        ...prev,
-                        total: response?.data?.total,
-                    };
-                });
-                setHotels(response.data.hotels);
+                if (profileId) {
+                    const response = await axios.get(
+                        `/profile/get-all-hotels?skip=${filters.skip}&limit=${filters.limit}&searchInput=${filters.searchInput}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
+                    setFilters((prev) => {
+                        return {
+                            ...prev,
+                            total: response?.data?.total,
+                        };
+                    });
+                    setHotels(response.data.hotels);
+                } else {
+                    const response = await axios.get(
+                        `/profile/b2b/get-all-hotels?skip=${filters.skip}&limit=${filters.limit}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
+                    setFilters((prev) => {
+                        return {
+                            ...prev,
+                            total: response?.data?.total,
+                        };
+                    });
+                    setHotels(response.data.hotels);
+                }
             }
 
             setIsPageLoading(false);
@@ -115,6 +147,7 @@ export default function HotelRoomTypeTable() {
                                 <HotelRoomTypeTableRow
                                     key={hotel._id}
                                     hotel={hotel}
+                                    type={type}
                                 />
                             );
                         })}

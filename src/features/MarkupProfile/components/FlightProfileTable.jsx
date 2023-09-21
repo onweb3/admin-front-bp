@@ -6,10 +6,10 @@ import { Pagination } from "../../../components";
 import FlightProfileRow from "./FlightProfileRow";
 // import BookingsOrdersSingleRow from "./BookingsOrdersSingleRow";
 
-export default function FlightProfileTable({}) {
+export default function FlightProfileTable({ type }) {
     const [airlines, setAirlines] = useState([]);
     const [isPageLoading, setIsPageLoading] = useState(false);
-    const { profileId } = useParams();
+    const { profileId, marketId } = useParams();
     const { id } = useParams();
 
     const navigate = useNavigate();
@@ -17,8 +17,51 @@ export default function FlightProfileTable({}) {
 
     const fetchFlightInitialData = async () => {
         try {
+            if (type === "market") {
+            } else {
+            }
             setIsPageLoading(true);
+            if (type === "market") {
+                if (marketId) {
+                    const response = await axios.get(
+                        `/market/get-all-airlines/${marketId}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
 
+                    setAirlines(response.data);
+                } else {
+                    const response = await axios.get(
+                        `/market/b2b/get-all-airlines/${id}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
+
+                    setAirlines(response.data);
+                }
+            } else {
+                if (profileId) {
+                    const response = await axios.get(
+                        `/profile/get-all-airlines/${profileId}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
+
+                    setAirlines(response.data);
+                } else {
+                    const response = await axios.get(
+                        `/profile/b2b/get-all-airlines/${id}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
+
+                    setAirlines(response.data);
+                }
+            }
             if (profileId) {
                 const response = await axios.get(
                     `/profile/get-all-airlines/${profileId}`,
@@ -71,6 +114,7 @@ export default function FlightProfileTable({}) {
                                 <FlightProfileRow
                                     index={index}
                                     airline={airline}
+                                    type={type}
 
                                     // section={section}
                                 />

@@ -10,26 +10,25 @@ import { BtnLoader } from "../../../components";
 import { useHandleClickOutside } from "../../../hooks";
 
 export default function AttracitonMarkupModal({
-    setIsModalOpen,
-    data,
-    setData,
-    setActivity,
-    activity,
-    activities,
+    setAttractionList,
+    setInitalAttractionList,
+    setIsModal,
+    type,
 }) {
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
-        activity: activities._id,
         markupType: "",
         markup: "",
     });
 
+    console.log("modal");
+
     const wrapperRef = useRef();
     useHandleClickOutside(wrapperRef, () => {
-        setIsModalOpen(false);
+        setIsModal(false);
     });
-    const { id } = useParams();
+    const { id, marketId } = useParams();
     const { jwtToken } = useSelector((state) => state.admin);
 
     const handleChange = (e) => {
@@ -38,41 +37,63 @@ export default function AttracitonMarkupModal({
         });
     };
 
-    const handleSubmit = () => {
-        // Find the index of the existing activity in the `activity` array
-        const existingActivityIndex = activity.findIndex(
-            (act) => act.activity === formData.activity
-        );
-
-        // If an existing activity was found, update it with the new `formData`
-        if (existingActivityIndex !== -1) {
-            const updatedActivity = {
-                ...activity[existingActivityIndex],
-                markupType: formData.markupType,
-                markup: formData.markup,
-            };
-
-            const updatedActivityList = [...activity];
-            updatedActivityList[existingActivityIndex] = updatedActivity;
-
-            setActivity(updatedActivityList);
-        } else {
-            // If the `formData` corresponds to a new activity, add it to the `activity` array
-            setActivity([
-                ...activity,
-                {
-                    activity: formData.activity,
-                    markupType: formData.markupType,
-                    markup: formData.markup,
-                },
-            ]);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setIsLoading(true);
+        if (type === "market") {
+            if (marketId) {
+                const response = await axios.post(
+                    `/market/update-attraction-profile/${marketId}`,
+                    formData,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+            } else {
+                const response = await axios.post(
+                    `/market/b2b/update-transfer-profile/${id}`,
+                    formData,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+            }
         }
+        setAttractionList((preAttr) => {
+            return preAttr.map((attraction) => {
+                return {
+                    ...attraction,
+                    activities: attraction.activities.map((activity) => {
+                        return {
+                            ...activity,
+                            markupType: formData?.markupType,
+                            markup: formData?.markup,
+                            isEdit: true,
+                        };
+                    }),
+                };
+            });
+        });
 
-        setData(formData);
-        setIsModalOpen(false);
+        setInitalAttractionList((preAttr) => {
+            return preAttr.map((attraction) => {
+                return {
+                    ...attraction,
+                    activities: attraction.activities.map((activity) => {
+                        return {
+                            ...activity,
+                            markupType: formData?.markupType,
+                            markup: formData?.markup,
+                            isEdit: true,
+                        };
+                    }),
+                };
+            });
+        });
+        setIsLoading(false);
+
+        setIsModal(false);
     };
-
-
 
     return (
         <div className="fixed inset-0 w-full h-full bg-[#fff5] flex items-center justify-center z-20 ">
@@ -84,7 +105,7 @@ export default function AttracitonMarkupModal({
                     <h2 className="font-medium mb-2">Add Markup</h2>
                     <button
                         className="h-auto bg-transparent text-textColor text-xl"
-                        onClick={() => setIsModalOpen(false)}
+                        onClick={() => setIsModal(false)}
                     >
                         <MdClose />
                     </button>
@@ -126,11 +147,14 @@ export default function AttracitonMarkupModal({
                         <button
                             className="bg-slate-300 text-textColor px-[15px]"
                             type="button"
-                            onClick={() => setIsModalOpen(false)}
+                            onClick={() => setIsModal(false)}
                         >
                             Cancel
                         </button>
-                        <button className="w-[160px]" onClick={handleSubmit}>
+                        <button
+                            className="w-[160px]"
+                            onClick={handleSubmit}
+                        >
                             {isLoading ? <BtnLoader /> : "Add Markup"}
                         </button>
                     </div>

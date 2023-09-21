@@ -3,6 +3,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "../../../axios";
 import AttractionProfileRow from "./AttractionProfileRow";
+import AttracitonMarkupModal from "./AttractionMarkupModal";
+import { BiEditAlt } from "react-icons/bi";
 // import BookingsOrdersSingleRow from "./BookingsOrdersSingleRow";
 
 export default function AttractionProfileListTable({
@@ -20,11 +22,11 @@ export default function AttractionProfileListTable({
     const [initalAttractionList, setInitalAttractionList] = useState([]);
     const [attractionList, setAttractionList] = useState([]);
     const [isPageLoading, setIsPageLoading] = useState(false);
-
+    const [isModal, setIsModal] = useState(false);
     const [activity, setActivity] = useState([]);
     const { id } = useParams();
 
-    const { profileId } = useParams();
+    const { profileId, marketId } = useParams();
     const navigate = useNavigate();
     const { jwtToken } = useSelector((state) => state.admin);
     const [filter, setFilter] = useState({
@@ -35,30 +37,58 @@ export default function AttractionProfileListTable({
         try {
             setIsPageLoading(true);
 
-            if (profileId) {
-                const response = await axios.get(
-                    `/profile/get-all-attraction-activities/${profileId}`,
-                    {
-                        headers: { authorization: `Bearer ${jwtToken}` },
-                    }
-                );
+            if (type === "market") {
+                if (marketId) {
+                    const response = await axios.get(
+                        `/market/get-all-attraction-activities/${marketId}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
 
-                setAttractionList(response.data.attraction);
-                setFormData((prev) => {
-                    return { ...prev, name: response.data.name };
-                });
-                setInitalAttractionList(response.data.attraction);
+                    setAttractionList(response.data.attraction);
+                    setFormData((prev) => {
+                        return { ...prev, name: response.data.name };
+                    });
+                    setInitalAttractionList(response.data.attraction);
+                } else {
+                    const response = await axios.get(
+                        `/market/b2b/get-all-attraction-activities/${id}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
+
+                    setAttractionList(response.data);
+
+                    setInitalAttractionList(response.data);
+                }
             } else {
-                const response = await axios.get(
-                    `/profile/b2b/get-all-attraction-activities/${id}`,
-                    {
-                        headers: { authorization: `Bearer ${jwtToken}` },
-                    }
-                );
+                if (profileId) {
+                    const response = await axios.get(
+                        `/profile/get-all-attraction-activities/${profileId}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
 
-                setAttractionList(response.data);
+                    setAttractionList(response.data.attraction);
+                    setFormData((prev) => {
+                        return { ...prev, name: response.data.name };
+                    });
+                    setInitalAttractionList(response.data.attraction);
+                } else {
+                    const response = await axios.get(
+                        `/profile/b2b/get-all-attraction-activities/${id}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
 
-                setInitalAttractionList(response.data);
+                    setAttractionList(response.data);
+
+                    setInitalAttractionList(response.data);
+                }
             }
 
             setIsPageLoading(false);
@@ -108,25 +138,39 @@ export default function AttractionProfileListTable({
     return (
         <div>
             <div className="overflow-x-auto">
-            <div className="flex w-[200px] items-center pb-5 gap-[10px]">
-                    <button
-                        className={"p-2"}
-                        onClick={(e) => handleFilter(e, "clear")}
-                    >
-                        Clear
-                    </button>
+                <div className="flex justfiy-between  items-center w-full">
+                    <div className="flex w-[200px] items-center pb-5 gap-[10px]">
+                        <button
+                            className={"p-2"}
+                            onClick={(e) => handleFilter(e, "clear")}
+                        >
+                            Clear
+                        </button>
 
-                    <input
-                        type="text"
-                        placeholder="attraction name..."
-                        className={"min-w-[200px]"}
-                        name="attractionName"
-                        onChange={(e) => {
-                            handleFilter(e, "attraction");
-                        }}
-                        value={filter.attractionName || ""}
-                    />
+                        <input
+                            type="text"
+                            placeholder="attraction name..."
+                            className={"min-w-[200px]"}
+                            name="attractionName"
+                            onChange={(e) => {
+                                handleFilter(e, "attraction");
+                            }}
+                            value={filter.attractionName || ""}
+                        />
+                    </div>
+                    <div className="flex justify-end items-center w-full">
+                        <button
+                            className="w-[150px] flex gap-2 items-center p-4"
+                            onClick={(e) => {
+                                setIsModal(true);
+                            }}
+                        >
+                            <BiEditAlt />
+                            Edit Markup
+                        </button>
+                    </div>
                 </div>
+
                 <table className="w-full">
                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                         <tr className="flex justify-center item-center">
@@ -143,12 +187,21 @@ export default function AttractionProfileListTable({
                                     setInitalAttractionList={
                                         setInitalAttractionList
                                     }
+                                    type={type}
                                 />
                             );
                         })}
                     </tbody>
                 </table>
             </div>
+            {isModal && (
+                <AttracitonMarkupModal
+                    setIsModal={setIsModal}
+                    type={type}
+                    setAttractionList={setAttractionList}
+                    setInitalAttractionList={setInitalAttractionList}
+                />
+            )}
 
             {/* <div className="p-4">
                 <Pagination

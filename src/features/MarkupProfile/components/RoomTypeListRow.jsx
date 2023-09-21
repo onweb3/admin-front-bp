@@ -8,7 +8,12 @@ import HotelRoomTypeRow from "./HotelRoomTypeRow";
 import RoomTypeRow from "./RoomTypeRow";
 // import BookingsOrdersSingleRow from "./BookingsOrdersSingleRow";
 
-export default function RoomTypeListRow({ hotelId, roomTypes, setRoomTypes }) {
+export default function RoomTypeListRow({
+    hotelId,
+    roomTypes,
+    setRoomTypes,
+    type,
+}) {
     const [dropdownVisible, setDropdownVisible] = useState(false);
 
     return (
@@ -37,6 +42,7 @@ export default function RoomTypeListRow({ hotelId, roomTypes, setRoomTypes }) {
                                     hotelId={hotelId}
                                     roomType={roomType}
                                     setRoomTypes={setRoomTypes}
+                                    type={type}
                                 />
                             );
                         })}

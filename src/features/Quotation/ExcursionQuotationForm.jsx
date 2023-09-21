@@ -8,6 +8,7 @@ import {
 } from "../../redux/slices/quotationSlice";
 import SingleExcursion from "./SingleExcursion";
 import { useHandleClickOutside } from "../../hooks";
+import axios from "../../axios";
 
 export default function ExcursionQuotationForm() {
     const [searchedExcursions, setSearchedExcursions] = useState([]);
@@ -28,42 +29,26 @@ export default function ExcursionQuotationForm() {
         selectedExcursionsIds,
         excursionTransferType,
         isExcursionQuotationDisabled,
+        checkInDate,
     } = useSelector((state) => state.quotations);
+    const { jwtToken } = useSelector((state) => state.admin);
+
+    const fetchExcursion = async (text) => {
+        try {
+            const response = await axios.get(
+                `/quotations/inital/excursions?text=${text}&date=${checkInDate}`,
+                {
+                    headers: { Authorization: `Bearer ${jwtToken}` },
+                }
+            );
+
+            setSearchedExcursions(response.data);
+        } catch (err) {}
+    };
 
     useEffect(() => {
         if (searchText) {
-            const filteredExcursions = excursions?.filter((excursion) => {
-                return (
-                    excursion?.name
-                        ?.toLowerCase()
-                        ?.includes(searchText?.toLowerCase()) &&
-                    (excursionTransferType === "shared"
-                        ? excursion?.qtnActivityType === "transfer"
-                            ? !!Number(excursion?.transferPricing?.sicPrice)
-                            : excursion?.qtnActivityType === "ticket"
-                            ? !!Number(
-                                  excursion?.ticketPricing
-                                      ?.sicWithTicketAdultPrice
-                              ) &&
-                              !!Number(
-                                  excursion?.ticketPricing
-                                      ?.sicWithTicketChildPrice
-                              )
-                            : false
-                        : excursionTransferType === "private"
-                        ? excursion?.qtnActivityType === "transfer"
-                            ? !!Number(
-                                  excursion?.transferVehicleType?.length > 0
-                              )
-                            : excursion?.qtnActivityType === "ticket"
-                            ? !!Number(excursion?.ticketVehicleType?.length > 0)
-                            : false
-                        : true)
-                );
-            });
-            setSearchedExcursions(filteredExcursions);
-        } else {
-            setSearchedExcursions(excursions);
+            fetchExcursion(searchText);
         }
     }, [searchText, excursions, excursionTransferType]);
 
@@ -230,33 +215,35 @@ export default function ExcursionQuotationForm() {
                                                                     }
                                                                 >
                                                                     {selectedExcursionsIds?.includes(
-                                                                        excursion?._id
+                                                                        excursion
+                                                                            ?.activity
+                                                                            ?._id
                                                                     )
                                                                         ? "-"
                                                                         : "+"}
                                                                 </span>
                                                                 <span className="leading-[22px]">
                                                                     {
-                                                                        excursion?.name?.split(
+                                                                        excursion?.activity.name?.split(
                                                                             "+"
                                                                         )[0]
                                                                     }{" "}
                                                                     <span className="text-blue-500">
-                                                                        {excursion?.name?.split(
+                                                                        {excursion?.activity.name?.split(
                                                                             "+"
                                                                         )[1] &&
                                                                             "+ " +
-                                                                                excursion?.name?.split(
+                                                                                excursion?.activity?.name?.split(
                                                                                     "+"
                                                                                 )[1]}
                                                                     </span>
                                                                     <span className="capitalize text-gray-500">
                                                                         {" "}
                                                                         -{" "}
-                                                                        {excursion?.qtnActivityType ===
+                                                                        {excursion?.excursionType ===
                                                                         "ticket"
                                                                             ? "Ticket With Transfer"
-                                                                            : excursion?.qtnActivityType}
+                                                                            : excursion?.excursionType}
                                                                     </span>
                                                                 </span>
                                                             </div>

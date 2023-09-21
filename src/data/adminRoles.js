@@ -281,6 +281,12 @@ const adminRoles = [
         permissions: [],
     },
     {
+        name: "market-startegy",
+        displayName: "Market Startegy",
+        category: "settings",
+        permissions: [],
+    },
+    {
         name: "api-master",
         displayName: "Api Master",
         category: "settings",
@@ -399,6 +405,15 @@ const adminRoles = [
         name: "users",
         displayName: "Users",
         category: "users",
+        permissions: [],
+    },
+
+    //seasons
+
+    {
+        name: "Seasons",
+        displayName: "Seasons",
+        category: "settings",
         permissions: [],
     },
 ];

@@ -6,12 +6,12 @@ import HotelStarCategoryMarkupModal from "./HotelStarCategoryMarkupModal";
 import RoomTypeListRow from "./RoomTypeListRow";
 // import BookingsOrdersSingleRow from "./BookingsOrdersSingleRow";
 
-export default function HotelRoomTypeTableRow({ hotel }) {
+export default function HotelRoomTypeTableRow({ hotel, type }) {
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
     const { jwtToken } = useSelector((state) => state.admin);
-    const { profileId } = useParams();
+    const { profileId, marketId } = useParams();
     const { id } = useParams();
 
     const [roomTypes, setRoomTypes] = useState([]);
@@ -20,24 +20,47 @@ export default function HotelRoomTypeTableRow({ hotel }) {
     const fetchRoomTypes = async () => {
         try {
             setIsPageLoading(true);
-            if (profileId) {
-                const response = await axios.get(
-                    `/profile/get-all-roomTypes/${hotel._id}/${profileId}`,
-                    {
-                        headers: { authorization: `Bearer ${jwtToken}` },
-                    }
-                );
 
-                setRoomTypes(response.data);
+            if (type === "market") {
+                if (marketId) {
+                    const response = await axios.get(
+                        `/market/get-all-roomTypes/${hotel._id}/${marketId}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
+
+                    setRoomTypes(response.data);
+                } else {
+                    const response = await axios.get(
+                        `/market/b2b/get-all-roomTypes/${hotel._id}/${id}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
+
+                    setRoomTypes(response.data);
+                }
             } else {
-                const response = await axios.get(
-                    `/profile/b2b/get-all-roomTypes/${hotel._id}/${id}`,
-                    {
-                        headers: { authorization: `Bearer ${jwtToken}` },
-                    }
-                );
+                if (profileId) {
+                    const response = await axios.get(
+                        `/profile/get-all-roomTypes/${hotel._id}/${profileId}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
 
-                setRoomTypes(response.data);
+                    setRoomTypes(response.data);
+                } else {
+                    const response = await axios.get(
+                        `/profile/b2b/get-all-roomTypes/${hotel._id}/${id}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
+
+                    setRoomTypes(response.data);
+                }
             }
 
             setIsPageLoading(false);
@@ -110,6 +133,7 @@ export default function HotelRoomTypeTableRow({ hotel }) {
                                     hotelId={hotel._id}
                                     roomTypes={roomTypes}
                                     setRoomTypes={setRoomTypes}
+                                    type={type}
                                 />
                             </tbody>
                         </table>

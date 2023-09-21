@@ -8,13 +8,13 @@ import AttractionProfileRow from "./AttractionProfileRow";
 import VisaProfileRow from "./visaProfileRow";
 // import BookingsOrdersSingleRow from "./BookingsOrdersSingleRow";
 
-export default function A2aProfileListTable({}) {
+export default function A2aProfileListTable({ type }) {
     const [initalA2aTypeList, setIntialA2aTypeList] = useState([]);
     const [a2aTypeList, setA2aTypeList] = useState([]);
     const [a2a, setA2a] = useState([]);
 
     const [isPageLoading, setIsPageLoading] = useState(false);
-    const { profileId } = useParams();
+    const { profileId, marketId } = useParams();
     const { id } = useParams();
 
     const navigate = useNavigate();
@@ -23,26 +23,48 @@ export default function A2aProfileListTable({}) {
     const fetchA2aInitialData = async () => {
         try {
             setIsPageLoading(true);
+            if (type === "market") {
+                if (marketId) {
+                    const response = await axios.get(
+                        `/market/get-all-a2atype/${marketId}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
 
-            if (profileId) {
-                const response = await axios.get(
-                    `/profile/get-all-a2atype/${profileId}`,
-                    {
-                        headers: { authorization: `Bearer ${jwtToken}` },
-                    }
-                );
+                    setA2aTypeList(response.data);
+                } else {
+                    const response = await axios.get(
+                        `/market/b2b/get-all-a2atype/${id}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
 
-                setA2aTypeList(response.data);
+                    setA2aTypeList(response.data);
+                }
             } else {
-                const response = await axios.get(
-                    `/profile/b2b/get-all-a2atype/${id}`,
-                    {
-                        headers: { authorization: `Bearer ${jwtToken}` },
-                    }
-                );
+                if (profileId) {
+                    const response = await axios.get(
+                        `/profile/get-all-a2atype/${profileId}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
 
-                setA2aTypeList(response.data);
+                    setA2aTypeList(response.data);
+                } else {
+                    const response = await axios.get(
+                        `/profile/b2b/get-all-a2atype/${id}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
+
+                    setA2aTypeList(response.data);
+                }
             }
+
             // const searchQuery = `skip=${filters?.skip}&limit=${filters.limit}`;
 
             setIsPageLoading(false);
@@ -78,6 +100,7 @@ export default function A2aProfileListTable({}) {
                                 <A2aProfileRow
                                     index={index}
                                     a2aType={a2aType}
+                                    type={type}
 
                                     // section={section}
                                 />

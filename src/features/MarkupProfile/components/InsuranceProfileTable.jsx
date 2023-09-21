@@ -7,10 +7,10 @@ import FlightProfileRow from "./FlightProfileRow";
 import InsuranceProfileRow from "./InsuranceProfileRow";
 // import BookingsOrdersSingleRow from "./BookingsOrdersSingleRow";
 
-export default function InsuranceProfileTable({}) {
+export default function InsuranceProfileTable({ type }) {
     const [plans, setPlans] = useState([]);
     const [isPageLoading, setIsPageLoading] = useState(false);
-    const { profileId } = useParams();
+    const { profileId, marketId } = useParams();
     const { id } = useParams();
 
     const navigate = useNavigate();
@@ -20,25 +20,48 @@ export default function InsuranceProfileTable({}) {
         try {
             setIsPageLoading(true);
 
-            if (profileId) {
-                const response = await axios.get(
-                    `/profile/get-all-insurance/${profileId}`,
-                    {
-                        headers: { authorization: `Bearer ${jwtToken}` },
-                    }
-                );
+            if (type === "market") {
+                if (marketId) {
+                    const response = await axios.get(
+                        `/profile/get-all-insurance/${marketId}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
 
-                setPlans(response.data);
+                    setPlans(response.data);
+                } else {
+                    const response = await axios.get(
+                        `/profile/b2b/get-all-insurance/${id}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
+
+                    setPlans(response.data);
+                }
             } else {
-                const response = await axios.get(
-                    `/profile/b2b/get-all-insurance/${id}`,
-                    {
-                        headers: { authorization: `Bearer ${jwtToken}` },
-                    }
-                );
+                if (profileId) {
+                    const response = await axios.get(
+                        `/profile/get-all-insurance/${profileId}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
 
-                setPlans(response.data);
+                    setPlans(response.data);
+                } else {
+                    const response = await axios.get(
+                        `/profile/b2b/get-all-insurance/${id}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
+
+                    setPlans(response.data);
+                }
             }
+
             // const searchQuery = `skip=${filters?.skip}&limit=${filters.limit}`;
 
             setIsPageLoading(false);
@@ -72,6 +95,7 @@ export default function InsuranceProfileTable({}) {
                                 <InsuranceProfileRow
                                     index={index}
                                     plan={plan}
+                                    type={type}
 
                                     // section={section}
                                 />

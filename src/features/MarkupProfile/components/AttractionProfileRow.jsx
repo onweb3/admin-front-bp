@@ -12,6 +12,7 @@ export default function AttractionProfileRow({
     filters,
     setFilters,
     section,
+    type,
 }) {
     const [dropdownVisible, setDropdownVisible] = useState(false);
 
@@ -58,6 +59,7 @@ export default function AttractionProfileRow({
                                     }
                                     index={index}
                                     rowClass={rowClass}
+                                    type={type}
                                 />
                             );
                         })}

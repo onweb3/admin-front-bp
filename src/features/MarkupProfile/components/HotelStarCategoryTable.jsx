@@ -7,36 +7,59 @@ import AttractionProfileRow from "./AttractionProfileRow";
 import HotelStarCategoryRow from "./HotelStarCategoryRow";
 // import BookingsOrdersSingleRow from "./BookingsOrdersSingleRow";
 
-export default function HotelStarCategoryTable({}) {
+export default function HotelStarCategoryTable({ type }) {
     const [isPageLoading, setIsPageLoading] = useState(false);
 
     const [categories, setCategories] = useState([]);
     const navigate = useNavigate();
     const { jwtToken } = useSelector((state) => state.admin);
-    const { profileId } = useParams();
+    const { profileId, marketId } = useParams();
     const { id } = useParams();
 
     const fetchCategoryInitialData = async () => {
         try {
             setIsPageLoading(true);
-            if (profileId) {
-                const response = await axios.get(
-                    `/profile/get-all-category/${profileId}`,
-                    {
-                        headers: { authorization: `Bearer ${jwtToken}` },
-                    }
-                );
 
-                setCategories(response.data);
+            if (type === "market") {
+                if (marketId) {
+                    const response = await axios.get(
+                        `/market/get-all-category/${marketId}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
+
+                    setCategories(response.data);
+                } else {
+                    const response = await axios.get(
+                        `/market/b2b/get-all-category/${id}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
+
+                    setCategories(response.data);
+                }
             } else {
-                const response = await axios.get(
-                    `/profile/b2b/get-all-category/${id}`,
-                    {
-                        headers: { authorization: `Bearer ${jwtToken}` },
-                    }
-                );
+                if (profileId) {
+                    const response = await axios.get(
+                        `/profile/get-all-category/${profileId}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
 
-                setCategories(response.data);
+                    setCategories(response.data);
+                } else {
+                    const response = await axios.get(
+                        `/profile/b2b/get-all-category/${id}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
+
+                    setCategories(response.data);
+                }
             }
 
             setIsPageLoading(false);
@@ -71,6 +94,7 @@ export default function HotelStarCategoryTable({}) {
                                     key={index}
                                     category={category}
                                     setCategories={setCategories}
+                                    type={type}
                                 />
                             );
                         })}

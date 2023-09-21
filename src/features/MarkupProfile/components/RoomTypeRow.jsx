@@ -12,10 +12,11 @@ export default function RoomTypeRow({
     hotelId,
     roomType,
     setRoomTypes,
+    type,
 }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isPageLoading, setIsPageLoading] = useState(false);
-    const { profileId } = useParams();
+    const { profileId, marketId } = useParams();
     const { id } = useParams();
 
     const wrapperRef = useRef();
@@ -39,22 +40,43 @@ export default function RoomTypeRow({
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (profileId) {
-            const response = await axios.post(
-                `/profile/update-roomType-profile/${profileId}`,
-                formData,
-                {
-                    headers: { authorization: `Bearer ${jwtToken}` },
-                }
-            );
+
+        if (type === "market") {
+            if (marketId) {
+                const response = await axios.post(
+                    `/market/update-roomType-profile/${marketId}`,
+                    formData,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+            } else {
+                const response = await axios.post(
+                    `/market/b2b/update-roomType-profile/${id}`,
+                    formData,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+            }
         } else {
-            const response = await axios.post(
-                `/profile/b2b/update-roomType-profile/${id}`,
-                formData,
-                {
-                    headers: { authorization: `Bearer ${jwtToken}` },
-                }
-            );
+            if (profileId) {
+                const response = await axios.post(
+                    `/profile/update-roomType-profile/${profileId}`,
+                    formData,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+            } else {
+                const response = await axios.post(
+                    `/profile/b2b/update-roomType-profile/${id}`,
+                    formData,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+            }
         }
 
         setRoomTypes((previous) => {

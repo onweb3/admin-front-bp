@@ -4,7 +4,14 @@ import { useSelector } from "react-redux";
 
 import axios from "../../axios";
 import { useImageChange } from "../../hooks";
-import { BtnLoader, MultipleSelectDropdown, PageLoader, SelectDropdown } from "../../components";
+import {
+    BtnLoader,
+    MultipleSelectDropdown,
+    PageLoader,
+    SelectDropdown,
+} from "../../components";
+import EditAdminMarkupProfilePage from "../Markup Profile/EditAdminMarkuProfile";
+import MarkupAdminPage from "./MarkupAdminPage";
 
 export default function EditAdminPage() {
     const [data, setData] = useState({
@@ -18,11 +25,13 @@ export default function EditAdminPage() {
         city: "",
         roles: [],
         password: "",
+        marketStrategy: "",
     });
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
     const [isPageLoading, setIsPageLoading] = useState(true);
     const [roles, setRoles] = useState([]);
+    const [section, setSection] = useState("profile");
 
     const { id } = useParams();
     const {
@@ -66,7 +75,9 @@ export default function EditAdminPage() {
             setIsLoading(false);
             navigate("/admins");
         } catch (err) {
-            setError(err?.response?.data?.error || "Something went wrong, Try again");
+            setError(
+                err?.response?.data?.error || "Something went wrong, Try again"
+            );
             setIsLoading(false);
         }
     };
@@ -90,6 +101,7 @@ export default function EditAdminPage() {
                 city,
                 avatar,
                 roles,
+                marketStrategy,
             } = response.data;
 
             setData((prev) => {
@@ -106,6 +118,7 @@ export default function EditAdminPage() {
                     avatarUrl: avatar,
                     roles: roles || [],
                     password: "",
+                    marketStrategy,
                 };
             });
             setIsPageLoading(false);
@@ -123,6 +136,11 @@ export default function EditAdminPage() {
         } catch (err) {
             console.log(err);
         }
+    };
+
+    const handleSectionChange = (e, value) => {
+        e.preventDefault();
+        setSection(value);
     };
 
     useEffect(() => {
@@ -156,175 +174,236 @@ export default function EditAdminPage() {
             ) : (
                 <div className="p-6">
                     <div className="bg-white rounded p-6 shadow-sm">
-                        <form action="" onSubmit={handleSubmit}>
-                            <div className="grid grid-cols-3 gap-4">
-                                <div>
-                                    <label htmlFor="">Name *</label>
-                                    <input
-                                        type="text"
-                                        placeholder="Ex: John"
-                                        name="name"
-                                        value={data.name || ""}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label htmlFor="">Email Address *</label>
-                                    <input
-                                        type="email"
-                                        placeholder="Ex: john@gmail.com"
-                                        name="email"
-                                        value={data.email || ""}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label htmlFor="">Phone Number *</label>
-                                    <input
-                                        type="text"
-                                        placeholder="Enter phone number"
-                                        name="phoneNumber"
-                                        value={data.phoneNumber || ""}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label htmlFor="">Designation *</label>
-                                    <input
-                                        type="text"
-                                        placeholder="Ex: General Manager"
-                                        name="designation"
-                                        value={data.designation || ""}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label htmlFor="">Joined Date</label>
-                                    <input
-                                        type="date"
-                                        name="joinedDate"
-                                        value={
-                                            data.joinedDate
-                                                ? new Date(data.joinedDate)
-                                                      ?.toISOString()
-                                                      .substring(0, 10)
-                                                : ""
-                                        }
-                                        onChange={handleChange}
-                                    />
-                                </div>
-                                <div>
-                                    <label htmlFor="">Country *</label>
-                                    <SelectDropdown
-                                        data={countries}
-                                        displayName={"countryName"}
-                                        valueName={"isocode"}
-                                        placeholder={"Select Country"}
-                                        selectedData={data.country || ""}
-                                        setSelectedData={(val) => {
-                                            setData((prev) => {
-                                                return { ...prev, country: val };
-                                            });
-                                        }}
-                                    />
-                                </div>
-                                <div>
-                                    <label htmlFor="">City</label>
-                                    <input
-                                        type="text"
-                                        placeholder="Enter city"
-                                        name="city"
-                                        value={data.city || ""}
-                                        onChange={handleChange}
-                                    />
-                                </div>
-                                <div>
-                                    <label htmlFor="">Roles *</label>
-                                    <MultipleSelectDropdown
-                                        data={roles}
-                                        valueName={"_id"}
-                                        displayName={"roleName"}
-                                        selectedData={data.roles}
-                                        setSelectedData={(selRoles) => {
-                                            setData((prev) => {
-                                                return {
-                                                    ...prev,
-                                                    roles: selRoles,
-                                                };
-                                            });
-                                        }}
-                                    />
-                                </div>
-                            </div>
-                            <div className="mt-4">
-                                <label htmlFor="">Avatar</label>
-                                <input type="file" onChange={handleAvatarChange} />
-                                {avatarError && (
-                                    <span className="text-sm block text-red-500 mt-2">
-                                        {avatarError}
-                                    </span>
-                                )}
+                        <div className="flex items-center gap-[13px] px-4 border-b border-b-dahsed">
+                            <button
+                                className={
+                                    "px-2 py-4 h-auto bg-transparent text-primaryColor font-medium rounded-none " +
+                                    (section === "profile"
+                                        ? "border-b border-b-orange-500"
+                                        : "")
+                                }
+                                onClick={(e) => {
+                                    handleSectionChange(e, "profile");
+                                }}
+                            >
+                                Profile
+                            </button>
 
-                                {avatar && (
-                                    <div className="mt-4 w-[60px] h-[60px] rounded-full overflow-hidden">
-                                        <img
-                                            src={URL.createObjectURL(avatar)}
-                                            alt=""
-                                            className="w-full h-full object-cover"
+                            <button
+                                className={
+                                    "px-2 py-4 h-auto bg-transparent text-primaryColor font-medium rounded-none " +
+                                    (section === "market"
+                                        ? "border-b border-b-orange-500"
+                                        : "")
+                                }
+                                onClick={(e) => {
+                                    handleSectionChange(e, "market");
+                                }}
+                            >
+                                Market
+                            </button>
+                        </div>
+                        <div
+                            className={`p-6 ${
+                                section === "profile" ? "" : "hidden"
+                            }`}
+                        >
+                            <form action="" onSubmit={handleSubmit}>
+                                <div className="grid grid-cols-3 gap-4">
+                                    <div>
+                                        <label htmlFor="">Name *</label>
+                                        <input
+                                            type="text"
+                                            placeholder="Ex: John"
+                                            name="name"
+                                            value={data.name || ""}
+                                            onChange={handleChange}
+                                            required
                                         />
                                     </div>
-                                )}
-                            </div>
-                            <div className="mt-4">
-                                <label htmlFor="">Description</label>
-                                <textarea
-                                    name="description"
-                                    placeholder="Enter description"
-                                    id=""
-                                    value={data.description || ""}
-                                    onChange={handleChange}
-                                ></textarea>
-                            </div>
-                            <div className="mt-5">
-                                <h3 className="font-[600] text-[15px]">&rarr; Password Settings</h3>
-                            </div>
-                            <div className="grid grid-cols-3 gap-4">
-                                <div className="mt-1">
-                                    <label htmlFor="">Password</label>
-                                    <input
-                                        type="text"
-                                        placeholder="********"
-                                        name="password"
-                                        value={data.password || ""}
-                                        onChange={handleChange}
-                                        autoComplete="off"
-                                    />
-                                    <span className="block text-sm mt-2 text-grayColor font-medium">
-                                        * If you don't want to update password, then leave it as
-                                        blank
-                                    </span>
+                                    <div>
+                                        <label htmlFor="">
+                                            Email Address *
+                                        </label>
+                                        <input
+                                            type="email"
+                                            placeholder="Ex: john@gmail.com"
+                                            name="email"
+                                            value={data.email || ""}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor="">Phone Number *</label>
+                                        <input
+                                            type="text"
+                                            placeholder="Enter phone number"
+                                            name="phoneNumber"
+                                            value={data.phoneNumber || ""}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor="">Designation *</label>
+                                        <input
+                                            type="text"
+                                            placeholder="Ex: General Manager"
+                                            name="designation"
+                                            value={data.designation || ""}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor="">Joined Date</label>
+                                        <input
+                                            type="date"
+                                            name="joinedDate"
+                                            value={
+                                                data.joinedDate
+                                                    ? new Date(data.joinedDate)
+                                                          ?.toISOString()
+                                                          .substring(0, 10)
+                                                    : ""
+                                            }
+                                            onChange={handleChange}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor="">Country *</label>
+                                        <SelectDropdown
+                                            data={countries}
+                                            displayName={"countryName"}
+                                            valueName={"isocode"}
+                                            placeholder={"Select Country"}
+                                            selectedData={data.country || ""}
+                                            setSelectedData={(val) => {
+                                                setData((prev) => {
+                                                    return {
+                                                        ...prev,
+                                                        country: val,
+                                                    };
+                                                });
+                                            }}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor="">City</label>
+                                        <input
+                                            type="text"
+                                            placeholder="Enter city"
+                                            name="city"
+                                            value={data.city || ""}
+                                            onChange={handleChange}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor="">Roles *</label>
+                                        <MultipleSelectDropdown
+                                            data={roles}
+                                            valueName={"_id"}
+                                            displayName={"roleName"}
+                                            selectedData={data.roles}
+                                            setSelectedData={(selRoles) => {
+                                                setData((prev) => {
+                                                    return {
+                                                        ...prev,
+                                                        roles: selRoles,
+                                                    };
+                                                });
+                                            }}
+                                        />
+                                    </div>
                                 </div>
-                            </div>
-                            {error && (
-                                <span className="text-sm block text-red-500 mt-2">{error}</span>
-                            )}
-                            <div className="mt-4 flex items-center justify-end gap-[12px]">
-                                <button
-                                    className="bg-slate-300 text-textColor px-[15px]"
-                                    type="button"
-                                    onClick={() => navigate(-1)}
-                                >
-                                    Cancel
-                                </button>
-                                <button className="w-[140px]">
-                                    {isLoading ? <BtnLoader /> : "Update Admin"}
-                                </button>
-                            </div>
-                        </form>
+                                <div className="mt-4">
+                                    <label htmlFor="">Avatar</label>
+                                    <input
+                                        type="file"
+                                        onChange={handleAvatarChange}
+                                    />
+                                    {avatarError && (
+                                        <span className="text-sm block text-red-500 mt-2">
+                                            {avatarError}
+                                        </span>
+                                    )}
+
+                                    {avatar && (
+                                        <div className="mt-4 w-[60px] h-[60px] rounded-full overflow-hidden">
+                                            <img
+                                                src={URL.createObjectURL(
+                                                    avatar
+                                                )}
+                                                alt=""
+                                                className="w-full h-full object-cover"
+                                            />
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="mt-4">
+                                    <label htmlFor="">Description</label>
+                                    <textarea
+                                        name="description"
+                                        placeholder="Enter description"
+                                        id=""
+                                        value={data.description || ""}
+                                        onChange={handleChange}
+                                    ></textarea>
+                                </div>
+                                <div className="mt-5">
+                                    <h3 className="font-[600] text-[15px]">
+                                        &rarr; Password Settings
+                                    </h3>
+                                </div>
+                                <div className="grid grid-cols-3 gap-4">
+                                    <div className="mt-1">
+                                        <label htmlFor="">Password</label>
+                                        <input
+                                            type="text"
+                                            placeholder="********"
+                                            name="password"
+                                            value={data.password || ""}
+                                            onChange={handleChange}
+                                            autoComplete="off"
+                                        />
+                                        <span className="block text-sm mt-2 text-grayColor font-medium">
+                                            * If you don't want to update
+                                            password, then leave it as blank
+                                        </span>
+                                    </div>
+                                </div>
+                                {error && (
+                                    <span className="text-sm block text-red-500 mt-2">
+                                        {error}
+                                    </span>
+                                )}
+                                <div className="mt-4 flex items-center justify-end gap-[12px]">
+                                    <button
+                                        className="bg-slate-300 text-textColor px-[15px]"
+                                        type="button"
+                                        onClick={() => navigate(-1)}
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button className="w-[140px]">
+                                        {isLoading ? (
+                                            <BtnLoader />
+                                        ) : (
+                                            "Update Admin"
+                                        )}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div
+                            className={` ${
+                                section === "market" ? "" : "hidden"
+                            }`}
+                        >
+                            {" "}
+                            <MarkupAdminPage data={data} />
+                        </div>
                     </div>
                 </div>
             )}

@@ -6,7 +6,10 @@ export default function QuotationVehiclePricingRow({
     setPricing,
     index,
     vehicles,
+    pricing,
+    seasons,
 }) {
+    const [data, setData] = useState("");
     const handleChange = (e, index) => {
         setPricing((prev) => {
             const updatedPricing = [...prev]; // Create a copy of the previous state array
@@ -27,6 +30,126 @@ export default function QuotationVehiclePricingRow({
         });
     };
 
+    const deleteExtraRow = (e, vehicle) => {
+        setPricing((prev) => {
+            const updatedPricing = [...prev]; // Create a copy of the previous state array
+            const updatedVehicleType = [...prev[index].vehicleType].filter(
+                (vh) => vh.vehicle.toString() !== vehicle._id.toString()
+            );
+
+            console.log(updatedVehicleType, "updated vehciletype");
+
+            updatedPricing[index] = {
+                ...updatedPricing[index], // Create a copy of the object at the specified index
+                vehicleType: updatedVehicleType, // Update the specific property with the new value
+            };
+
+            return updatedPricing;
+        });
+    };
+
+    const addExtraRow = (e, vh) => {
+        try {
+            console.log(vh?._id, "vhkkkkk", price);
+
+            const existingVehicleIndex = pricing[index]?.vehicleType?.findIndex(
+                (vt) => vt?.vehicle.toString() === vh?._id?.toString()
+            );
+
+            console.log(existingVehicleIndex, "vehicle");
+
+            if (
+                existingVehicleIndex !== -1 &&
+                existingVehicleIndex !== undefined
+            ) {
+                const updatedVehicles = [...price?.vehicleType] || [];
+                updatedVehicles[existingVehicleIndex].price = 0;
+
+                setPricing((prev) => {
+                    const updatedPricing = [...prev]; // Create a copy of the previous state array
+                    updatedPricing[index] = {
+                        ...updatedPricing[index], // Create a copy of the object at the specified index
+                        vehicleType: updatedVehicles, // Update the specific property with the new value
+                    };
+                    return updatedPricing; // Return the updated array as the new state
+                });
+            } else {
+                setPricing((prev) => {
+                    const updatedPricing = [...prev]; // Create a copy of the previous state array
+                    updatedPricing[index] = {
+                        ...updatedPricing[index], // Create a copy of the object at the specified index
+                        vehicleType: [
+                            ...updatedPricing[index].vehicleType,
+                            {
+                                vehicle: vh._id,
+                                price: 0,
+                            },
+                            // Update the specific property with the new value
+                        ],
+                    };
+                    return updatedPricing; // Return the updated array as the new state
+                });
+            }
+        } catch (e) {
+            console.log("error", e);
+        }
+    };
+
+    const handleVehicleChange = (e, index, vh) => {
+        const existingVehicleIndex = price?.vehicleType?.findIndex(
+            (vehicle) => vehicle?.vehicle === vh?._id
+        );
+
+        console.log(existingVehicleIndex, "existingVehicleIndex");
+        if (existingVehicleIndex !== -1) {
+            const updatedVehicles = [...price?.vehicleType];
+
+            updatedVehicles[existingVehicleIndex].price = e.target.value;
+
+            setPricing((prev) => {
+                const updatedPricing = [...prev]; // Create a copy of the previous state array
+                updatedPricing[index] = {
+                    ...updatedPricing[index], // Create a copy of the object at the specified index
+                    vehicleType: updatedVehicles, // Update the specific property with the new value
+                };
+                return updatedPricing; // Return the updated array as the new state
+            });
+        }
+    };
+
+    function formatDate(dateString) {
+        console.log(dateString, "date string");
+        const date = new Date(dateString);
+
+        console.log(date, "date");
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        const formattedDate = `${year}-${month}-${day}`;
+
+        console.log(formattedDate, "formatted date");
+        return formattedDate;
+    }
+    const handleSeasonChange = (e, index) => {
+        const selectedSeason = seasons.find(
+            (season) => season._id.toString() === e.target.value.toString()
+        );
+
+        if (selectedSeason) {
+            setPricing((prev) => {
+                const updatedPricing = [...prev]; // Create a copy of the previous state array
+                updatedPricing[index] = {
+                    ...updatedPricing[index], // Create a copy of the object at the specified index
+                    fromDate: formatDate(selectedSeason.fromDate),
+                    toDate: formatDate(selectedSeason.toDate),
+                };
+                return updatedPricing; // Return the updated array as the new state
+            });
+        }
+
+        setData(selectedSeason._id);
+    };
+
     return (
         <React.Fragment>
             <tr className="border-b border-tableBorderColor">
@@ -41,7 +164,31 @@ export default function QuotationVehiclePricingRow({
                         </button>
                     </div>
                 </td>
-
+                <td className="p-2 border w-[35px] min-w-[35px]">
+                    <select
+                        name="country"
+                        value={data || ""}
+                        onChange={(e) => handleSeasonChange(e, index)}
+                        id=""
+                        required
+                        className="capitalize"
+                    >
+                        <option value="" hidden>
+                            Select Season
+                        </option>
+                        {seasons?.map((season, index) => {
+                            return (
+                                <option
+                                    value={season?._id}
+                                    key={index}
+                                    className="capitalize"
+                                >
+                                    {season?.name}
+                                </option>
+                            );
+                        })}
+                    </select>
+                </td>
                 <td className="border w-[75px] min-w-[75px]">
                     <input
                         type="date"
@@ -60,26 +207,13 @@ export default function QuotationVehiclePricingRow({
                         className="h-[100%]  px-2  border-0"
                     />
                 </td>
-                <td className="border w-[70px] min-w-[70px]">
-                    <div className="flex prices-center justify-center">
-                        <input
-                            type="number"
-                            className="h-[100%] arrow-hidden px-2 border-0"
-                            value={price?.extraBed}
-                            name="extraBed"
-                            onChange={(e) =>
-                                handleChangeRoomOccupancyInp(e, index)
-                            }
-                            placeholder="Ex Bed"
-                        />
-                    </div>
-                </td>
+                <td className="border w-[70px] min-w-[70px]"></td>
             </tr>
             <tr>
                 <td></td>
                 <td></td>
                 <td></td>
-                <td colSpan={1}>
+                <td colSpan={4}>
                     <table className="w-full">
                         <thead className="bg-[#f3f6f9] text-grayColor text-[14px]">
                             <tr>
@@ -105,7 +239,7 @@ export default function QuotationVehiclePricingRow({
                             </tr>
                         </thead>
                         <tbody>
-                            {vehicles?.map((vehcile, vehicleIndex) => {
+                            {vehicles?.map((vehicle, vehicleIndex) => {
                                 return (
                                     <tr
                                         key={vehicleIndex}
@@ -113,33 +247,52 @@ export default function QuotationVehiclePricingRow({
                                     >
                                         <td className="p-2 border w-[35px] min-w-[35px]">
                                             <div className="flex prices-center justify-center">
-                                                <button
-                                                    className="w-[25px] h-[25px] rounded-full bg-red-500"
-                                                    // onClick={() =>
-                                                    //     removeOccupancyCombinationRow(
-                                                    //         index,
-                                                    //         combinationIndex
-                                                    //     )
-                                                    // }
-                                                    type="button"
-                                                >
-                                                    -
-                                                </button>
+                                                {price?.vehicleType?.find(
+                                                    (vh) =>
+                                                        vh?.vehicle ===
+                                                        vehicle?._id
+                                                ) !== undefined ? (
+                                                    <button
+                                                        className="w-[25px] h-[25px] rounded-full bg-green-500"
+                                                        onClick={(e) =>
+                                                            deleteExtraRow(
+                                                                e,
+                                                                vehicle
+                                                            )
+                                                        }
+                                                        type="button"
+                                                    >
+                                                        +
+                                                    </button>
+                                                ) : (
+                                                    <button
+                                                        className="w-[25px] h-[25px] rounded-full bg-red-500"
+                                                        onClick={(e) =>
+                                                            addExtraRow(
+                                                                e,
+                                                                vehicle
+                                                            )
+                                                        }
+                                                        type="button"
+                                                    >
+                                                        -
+                                                    </button>
+                                                )}
                                             </div>
                                         </td>
                                         <td className="border min-w-[100px]">
                                             <input
                                                 type="text"
                                                 className="h-[100%] arrow-hidden p-0 px-2 border-0"
-                                                value={vehcile?.name || ""}
-                                                name="childCount"
-                                                // onChange={(e) =>
-                                                //     handleChangeRoomOccupancyCombInp(
-                                                //         e,
-                                                //         index,
-                                                //         combinationIndex
-                                                //     )
-                                                // }
+                                                value={vehicle?.name || ""}
+                                                name="vehicle"
+                                                onChange={(e) =>
+                                                    handleVehicleChange(
+                                                        e,
+                                                        index,
+                                                        vehicle
+                                                    )
+                                                }
                                                 placeholder="vehicle name ..."
                                             />
                                         </td>
@@ -147,15 +300,21 @@ export default function QuotationVehiclePricingRow({
                                             <input
                                                 type="number"
                                                 className="h-[100%] arrow-hidden p-0 px-2 border-0"
-                                                value={vehcile?.price || ""}
-                                                name="adultCount"
-                                                // onChange={(e) =>
-                                                //     handleChangeRoomOccupancyCombInp(
-                                                //         e,
-                                                //         index,
-                                                //         combinationIndex
-                                                //     )
-                                                // }
+                                                value={
+                                                    price?.vehicleType?.find(
+                                                        (vh) =>
+                                                            vh?.vehicle ===
+                                                            vehicle?._id
+                                                    )?.price
+                                                }
+                                                name="price"
+                                                onChange={(e) =>
+                                                    handleVehicleChange(
+                                                        e,
+                                                        index,
+                                                        vehicle
+                                                    )
+                                                }
                                                 placeholder="0"
                                             />
                                         </td>

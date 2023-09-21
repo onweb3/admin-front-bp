@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
 import { RxCross1 } from "react-icons/rx";
 
-export default function QuotationPricingTable({
+export default function QuotationPricingTransferTable({
     setPricing,
     pricing,
     seasons,
@@ -15,32 +15,9 @@ export default function QuotationPricingTable({
             {
                 fromDate: "",
                 toDate: "",
-                adultPrice: "",
-                childPrice: "",
+                price: "",
             },
         ]);
-    };
-
-    const deleteRow = (e, index) => {
-        e.preventDefault();
-
-        setPricing((prev) => {
-            // Create a copy of the previous array without the element at the specified index
-            const updatedPricing = prev.filter((_, i) => i !== index);
-
-            return updatedPricing;
-        });
-    };
-
-    const handleChange = (e, index) => {
-        setPricing((prev) => {
-            const updatedPricing = [...prev]; // Create a copy of the previous state array
-            updatedPricing[index] = {
-                ...updatedPricing[index], // Create a copy of the object at the specified index
-                [e.target.name]: e.target.value, // Update the specific property with the new value
-            };
-            return updatedPricing; // Return the updated array as the new state
-        });
     };
 
     function formatDate(dateString) {
@@ -76,6 +53,28 @@ export default function QuotationPricingTable({
         setData(selectedSeason._id);
     };
 
+    const deleteRow = (e, index) => {
+        e.preventDefault();
+
+        setPricing((prev) => {
+            // Create a copy of the previous array without the element at the specified index
+            const updatedPricing = prev.filter((_, i) => i !== index);
+
+            return updatedPricing;
+        });
+    };
+
+    const handleChange = (e, index) => {
+        setPricing((prev) => {
+            const updatedPricing = [...prev]; // Create a copy of the previous state array
+            updatedPricing[index] = {
+                ...updatedPricing[index], // Create a copy of the object at the specified index
+                [e.target.name]: e.target.value, // Update the specific property with the new value
+            };
+            return updatedPricing; // Return the updated array as the new state
+        });
+    };
+
     return (
         <div className="overflow-x-auto">
             <table className="w-full">
@@ -94,8 +93,7 @@ export default function QuotationPricingTable({
                         <th className="font-[500] p-2 border">Season</th>
                         <th className="font-[500] p-2 border">From Date</th>
                         <th className="font-[500] p-2 border">To Date</th>
-                        <th className="font-[500] p-2 border">Adult price</th>
-                        <th className="font-[500] p-2 border">Child Price</th>
+                        <th className="font-[500] p-2 border"> Price</th>
                     </tr>
                 </thead>
                 <tbody className="text-sm">
@@ -115,7 +113,7 @@ export default function QuotationPricingTable({
                                         -
                                     </button>
                                 </div>
-                            </td>
+                            </td>{" "}
                             <td className="p-2 border w-[35px] min-w-[35px]">
                                 <select
                                     name="country"
@@ -143,7 +141,6 @@ export default function QuotationPricingTable({
                                     })}
                                 </select>
                             </td>
-
                             <td className="border w-[140px] min-w-[140px]">
                                 <input
                                     type="date"
@@ -165,17 +162,8 @@ export default function QuotationPricingTable({
                             <td className="border w-[100px] min-w-[100px]">
                                 <input
                                     type="number"
-                                    name="adultPrice"
-                                    value={price?.adultPrice}
-                                    onChange={(e) => handleChange(e, index)}
-                                    className="h-[100%] arrow-hidden p-0 px-2 border-0"
-                                />
-                            </td>
-                            <td className="border w-[100px] min-w-[100px]">
-                                <input
-                                    type="number"
-                                    name="childPrice"
-                                    value={price?.childPrice}
+                                    name="price"
+                                    value={price?.price}
                                     onChange={(e) => handleChange(e, index)}
                                     className="h-[100%] arrow-hidden p-0 px-2 border-0"
                                 />

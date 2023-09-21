@@ -5,7 +5,11 @@ import axios from "../../../axios";
 import HotelStarCategoryMarkupModal from "./HotelStarCategoryMarkupModal";
 // import BookingsOrdersSingleRow from "./BookingsOrdersSingleRow";
 
-export default function HotelStarCategoryRow({ setCategories, category }) {
+export default function HotelStarCategoryRow({
+    setCategories,
+    category,
+    type,
+}) {
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -105,6 +109,7 @@ export default function HotelStarCategoryRow({ setCategories, category }) {
                     setIsModalOpen={setIsModalOpen}
                     setCategories={setCategories}
                     category={category}
+                    type={type}
                 />
             ) : (
                 ""
