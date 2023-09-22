@@ -148,7 +148,7 @@ export default function QuotationPricingTable({
                                 <input
                                     type="date"
                                     name="fromDate"
-                                    value={price?.fromDate || ""}
+                                    value={formatDate(price?.fromDate) || ""}
                                     onChange={(e) => handleChange(e, index)}
                                     className="h-[100%] px-2 border-0"
                                 />
@@ -157,7 +157,7 @@ export default function QuotationPricingTable({
                                 <input
                                     type="date"
                                     name="toDate"
-                                    value={price?.toDate || ""}
+                                    value={formatDate(price?.toDate) || ""}
                                     onChange={(e) => handleChange(e, index)}
                                     className="h-[100%]  px-2  border-0"
                                 />

@@ -20,6 +20,7 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
         excursions,
         noOfAdults,
         noOfChildren,
+        checkInDate,
     } = useSelector((state) => state.quotations);
 
     const [error, setError] = useState("");
@@ -30,10 +31,10 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const objIndex = excursions.findIndex(
-            (obj) => obj?._id === excursion?.excursionId
+        const selectedExc = excursions.find(
+            (obj) => obj?.activityId === excursion?.excursionId
         );
-        setGlobalExcursion(excursions[objIndex]);
+        setGlobalExcursion(selectedExc);
     }, [excursions, excursion.excursionId]);
 
     console.log(excursionTransferType, "excursionTransferType");
@@ -58,6 +59,7 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                     {
                         excursionId: excursion.excursionId,
                         noOfPax: noOfAdults + noOfChildren,
+                        date: checkInDate,
                     },
                     {
                         headers: { authorization: `Bearer ${jwtToken}` },
@@ -128,14 +130,14 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
             } else if (excursion?.excursionType === "ticket") {
                 if (excursion?.value === "ticket") {
                     calculatedAdultPrice =
-                        globalExcursion?.ticketPricing?.adultPrice;
+                        globalExcursion?.ticketPrice?.adultPrice;
                     calculatedChildPrice =
-                        globalExcursion?.ticketPricing?.childPrice;
+                        globalExcursion?.ticketPrice?.childPrice;
                 } else if (excursion?.value === "shared") {
                     calculatedAdultPrice =
-                        globalExcursion?.ticketPricing?.sicWithTicketAdultPrice;
+                        globalExcursion?.sicWithTicket?.adultPrice;
                     calculatedChildPrice =
-                        globalExcursion?.ticketPricing?.sicWithTicketChildPrice;
+                        globalExcursion?.sicWithTicket?.childPrice;
                 } else if (excursion?.value === "private") {
                     let totalPvtTransferPrice = 0;
 
@@ -232,12 +234,14 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                             <option value="" hidden>
                                 Select Type
                             </option>
-                            {globalExcursion?.transferPricing?.sicPrice && (
+                            {globalExcursion?.sicPrice && (
                                 <option value="shared">Shared</option>
                             )}
 
-                            {globalExcursion?.transferVehicleType?.length >
-                                0 && <option value="private">Private</option>}
+                            {globalExcursion?.privateTransfer?.vehicleType
+                                ?.length > 0 && (
+                                <option value="private">Private</option>
+                            )}
                         </select>
                     )}
 
@@ -248,9 +252,9 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                             "Loading..."
                         ) : (
                             <div className="grid grid-cols-2 gap-[1.5em] w-full">
-                                {globalExcursion?.transferVehicleType?.map(
-                                    (vehicle) => (
-                                        <div key={vehicle?._id}>
+                                {globalExcursion?.privateTransfer?.vehicleType.map(
+                                    (vehTY) => (
+                                        <div key={vehTY.vehicle?._id}>
                                             <div className="flex items-center gap-[10px]">
                                                 <input
                                                     type="checkbox"
@@ -261,7 +265,7 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                                                             (vt) => {
                                                                 return (
                                                                     vt?.vehicle?.toString() ===
-                                                                    vehicle?._id?.toString()
+                                                                    vehTY.vehicle?._id?.toString()
                                                                 );
                                                             }
                                                         ) !== undefined || false
@@ -271,18 +275,22 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                                                             changeExcursionTransferData(
                                                                 {
                                                                     name1: "vehicleType",
-                                                                    value: vehicle._id,
+                                                                    value: vehTY
+                                                                        .vehicle
+                                                                        ._id,
                                                                     _id: excursion.excursionId,
                                                                     name2: "vehicle",
                                                                     vehicleId:
-                                                                        vehicle._id,
-                                                                    price: globalExcursion?.transferPricing.vehicleType?.find(
+                                                                        vehTY
+                                                                            .vehicle
+                                                                            ._id,
+                                                                    price: globalExcursion?.privateTransfer.vehicleType?.find(
                                                                         (
                                                                             vt
                                                                         ) => {
                                                                             return (
                                                                                 vt?.vehicle?.toString() ===
-                                                                                vehicle?._id?.toString()
+                                                                                vehTY.vehicle?._id?.toString()
                                                                             );
                                                                         }
                                                                     ).price,
@@ -295,14 +303,14 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                                                     htmlFor="is7SeaterTransfer"
                                                     className="mb-0"
                                                 >
-                                                    {vehicle.name}
+                                                    {vehTY.vehicle.name}
                                                 </label>
                                             </div>
                                             {excursion?.vehicleType?.find(
                                                 (vt) => {
                                                     return (
                                                         vt?.vehicle?.toString() ===
-                                                        vehicle?._id?.toString()
+                                                        vehTY.vehicle?._id?.toString()
                                                     );
                                                 }
                                             ) && (
@@ -315,7 +323,7 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                                                             (vt) => {
                                                                 return (
                                                                     vt?.vehicle?.toString() ===
-                                                                    vehicle?._id?.toString()
+                                                                    vehTY.vehicle?._id?.toString()
                                                                 );
                                                             }
                                                         ).count || ""
@@ -331,8 +339,12 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                                                                     _id: excursion?.excursionId,
                                                                     name2: "count",
                                                                     vehicleId:
-                                                                        vehicle?._id,
-                                                                    price: vehicle?.price,
+                                                                        vehTY
+                                                                            .vehicle
+                                                                            ?._id,
+                                                                    price: vehTY
+                                                                        .vehicle
+                                                                        ?.price,
                                                                 }
                                                             )
                                                         );
@@ -384,12 +396,11 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                                 </option>
 
                                 <option value="ticket">Ticket Only</option>
-                                {globalExcursion?.ticketPricing
-                                    ?.sicWithTicketAdultPrice && (
+                                {globalExcursion?.sicWithTicket?.adultPrice && (
                                     <option value="shared">Shared</option>
                                 )}
-                                {globalExcursion?.ticketVehicleType?.length >
-                                    0 && (
+                                {globalExcursion?.privateTransferTicket
+                                    ?.vehicleType?.length > 0 && (
                                     <option value="private">Private</option>
                                 )}
                             </select>
@@ -402,9 +413,10 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                             "Loading..."
                         ) : (
                             <div className="grid grid-cols-2 gap-[1.5em] w-full">
-                                {globalExcursion?.ticketVehicleType?.map(
-                                    (vehicle) => (
-                                        <div key={vehicle?._id}>
+                                {globalExcursion?.privateTransferTicket?.vehicleType.map(
+                                    (vehTY) => (
+                                        // console.log(vehTY.vehicle?.name)
+                                        <div key={vehTY.vehicle?._id}>
                                             <div className="flex items-center gap-[10px]">
                                                 <input
                                                     type="checkbox"
@@ -415,7 +427,7 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                                                             (vt) => {
                                                                 return (
                                                                     vt?.vehicle?.toString() ===
-                                                                    vehicle?._id?.toString()
+                                                                    vehTY.vehicle?._id?.toString()
                                                                 );
                                                             }
                                                         ) !== undefined || false
@@ -425,18 +437,22 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                                                             changeExcursionTransferData(
                                                                 {
                                                                     name1: "vehicleType",
-                                                                    value: vehicle?._id,
+                                                                    value: vehTY
+                                                                        .vehicle
+                                                                        ?._id,
                                                                     _id: excursion?.excursionId,
                                                                     name2: "vehicle",
                                                                     vehicleId:
-                                                                        vehicle?._id,
-                                                                    price: globalExcursion?.ticketPricing?.vehicleType?.find(
+                                                                        vehTY
+                                                                            .vehicle
+                                                                            ?._id,
+                                                                    price: globalExcursion?.privateTransferTicket?.vehicleType?.find(
                                                                         (
                                                                             vt
                                                                         ) => {
                                                                             return (
-                                                                                vt?.vehicle?.toString() ===
-                                                                                vehicle?._id?.toString()
+                                                                                vt?.vehicle?._id?.toString() ===
+                                                                                vehTY.vehicle?._id?.toString()
                                                                             );
                                                                         }
                                                                     ).price,
@@ -449,14 +465,14 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                                                     htmlFor="is7SeaterTransfer"
                                                     className="mb-0"
                                                 >
-                                                    {vehicle?.name}
+                                                    {vehTY.vehicle?.name}
                                                 </label>
                                             </div>
                                             {excursion?.vehicleType?.find(
                                                 (vt) => {
                                                     return (
                                                         vt?.vehicle?.toString() ===
-                                                        vehicle?._id?.toString()
+                                                        vehTY?.vehicle?._id?.toString()
                                                     );
                                                 }
                                             ) && (
@@ -469,7 +485,7 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                                                             (vt) => {
                                                                 return (
                                                                     vt?.vehicle?.toString() ===
-                                                                    vehicle?._id.toString()
+                                                                    vehTY.vehicle?._id.toString()
                                                                 );
                                                             }
                                                         )?.count || ""
@@ -485,7 +501,9 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                                                                     _id: excursion?.excursionId,
                                                                     name2: "count",
                                                                     vehicleId:
-                                                                        vehicle?._id,
+                                                                        vehTY
+                                                                            .vehicle
+                                                                            ?._id,
                                                                 }
                                                             )
                                                         );

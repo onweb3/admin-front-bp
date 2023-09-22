@@ -335,22 +335,19 @@ export const quotationsSlice = createSlice({
             if (action.payload) {
                 console.log(action.payload, "payload");
                 state.selectedExcursions.push({
-                    excursionId: action?.payload?.excursion?._id,
-                    excursionType: action?.payload?.excursion?.qtnActivityType,
-                    excursionName: action?.payload?.excursion?.name,
+                    excursionId: action?.payload?.excursion?.activityId,
+                    excursionType: action?.payload?.excursion?.excursionType,
+                    excursionName: action?.payload?.excursion?.activity?.name,
                     value:
                         action?.payload?.excursionTransferType === "all"
-                            ? action?.payload?.excursion?.qtnActivityType ===
-                                  "transfer" &&
-                              action?.payload?.excursion.transferVehicleType
-                                ? "private"
-                                : action.payload?.excursion?.transferPricing
-                                      ?.sicPrice
-                                ? "shared"
-                                : "ticket"
-                            : action.payload?.excursionTransferType,
+                            ? "ticket"
+                            : action?.payload?.excursionTransferType,
                 });
-                state.selectedExcursionsIds.push(action.payload?.excursion._id);
+                state.selectedExcursionsIds.push(
+                    action.payload?.excursion.activityId
+                );
+
+                state.excursions.push(action?.payload?.excursion);
             }
         },
         changeExcursionType: (state, action) => {
@@ -470,7 +467,7 @@ export const quotationsSlice = createSlice({
                         .filter((item) => item.count > 0)
                         .map((item) => ({
                             count: item.count,
-                            vehicle: item.vehicle._id,
+                            vehicle: item.vehicle,
                             price: item.price,
                         }));
             }

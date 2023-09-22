@@ -36,7 +36,7 @@ export default function ExcursionQuotationForm() {
     const fetchExcursion = async (text) => {
         try {
             const response = await axios.get(
-                `/quotations/inital/excursions?text=${text}&date=${checkInDate}`,
+                `/quotations/inital/excursions?text=${text}&date=${checkInDate}&value=${excursionTransferType}`,
                 {
                     headers: { Authorization: `Bearer ${jwtToken}` },
                 }
@@ -108,7 +108,7 @@ export default function ExcursionQuotationForm() {
                                     }}
                                 />
                                 <label htmlFor="" className="mb-0">
-                                    All
+                                    Ticket Only
                                 </label>
                             </div>
                             <div className="flex items-center gap-[10px]">
@@ -179,7 +179,7 @@ export default function ExcursionQuotationForm() {
                                                                 className={
                                                                     "flex items-center gap-[10px] px-4 py-[7px] hover:bg-[#f6f6f6] cursor-pointer text-sm " +
                                                                     (selectedExcursionsIds?.includes(
-                                                                        excursion?._id
+                                                                        excursion?.activityId
                                                                     )
                                                                         ? "cursor-not-allowed"
                                                                         : "cursor-pointer")
@@ -187,7 +187,7 @@ export default function ExcursionQuotationForm() {
                                                                 onClick={() => {
                                                                     if (
                                                                         !selectedExcursionsIds?.includes(
-                                                                            excursion?._id
+                                                                            excursion?.activityId
                                                                         )
                                                                     ) {
                                                                         dispatch(
@@ -208,16 +208,14 @@ export default function ExcursionQuotationForm() {
                                                                     className={
                                                                         "flex items-center justify-center w-[18px] h-[18px] min-w-[18px] min-h-[18px] rounded-full " +
                                                                         (selectedExcursionsIds?.includes(
-                                                                            excursion?._id
+                                                                            excursion?.activityId
                                                                         )
                                                                             ? "bg-green-200 text-green-500"
                                                                             : "bg-blue-200 text-blue-500")
                                                                     }
                                                                 >
                                                                     {selectedExcursionsIds?.includes(
-                                                                        excursion
-                                                                            ?.activity
-                                                                            ?._id
+                                                                        excursion?.activityId
                                                                     )
                                                                         ? "-"
                                                                         : "+"}
