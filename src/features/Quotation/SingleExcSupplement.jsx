@@ -96,9 +96,9 @@ export default function SingleExcSupplement({
                 if (excursion?.value === "private") {
                     let totalPvtTransferPrice = 0;
 
-                    for (let i = 0; i < excursion.vehicleType.length; i++) {
-                        let vehicleType = excursion.vehicleType[i];
-                        totalPvtTransferPrice += vehicleType.price;
+                    for (let i = 0; i < excursion?.vehicleType?.length; i++) {
+                        let vehicleType = excursion?.vehicleType[i];
+                        totalPvtTransferPrice += vehicleType?.price;
                     }
                     let divVal = 1;
 
@@ -126,9 +126,9 @@ export default function SingleExcSupplement({
                 } else if (excursion?.value === "private") {
                     let totalPvtTransferPrice = 0;
 
-                    for (let i = 0; i < excursion.vehicleType.length; i++) {
-                        let vehicleType = excursion.vehicleType[i];
-                        totalPvtTransferPrice += vehicleType.price;
+                    for (let i = 0; i < excursion?.vehicleType?.length; i++) {
+                        let vehicleType = excursion?.vehicleType[i];
+                        totalPvtTransferPrice += vehicleType?.price;
                     }
                     let divVal = 1;
 

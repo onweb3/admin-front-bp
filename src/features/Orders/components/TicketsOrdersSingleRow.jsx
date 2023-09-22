@@ -3,10 +3,12 @@ import { FaBus, FaEdit } from "react-icons/fa";
 import { MdNoTransfer, MdOutlineEmail } from "react-icons/md";
 import { BiPhone, BiUser } from "react-icons/bi";
 import { FiMapPin } from "react-icons/fi";
+import { useSelector } from "react-redux";
 
 import { formatDate } from "../../../utils";
 import DriverAssignModal from "./DriverAssignModal";
 import { config } from "../../../constants";
+import axios from "../../../axios";
 
 export default function TicketsOrdersSingleRow({ order, section }) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -16,6 +18,27 @@ export default function TicketsOrdersSingleRow({ order, section }) {
         driversRequired: 0,
     });
     const [isDriverAssignModalOpen, setIsDriverAssignModalOpen] = useState(false);
+
+    const { jwtToken } = useSelector((state) => state.admin);
+
+    const handleMouseDownOnTicketNumber = async ({ loggedFrom, ticketNo }) => {
+        try {
+            await axios.post(
+                "/attractions/tickets/log",
+                {
+                    ticketNumber: ticketNo,
+                    attraction: order?.attraction?._id,
+                    activity: order?.activities?.activity?._id,
+                    loggedFrom,
+                },
+                {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                }
+            );
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     useEffect(() => {
         if (order.activities.transferType === "shared") {
@@ -208,6 +231,12 @@ export default function TicketsOrdersSingleRow({ order, section }) {
                                                         <span
                                                             key={index}
                                                             className="bg-[#f3f6f9] py-1 px-2 text-sm rounded"
+                                                            onMouseDown={() =>
+                                                                handleMouseDownOnTicketNumber({
+                                                                    ticketNo: ticket?.ticketNo,
+                                                                    loggedFrom: "orders-list",
+                                                                })
+                                                            }
                                                         >
                                                             {ticket?.ticketNo}
                                                         </span>
@@ -220,6 +249,12 @@ export default function TicketsOrdersSingleRow({ order, section }) {
                                                         <span
                                                             key={index}
                                                             className="bg-[#f3f6f9] py-1 px-2 text-sm rounded"
+                                                            onMouseDown={() =>
+                                                                handleMouseDownOnTicketNumber({
+                                                                    ticketNo: ticket?.ticketNo,
+                                                                    loggedFrom: "orders-list",
+                                                                })
+                                                            }
                                                         >
                                                             {ticket?.ticketNo}
                                                         </span>
@@ -232,6 +267,12 @@ export default function TicketsOrdersSingleRow({ order, section }) {
                                                         <span
                                                             key={index}
                                                             className="bg-[#f3f6f9] py-1 px-2 text-sm rounded"
+                                                            onMouseDown={() =>
+                                                                handleMouseDownOnTicketNumber({
+                                                                    ticketNo: ticket?.ticketNo,
+                                                                    loggedFrom: "orders-list",
+                                                                })
+                                                            }
                                                         >
                                                             {ticket?.ticketNo}
                                                         </span>

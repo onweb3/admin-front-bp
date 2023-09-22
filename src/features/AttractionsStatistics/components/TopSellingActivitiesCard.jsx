@@ -11,7 +11,7 @@ export default function TopSellingActivitiesCard({ data }) {
             <div>
                 {data?.length < 1 ? (
                     <div className="p-6 flex flex-col items-center">
-                        <span className="text-sm text-sm text-grayColor block mt-[6px]">
+                        <span className="text-sm text-grayColor block mt-[6px]">
                             Oops.. No Items Found
                         </span>
                     </div>
@@ -36,7 +36,7 @@ export default function TopSellingActivitiesCard({ data }) {
                                             className="border-b border-tableBorderColor"
                                         >
                                             <td className="p-3">
-                                                #{index + 1}
+                                                {index + 1}
                                             </td>
                                             <td className="p-3">
                                                 <Link

@@ -154,7 +154,7 @@ export default function CountriesPage() {
                                                             </span>
                                                         </div>
                                                     </td>
-                                                    <td className="p-3">{country?.phonecode}</td>
+                                                    <td className="p-3">{country?.phonecode || "N/A"}</td>
                                                     <td className="p-3">
                                                         <Link to={`${country?._id}/states`}>
                                                             <button className="h-auto bg-transparent text-[#333] text-xl">

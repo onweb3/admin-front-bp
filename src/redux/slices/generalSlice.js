@@ -2,11 +2,23 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import axios from "../../axios";
 
-export const fetchGeneralData = createAsyncThunk(
-    "generalSlice/fetchGeneralData",
+export const fetchGeneralData1 = createAsyncThunk(
+    "generalSlice/fetchGeneralData1",
     async (_, { getState }) => {
         const { jwtToken } = getState().admin;
-        const response = await axios.get("/general", {
+        const response = await axios.get("/general/1", {
+            headers: {
+                authorization: `Bearer ${jwtToken}`,
+            },
+        });
+        return response.data;
+    }
+);
+export const fetchGeneralData2 = createAsyncThunk(
+    "generalSlice/fetchGeneralData2",
+    async (_, { getState }) => {
+        const { jwtToken } = getState().admin;
+        const response = await axios.get("/general/2", {
             headers: {
                 authorization: `Bearer ${jwtToken}`,
             },
@@ -15,8 +27,7 @@ export const fetchGeneralData = createAsyncThunk(
     }
 );
 
-const UAE_FLAG =
-    "https://cdn.jsdelivr.net/npm/svg-country-flags@1.2.10/svg/ae.svg";
+const UAE_FLAG = "https://cdn.jsdelivr.net/npm/svg-country-flags@1.2.10/svg/ae.svg";
 
 const initialState = {
     isGeneralLoading: true,
@@ -59,11 +70,9 @@ export const generalSlice = createSlice({
             state.destinations?.unshift(action.payload);
         },
         deleteDestination: (state, action) => {
-            const filteredDestinations = state.destinations.filter(
-                (destination) => {
-                    return destination?._id !== action.payload;
-                }
-            );
+            const filteredDestinations = state.destinations.filter((destination) => {
+                return destination?._id !== action.payload;
+            });
             state.destinations = filteredDestinations;
         },
         updateDestination: (state, action) => {
@@ -108,10 +117,7 @@ export const generalSlice = createSlice({
                 conversionRate: action.payload?.conversionRate,
                 flag: action.payload?.country?.flag,
             };
-            localStorage.setItem(
-                "currency",
-                JSON.stringify(state.selectedCurrency)
-            );
+            localStorage.setItem("currency", JSON.stringify(state.selectedCurrency));
         },
         addState: (state, action) => {
             state.states?.unshift(action.payload);
@@ -160,14 +166,11 @@ export const generalSlice = createSlice({
         },
     },
     extraReducers: {
-        [fetchGeneralData.fulfilled]: (state, action) => {
+        [fetchGeneralData1.fulfilled]: (state, action) => {
             state.countries = action.payload?.countries;
             state.destinations = action.payload?.destinations;
             state.drivers = action.payload?.drivers;
             state.currencies = action.payload?.currencies;
-            state.states = action.payload?.states;
-            state.cities = action.payload?.cities;
-            state.areas = action.payload?.areas;
 
             const localCurrency = localStorage.getItem("currency")
                 ? JSON.parse(localStorage.getItem("currency"))
@@ -175,15 +178,13 @@ export const generalSlice = createSlice({
             if (localCurrency) {
                 const objIndex = state.currencies?.findIndex((currency) => {
                     return (
-                        currency?.isocode?.toUpperCase() ===
-                        localCurrency?.isocode?.toUpperCase()
+                        currency?.isocode?.toUpperCase() === localCurrency?.isocode?.toUpperCase()
                     );
                 });
                 if (objIndex !== -1) {
                     state.selectedCurrency = {
                         isocode: state.currencies[objIndex]?.isocode,
-                        conversionRate:
-                            state.currencies[objIndex]?.conversionRate,
+                        conversionRate: state.currencies[objIndex]?.conversionRate,
                         flag: state.currencies[objIndex]?.country?.flag,
                     };
                 } else {
@@ -201,11 +202,13 @@ export const generalSlice = createSlice({
                 };
             }
 
-            localStorage.setItem(
-                "currency",
-                JSON.stringify(state.selectedCurrency)
-            );
+            localStorage.setItem("currency", JSON.stringify(state.selectedCurrency));
             state.isGeneralLoading = false;
+        },
+        [fetchGeneralData2.fulfilled]: (state, action) => {
+            state.states = action.payload?.states;
+            state.cities = action.payload?.cities;
+            state.areas = action.payload?.areas;
         },
     },
 });

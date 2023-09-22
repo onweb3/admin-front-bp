@@ -29,15 +29,15 @@ export default function SingleAttractionTicketTableRow({
         }
     };
 
-    const handleMouseDownOnTicketNumber = async () => {
+    const handleMouseDownOnTicketNumber = async ({ loggedFrom }) => {
         try {
-            console.log(ticket?.ticketNo);
             await axios.post(
                 "/attractions/tickets/log",
                 {
                     ticketNumber: ticket?.ticketNo,
                     attraction: id,
                     activity: activityId,
+                    loggedFrom,
                 },
                 {
                     headers: { authorization: `Bearer ${jwtToken}` },
@@ -50,7 +50,10 @@ export default function SingleAttractionTicketTableRow({
 
     return (
         <tr className="border-b border-tableBorderColor">
-            <td className="p-3" onMouseDown={handleMouseDownOnTicketNumber}>
+            <td
+                className="p-3"
+                onMouseDown={() => handleMouseDownOnTicketNumber({ loggedFrom: "tickets-list" })}
+            >
                 {ticket?.ticketNo}
             </td>
             <td className="p-3">{ticket?.lotNo}</td>
@@ -80,7 +83,10 @@ export default function SingleAttractionTicketTableRow({
                             name=""
                             id=""
                             className="w-[100px]"
-                            onChange={() => updateTicketStatus(ticket?._id)}
+                            onChange={() => {
+                                handleMouseDownOnTicketNumber({ loggedFrom: "tickets-list-used" });
+                                updateTicketStatus(ticket?._id);
+                            }}
                             value={ticket?.status}
                         >
                             <option value="" hidden>
