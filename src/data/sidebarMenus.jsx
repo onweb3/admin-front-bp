@@ -107,35 +107,35 @@ const sidebarMenus = {
             ],
         },
     ],
-    Marketing: [
-        {
-            name: "Affiliate",
-            icon: <HiOutlineShoppingCart />,
-            link: "#",
-            dropdown: [
-                {
-                    name: "Affiliate Settings",
-                    link: "/affiliate/settings",
-                    permission: ["affiliate-settings", "view"],
-                },
-                {
-                    name: "Affiliate Products",
-                    link: "/affiliate/products",
-                    permission: ["affiliate-products", "view"],
-                },
-                {
-                    name: "Affiliate Reports",
-                    link: "/affiliate/reports",
-                    permission: ["affiliate-reports", "view"],
-                },
-                {
-                    name: "Affiliate Redeem Requests",
-                    link: "/affiliate/redeem/requests",
-                    permission: ["affiliate-redeem-requests", "view"],
-                },
-            ],
-        },
-    ],
+    // Marketing: [
+    //     {
+    //         name: "Affiliate",
+    //         icon: <HiOutlineShoppingCart />,
+    //         link: "#",
+    //         dropdown: [
+    //             {
+    //                 name: "Affiliate Settings",
+    //                 link: "/affiliate/settings",
+    //                 permission: ["affiliate-settings", "view"],
+    //             },
+    //             {
+    //                 name: "Affiliate Products",
+    //                 link: "/affiliate/products",
+    //                 permission: ["affiliate-products", "view"],
+    //             },
+    //             {
+    //                 name: "Affiliate Reports",
+    //                 link: "/affiliate/reports",
+    //                 permission: ["affiliate-reports", "view"],
+    //             },
+    //             {
+    //                 name: "Affiliate Redeem Requests",
+    //                 link: "/affiliate/redeem/requests",
+    //                 permission: ["affiliate-redeem-requests", "view"],
+    //             },
+    //         ],
+    //     },
+    // ],
     Hotel: [
         {
             name: "Hotels List",
