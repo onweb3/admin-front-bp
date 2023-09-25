@@ -6,10 +6,14 @@ import { FiDownload, FiMail } from "react-icons/fi";
 import axios from "../../axios";
 import { PageLoader } from "../../components";
 import { config } from "../../constants";
+import { GiConfirmed } from "react-icons/gi";
+import QuotationConfirmModal from "../../features/Quotation/QuotationConfirmModal";
 
 export default function SingleQuotationDetailsPage() {
     const [quotation, setQuotation] = useState({});
     const [isLoading, setIsLoading] = useState(true);
+    const [isModal, setIsModal] = useState(false);
+    const [selectedAmendment, setSelectedAmendment] = useState({});
 
     const { quotationNumber } = useParams();
     const { jwtToken } = useSelector((state) => state.admin);
@@ -70,20 +74,41 @@ export default function SingleQuotationDetailsPage() {
                 {quotation?.amendments?.map((amendment, index) => {
                     return (
                         <AmendmentTable
-                            key={index}
+                            key={amendment._id}
                             amendment={amendment}
                             quotation={quotation}
                             index={index}
                             quotationNumber={quotationNumber}
+                            setIsModal={setIsModal}
+                            isModal={isModal}
+                            setQuotation={setQuotation}
+                            setSelectedAmendment={setSelectedAmendment}
                         />
                     );
                 })}
             </div>
+            {isModal && (
+                <QuotationConfirmModal
+                    key={selectedAmendment._id}
+                    amendment={selectedAmendment}
+                    setQuotation={setQuotation}
+                    setIsModal={setIsModal}
+                />
+            )}
         </div>
     );
 }
 
-const AmendmentTable = ({ amendment, quotation, quotationNumber, index }) => {
+const AmendmentTable = ({
+    amendment,
+    quotation,
+    quotationNumber,
+    index,
+    setIsModal,
+    isModal,
+    setQuotation,
+    setSelectedAmendment,
+}) => {
     return (
         <div className="border border-dashed bg-[#f6f6f6] p-5 mb-10">
             <div className="flex justify-between">
@@ -92,8 +117,31 @@ const AmendmentTable = ({ amendment, quotation, quotationNumber, index }) => {
                     <span className="ml-5 text-green-500">
                         ({new Date(amendment?.createdAt).toLocaleDateString()})
                     </span>
+                    {index === 0 && amendment.status === "confirmed" && (
+                        <span className="ml-5 text-green-500">
+                            {amendment.status}
+                        </span>
+                    )}
                 </h3>
                 <div className="flex items-center gap-3">
+                    {index === 0 ? (
+                        amendment.status !== "confirmed" ? (
+                            <button
+                                className="px-3 flex items-center gap-[10px]"
+                                onClick={() => {
+                                    setIsModal(true);
+                                    setSelectedAmendment(amendment);
+                                }}
+                            >
+                                <GiConfirmed /> Confirm Quotation
+                            </button>
+                        ) : (
+                            ""
+                        )
+                    ) : (
+                        ""
+                    )}
+
                     <Link to={`email/${amendment?._id}`}>
                         <button className="px-3 flex items-center gap-[10px]">
                             <FiMail /> View Email
@@ -110,13 +158,15 @@ const AmendmentTable = ({ amendment, quotation, quotationNumber, index }) => {
                             Download Sheet
                         </button>
                     </a>
-                    <Link
-                        to={`/quotations/${quotationNumber}/edit/${amendment?._id}`}
-                    >
-                        <button className="px-3 flex items-center gap-[10px]">
-                            Edit
-                        </button>
-                    </Link>
+                    {quotation.amendment[0].status === "confirmed" && (
+                        <Link
+                            to={`/quotations/${quotationNumber}/edit/${amendment?._id}`}
+                        >
+                            <button className="px-3 flex items-center gap-[10px]">
+                                Edit
+                            </button>
+                        </Link>
+                    )}
                 </div>
             </div>
             <div className="mt-3">

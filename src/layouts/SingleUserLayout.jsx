@@ -229,6 +229,19 @@ export default function SingleUserLayout() {
                                     Attraction Booking Orders
                                 </button>
                             </Link>
+                            <Link to="./point-history">
+                                <button
+                                    className={
+                                        "px-2 py-4 h-auto bg-transparent text-textColor font-medium rounded-none " +
+                                        (location.pathname.split("/")[3] ===
+                                        "point-history"
+                                            ? "border-b border-b-orange-500"
+                                            : "")
+                                    }
+                                >
+                                    Point History
+                                </button>
+                            </Link>
                         </div>
 
                         <Outlet context={{ user }} />

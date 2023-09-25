@@ -62,9 +62,9 @@ export default function SingleUserTransactionsPage() {
     const fetchTransactions = async ({ ...filters }) => {
         try {
             setIsLoading(true);
-            let searchQuery = `skip=${filters?.skip}&limit=${filters.limit}&transactionNo=${filters.transactionNo}&status=${filters.status}&paymentProcessor=${filters.paymentProcessor}&transactionType=${filters.transactionType}&dateFrom=${filters.dateFrom}&dateTo=${filters.dateTo}`;
+            let searchQuery = `userId=${id}&skip=${filters?.skip}&limit=${filters.limit}&transactionNo=${filters.transactionNo}&status=${filters.status}&paymentProcessor=${filters.paymentProcessor}&transactionType=${filters.transactionType}&dateFrom=${filters.dateFrom}&dateTo=${filters.dateTo}`;
             const response = await axios.get(
-                `/transactions/b2c/reseller/${id}/all?${searchQuery}`,
+                `/transactions/b2c/all?${searchQuery}`,
                 {
                     headers: { authorization: `Bearer ${jwtToken}` },
                 }
