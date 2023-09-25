@@ -25,14 +25,10 @@ export default function HotelDetailsForm({ selectedSection }) {
         return item?.country === details.country;
     });
     const availableCities = cities?.filter((item) => {
-        return item?.state === details.state && item?.country === details.country;
+        return item?.country === details.country;
     });
     const availableAreas = areas?.filter((item) => {
-        return (
-            item?.city === details.city &&
-            item?.state === details.state &&
-            item?.country === details.country
-        );
+        return item?.country === details.country;
     });
 
     const handleChange = (e) => {
@@ -250,7 +246,9 @@ export default function HotelDetailsForm({ selectedSection }) {
                         <option value="3">3 Star</option>
                         <option value="4">4 Star</option>
                         <option value="5">5 Star</option>
-                        <option value="apartment">apartment</option>
+                        <option value="apartment">Apartment</option>
+                        <option value="hostel">Hostel</option>
+                        <option value="unrated">Unrated</option>
                     </select>
                 </div>
                 <div>

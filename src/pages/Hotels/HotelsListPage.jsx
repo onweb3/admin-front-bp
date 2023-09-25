@@ -199,6 +199,8 @@ function HotelsListPage() {
                                 <option value="4">4 Star</option>
                                 <option value="5">5 Star</option>
                                 <option value="apartment">Apartment</option>
+                                <option value="hostel">Hostel</option>
+                                <option value="unrated">Unrated</option>
                             </select>
                         </div>
                         <div>
@@ -305,7 +307,7 @@ function HotelsListPage() {
                                                     </td>
                                                     <td className="p-3 capitalize">
                                                         {hotel?.starCategory ? (
-                                                            hotel?.starCategory !== "apartment" ? (
+                                                            !isNaN(hotel?.starCategory) ? (
                                                                 <div className="flex gap-[4px] items-center">
                                                                     <span className="">
                                                                         {hotel?.starCategory}

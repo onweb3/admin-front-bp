@@ -122,9 +122,7 @@ export default function VouchersDailyReportPage() {
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">
-                    Daily Reports
-                </h1>
+                <h1 className="font-[600] text-[15px] uppercase">Daily Reports</h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
@@ -252,18 +250,10 @@ export default function VouchersDailyReportPage() {
                                 value={filters.sortBy}
                                 onChange={handleChange}
                             >
-                                <option value="onDate:asc">
-                                    On Date Ascending
-                                </option>
-                                <option value="onDate:desc">
-                                    On Date Descending{" "}
-                                </option>
-                                <option value="tourName:asc">
-                                    Tour Name Ascending
-                                </option>
-                                <option value="tourName:desc">
-                                    Tour Name Descending{" "}
-                                </option>
+                                <option value="onDate:asc">On Date Ascending</option>
+                                <option value="onDate:desc">On Date Descending </option>
+                                <option value="tourName:asc">Tour Name Ascending</option>
+                                <option value="tourName:desc">Tour Name Descending </option>
                             </select>
                         </div>
                         <button className="flex items-center justify-center gap-[10px]">
@@ -282,7 +272,7 @@ export default function VouchersDailyReportPage() {
                         <PageLoader />
                     ) : vouchers?.length < 1 ? (
                         <div className="p-6 flex flex-col items-center">
-                            <span className="text-sm text-sm text-grayColor block mt-[6px]">
+                            <span className="text-sm text-grayColor block mt-[6px]">
                                 Oops.. No Vouchers Found
                             </span>
                         </div>
