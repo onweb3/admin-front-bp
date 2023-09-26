@@ -937,6 +937,7 @@ export default function EditVoucherPage() {
                                         className="w-[150px] bg-primaryColor"
                                         type="button"
                                         onClick={handleSubmit}
+                                        disabled={isLoading}
                                     >
                                         {isLoading ? (
                                             <BtnLoader />

@@ -826,6 +826,7 @@ function AddVoucherPage() {
                                     className="w-[140px] bg-primaryColor"
                                     type="button"
                                     onClick={handleSubmit}
+                                    disabled={isLoading}
                                 >
                                     {isLoading ? <BtnLoader /> : "Add Voucher"}
                                 </button>
