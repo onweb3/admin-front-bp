@@ -12,6 +12,7 @@ import AddApproveProfileMarkupModa from "./AddApproveProfileMarkupModal";
 import { config } from "../../../constants";
 
 export default function ResellersTableRow({ reseller }) {
+    console.log("ResellersTableRow", reseller);
     const [status, setStatus] = useState(reseller?.status);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isStatusLoading, setIsStatusLoading] = useState(false);
@@ -53,8 +54,7 @@ export default function ResellersTableRow({ reseller }) {
                         <img
                             src={
                                 reseller?.avatar
-                                    ? config.SERVER_URL +
-                                      reseller?.avatar
+                                    ? config.SERVER_URL + reseller?.avatar
                                     : avatarImg
                             }
                             alt=""

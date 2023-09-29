@@ -31,23 +31,20 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const selectedExc = excursions.find(
+        const selectedExc = excursions?.find(
             (obj) => obj?.activityId === excursion?.excursionId
         );
+
+        console.log(selectedExc, "seelcted");
         setGlobalExcursion(selectedExc);
     }, [excursions, excursion.excursionId]);
 
     console.log(excursionTransferType, "excursionTransferType");
 
-    const onTransferChange = async (excursionId, type) => {
+    const onTransferChange = async (type) => {
         try {
-            console.log("type ", type);
-            if (
-                type === "private" ||
-                excursionTransferType === "private" ||
-                (excursionTransferType === "all" &&
-                    excursion.excursionType === "transfer")
-            ) {
+            console.log("type SSS ", type);
+            if (type === "private" || excursionTransferType === "private") {
                 console.log("type ", type);
 
                 setIsLoading(true);
@@ -87,12 +84,13 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
     };
 
     useEffect(() => {
-        onTransferChange({ type: "private" });
-    }, [excursionTransferType]);
+        onTransferChange(excursion?.value);
+    }, [excursionTransferType, excursion?.value]);
 
-    console.log(globalExcursion, "globak", excursion);
+    console.log(excursions, "globak", excursion);
 
     useEffect(() => {
+        console.log(excursions, "rechhh", globalExcursion);
         if (
             excursion &&
             excursion.value &&
@@ -122,10 +120,8 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                     calculatedAdultPrice = totalPvtTransferPrice / divVal;
                     calculatedChildPrice = totalPvtTransferPrice / divVal;
                 } else if (excursion?.value === "shared") {
-                    calculatedAdultPrice =
-                        globalExcursion?.transferPricing?.sicPrice;
-                    calculatedChildPrice =
-                        globalExcursion?.transferPricing?.sicPrice;
+                    calculatedAdultPrice = globalExcursion?.sicPrice.price;
+                    calculatedChildPrice = globalExcursion?.sicPrice?.price;
                 }
             } else if (excursion?.excursionType === "ticket") {
                 if (excursion?.value === "ticket") {
@@ -133,6 +129,7 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                         globalExcursion?.ticketPrice?.adultPrice;
                     calculatedChildPrice =
                         globalExcursion?.ticketPrice?.childPrice;
+                    console.log("Call reachedddd");
                 } else if (excursion?.value === "shared") {
                     calculatedAdultPrice =
                         globalExcursion?.sicWithTicket?.adultPrice;
@@ -252,7 +249,7 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                             "Loading..."
                         ) : (
                             <div className="grid grid-cols-2 gap-[1.5em] w-full">
-                                {globalExcursion?.privateTransfer?.vehicleType.map(
+                                {globalExcursion?.privateTransfer?.vehicleType?.map(
                                     (vehTY) => (
                                         <div key={vehTY.vehicle?._id}>
                                             <div className="flex items-center gap-[10px]">

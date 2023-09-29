@@ -39,6 +39,18 @@ export default function AttractionProfileRow({
                         <tr>
                             <th className="font-[500] p-3">Index</th>
                             <th className="font-[500] p-3">Activity Name</th>
+
+                            {type === "market" && (
+                                <>
+                                    {" "}
+                                    <th className="font-[500] p-3">
+                                        Markup Transfer
+                                    </th>
+                                    <th className="font-[500] p-3">
+                                        Markup Type Transfer
+                                    </th>
+                                </>
+                            )}
                             <th className="font-[500] p-3">Activity Type</th>
                             <th className="font-[500] p-3">Markup Type</th>
 

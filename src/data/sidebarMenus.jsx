@@ -326,6 +326,11 @@ const sidebarMenus = {
                     link: "/quotations",
                     permission: ["quotations-list", "view"],
                 },
+                {
+                    name: "Quotation Reseller List",
+                    link: "/quotations/reseller",
+                    permission: ["quotations-reseller-list", "view"],
+                },
             ],
         },
     ],

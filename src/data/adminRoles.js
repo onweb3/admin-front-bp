@@ -318,6 +318,12 @@ const adminRoles = [
         category: "quotations",
         permissions: [],
     },
+    {
+        name: "quotations-reseller-list",
+        displayName: "Quotation Reseller Listing",
+        category: "quotations",
+        permissions: [],
+    },
 
     //Transfers
 

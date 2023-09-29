@@ -82,15 +82,9 @@ export const quotationsSlice = createSlice({
     initialState,
     reducers: {
         setInititalData: (state, action) => {
-            console.log(action.payload, "payload");
-            state.places = action.payload?.places;
-            state.excursions = action.payload?.excursions;
             state.airports = action.payload?.airports;
             state.visas = action.payload?.visaCountry;
             state.initialDataFetching = false;
-            state.cities = action.payload?.cities;
-            state.states = action.payload?.states;
-            state.areas = action.payload?.areas;
         },
         setInitialHotels: (state, action) => {
             state.stays = action.payload;
@@ -355,7 +349,7 @@ export const quotationsSlice = createSlice({
                 (obj) => obj.excursionId === action.payload?._id
             );
             const excursionIndex = state.excursions?.findIndex(
-                (obj) => obj._id === action.payload?._id
+                (obj) => obj.activityId === action.payload?._id
             );
 
             console.log(
@@ -486,7 +480,7 @@ export const quotationsSlice = createSlice({
                     .filter((item) => item.count > 0)
                     .map((item) => ({
                         count: item.count,
-                        vehicle: item.vehicle._id,
+                        vehicle: item.vehicle,
                         price: item.price,
                     }));
             }
@@ -524,24 +518,18 @@ export const quotationsSlice = createSlice({
         addExcSupplement: (state, action) => {
             if (action.payload) {
                 state.selectedExcSupplements.push({
-                    excursionId: action?.payload?.excursion?._id,
-                    excursionType: action?.payload?.excursion?.qtnActivityType,
-                    excursionName: action?.payload?.excursion?.name,
+                    excursionId: action?.payload?.excursion?.activityId,
+                    excursionType: action?.payload?.excursion?.excursionType,
+                    excursionName: action?.payload?.excursion?.activity?.name,
                     value:
                         action?.payload?.excSupplementTransferType === "all"
-                            ? action?.payload?.excursion?.qtnActivityType ===
-                                  "transfer" &&
-                              action?.payload?.excursion.transferVehicleType
-                                ? "private"
-                                : action.payload?.excursion?.transferPricing
-                                      ?.sicPrice
-                                ? "shared"
-                                : "ticket"
+                            ? "ticket"
                             : action.payload?.excSupplementTransferType,
                 });
                 state.selectedExcSupplementIds.push(
-                    action.payload?.excursion?._id
+                    action.payload?.excursion?.activityId
                 );
+                state.excursions.push(action?.payload?.excursion);
             }
         },
         changeExcSupplementPerPersonPrice: (state, action) => {
@@ -625,7 +613,7 @@ export const quotationsSlice = createSlice({
                     (obj) => obj.excursionId === action.payload?._id
                 );
             const excursionIndex = state.excursions?.findIndex(
-                (obj) => obj._id === action.payload?._id
+                (obj) => obj.activityId === action.payload?._id
             );
 
             console.log(
@@ -752,7 +740,7 @@ export const quotationsSlice = createSlice({
                 action.payload?.amendment?.isSupplimentQuotationDisabled;
             state.isVisaQuotationDisabled =
                 action.payload?.amendment?.isVisaQuotationDisabled;
-
+            state.excursions = action.payload?.amendment?.excursions;
             if (action.payload?.amendment?.hotelQuotation) {
                 state.hotelQt = action.payload?.amendment?.hotelQuotation;
             } else {

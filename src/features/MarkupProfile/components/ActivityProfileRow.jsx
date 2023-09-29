@@ -28,6 +28,8 @@ export default function ActivityProfileRow({
         markupType: activities?.markupType,
         markup: activities?.markup,
         isEdit: activities?.isEdit || false,
+        transferMarkup: activities?.transferMarkup,
+        transferMarkupType: activities?.transferMarkupType,
     });
 
     const handleChange = (e) => {
@@ -90,6 +92,9 @@ export default function ActivityProfileRow({
                                 ...activity,
                                 markupType: formData?.markupType,
                                 markup: formData?.markup,
+                                transferMarkup: formData?.transferMarkup,
+                                transferMarkupType:
+                                    formData?.transferMarkupType,
                                 isEdit: true,
                             };
                         } else {
@@ -113,6 +118,9 @@ export default function ActivityProfileRow({
                                 ...activity,
                                 markupType: formData?.markupType,
                                 markup: formData?.markup,
+                                transferMarkup: formData?.transferMarkup,
+                                transferMarkupType:
+                                    formData?.transferMarkupType,
                                 isEdit: true,
                             };
                         } else {
@@ -131,6 +139,8 @@ export default function ActivityProfileRow({
             activity: activities?._id,
             markupType: activities?.markupType,
             markup: activities?.markup,
+            transferMarkup: activities?.transferMarkup,
+            transferMarkupType: activities?.transferMarkupType,
         });
     }, [activities]);
 
@@ -142,6 +152,52 @@ export default function ActivityProfileRow({
                 <td className="p-3">{index + 1}</td>
                 <td className="p-3">{activities?.name}</td>
                 <td className="p-3">{activities?.activityType}</td>
+                {type === "market" && (
+                    <>
+                        {isModalOpen ? (
+                            <td className="p-3">
+                                <select
+                                    name="transferMarkupType"
+                                    value={formData?.transferMarkupType || ""}
+                                    onChange={handleChange}
+                                >
+                                    <option value="" hidden>
+                                        Markup Type
+                                    </option>
+                                    <option value="flat">flat</option>
+                                    <option value="percentage">
+                                        percentage
+                                    </option>
+                                </select>{" "}
+                            </td>
+                        ) : (
+                            <td className="p-3 capitalize">
+                                <span>
+                                    {formData?.transferMarkupType
+                                        ? formData?.transferMarkupType
+                                        : "N/A"}{" "}
+                                </span>
+                            </td>
+                        )}
+                        {isModalOpen ? (
+                            <td className="p-3">
+                                <input
+                                    type="number"
+                                    name="transferMarkup"
+                                    value={formData?.transferMarkup || ""}
+                                    onChange={handleChange}
+                                    className="h-[100%] arrow-hidden p-0 px-2 border-1 w-[150px]"
+                                />
+                            </td>
+                        ) : (
+                            <td className="p-3 capitalize">
+                                <span>
+                                    {formData?.transferMarkup?.toString()}
+                                </span>
+                            </td>
+                        )}
+                    </>
+                )}
                 {isModalOpen ? (
                     <td className="p-3">
                         <select
@@ -177,7 +233,7 @@ export default function ActivityProfileRow({
                     </td>
                 ) : (
                     <td className="p-3 capitalize">
-                        <span>{formData.markup.toString()}</span>
+                        <span>{formData?.markup.toString()}</span>
                     </td>
                 )}
                 {isModalOpen ? (

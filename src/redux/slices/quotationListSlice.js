@@ -49,6 +49,31 @@ const fetchAgentsQuotations = createAsyncThunk(
     }
 );
 
+const fetchSingleResellerQuotations = createAsyncThunk(
+    "/user/fetchSingleResellerQuotations",
+    async (args, { getState }) => {
+        const { jwtToken } = getState().admin;
+        const { filters, skip, limit } = getState().quotationsList;
+
+        try {
+            console.log(args, "argfs");
+            const response = await axios.get(
+                `/quotations/reseller/list/${
+                    args || ""
+                }?skip=${skip}&limit=${limit}&dateFrom=${
+                    filters?.dateFrom
+                }&dateTo=${filters?.dateTo}&quotationNumber=${
+                    filters?.quotationNumber
+                }`,
+                { headers: { Authorization: `Bearer ${jwtToken}` } }
+            );
+            return response.data;
+        } catch (err) {
+            return err.message;
+        }
+    }
+);
+
 export const quotationsListSlice = createSlice({
     name: "quotationsList",
     initialState,
@@ -98,6 +123,11 @@ export const quotationsListSlice = createSlice({
             state.totalQuotations = action.payload?.totalQuotations;
             state.isLoading = false;
         },
+        [fetchSingleResellerQuotations.fulfilled]: (state, action) => {
+            state.quotations = action.payload?.quotations;
+            state.totalQuotations = action.payload?.totalQuotations;
+            state.isLoading = false;
+        },
     },
 });
 
@@ -110,6 +140,10 @@ export const {
     clearAllQuotationsData,
 } = quotationsListSlice.actions;
 
-export { fetchQuotations, fetchAgentsQuotations };
+export {
+    fetchQuotations,
+    fetchAgentsQuotations,
+    fetchSingleResellerQuotations,
+};
 
 export default quotationsListSlice.reducer;

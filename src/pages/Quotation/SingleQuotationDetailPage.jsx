@@ -158,7 +158,7 @@ const AmendmentTable = ({
                             Download Sheet
                         </button>
                     </a>
-                    {quotation.amendment[0].status === "confirmed" && (
+                    {amendment.status === "not-confirmed" && (
                         <Link
                             to={`/quotations/${quotationNumber}/edit/${amendment?._id}`}
                         >

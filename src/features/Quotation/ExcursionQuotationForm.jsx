@@ -43,10 +43,13 @@ export default function ExcursionQuotationForm() {
             );
 
             setSearchedExcursions(response.data);
-        } catch (err) {}
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     useEffect(() => {
+        console.log("call");
         if (searchText) {
             fetchExcursion(searchText);
         }
@@ -108,7 +111,7 @@ export default function ExcursionQuotationForm() {
                                     }}
                                 />
                                 <label htmlFor="" className="mb-0">
-                                    Ticket Only
+                                    Ticket
                                 </label>
                             </div>
                             <div className="flex items-center gap-[10px]">

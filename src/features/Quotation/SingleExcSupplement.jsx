@@ -17,8 +17,13 @@ export default function SingleExcSupplement({
 }) {
     const [globalExcursion, setGlobalExcursion] = useState({});
 
-    const { selectedExcSupplementIds, excursions, noOfAdults, noOfChildren } =
-        useSelector((state) => state.quotations);
+    const {
+        selectedExcSupplementIds,
+        excursions,
+        checkInDate,
+        noOfAdults,
+        noOfChildren,
+    } = useSelector((state) => state.quotations);
 
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -27,21 +32,16 @@ export default function SingleExcSupplement({
 
     const dispatch = useDispatch();
     useEffect(() => {
-        const objIndex = excursions.findIndex(
-            (obj) => obj?._id === excursion?.excursionId
+        const selectedExc = excursions.find(
+            (obj) => obj?.activityId === excursion?.excursionId
         );
-        setGlobalExcursion(excursions[objIndex]);
+        setGlobalExcursion(selectedExc);
     }, [excursions, excursion.excursionId]);
 
-    const onTransferChange = async (excursionId, type) => {
+    const onTransferChange = async (type) => {
         try {
             console.log("type ", type);
-            if (
-                type === "private" ||
-                excSupplementTransferType === "private" ||
-                (excSupplementTransferType === "all" &&
-                    excursion.excursionType === "transfer")
-            ) {
+            if (type === "private" || excSupplementTransferType === "private") {
                 console.log("type ", type);
 
                 setIsLoading(true);
@@ -53,6 +53,7 @@ export default function SingleExcSupplement({
                     {
                         excursionId: excursion.excursionId,
                         noOfPax: noOfAdults + noOfChildren,
+                        date: checkInDate,
                     },
                     {
                         headers: { authorization: `Bearer ${jwtToken}` },
@@ -80,11 +81,18 @@ export default function SingleExcSupplement({
     };
 
     useEffect(() => {
-        onTransferChange();
-    }, [excSupplementTransferType]);
+        onTransferChange(excursion?.value);
+    }, [excSupplementTransferType, excursion?.value]);
+
+    console.log(excursion, "excursion");
 
     useEffect(() => {
-        if (excursion.value && Object.keys(globalExcursion)?.length > 0) {
+        if (
+            excursion &&
+            excursion.value &&
+            globalExcursion &&
+            Object.keys(globalExcursion)?.length > 0
+        ) {
             let totalPax =
                 (!isNaN(noOfAdults) ? Number(noOfAdults) : 0) +
                 (!isNaN(noOfChildren) ? Number(noOfChildren) : 0);
@@ -96,9 +104,10 @@ export default function SingleExcSupplement({
                 if (excursion?.value === "private") {
                     let totalPvtTransferPrice = 0;
 
-                    for (let i = 0; i < excursion.vehicleType.length; i++) {
-                        let vehicleType = excursion.vehicleType[i];
-                        totalPvtTransferPrice += vehicleType.price;
+                    for (let i = 0; i < excursion?.vehicleType?.length; i++) {
+                        let vehicleType = excursion?.vehicleType[i];
+                        totalPvtTransferPrice +=
+                            vehicleType?.price * vehicleType?.count;
                     }
                     let divVal = 1;
 
@@ -107,28 +116,27 @@ export default function SingleExcSupplement({
                     calculatedAdultPrice = totalPvtTransferPrice / divVal;
                     calculatedChildPrice = totalPvtTransferPrice / divVal;
                 } else if (excursion?.value === "shared") {
-                    calculatedAdultPrice =
-                        globalExcursion?.transferPricing?.sicPrice;
-                    calculatedChildPrice =
-                        globalExcursion?.transferPricing?.sicPrice;
+                    calculatedAdultPrice = globalExcursion?.sicPrice?.price;
+                    calculatedChildPrice = globalExcursion?.sicPrice?.price;
                 }
             } else if (excursion?.excursionType === "ticket") {
                 if (excursion?.value === "ticket") {
                     calculatedAdultPrice =
-                        globalExcursion?.ticketPricing?.adultPrice;
+                        globalExcursion?.ticketPrice?.adultPrice;
                     calculatedChildPrice =
-                        globalExcursion?.ticketPricing?.childPrice;
+                        globalExcursion?.ticketPrice?.childPrice;
                 } else if (excursion?.value === "shared") {
                     calculatedAdultPrice =
-                        globalExcursion?.ticketPricing?.sicWithTicketAdultPrice;
+                        globalExcursion?.sicWithTicket?.adultPrice;
                     calculatedChildPrice =
-                        globalExcursion?.ticketPricing?.sicWithTicketChildPrice;
+                        globalExcursion?.sicWithTicket?.childPrice;
                 } else if (excursion?.value === "private") {
                     let totalPvtTransferPrice = 0;
 
-                    for (let i = 0; i < excursion.vehicleType.length; i++) {
-                        let vehicleType = excursion.vehicleType[i];
-                        totalPvtTransferPrice += vehicleType.price;
+                    for (let i = 0; i < excursion?.vehicleType?.length; i++) {
+                        let vehicleType = excursion?.vehicleType[i];
+                        totalPvtTransferPrice +=
+                            vehicleType?.price * vehicleType?.count;
                     }
                     let divVal = 1;
 
@@ -220,12 +228,14 @@ export default function SingleExcSupplement({
                             <option value="" hidden>
                                 Select Type
                             </option>
-                            {globalExcursion?.transferPricing?.sicPrice && (
+                            {globalExcursion?.sicPrice && (
                                 <option value="shared">Shared</option>
                             )}
 
-                            {globalExcursion?.transferVehicleType?.length >
-                                0 && <option value="private">Private</option>}
+                            {globalExcursion?.privateTransfer?.vehicleType
+                                .length > 0 && (
+                                <option value="private">Private</option>
+                            )}
                         </select>
                     )}
 
@@ -236,8 +246,8 @@ export default function SingleExcSupplement({
                             "Loading..."
                         ) : (
                             <div className="grid grid-cols-2 gap-[1.5em] w-full">
-                                {globalExcursion?.transferVehicleType?.map(
-                                    (vehicle) => (
+                                {globalExcursion?.privateTransfer?.vehicleType?.map(
+                                    (vehTY) => (
                                         <div>
                                             <div className="flex items-center gap-[10px]">
                                                 <input
@@ -249,7 +259,7 @@ export default function SingleExcSupplement({
                                                             (vt) => {
                                                                 return (
                                                                     vt?.vehicle?.toString() ===
-                                                                    vehicle?._id?.toString()
+                                                                    vehTY.vehicle?._id?.toString()
                                                                 );
                                                             }
                                                         ) !== undefined || false
@@ -259,18 +269,22 @@ export default function SingleExcSupplement({
                                                             changeExcSupplementTransferData(
                                                                 {
                                                                     name1: "vehicleType",
-                                                                    value: vehicle?._id,
+                                                                    value: vehTY
+                                                                        ?.vehicle
+                                                                        ?._id,
                                                                     _id: excursion?.excursionId,
                                                                     name2: "vehicle",
                                                                     vehicleId:
-                                                                        vehicle._id,
-                                                                    price: globalExcursion?.transferPricing?.vehicleType?.find(
+                                                                        vehTY
+                                                                            ?.vehicle
+                                                                            ._id,
+                                                                    price: globalExcursion?.privateTransfer?.vehicleType?.find(
                                                                         (
                                                                             vt
                                                                         ) => {
                                                                             return (
-                                                                                vt?.vehicle?.toString() ===
-                                                                                vehicle?._id?.toString()
+                                                                                vt?.vehicle?._id.toString() ===
+                                                                                vehTY?.vehicle?._id?.toString()
                                                                             );
                                                                         }
                                                                     ).price,
@@ -284,14 +298,14 @@ export default function SingleExcSupplement({
                                                     htmlFor=""
                                                     className="mb-0"
                                                 >
-                                                    {vehicle.name}
+                                                    {vehTY.vehicle.name}
                                                 </label>
                                             </div>
                                             {excursion?.vehicleType?.find(
                                                 (vt) => {
                                                     return (
                                                         vt?.vehicle?.toString() ===
-                                                        vehicle?._id?.toString()
+                                                        vehTY?.vehicle?._id?.toString()
                                                     );
                                                 }
                                             ) && (
@@ -304,7 +318,7 @@ export default function SingleExcSupplement({
                                                             (vt) => {
                                                                 return (
                                                                     vt?.vehicle?.toString() ===
-                                                                    vehicle?._id?.toString()
+                                                                    vehTY?.vehicle?._id?.toString()
                                                                 );
                                                             }
                                                         ).count || ""
@@ -320,7 +334,9 @@ export default function SingleExcSupplement({
                                                                     _id: excursion?.excursionId,
                                                                     name2: "count",
                                                                     vehicleId:
-                                                                        vehicle?._id,
+                                                                        vehTY
+                                                                            ?.vehicle
+                                                                            ?._id,
                                                                 }
                                                             )
                                                         );
@@ -372,12 +388,11 @@ export default function SingleExcSupplement({
                                     Select Type
                                 </option>
                                 <option value="ticket">Ticket Only</option>
-                                {globalExcursion?.ticketPricing
-                                    ?.sicWithTicketAdultPrice && (
+                                {globalExcursion?.sicWithTicket?.adultPrice && (
                                     <option value="shared">Shared</option>
                                 )}
-                                {globalExcursion?.ticketVehicleType?.length >
-                                    0 && (
+                                {globalExcursion?.privateTransferTicket
+                                    ?.vehicleType?.length > 0 && (
                                     <option value="private">Private</option>
                                 )}
                             </select>
@@ -389,8 +404,8 @@ export default function SingleExcSupplement({
                             "Loading..."
                         ) : (
                             <div className="grid grid-cols-2 gap-[1.5em] w-full">
-                                {globalExcursion?.ticketVehicleType?.map(
-                                    (vehicle) => (
+                                {globalExcursion?.privateTransferTicket?.vehicleType?.map(
+                                    (vehTY) => (
                                         <div>
                                             <div className="flex items-center gap-[10px]">
                                                 <input
@@ -402,7 +417,7 @@ export default function SingleExcSupplement({
                                                             (vt) => {
                                                                 return (
                                                                     vt?.vehicle?.toString() ===
-                                                                    vehicle?._id?.toString()
+                                                                    vehTY?.vehicle?._id?.toString()
                                                                 );
                                                             }
                                                         ) !== undefined || false
@@ -412,18 +427,22 @@ export default function SingleExcSupplement({
                                                             changeExcSupplementTransferData(
                                                                 {
                                                                     name1: "vehicleType",
-                                                                    value: vehicle?._id,
+                                                                    value: vehTY
+                                                                        ?.vehicle
+                                                                        ?._id,
                                                                     _id: excursion?.excursionId,
                                                                     name2: "vehicle",
                                                                     vehicleId:
-                                                                        vehicle?._id,
+                                                                        vehTY
+                                                                            ?.vehicle
+                                                                            ?._id,
                                                                     price: globalExcursion?.ticketPricing?.vehicleType?.find(
                                                                         (
                                                                             vt
                                                                         ) => {
                                                                             return (
                                                                                 vt?.vehicle?.toString() ===
-                                                                                vehicle?._id?.toString()
+                                                                                vehTY?.vehicle?._id?.toString()
                                                                             );
                                                                         }
                                                                     ).price,
@@ -436,14 +455,14 @@ export default function SingleExcSupplement({
                                                     htmlFor=""
                                                     className="mb-0"
                                                 >
-                                                    {vehicle.name}
+                                                    {vehTY?.vehicle.name}
                                                 </label>
                                             </div>
                                             {excursion?.vehicleType.find(
                                                 (vt) => {
                                                     return (
                                                         vt?.vehicle?.toString() ===
-                                                        vehicle?._id?.toString()
+                                                        vehTY?.vehicle?._id?.toString()
                                                     );
                                                 }
                                             ) && (
@@ -456,7 +475,7 @@ export default function SingleExcSupplement({
                                                             (vt) => {
                                                                 return (
                                                                     vt?.vehicle?.toString() ===
-                                                                    vehicle?._id?.toString()
+                                                                    vehTY?.vehicle?._id?.toString()
                                                                 );
                                                             }
                                                         )?.count || ""
@@ -472,7 +491,9 @@ export default function SingleExcSupplement({
                                                                     _id: excursion?.excursionId,
                                                                     name2: "count",
                                                                     vehicleId:
-                                                                        vehicle?._id,
+                                                                        vehTY
+                                                                            ?.vehicle
+                                                                            ?._id,
                                                                 }
                                                             )
                                                         );

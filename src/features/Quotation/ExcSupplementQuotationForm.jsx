@@ -8,6 +8,7 @@ import {
 } from "../../redux/slices/quotationSlice";
 import { useHandleClickOutside } from "../../hooks";
 import SingleExcSupplement from "./SingleExcSupplement";
+import axios from "../../axios";
 
 export default function ExcSupplementQuotationForm() {
     const [searchedExcursions, setSearchedExcursions] = useState([]);
@@ -28,42 +29,30 @@ export default function ExcSupplementQuotationForm() {
         selectedExcSupplementIds,
         excSupplementTransferType,
         isSupplimentQuotationDisabled,
+        checkInDate,
     } = useSelector((state) => state.quotations);
 
+    const { jwtToken } = useSelector((state) => state.admin);
+
+    const fetchExcursion = async (text) => {
+        try {
+            const response = await axios.get(
+                `/quotations/inital/excursions?text=${text}&date=${checkInDate}&value=${excSupplementTransferType}`,
+                {
+                    headers: { Authorization: `Bearer ${jwtToken}` },
+                }
+            );
+
+            setSearchedExcursions(response.data);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     useEffect(() => {
+        console.log("call");
         if (searchText) {
-            const filteredExcursions = excursions?.filter((excursion) => {
-                return (
-                    excursion?.name
-                        ?.toLowerCase()
-                        ?.includes(searchText?.toLowerCase()) &&
-                    (excSupplementTransferType === "shared"
-                        ? excursion?.qtnActivityType === "transfer"
-                            ? !!Number(excursion?.transferPricing?.sicPrice)
-                            : excursion?.qtnActivityType === "ticket"
-                            ? !!Number(
-                                  excursion?.ticketPricing
-                                      ?.sicWithTicketAdultPrice
-                              ) &&
-                              !!Number(
-                                  excursion?.ticketPricing
-                                      ?.sicWithTicketChildPrice
-                              )
-                            : false
-                        : excSupplementTransferType === "private"
-                        ? excursion?.qtnActivityType === "transfer"
-                            ? !!Number(
-                                  excursion?.transferVehicleType?.length > 0
-                              )
-                            : excursion?.qtnActivityType === "ticket"
-                            ? !!Number(excursion?.ticketVehicleType?.length > 0)
-                            : false
-                        : true)
-                );
-            });
-            setSearchedExcursions(filteredExcursions);
-        } else {
-            setSearchedExcursions(excursions);
+            fetchExcursion(searchText);
         }
     }, [searchText, excursions, excSupplementTransferType]);
 
@@ -123,7 +112,7 @@ export default function ExcSupplementQuotationForm() {
                                     }}
                                 />
                                 <label htmlFor="" className="mb-0">
-                                    All
+                                    Ticket
                                 </label>
                             </div>
                             <div className="flex items-center gap-[10px]">
@@ -198,7 +187,7 @@ export default function ExcSupplementQuotationForm() {
                                                                 className={
                                                                     "flex items-center gap-[10px] px-4 py-[7px] hover:bg-[#f6f6f6] cursor-pointer text-sm " +
                                                                     (selectedExcSupplementIds?.includes(
-                                                                        excursion?._id
+                                                                        excursion?.activityId
                                                                     )
                                                                         ? "cursor-not-allowed"
                                                                         : "cursor-pointer")
@@ -206,7 +195,7 @@ export default function ExcSupplementQuotationForm() {
                                                                 onClick={() => {
                                                                     if (
                                                                         !selectedExcSupplementIds?.includes(
-                                                                            excursion?._id
+                                                                            excursion?.activityId
                                                                         )
                                                                     ) {
                                                                         dispatch(
@@ -227,21 +216,21 @@ export default function ExcSupplementQuotationForm() {
                                                                     className={
                                                                         "flex items-center justify-center w-[18px] h-[18px] min-w-[18px] min-h-[18px] rounded-full " +
                                                                         (selectedExcSupplementIds?.includes(
-                                                                            excursion?._id
+                                                                            excursion?.activityId
                                                                         )
                                                                             ? "bg-green-200 text-green-500"
                                                                             : "bg-blue-200 text-blue-500")
                                                                     }
                                                                 >
                                                                     {selectedExcSupplementIds?.includes(
-                                                                        excursion?._id
+                                                                        excursion?.activityId
                                                                     )
                                                                         ? "-"
                                                                         : "+"}
                                                                 </span>
                                                                 <span className="leading-[22px]">
                                                                     {
-                                                                        excursion?.name?.split(
+                                                                        excursion?.activity?.name?.split(
                                                                             "+"
                                                                         )[0]
                                                                     }{" "}
@@ -250,17 +239,17 @@ export default function ExcSupplementQuotationForm() {
                                                                             "+"
                                                                         )[1] &&
                                                                             "+ " +
-                                                                                excursion?.name?.split(
+                                                                                excursion?.activity?.name?.split(
                                                                                     "+"
                                                                                 )[1]}
                                                                     </span>
                                                                     <span className="capitalize text-gray-500">
                                                                         {" "}
                                                                         -{" "}
-                                                                        {excursion?.qtnActivityType ===
+                                                                        {excursion?.excursionType ===
                                                                         "ticket"
                                                                             ? "Ticket With Transfer"
-                                                                            : excursion?.qtnActivityType}
+                                                                            : excursion?.excursionType}
                                                                     </span>
                                                                 </span>
                                                             </div>

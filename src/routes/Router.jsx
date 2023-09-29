@@ -192,6 +192,8 @@ import ResellerMarketStrategyPage from "../pages/Market Profiles/ResellerMarketS
 import SeasonsListPage from "../pages/Seasons/SeasonsListPage";
 import AddSeasonsPage from "../pages/Seasons/AddSeasonsPage";
 import EditSeasonsPage from "../pages/Seasons/EditSeasonPage";
+import QuotationB2bListPage from "../pages/Quotation/QuotationResellerList";
+import QuotationsSingleResellerListPage from "../pages/Quotation/QuotationSingleResellerListPage";
 
 const ThemeRoutes = [
     {
@@ -910,6 +912,14 @@ const ThemeRoutes = [
             {
                 path: "/quotations/add",
                 element: <AddQuotationPage />,
+            },
+            {
+                path: "/quotations/reseller",
+                element: <QuotationB2bListPage />,
+            },
+            {
+                path: "/quotations/reseller/:resellerId",
+                element: <QuotationsSingleResellerListPage />,
             },
 
             // Insurance
