@@ -117,15 +117,15 @@ const AmendmentTable = ({
                     <span className="ml-5 text-green-500">
                         ({new Date(amendment?.createdAt).toLocaleDateString()})
                     </span>
-                    {index === 0 && amendment.status === "confirmed" && (
+                    {quotation.confirmedAmendment === amendment._id && (
                         <span className="ml-5 text-green-500">
-                            {amendment.status}
+                            {quotation.status}
                         </span>
                     )}
                 </h3>
                 <div className="flex items-center gap-3">
                     {index === 0 ? (
-                        amendment.status !== "confirmed" ? (
+                        quotation.status !== "confirmed" ? (
                             <button
                                 className="px-3 flex items-center gap-[10px]"
                                 onClick={() => {
@@ -158,15 +158,14 @@ const AmendmentTable = ({
                             Download Sheet
                         </button>
                     </a>
-                    {amendment.status === "not-confirmed" && (
-                        <Link
-                            to={`/quotations/${quotationNumber}/edit/${amendment?._id}`}
-                        >
-                            <button className="px-3 flex items-center gap-[10px]">
-                                Edit
-                            </button>
-                        </Link>
-                    )}
+
+                    <Link
+                        to={`/quotations/${quotationNumber}/edit/${amendment?._id}`}
+                    >
+                        <button className="px-3 flex items-center gap-[10px]">
+                            Edit
+                        </button>
+                    </Link>
                 </div>
             </div>
             <div className="mt-3">

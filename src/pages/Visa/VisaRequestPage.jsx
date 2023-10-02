@@ -15,9 +15,9 @@ export default function B2bListPage() {
         totalVisaApplications: 0,
         referenceNumber: "",
         status: "",
-        orderedBy:"b2b"
+        orderedBy: "b2b",
     });
-    const [orderedBy , setOrderedBy] = useState("b2b")
+    const [orderedBy, setOrderedBy] = useState("b2b");
     const [searchParams, setSearchParams] = useSearchParams();
     const { jwtToken } = useSelector((state) => state.admin);
 
@@ -38,40 +38,41 @@ export default function B2bListPage() {
         });
     };
 
-    const fetchResellers = async ({ skip, limit, status, referenceNumber , orderedBy}) => {
+    const fetchResellers = async ({
+        skip,
+        limit,
+        status,
+        referenceNumber,
+        orderedBy,
+    }) => {
         try {
             setIsLoading(true);
 
+            const response = await axios.get(
+                `/visa/application/all?skip=${skip}&orderedBy=${orderedBy}&limit=${limit}&status=${status}&referenceNumber=${referenceNumber}`,
+                {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                }
+            );
 
-                const response = await axios.get(
-                    `/visa/application/all?skip=${skip}&orderedBy=${orderedBy}&limit=${limit}&status=${status}&referenceNumber=${referenceNumber}`,
-                    {
-                        headers: { authorization: `Bearer ${jwtToken}` },
-                    }
-                );
-                
-                setVisaApplications(response.data?.visaApplications);
-                setFilters((prev) => {
-                    return {
-                        ...prev,
-                        totalVisaApplications: response.data?.totalVisaApplications,
-                    };
-                });
-                setIsLoading(false);
-
-
-          
+            setVisaApplications(response.data?.visaApplications);
+            setFilters((prev) => {
+                return {
+                    ...prev,
+                    totalVisaApplications: response.data?.totalVisaApplications,
+                };
+            });
+            setIsLoading(false);
         } catch (err) {
             console.log(err);
         }
     };
-    
-    // const onChangeOrderBy = (value)=>{
-         
-    //     setOrderedBy(value)
-        
-    // }
 
+    // const onChangeOrderBy = (value)=>{
+
+    //     setOrderedBy(value)
+
+    // }
 
     useEffect(() => {
         let skip =
@@ -85,20 +86,28 @@ export default function B2bListPage() {
         let referenceNumber = searchParams.get("referenceNumber") || "";
         let status = searchParams.get("status") || "";
         let query = searchParams.get("orderedBy") || "b2b";
-        if(query){
-            setOrderedBy(query)
+        if (query) {
+            setOrderedBy(query);
         }
 
         setFilters((prev) => {
-            return { ...prev, skip, limit, referenceNumber, status  };
+            return { ...prev, skip, limit, referenceNumber, status };
         });
-        fetchResellers({ skip, limit, referenceNumber, status , orderedBy : query});
+        fetchResellers({
+            skip,
+            limit,
+            referenceNumber,
+            status,
+            orderedBy: query,
+        });
     }, [searchParams]);
 
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">Visa Application</h1>
+                <h1 className="font-[600] text-[15px] uppercase">
+                    Visa Application
+                </h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
@@ -125,7 +134,6 @@ export default function B2bListPage() {
                                 <option value="submitted">Submitted</option>
                                 <option value="rejected">Rejected</option>
                                 <option value="resubmitted">Resubmitted</option>
-
                             </select>
                             <input
                                 type="text"
@@ -183,7 +191,6 @@ export default function B2bListPage() {
                         >
                             B2c
                         </button>
-                       
                     </div>
                     {/* <div className="flex items-center  w-max gap-[10px] mx-2 my-2">
                         <div name='orderedBy'  value="b2b"  onClick={(e)=>{onChangeOrderBy("b2b")}} className="py-2 px-5 bg-blue-500 rounded-lg" >B2B</div>
@@ -204,25 +211,23 @@ export default function B2bListPage() {
                                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                         <tr>
                                             <th className="font-[500] p-3">
-                                            Reference Number
-
+                                                Reference Number
                                             </th>
                                             <th className="font-[500] p-3">
                                                 Visa Title
                                             </th>
-                                            {
-                                                orderedBy =="b2c" ?
+                                            {orderedBy == "b2c" ? (
                                                 <th className="font-[500] p-3">
-                                                User
-                                            </th>
-                                            :
+                                                    User
+                                                </th>
+                                            ) : (
+                                                <th className="font-[500] p-3">
+                                                    Reseller
+                                                </th>
+                                            )}
+
                                             <th className="font-[500] p-3">
-                                                Reseller
-                                            </th>
-                                            }
-                                            
-                                            <th className="font-[500] p-3">
-                                                Traveller 
+                                                Traveller
                                             </th>
                                             <th className="font-[500] p-3">
                                                 Applied Date
@@ -233,15 +238,19 @@ export default function B2bListPage() {
                                         </tr>
                                     </thead>
                                     <tbody className="text-sm">
-                                        {visaApplications?.map((visaApplication, index) => {
-                                            return (
-                                                <VisaApplicationTable
-                                                orderedBy={orderedBy}
-                                                visaApplication={visaApplication}
-                                                    key={index}
-                                                />
-                                            );
-                                        })}
+                                        {visaApplications?.map(
+                                            (visaApplication, index) => {
+                                                return (
+                                                    <VisaApplicationTable
+                                                        orderedBy={orderedBy}
+                                                        visaApplication={
+                                                            visaApplication
+                                                        }
+                                                        key={index}
+                                                    />
+                                                );
+                                            }
+                                        )}
                                     </tbody>
                                 </table>
                             </div>

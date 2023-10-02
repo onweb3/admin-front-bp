@@ -45,21 +45,10 @@ export default function QuotationConfirmModal({
             );
 
             setQuotation((prev) => {
-                const updatedAmend = prev.amendments.map((amend) => {
-                    if (amend._id === amendment._id) {
-                        return {
-                            ...amend,
-                            status: "confirmed",
-                            comments: data.comments,
-                        };
-                    } else {
-                        return amend;
-                    }
-                });
-
                 return {
                     ...prev,
-                    amendments: updatedAmend,
+                    confirmedAmendment: amendment._id,
+                    status: "confirmed",
                 };
             });
             setIsLoading(false);

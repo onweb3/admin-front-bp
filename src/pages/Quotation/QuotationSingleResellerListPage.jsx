@@ -63,6 +63,21 @@ export default function QuotationsSingleResellerListPage() {
                         <h1 className="font-medium">All Quotation</h1>
                         <div className="flex items-end justify-end gap-[10px]">
                             <div>
+                                <label htmlFor="">Status</label>
+                                <select
+                                    name="status"
+                                    id=""
+                                    value={filters.status || ""}
+                                    onChange={handleFilterChange}
+                                >
+                                    <option value="">All</option>
+                                    <option value="confirmed">Confirmed</option>
+                                    <option value="not-confirmed">
+                                        Not Confirmed
+                                    </option>
+                                </select>
+                            </div>
+                            <div>
                                 <label htmlFor="">From</label>
                                 <input
                                     type="date"
@@ -151,7 +166,7 @@ export default function QuotationsSingleResellerListPage() {
                                             Total Amendments
                                         </th>
                                         <th className="font-[500] p-3">
-                                            Confirmation
+                                            Status
                                         </th>
                                     </tr>
                                 </thead>
@@ -226,7 +241,7 @@ export default function QuotationsSingleResellerListPage() {
                                                 {qtn?.totalAmendments}
                                             </td>
                                             <td className="py-3 px-[12px]">
-                                                {qtn?.isConfirmed
+                                                {qtn?.status == "confirmed"
                                                     ? "Confirmed"
                                                     : "Not confirmed"}
                                             </td>

@@ -60,6 +60,21 @@ export default function QuotationsListPage() {
                         <h1 className="font-medium">All Quotation</h1>
                         <div className="flex items-end justify-end gap-[10px]">
                             <div>
+                                <label htmlFor="">Status</label>
+                                <select
+                                    name="status"
+                                    id=""
+                                    value={filters.status || ""}
+                                    onChange={handleFilterChange}
+                                >
+                                    <option value="">All</option>
+                                    <option value="confirmed">Confirmed</option>
+                                    <option value="not-confirmed">
+                                        Not Confirmed
+                                    </option>
+                                </select>
+                            </div>
+                            <div>
                                 <label htmlFor="">From</label>
                                 <input
                                     type="date"
@@ -139,6 +154,9 @@ export default function QuotationsListPage() {
                                         <th className="font-[500] p-3">
                                             Total Amendments
                                         </th>
+                                        <th className="font-[500] p-3">
+                                            Status
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -210,6 +228,11 @@ export default function QuotationsListPage() {
                                             </td>
                                             <td className="py-3 px-[12px]">
                                                 {qtn?.totalAmendments}
+                                            </td>
+                                            <td className="py-3 px-[12px]">
+                                                {qtn?.status === "confirmed"
+                                                    ? "confirmed"
+                                                    : "not-confirmed"}
                                             </td>
                                         </tr>
                                     ))}
