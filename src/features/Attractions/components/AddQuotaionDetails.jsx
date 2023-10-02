@@ -4,6 +4,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "../../../axios";
 import { BtnLoader } from "../../../components";
 import QuotationPricingTransferTable from "./QuotationPricingTransferTable";
+
+
 import QuotationTransferTable from "./QuotationTransferTable";
 import QuotationVehiclePricingTable from "./QuotationVehiclePricngTable";
 import QuotationPricingTable from "./QuotatoinPricingTable";
@@ -173,7 +175,7 @@ export default function AddQuotationDetails({}) {
                         />
                         <label
                             htmlFor="isQuotation"
-                            className="mb-0 font-[600px] text-[16px]"
+                            className="mb-0 font-[600px]"
                         >
                             Do you need to add this activity to quotation ??
                         </label>
@@ -198,7 +200,7 @@ export default function AddQuotationDetails({}) {
 
                             <label
                                 htmlFor="isCarousel"
-                                className="mb-0 font-[600px] text-[16px]"
+                                className="mb-0 font-[600px]"
                             >
                                 Do you need to add this to carousel ??
                             </label>

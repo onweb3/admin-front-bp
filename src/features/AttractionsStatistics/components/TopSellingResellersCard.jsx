@@ -10,7 +10,7 @@ export default function TopSellingResellersCard({ data }) {
             <div>
                 {data?.length < 1 ? (
                     <div className="p-6 flex flex-col items-center">
-                        <span className="text-sm text-sm text-grayColor block mt-[6px]">
+                        <span className="text-sm text-grayColor block mt-[6px]">
                             Oops.. No Items Found
                         </span>
                     </div>
@@ -25,9 +25,9 @@ export default function TopSellingResellersCard({ data }) {
                                     <th className="font-[500] p-3">Volume</th>
                                     <th className="font-[500] p-3">Cost</th>
                                     <th className="font-[500] p-3">Profit</th>
-                                    <th className="font-[500] p-3">
+                                    {/* <th className="font-[500] p-3">
                                         Reseller Profit
-                                    </th>
+                                    </th> */}
                                 </tr>
                             </thead>
                             <tbody className="text-sm">
@@ -37,37 +37,21 @@ export default function TopSellingResellersCard({ data }) {
                                             key={index}
                                             className="border-b border-tableBorderColor"
                                         >
+                                            <td className="p-3">{index + 1}</td>
                                             <td className="p-3">
-                                                #{index + 1}
-                                            </td>
-                                            <td className="p-3">
-                                                <Link
-                                                    to={`/b2b/${item?.reseller?._id}/details`}
-                                                >
-                                                    <span>
-                                                        {
-                                                            item?.reseller
-                                                                ?.companyName
-                                                        }
-                                                    </span>
+                                                <Link to={`/b2b/${item?.reseller?._id}/details`}>
+                                                    <span>{item?.reseller?.companyName}</span>
                                                     <span className="block">
-                                                        {
-                                                            item?.reseller
-                                                                ?.agentCode
-                                                        }
+                                                        {item?.reseller?.agentCode}
                                                     </span>
                                                 </Link>
                                             </td>
+                                            <td className="p-3">{item?.count}</td>
                                             <td className="p-3">
-                                                {item?.count}
+                                                {item?.grandTotal?.toFixed(2)} AED
                                             </td>
                                             <td className="p-3">
-                                                {item?.grandTotal?.toFixed(2)}{" "}
-                                                AED
-                                            </td>
-                                            <td className="p-3">
-                                                {item?.totalCost?.toFixed(2)}{" "}
-                                                AED
+                                                {(item?.grandTotal - item?.profit)?.toFixed(2)} AED
                                             </td>
                                             <td
                                                 className={
@@ -79,7 +63,7 @@ export default function TopSellingResellersCard({ data }) {
                                             >
                                                 {item?.profit?.toFixed(2)} AED
                                             </td>
-                                            <td className="p-3 text-green-500">
+                                            {/* <td className="p-3 text-green-500">
                                                 {item?.reseller?.role ===
                                                 "reseller"
                                                     ? `${item?.resellerMarkup?.toFixed(
@@ -88,7 +72,7 @@ export default function TopSellingResellersCard({ data }) {
                                                     : `${item?.subAgentMarkup?.toFixed(
                                                           2
                                                       )} AED`}
-                                            </td>
+                                            </td> */}
                                         </tr>
                                     );
                                 })}

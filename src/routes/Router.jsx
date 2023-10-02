@@ -1,8 +1,4 @@
-import {
-    AdminLayout,
-    EditProfileLayout,
-    SingleResellerLayout,
-} from "../layouts";
+import { AdminLayout, EditProfileLayout, SingleResellerLayout } from "../layouts";
 import A2aAddTicketPage from "../pages/A2A/A2aAddTicketPage";
 import A2AEditTicketPage from "../pages/A2A/A2aEditTicketPage";
 import A2AEnquiryPage from "../pages/A2A/A2AEnquiryPage";
@@ -194,6 +190,7 @@ import AddSeasonsPage from "../pages/Seasons/AddSeasonsPage";
 import EditSeasonsPage from "../pages/Seasons/EditSeasonPage";
 import QuotationB2bListPage from "../pages/Quotation/QuotationResellerList";
 import QuotationsSingleResellerListPage from "../pages/Quotation/QuotationSingleResellerListPage";
+import A2aStatisticsPage from "../pages/A2A/A2aStatisticsPage";
 
 const ThemeRoutes = [
     {
@@ -483,6 +480,10 @@ const ThemeRoutes = [
             {
                 path: "/a2a/summary",
                 element: <A2aSummaryPage />,
+            },
+            {
+                path: "/a2a/statistics",
+                element: <A2aStatisticsPage />,
             },
             {
                 path: "/vouchers",

@@ -196,6 +196,12 @@ const adminRoles = [
         category: "a2a",
         permissions: [],
     },
+    {
+        name: "a2a-statistics",
+        displayName: "A2A Statistics",
+        category: "a2a",
+        permissions: [],
+    },
 
     // CORE
     {

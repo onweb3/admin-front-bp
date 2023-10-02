@@ -24,6 +24,7 @@ export default function AttractionTicketOrdersTable({
                             <th className="font-[500] p-3">Adults</th>
                             <th className="font-[500] p-3">Children</th>
                             <th className="font-[500] p-3">Infant</th>
+                            <th className="font-[500] p-3">Hours</th>
                             <th className="font-[500] p-3">Price</th>
                             <th className="font-[500] p-3">Profit</th>
                             <th className="font-[500] p-3">Status</th>

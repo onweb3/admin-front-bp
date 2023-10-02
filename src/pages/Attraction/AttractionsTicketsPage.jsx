@@ -94,6 +94,7 @@ export default function AttractionsTicketsPage() {
                 setTickets(() => {
                     return [...tempTickets];
                 });
+                
             }
         } catch (err) {
             console.log(err);
