@@ -64,7 +64,7 @@ export default function QuotationsListPage() {
                                 <select
                                     name="status"
                                     id=""
-                                    value={filters.status || ""}
+                                    value={filters?.status || ""}
                                     onChange={handleFilterChange}
                                 >
                                     <option value="">All</option>

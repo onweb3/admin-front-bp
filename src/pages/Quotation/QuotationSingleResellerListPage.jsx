@@ -67,7 +67,7 @@ export default function QuotationsSingleResellerListPage() {
                                 <select
                                     name="status"
                                     id=""
-                                    value={filters.status || ""}
+                                    value={filters?.status || ""}
                                     onChange={handleFilterChange}
                                 >
                                     <option value="">All</option>

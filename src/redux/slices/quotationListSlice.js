@@ -26,7 +26,7 @@ const fetchQuotations = createAsyncThunk(
                     filters?.dateFrom
                 }&dateTo=${filters?.dateTo}&quotationNumber=${
                     filters?.quotationNumber
-                }&agent=${args?.agentId || ""}&status=${filters.status}`,
+                }&agent=${args?.agentId || ""}&status=${filters?.status || ""}`,
                 { headers: { Authorization: `Bearer ${jwtToken}` } }
             );
             return response.data;
@@ -42,7 +42,11 @@ const fetchAgentsQuotations = createAsyncThunk(
         const { jwtToken } = getState().user;
         const { filters, skip, limit } = getState().quotationsList;
         const response = await axios.get(
-            `/quotations/all?skip=${skip}&limit=${limit}&dateFrom=${filters?.dateFrom}&dateTo=${filters?.dateTo}&quotationNumber=${filters?.quotationNumber}&status=${filters.status}`,
+            `/quotations/all?skip=${skip}&limit=${limit}&dateFrom=${
+                filters?.dateFrom
+            }&dateTo=${filters?.dateTo}&quotationNumber=${
+                filters?.quotationNumber
+            }&status=${filters?.status || ""}`,
             { headers: { Authorization: `Bearer ${jwtToken}` } }
         );
         return response.data;
@@ -90,6 +94,7 @@ export const quotationsListSlice = createSlice({
                 dateFrom: "",
                 dateTo: "",
                 quotationNumber: "",
+                status: "",
             };
             state.limit = 10;
             state.skip = 0;
@@ -106,6 +111,7 @@ export const quotationsListSlice = createSlice({
                 dateFrom: "",
                 dateTo: "",
                 quotationNumber: "",
+                status: "",
             };
             state.limit = 10;
             state.skip = 0;
