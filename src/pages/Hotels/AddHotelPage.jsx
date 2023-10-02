@@ -7,19 +7,18 @@ import { Link } from "react-router-dom";
 import {
     HotelAddFormButtons,
     HotelAmenityForm,
+    HotelConfigurationForm,
     HotelContactInfoForm,
     HotelDescriptionForm,
     HotelDetailsForm,
     HotelMediaForm,
     HotelRestAndBarForm,
 } from "../../features/AddHotel";
-import {
-    fetchInitialData,
-    resetHotelForm,
-} from "../../redux/slices/hotelFormSlice";
+import { fetchInitialData, resetHotelForm } from "../../redux/slices/hotelFormSlice";
 
 const sections = {
     "-details": "Details",
+    "-configuration": "Configuration",
     "-description": "Description",
     "-amenities": "Amenities",
     "-rest-and-bar": "Restaurant & Bar",
@@ -34,14 +33,9 @@ export default function AddHotelPage() {
     const dispatch = useDispatch();
 
     const goForward = () => {
-        if (
-            Object.keys(sections).indexOf(selectedSection) <
-            Object.keys(sections).length - 1
-        ) {
+        if (Object.keys(sections).indexOf(selectedSection) < Object.keys(sections).length - 1) {
             setSelectedSection(
-                Object.keys(sections)[
-                    Object.keys(sections).indexOf(selectedSection) + 1
-                ]
+                Object.keys(sections)[Object.keys(sections).indexOf(selectedSection) + 1]
             );
         }
     };
@@ -49,9 +43,7 @@ export default function AddHotelPage() {
     const goBack = () => {
         if (Object.keys(sections).indexOf(selectedSection) > 0) {
             setSelectedSection(
-                Object.keys(sections)[
-                    Object.keys(sections).indexOf(selectedSection) - 1
-                ]
+                Object.keys(sections)[Object.keys(sections).indexOf(selectedSection) - 1]
             );
         }
     };
@@ -89,11 +81,7 @@ export default function AddHotelPage() {
                                 return (
                                     <li
                                         key={index}
-                                        className={
-                                            selectedSection === section
-                                                ? "active"
-                                                : ""
-                                        }
+                                        className={selectedSection === section ? "active" : ""}
                                         onClick={() => {
                                             setSelectedSection(section);
                                         }}
@@ -107,21 +95,16 @@ export default function AddHotelPage() {
 
                     <div className="p-4">
                         <HotelDetailsForm selectedSection={selectedSection} />
-                        <HotelDescriptionForm
-                            selectedSection={selectedSection}
-                        />
+                        <HotelConfigurationForm selectedSection={selectedSection} />
+                        <HotelDescriptionForm selectedSection={selectedSection} />
                         <HotelAmenityForm selectedSection={selectedSection} />
                         <HotelMediaForm
                             selectedSection={selectedSection}
                             newImages={newImages}
                             setNewImages={setNewImages}
                         />
-                        <HotelContactInfoForm
-                            selectedSection={selectedSection}
-                        />
-                        <HotelRestAndBarForm
-                            selectedSection={selectedSection}
-                        />
+                        <HotelContactInfoForm selectedSection={selectedSection} />
+                        <HotelRestAndBarForm selectedSection={selectedSection} />
                         <HotelAddFormButtons
                             newImages={newImages}
                             next={
@@ -130,11 +113,7 @@ export default function AddHotelPage() {
                             }
                             goForward={goForward}
                             goBack={goBack}
-                            prev={
-                                Object.keys(sections).indexOf(
-                                    selectedSection
-                                ) !== 0
-                            }
+                            prev={Object.keys(sections).indexOf(selectedSection) !== 0}
                         />
                     </div>
                 </div>

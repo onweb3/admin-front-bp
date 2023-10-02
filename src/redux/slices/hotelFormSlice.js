@@ -40,15 +40,7 @@ const initialState = {
         roomsCount: "",
         floorsCount: "",
         carParkingSlots: "",
-        openDays: [
-            "sunday",
-            "monday",
-            "tuesday",
-            "wednesday",
-            "thursday",
-            "friday",
-            "saturday",
-        ],
+        openDays: ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"],
         accommodationType: "",
         hotelChain: "",
         isApiConnected: false,
@@ -58,6 +50,7 @@ const initialState = {
         hbId: "",
         isPublished: false,
         isActive: true,
+        allGuestDetailsRequired: false,
     },
     // correspondenceAddress: {
     //     street: "",
@@ -140,11 +133,9 @@ export const hotelFormSlice = createSlice({
             state.selectedAmenities.push(action.payload);
         },
         removeSelectedHotelAmenity: (state, action) => {
-            const filteredAmenities = state.selectedAmenities?.filter(
-                (item) => {
-                    return item?.amenity !== action.payload;
-                }
-            );
+            const filteredAmenities = state.selectedAmenities?.filter((item) => {
+                return item?.amenity !== action.payload;
+            });
             state.selectedAmenities = filteredAmenities;
         },
         handleHotelDetailsChange: (state, action) => {
@@ -192,6 +183,7 @@ export const hotelFormSlice = createSlice({
                 restaurants,
                 bars,
                 isActive,
+                allGuestDetailsRequired,
             } = action.payload;
 
             state.details = {
@@ -224,6 +216,7 @@ export const hotelFormSlice = createSlice({
                 hbId: hbId || "",
                 isPublished: isPublished,
                 isActive: isActive,
+                allGuestDetailsRequired: allGuestDetailsRequired || false,
             };
 
             state.description = description;
@@ -260,8 +253,7 @@ export const hotelFormSlice = createSlice({
             state.details.openDays = filteredOpenDays;
         },
         handleCorrespondenceAddressChange: (state, action) => {
-            state.correspondenceAddress[action.payload?.name] =
-                action.payload?.value;
+            state.correspondenceAddress[action.payload?.name] = action.payload?.value;
         },
         addSalesContact: (state, action) => {
             state.salesContacts?.push({
@@ -298,9 +290,8 @@ export const hotelFormSlice = createSlice({
             state.accountsContacts = filteredItems;
         },
         handleAccountsDataChange: (state, action) => {
-            state.accountsContacts[action.payload?.index][
-                action?.payload?.name
-            ] = action?.payload?.value;
+            state.accountsContacts[action.payload?.index][action?.payload?.name] =
+                action?.payload?.value;
         },
         addHotelContact: (state, action) => {
             state.hotelContacts?.push({
@@ -331,17 +322,14 @@ export const hotelFormSlice = createSlice({
             });
         },
         removeReservationsContact: (state, action) => {
-            const filteredItems = state.reservationsContacts?.filter(
-                (_, index) => {
-                    return index !== action.payload;
-                }
-            );
+            const filteredItems = state.reservationsContacts?.filter((_, index) => {
+                return index !== action.payload;
+            });
             state.reservationsContacts = filteredItems;
         },
         handleReservationsDataChange: (state, action) => {
-            state.reservationsContacts[action.payload?.index][
-                action?.payload?.name
-            ] = action?.payload?.value;
+            state.reservationsContacts[action.payload?.index][action?.payload?.name] =
+                action?.payload?.value;
         },
         removeHotelImage: (state, action) => {
             const filteredImages = state.images.filter((_, index) => {
@@ -385,8 +373,7 @@ export const hotelFormSlice = createSlice({
             state.bars = filteredItems;
         },
         handleHotelBarDataChange: (state, action) => {
-            state.bars[action.payload?.index][action?.payload?.name] =
-                action?.payload?.value;
+            state.bars[action.payload?.index][action?.payload?.name] = action?.payload?.value;
         },
     },
     extraReducers: {

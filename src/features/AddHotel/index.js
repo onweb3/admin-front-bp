@@ -6,6 +6,7 @@ import HotelEditFormButtons from "./components/HotelEditFormButtons";
 import HotelContactInfoForm from "./components/HotelContactInfoForm";
 import HotelAmenityForm from "./components/HotelAmenityForm";
 import HotelRestAndBarForm from "./components/HotelRestAndBarForm";
+import HotelConfigurationForm from "./components/HotelConfigurationForm";
 
 export {
     HotelDetailsForm,
@@ -16,4 +17,5 @@ export {
     HotelContactInfoForm,
     HotelAmenityForm,
     HotelRestAndBarForm,
+    HotelConfigurationForm,
 };
