@@ -848,21 +848,38 @@ export default function HotelOrderDetailsPage() {
                                                         <tr className="odd:bg-[#f3f6f9]">
                                                             <td className="p-2">Traveller</td>
                                                             <td className="capitalize">
-                                                                {
-                                                                    hotelOrder?.travellerDetails[
-                                                                        index
-                                                                    ]?.title
-                                                                }{" "}
-                                                                {
-                                                                    hotelOrder?.travellerDetails[
-                                                                        index
-                                                                    ]?.firstName
-                                                                }{" "}
-                                                                {
-                                                                    hotelOrder?.travellerDetails[
-                                                                        index
-                                                                    ]?.lastName
-                                                                }
+                                                                {hotelOrder?.travellerDetails
+                                                                    ?.filter((traveller) => {
+                                                                        return (
+                                                                            traveller?.roomId ===
+                                                                            index + 1
+                                                                        );
+                                                                    })
+                                                                    ?.map(
+                                                                        (
+                                                                            traveller,
+                                                                            travellerIndex
+                                                                        ) => {
+                                                                            return (
+                                                                                <span
+                                                                                    key={
+                                                                                        travellerIndex
+                                                                                    }
+                                                                                    className="mr-2"
+                                                                                >
+                                                                                    {
+                                                                                        traveller?.title
+                                                                                    }{" "}
+                                                                                    {
+                                                                                        traveller?.firstName
+                                                                                    }{" "}
+                                                                                    {
+                                                                                        traveller?.lastName
+                                                                                    }
+                                                                                </span>
+                                                                            );
+                                                                        }
+                                                                    )}
                                                             </td>
                                                         </tr>
                                                     </React.Fragment>
