@@ -76,7 +76,10 @@ export default function AddProfileMarkupModal({ setIsModalOpen, type }) {
                 className="bg-[#fff] w-full max-h-[90vh] max-w-[500px]  shadow-[0_1rem_3rem_rgb(0_0_0_/_18%)] overflow-y-auto"
             >
                 <div className="flex items-center justify-between border-b p-4">
-                    <h2 className="font-medium mb-2">Add Profile</h2>
+                    <h2 className="font-medium mb-2">
+                        {" "}
+                        {type === "market" ? "Add Market" : "Add Profile"}
+                    </h2>
                     <button
                         className="h-auto bg-transparent text-textColor text-xl"
                         onClick={() => setIsModalOpen(false)}
@@ -87,7 +90,7 @@ export default function AddProfileMarkupModal({ setIsModalOpen, type }) {
                 <div className="p-4">
                     <form action="" onSubmit={handleSubmit}>
                         <div>
-                            <label htmlFor="">Profile Name</label>
+                            <label htmlFor=""> Name</label>
                             <input
                                 type="text"
                                 placeholder="Enter name"
@@ -112,7 +115,13 @@ export default function AddProfileMarkupModal({ setIsModalOpen, type }) {
                                 Cancel
                             </button>
                             <button className="w-[160px]">
-                                {isLoading ? <BtnLoader /> : "Add Profile"}
+                                {isLoading ? (
+                                    <BtnLoader />
+                                ) : type === "market" ? (
+                                    "Add Market"
+                                ) : (
+                                    "Add Profile"
+                                )}
                             </button>
                         </div>
                     </form>

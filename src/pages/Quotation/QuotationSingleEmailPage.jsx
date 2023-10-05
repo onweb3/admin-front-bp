@@ -682,52 +682,56 @@ function QuotationSingleEmailPage() {
                             <div className="cust-border">
                                 {quotationList?.isTransferQuotationDisabled ===
                                     false &&
-                                quotationList?.transferQuotation?.length ? (
-                                    <>
-                                        {quotationList?.transferQuotation?.map(
-                                            (tq, idx) => {
-                                                return (
-                                                    <div
-                                                        key={idx}
-                                                        className="cust-border"
-                                                    >
-                                                        {tq?.stays?.map(
-                                                            (stay, ind) => {
-                                                                return (
-                                                                    <div
-                                                                        key={
-                                                                            ind
-                                                                        }
-                                                                        className="cust-border"
-                                                                    >
-                                                                        <ul className="list-disc ml-6 text-xs">
-                                                                            <li className="cust-border">
-                                                                                {
-                                                                                    stay?.transferToName
-                                                                                }{" "}
-                                                                                <span className="text-xs font-semibold">
-                                                                                    To
-                                                                                </span>{" "}
-                                                                                {
-                                                                                    stay?.transferFromName
-                                                                                }{" "}
-                                                                                -
-                                                                                Private
-                                                                                Transfer
-                                                                            </li>
-                                                                        </ul>
-                                                                    </div>
-                                                                );
-                                                            }
-                                                        )}
-                                                    </div>
-                                                );
-                                            }
-                                        )}
-                                    </>
-                                ) : (
-                                    ""
-                                )}
+                                    quotationList?.transferQuotation?.length &&
+                                    quotationList?.transferQuotation
+                                        ?.stayTransfers &&
+                                    quotationList?.transferQuotation
+                                        ?.stayTransfers[0].transfers &&
+                                    quotationList?.transferQuotation
+                                        ?.stayTransfers[0].transfers[0] && (
+                                        <>
+                                            {quotationList?.transferQuotation?.map(
+                                                (tq, idx) => {
+                                                    return (
+                                                        <div
+                                                            key={idx}
+                                                            className="cust-border"
+                                                        >
+                                                            {tq?.stays?.map(
+                                                                (stay, ind) => {
+                                                                    return (
+                                                                        <div
+                                                                            key={
+                                                                                ind
+                                                                            }
+                                                                            className="cust-border"
+                                                                        >
+                                                                            <ul className="list-disc ml-6 text-xs">
+                                                                                <li className="cust-border">
+                                                                                    {
+                                                                                        stay?.transferToName
+                                                                                    }{" "}
+                                                                                    <span className="text-xs font-semibold">
+                                                                                        To
+                                                                                    </span>{" "}
+                                                                                    {
+                                                                                        stay?.transferFromName
+                                                                                    }{" "}
+                                                                                    -
+                                                                                    Private
+                                                                                    Transfer
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    );
+                                                                }
+                                                            )}
+                                                        </div>
+                                                    );
+                                                }
+                                            )}
+                                        </>
+                                    )}
                             </div>
                         </div>
                     </div>

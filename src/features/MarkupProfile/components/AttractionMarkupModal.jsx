@@ -121,7 +121,7 @@ export default function AttracitonMarkupModal({
                             required
                         >
                             <option value="" hidden>
-                                Select Markupup Type
+                                Select Markup Type *
                             </option>
                             <option value="flat">Flat</option>
                             <option value="percentage">Percentage</option>
@@ -151,10 +151,7 @@ export default function AttracitonMarkupModal({
                         >
                             Cancel
                         </button>
-                        <button
-                            className="w-[160px]"
-                            onClick={handleSubmit}
-                        >
+                        <button className="w-[160px]" onClick={handleSubmit}>
                             {isLoading ? <BtnLoader /> : "Add Markup"}
                         </button>
                     </div>

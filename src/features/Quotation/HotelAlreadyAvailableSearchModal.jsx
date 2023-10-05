@@ -153,7 +153,7 @@ export default function HotelAlreadyAvailableSearchModal({
             e.preventDefault();
             setIsAvailablityLoading(true);
             const response = await axioss.post(
-                `/quotations/hotels/availability?limit=10`,
+                `/quotations/hotels/all?limit=10`,
                 {
                     searchQuery: searchQuery,
                     fromDate: data.checkInDate,
@@ -165,12 +165,8 @@ export default function HotelAlreadyAvailableSearchModal({
                 }
             );
 
-            setAvailableHotels(response?.data?.hotels);
-            setResponseData({
-                fromDate: response?.data?.fromDate,
-                toDate: response?.data?.toDate,
-                rooms: response?.data?.rooms,
-            });
+            setAvailableHotels(response?.data);
+
             setButtonHidden(true);
 
             setIsAvailablityLoading(false);
@@ -413,53 +409,52 @@ export default function HotelAlreadyAvailableSearchModal({
                                     availableHotels?.map(
                                         (hotel, hotelIndex) => (
                                             <div
-                                                key={hotel?.hotel?._id}
+                                                key={hotel?._id}
                                                 onClick={() => {
                                                     onClickHandler({
                                                         name: "hotelId",
-                                                        value: hotel?.hotel
-                                                            ?._id,
+                                                        value: hotel?._id,
                                                     });
                                                     onClickHandler({
                                                         name: "hotelName",
-                                                        value: hotel?.hotel
+                                                        value: hotel
                                                             ?.hotelName,
                                                     });
                                                     onClickHandler({
                                                         name: "placeName",
-                                                        value: hotel?.hotel
+                                                        value: hotel
                                                             ?.city?.cityName,
                                                     });
                                                     onClickHandler({
                                                         name: "starCategory",
-                                                        value: hotel?.hotel
+                                                        value: hotel
                                                             ?.starCategory,
                                                     });
                                                     onClickHandler({
                                                         name: "hotelData",
-                                                        value: hotel?.hotel,
+                                                        value: hotel,
                                                     });
                                                     onClickHandler({
                                                         name: "cityId",
-                                                        value: hotel?.hotel
+                                                        value: hotel
                                                             ?.city?._id,
                                                     });
                                                     onClickHandler({
                                                         name: "areaId",
-                                                        value: hotel?.hotel
+                                                        value: hotel
                                                             ?.area?._id,
                                                     });
                                                     onClickHandler({
                                                         name: "areaName",
-                                                        value: hotel?.hotel
+                                                        value: hotel
                                                             ?.area?.areaName,
                                                     });
                                                     setSelectedHotel(hotel);
                                                 }}
                                                 className={`${
-                                                    selectedHotel?.hotel
+                                                    selectedHotel
                                                         ?._id ===
-                                                    hotel?.hotel?._id
+                                                    hotel?._id
                                                         ? " bg-green-50 "
                                                         : " bg-white "
                                                 } cursor-pointer overflow-hidden hover:-translate-y-1 transition-all duration-300 rounded-md border-[1px] border-gray-100 border-opacity-20 shadow-round w-full  flex flex-col items-center`}
@@ -467,13 +462,13 @@ export default function HotelAlreadyAvailableSearchModal({
                                                 <div className="relative w-full h-[100px] ">
                                                     <img
                                                         src={
-                                                            hotel?.hotel?.image
+                                                            hotel?.image
                                                                 ?.isRelative
                                                                 ? config.SERVER_URL +
-                                                                  hotel?.hotel
+                                                                  hotel
                                                                       ?.image
                                                                       ?.path
-                                                                : hotel?.hotel
+                                                                : hotel
                                                                       ?.image
                                                                       ?.path
                                                         }
@@ -484,9 +479,9 @@ export default function HotelAlreadyAvailableSearchModal({
                                                     />
                                                     <div
                                                         className={` ${
-                                                            selectedHotel?.hotel
+                                                            selectedHotel
                                                                 ?._id ===
-                                                            hotel?.hotel?._id
+                                                            hotel?._id
                                                                 ? " block "
                                                                 : " hidden "
                                                         } absolute top-1 right-1 bg-green-500 text-xs text-white flex justify-center items-center w-4 h-4 rounded-full shadow-mn`}
@@ -498,17 +493,17 @@ export default function HotelAlreadyAvailableSearchModal({
                                                     <div className="pt-2">
                                                         <p className="text-sm font-[500] text-gray-400">
                                                             {
-                                                                hotel?.hotel
+                                                                hotel
                                                                     ?.hotelName
                                                             }
                                                         </p>
                                                     </div>
                                                     <div className="text-xs text-grayColor">
-                                                        {hotel?.hotel?.address}
+                                                        {hotel?.address}
                                                     </div>
                                                     <div className="text-xs text-grayColor flex items-center gap-1">
                                                         {
-                                                            hotel?.hotel
+                                                            hotel
                                                                 ?.starCategory
                                                         }
                                                         <span className="text-yellow-400 text-sm">
@@ -516,10 +511,10 @@ export default function HotelAlreadyAvailableSearchModal({
                                                         </span>
                                                     </div>
                                                     <div className="text-xs text-grayColor">
-                                                        {hotel?.hotel?.city
+                                                        {hotel?.city
                                                             ?.cityName +
                                                             " , " +
-                                                            hotel?.hotel?.state
+                                                            hotel?.state
                                                                 ?.stateName}
                                                     </div>
                                                 </div>

@@ -148,16 +148,16 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                     divVal = totalPax;
 
                     let totalPvtPrice = totalPvtTransferPrice / divVal;
-
+                   
                     calculatedAdultPrice =
                         totalPvtPrice +
-                        (globalExcursion?.ticketPricing?.adultPrice
-                            ? globalExcursion?.ticketPricing?.adultPrice
+                        (globalExcursion?.ticketPrice?.adultPrice
+                            ? globalExcursion?.ticketPrice?.adultPrice
                             : 0);
                     calculatedChildPrice =
                         totalPvtPrice +
-                        (globalExcursion?.ticketPricing?.childPrice
-                            ? globalExcursion?.ticketPricing?.childPrice
+                        (globalExcursion?.ticketPrice?.childPrice
+                            ? globalExcursion?.ticketPrice?.childPrice
                             : 0);
                 }
             }
