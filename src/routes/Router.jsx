@@ -194,6 +194,7 @@ import A2aStatisticsPage from "../pages/A2A/A2aStatisticsPage";
 import B2bWalletStatisticsPage from "../pages/wallet/B2bWalletStatisticsPage";
 import B2bWallletDepositListPage from "../pages/wallet/B2bWallletDepositListPage";
 import CacheSettingsPage from "../pages/Hotels/CacheSettingsPage";
+import VoucherSettingsPage from "../pages/Voucher/VoucherSettingsPage";
 
 const ThemeRoutes = [
     {
@@ -531,6 +532,10 @@ const ThemeRoutes = [
                         <EditVoucherPage />
                     </PrivateRoute>
                 ),
+            },
+            {
+                path: "/vouchers/settings",
+                element: <VoucherSettingsPage />,
             },
             {
                 path: "/markup/profile",

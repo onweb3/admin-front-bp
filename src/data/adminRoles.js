@@ -182,6 +182,12 @@ const adminRoles = [
         category: "tour",
         permissions: [],
     },
+    {
+        name: "voucher-settings",
+        displayName: "Voucher Settings",
+        category: "tour",
+        permissions: [],
+    },
 
     // A2A
     {

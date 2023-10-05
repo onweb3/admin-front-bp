@@ -518,6 +518,18 @@ const sidebarMenus = {
             link: "/vouchers/daily-reports",
             permission: ["daily-reports", "view"],
         },
+        {
+            name: "Tour Settings",
+            icon: <MdAdminPanelSettings />,
+            link: "#",
+            dropdown: [
+                {
+                    name: "Voucher Settings",
+                    link: "/vouchers/settings",
+                    permission: ["voucher-settings", "view"],
+                },
+            ],
+        },
     ],
     Marketing: [
         {
