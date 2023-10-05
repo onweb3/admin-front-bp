@@ -110,6 +110,12 @@ const adminRoles = [
         category: "hotel",
         permissions: [],
     },
+    {
+        name: "hotels-settings",
+        displayName: "Hotel Settings",
+        category: "hotel",
+        permissions: [],
+    },
 
     // FLIGHT
     {
@@ -222,6 +228,8 @@ const adminRoles = [
         category: "core",
         permissions: [],
     },
+
+    // B2B
     {
         name: "b2b-list",
         displayName: "B2B List",
@@ -244,6 +252,20 @@ const adminRoles = [
         name: "b2b-configurations",
         displayName: "B2B Configurations",
         category: "core",
+        permissions: [],
+    },
+
+    // b2b wallet
+    {
+        name: "b2b-wallet-statistics",
+        displayName: "Wallet Statistics",
+        category: "b2b-wallet",
+        permissions: [],
+    },
+    {
+        name: "b2b-wallet-deposits",
+        displayName: "Wallet Deposits",
+        category: "b2b-wallet",
         permissions: [],
     },
     {

@@ -85,10 +85,6 @@ export default function AddCreditModal({
                 </div>
                 <div className="p-4">
                     <form action="" onSubmit={handleSubmit}>
-                        {/* <div className="mt-4">
-                            <label htmlFor="">Credit Used</label>
-                            <p>{formData.creditUsed || 0}</p>
-                        </div> */}
                         <div className="">
                             <label htmlFor="">Amount *</label>
                             <input

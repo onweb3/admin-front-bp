@@ -738,7 +738,7 @@ export default function EditVoucherPage() {
                                     </div>
                                     <div>
                                         <label htmlFor="">
-                                            Basis Of Transfer
+                                            Basis Of Transfer *
                                         </label>
                                         <input
                                             type="text"

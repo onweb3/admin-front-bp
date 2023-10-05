@@ -653,7 +653,7 @@ function AddVoucherPage() {
                                     />
                                 </div>
                                 <div>
-                                    <label htmlFor="">Basis Of Transfer</label>
+                                    <label htmlFor="">Basis Of Transfer *</label>
                                     <input
                                         type="text"
                                         name="basisOfTransfer"
