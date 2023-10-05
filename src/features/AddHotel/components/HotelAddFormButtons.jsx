@@ -86,6 +86,7 @@ export default function HotelAddFormButtons({
             formData.append("restaurants", JSON.stringify(restaurants));
             formData.append("bars", JSON.stringify(bars));
             formData.append("isActive", details?.isActive);
+            formData.append("allGuestDetailsRequired", details?.allGuestDetailsRequired);
 
             for (let i = 0; i < newImages?.length; i++) {
                 formData.append("images", newImages[i]);

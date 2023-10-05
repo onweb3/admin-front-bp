@@ -6,13 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "../../../axios";
 import { BtnLoader } from "../../../components";
 
-export default function HotelEditFormButtons({
-    next,
-    prev,
-    newImages,
-    goBack,
-    goForward,
-}) {
+export default function HotelEditFormButtons({ next, prev, newImages, goBack, goForward }) {
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
@@ -63,23 +57,14 @@ export default function HotelEditFormButtons({
             formData.append("area", details?.area);
             formData.append("distanceFromCity", details?.distanceFromCity);
             formData.append("openDays", JSON.stringify(details?.openDays));
-            formData.append(
-                "accountsContacts",
-                JSON.stringify(accountsContacts)
-            );
+            formData.append("accountsContacts", JSON.stringify(accountsContacts));
             formData.append("salesContacts", JSON.stringify(salesContacts));
-            formData.append(
-                "reservationsContacts",
-                JSON.stringify(reservationsContacts)
-            );
+            formData.append("reservationsContacts", JSON.stringify(reservationsContacts));
             formData.append("hotelContacts", JSON.stringify(hotelContacts));
             formData.append("isContractAvailable", details.isContractAvailable);
             formData.append("accommodationType", details.accommodationType);
             formData.append("isApiConnected", details.isApiConnected);
-            formData.append(
-                "connectedApis",
-                JSON.stringify(details.connectedApis)
-            );
+            formData.append("connectedApis", JSON.stringify(details.connectedApis));
             formData.append("boardTypes", JSON.stringify(details.boardTypes));
 
             formData.append("oldImages", JSON.stringify(images));
@@ -88,6 +73,7 @@ export default function HotelEditFormButtons({
             formData.append("restaurants", JSON.stringify(restaurants));
             formData.append("bars", JSON.stringify(bars));
             formData.append("isActive", details?.isActive);
+            formData.append("allGuestDetailsRequired", details?.allGuestDetailsRequired);
 
             for (let i = 0; i < newImages?.length; i++) {
                 formData.append("images", newImages[i]);
@@ -100,18 +86,14 @@ export default function HotelEditFormButtons({
             setIsLoading(false);
             navigate(-1);
         } catch (err) {
-            setError(
-                err?.response?.data?.error || "Something went wrong, Try again"
-            );
+            setError(err?.response?.data?.error || "Something went wrong, Try again");
             setIsLoading(false);
         }
     };
 
     return (
         <div className="mt-8">
-            {error && (
-                <span className="text-sm text-red-500 block mt-4">{error}</span>
-            )}
+            {error && <span className="text-sm text-red-500 block mt-4">{error}</span>}
 
             <div className="mt-4 flex items-center justify-end gap-[12px]">
                 {prev ? (
@@ -137,13 +119,7 @@ export default function HotelEditFormButtons({
                     onClick={handleSubmit}
                     disabled={isLoading}
                 >
-                    {isLoading ? (
-                        <BtnLoader />
-                    ) : details?.isPublished ? (
-                        "Update"
-                    ) : (
-                        "Publish"
-                    )}
+                    {isLoading ? <BtnLoader /> : details?.isPublished ? "Update" : "Publish"}
                 </button>
                 {/* )} */}
                 {next === true && (
