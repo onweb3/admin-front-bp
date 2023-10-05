@@ -751,46 +751,50 @@ const AmendmentTable = ({
                 </div>
             )}
 
-            {amendment?.transferQuotation && amendment?.hotelQuotation && (
-                <div className="mt-7 text-[15px]">
-                    <h5 className="text-gray-500 font-medium mb-1">
-                        Transfers
-                    </h5>
-                    <ul className="text-[15px] list-disc ml-[16px]">
-                        {amendment?.transferQuotation?.stayTransfers?.map(
-                            (stayTransfer, index) => {
-                                return (
-                                    <li
-                                        key={index}
-                                        style={{ marginBottom: "2px" }}
-                                        className="cust-border"
-                                    >
-                                        Stay {stayTransfer?.stayNo}{" "}
-                                        {stayTransfer?.transfers &&
-                                        stayTransfer?.transfers?.length > 0
-                                            ? stayTransfer?.transfers?.map(
-                                                  (transfer, index) => {
-                                                      return (
-                                                          <div className="capitalize">
-                                                              {transfer?.transferType ===
-                                                              "city-city"
-                                                                  ? `${transfer.transferFromHubName} (${transfer.transferFromName}) - ${transfer.transferToHubName} (${transfer.transferToName})`
-                                                                  : transfer?.transferType ===
-                                                                    "airport-city"
-                                                                  ? `${transfer.transferFromName} (airport) - ${transfer.transferToHubName} (${transfer.transferToName})`
-                                                                  : `${transfer.transferFromHubName} (${transfer.transferFromName}) - ${transfer.transferToName} (airport)`}
-                                                          </div>
-                                                      );
-                                                  }
-                                              )
-                                            : "N/A"}
-                                    </li>
-                                );
-                            }
-                        )}
-                    </ul>
-                </div>
-            )}
+            {amendment?.transferQuotation &&
+                amendment?.hotelQuotation &&
+                amendment?.transferQuotation?.stayTransfers &&
+                amendment?.transferQuotation?.stayTransfers[0].transfers &&
+                amendment?.transferQuotation?.stayTransfers[0].transfers[0] && (
+                    <div className="mt-7 text-[15px]">
+                        <h5 className="text-gray-500 font-medium mb-1">
+                            Transfers
+                        </h5>
+                        <ul className="text-[15px] list-disc ml-[16px]">
+                            {amendment?.transferQuotation?.stayTransfers?.map(
+                                (stayTransfer, index) => {
+                                    return (
+                                        <li
+                                            key={index}
+                                            style={{ marginBottom: "2px" }}
+                                            className="cust-border"
+                                        >
+                                            Stay {stayTransfer?.stayNo}{" "}
+                                            {stayTransfer?.transfers &&
+                                            stayTransfer?.transfers?.length > 0
+                                                ? stayTransfer?.transfers?.map(
+                                                      (transfer, index) => {
+                                                          return (
+                                                              <div className="capitalize">
+                                                                  {transfer?.transferType ===
+                                                                  "city-city"
+                                                                      ? `${transfer.transferFromHubName} (${transfer.transferFromName}) - ${transfer.transferToHubName} (${transfer.transferToName})`
+                                                                      : transfer?.transferType ===
+                                                                        "airport-city"
+                                                                      ? `${transfer.transferFromName} (airport) - ${transfer.transferToHubName} (${transfer.transferToName})`
+                                                                      : `${transfer.transferFromHubName} (${transfer.transferFromName}) - ${transfer.transferToName} (airport)`}
+                                                              </div>
+                                                          );
+                                                      }
+                                                  )
+                                                : "N/A"}
+                                        </li>
+                                    );
+                                }
+                            )}
+                        </ul>
+                    </div>
+                )}
 
             {amendment?.visa && (
                 <div className="mt-7 text-[15px]">

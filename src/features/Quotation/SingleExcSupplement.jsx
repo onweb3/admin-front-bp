@@ -146,13 +146,13 @@ export default function SingleExcSupplement({
 
                     calculatedAdultPrice =
                         totalPvtPrice +
-                        (globalExcursion?.ticketPricing?.adultPrice
-                            ? globalExcursion?.ticketPricing?.adultPrice
+                        (globalExcursion?.ticketPrice?.adultPrice
+                            ? globalExcursion?.ticketPrice?.adultPrice
                             : 0);
                     calculatedChildPrice =
                         totalPvtPrice +
-                        (globalExcursion?.ticketPricing?.childPrice
-                            ? globalExcursion?.ticketPricing?.childPrice
+                        (globalExcursion?.ticketPrice?.childPrice
+                            ? globalExcursion?.ticketPrice?.childPrice
                             : 0);
                 }
             }
