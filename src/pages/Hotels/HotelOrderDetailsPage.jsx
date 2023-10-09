@@ -975,6 +975,17 @@ export default function HotelOrderDetailsPage() {
                                                 <tr>
                                                     <td className="text-grayColor py-1 w-full">
                                                         <div className="flex gap-[15px] items-center w-full">
+                                                            <span className="">Market Markup</span>
+                                                            <div className="border-b border-dashed flex-1"></div>
+                                                            <span className="text-right">
+                                                                {hotelOrder?.adminMarketMarkup || 0}
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td className="text-grayColor py-1 w-full">
+                                                        <div className="flex gap-[15px] items-center w-full">
                                                             <span className="">Admin Markup</span>
                                                             <div className="border-b border-dashed flex-1"></div>
                                                             <span className="text-right">
