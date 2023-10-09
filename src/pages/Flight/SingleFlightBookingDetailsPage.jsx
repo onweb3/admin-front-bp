@@ -339,7 +339,9 @@ export default function SingleFlightBookingDetailsPage() {
                                 <table className="text-[15px]">
                                     <tr>
                                         <td className="p-1 pl-0 text-grayColor">Reference No</td>
-                                        <td className="p-1 font-medium">#{flightBooking?.referenceNumber}</td>
+                                        <td className="p-1 font-medium">
+                                            #{flightBooking?.referenceNumber}
+                                        </td>
                                     </tr>
                                 </table>
                                 <div className="mb-6">
@@ -347,13 +349,18 @@ export default function SingleFlightBookingDetailsPage() {
                                     <table className="text-[15px]">
                                         <tr>
                                             <td className="p-1 pl-0 text-grayColor">Email</td>
-                                            <td className="p-1">nihal@hami.live</td>
+                                            <td className="p-1">
+                                                {flightBooking?.contactDetails?.email}
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td className="p-1 pl-0 text-grayColor">
                                                 Phone Number
                                             </td>
-                                            <td className="p-1">+91 7994766524</td>
+                                            <td className="p-1">
+                                                {flightBooking?.contactDetails?.phoneCode}{" "}
+                                                {flightBooking?.contactDetails?.phoneNumber}
+                                            </td>
                                         </tr>
                                     </table>
                                 </div>
@@ -397,7 +404,9 @@ export default function SingleFlightBookingDetailsPage() {
                                                 <div className="flex gap-[15px] items-center w-full">
                                                     <span className="">Admin Markup</span>
                                                     <div className="border-b border-dashed flex-1"></div>
-                                                    <span className="text-right">0</span>
+                                                    <span className="text-right">
+                                                        {flightBooking?.adminB2bMarkup}
+                                                    </span>
                                                 </div>
                                             </td>
                                         </tr>
@@ -408,7 +417,9 @@ export default function SingleFlightBookingDetailsPage() {
                                                         Agent To Sub Agent Markup
                                                     </span>
                                                     <div className="border-b border-dashed flex-1"></div>
-                                                    <span className="text-right">0</span>
+                                                    <span className="text-right">
+                                                        {flightBooking?.subAgentMarkup}
+                                                    </span>
                                                 </div>
                                             </td>
                                         </tr>
@@ -417,7 +428,9 @@ export default function SingleFlightBookingDetailsPage() {
                                                 <div className="flex gap-[15px] items-center w-full">
                                                     <span className="">Client Markup</span>
                                                     <div className="border-b border-dashed flex-1"></div>
-                                                    <span className="text-right">0</span>
+                                                    <span className="text-right">
+                                                        {flightBooking?.clientMarkup}
+                                                    </span>
                                                 </div>
                                             </td>
                                         </tr>
