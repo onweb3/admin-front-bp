@@ -194,13 +194,16 @@ function AddVoucherPage() {
         fetchInitalData();
     }, []);
 
-    useEffect(async () => {
-        const response = await axios.get("/vouchers/settings", {
-            headers: { authorization: `Bearer ${jwtToken}` },
-        });
-        setData((prev) => {
-            return { ...prev, termsAndConditions: response?.data?.termsAndCondition || "" };
-        });
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await axios.get("/vouchers/settings", {
+                headers: { authorization: `Bearer ${jwtToken}` },
+            });
+            setData((prev) => {
+                return { ...prev, termsAndConditions: response?.data?.termsAndCondition || "" };
+            });
+        };
+        fetchData();
     }, []);
 
     return (
