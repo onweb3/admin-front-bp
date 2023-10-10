@@ -865,8 +865,11 @@ export default function HotelOrderDetailsPage() {
                                                                                     key={
                                                                                         travellerIndex
                                                                                     }
-                                                                                    className="mr-2"
                                                                                 >
+                                                                                    {travellerIndex !==
+                                                                                    0
+                                                                                        ? ", "
+                                                                                        : ""}
                                                                                     {
                                                                                         traveller?.title
                                                                                     }{" "}
@@ -920,11 +923,25 @@ export default function HotelOrderDetailsPage() {
                                                     <td className="text-grayColor py-1 w-full">
                                                         <div className="flex gap-[15px] items-center w-full">
                                                             <span className="">
-                                                                Extra supplement
+                                                                Extra Bed supplement
                                                             </span>
                                                             <div className="border-b border-dashed flex-1"></div>
                                                             <span className="text-right">
-                                                                {hotelOrder?.extraSupplementPrice ||
+                                                                {hotelOrder?.extraBedSupplementPrice ||
+                                                                    0}
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td className="text-grayColor py-1 w-full">
+                                                        <div className="flex gap-[15px] items-center w-full">
+                                                            <span className="">
+                                                                Child supplement
+                                                            </span>
+                                                            <div className="border-b border-dashed flex-1"></div>
+                                                            <span className="text-right">
+                                                                {hotelOrder?.childSupplementPrice ||
                                                                     0}
                                                             </span>
                                                         </div>
