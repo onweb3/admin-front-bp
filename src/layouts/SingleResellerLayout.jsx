@@ -30,21 +30,12 @@ export default function SingleResellerLayout() {
         try {
             setIsPageLoading(true);
 
-            const response = await axios.get(
-                `/resellers/single/${id}/details`,
-                {
-                    headers: { authorization: `Bearer ${jwtToken}` },
-                }
-            );
+            const response = await axios.get(`/resellers/single/${id}/details`, {
+                headers: { authorization: `Bearer ${jwtToken}` },
+            });
 
-            const {
-                reseller,
-                balance,
-                creditUsed,
-                creditAmount,
-                totalEarnings,
-                pendingEarnings,
-            } = response.data;
+            const { reseller, balance, creditUsed, creditAmount, totalEarnings, pendingEarnings } =
+                response.data;
             setReseller(reseller);
             setData((prev) => {
                 return {
@@ -89,9 +80,7 @@ export default function SingleResellerLayout() {
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">
-                    B2B Details
-                </h1>
+                <h1 className="font-[600] text-[15px] uppercase">B2B Details</h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
@@ -105,9 +94,7 @@ export default function SingleResellerLayout() {
                         {id?.slice(0, 3)}...{id?.slice(-3)}{" "}
                     </span>
                     <span>{">"} </span>
-                    <span className="capitalize">
-                        {location.pathname.split("/")[3]}{" "}
-                    </span>
+                    <span className="capitalize">{location.pathname.split("/")[3]} </span>
                 </div>
             </div>
 
@@ -126,8 +113,7 @@ export default function SingleResellerLayout() {
                             </div>
                             <div>
                                 <span className="block font-[600] text-lg">
-                                    {reseller?.companyName} -{" "}
-                                    {reseller?.agentCode}
+                                    {reseller?.companyName} - {reseller?.agentCode}
                                 </span>
                                 <span className="block text-sm text-grayColor">
                                     {reseller?.website}
@@ -135,8 +121,7 @@ export default function SingleResellerLayout() {
                             </div>
                         </div>
                         <div className="flex items-center gap-5">
-                            {(reseller?.status === "ok" ||
-                                reseller?.status === "disabled") && (
+                            {(reseller?.status === "ok" || reseller?.status === "disabled") && (
                                 <>
                                     <select
                                         className="px-4"
@@ -144,13 +129,9 @@ export default function SingleResellerLayout() {
                                         onChange={(e) => {
                                             if (e.target.value === "add") {
                                                 setIsAddMoneyModalOpen(true);
-                                            } else if (
-                                                e.target.value === "remove"
-                                            ) {
+                                            } else if (e.target.value === "remove") {
                                                 setIsRemoveMoneyModalOpen(true);
-                                            } else if (
-                                                e.target.value === "credit"
-                                            ) {
+                                            } else if (e.target.value === "credit") {
                                                 setIsAddCreditModalOpen(true);
                                             }
                                         }}
@@ -159,35 +140,25 @@ export default function SingleResellerLayout() {
                                             Select Option
                                         </option>
                                         <option value="add">Add Money</option>
-                                        <option value="remove">
-                                            Remove Money
-                                        </option>
-                                        <option value="credit">
-                                            Update Credit
-                                        </option>
+                                        <option value="remove">Remove Money</option>
+                                        <option value="credit">Update Credit</option>
                                     </select>
                                     {isAddCreditModalOpen && (
                                         <AddCreditModal
-                                            setIsAddCreditModalOpen={
-                                                setIsAddCreditModalOpen
-                                            }
+                                            setIsAddCreditModalOpen={setIsAddCreditModalOpen}
                                             data={data}
                                             setData={setData}
                                         />
                                     )}
                                     {isAddMoneyModalOpen && (
                                         <AddMoneyModal
-                                            setIsAddMoneyModalOpen={
-                                                setIsAddMoneyModalOpen
-                                            }
+                                            setIsAddMoneyModalOpen={setIsAddMoneyModalOpen}
                                             setData={setData}
                                         />
                                     )}
                                     {isRemoveMoneyModalOpen && (
                                         <RemoveMoenyModal
-                                            setIsRemoveMoneyModalOpen={
-                                                setIsRemoveMoneyModalOpen
-                                            }
+                                            setIsRemoveMoneyModalOpen={setIsRemoveMoneyModalOpen}
                                             setData={setData}
                                         />
                                     )}
@@ -203,19 +174,13 @@ export default function SingleResellerLayout() {
                                         <div className="flex items-center gap-[10px]">
                                             <button
                                                 className="h-[35px] w-[35px] bg-green-500 flex items-center justify-center text-xl"
-                                                onClick={() =>
-                                                    handleStatusChange("ok")
-                                                }
+                                                onClick={() => handleStatusChange("ok")}
                                             >
                                                 <FiCheck />
                                             </button>
                                             <button
                                                 className="h-[35px] w-[35px] bg-red-500 flex items-center justify-center text-xl"
-                                                onClick={() =>
-                                                    handleStatusChange(
-                                                        "cancelled"
-                                                    )
-                                                }
+                                                onClick={() => handleStatusChange("cancelled")}
                                             >
                                                 <MdClose />
                                             </button>
@@ -232,19 +197,11 @@ export default function SingleResellerLayout() {
                                                 name=""
                                                 id=""
                                                 value={reseller?.status || ""}
-                                                onChange={(e) =>
-                                                    handleStatusChange(
-                                                        e.target.value
-                                                    )
-                                                }
+                                                onChange={(e) => handleStatusChange(e.target.value)}
                                                 className="min-w-[100px]"
                                             >
-                                                <option value="ok">
-                                                    Enable
-                                                </option>
-                                                <option value="disabled">
-                                                    Disable
-                                                </option>
+                                                <option value="ok">Enable</option>
+                                                <option value="disabled">Disable</option>
                                             </select>
                                         </div>
                                     )}
@@ -276,7 +233,7 @@ export default function SingleResellerLayout() {
                         <div className="bg-white shadow-sm rounded p-4 flex items-start justify-between">
                             <div>
                                 <span className="block text-lg font-[600]">
-                                    {data.balance?.toFixed(2) || 0} AED
+                                    {(data.balance - data?.creditUsed)?.toFixed(2) || 0} AED
                                 </span>
                                 <span className="block text-sm text-grayColor font-medium mt-[2px]">
                                     Available Balance
@@ -315,13 +272,12 @@ export default function SingleResellerLayout() {
                         <div className="bg-white shadow-sm rounded p-4 flex items-start justify-between">
                             <div>
                                 <span className="block text-lg font-[600]">
-                                    {data?.creditAmount || 0} AED
+                                    {data?.creditAmount?.toFixed(2) || 0} AED
                                 </span>
 
                                 <span className="block text-lg font-[600]"></span>
                                 <span className="block text-sm text-grayColor font-medium mt-[2px]">
-                                    Wallet Credit Used({data?.creditUsed || 0}{" "}
-                                    AED )
+                                    Wallet Credit Used ({data?.creditUsed?.toFixed(2) || 0} AED)
                                 </span>
                             </div>
                             <span className="text-3xl">
@@ -336,8 +292,7 @@ export default function SingleResellerLayout() {
                                 <button
                                     className={
                                         "px-2 py-4 h-auto bg-transparent text-textColor font-medium rounded-none " +
-                                        (location.pathname.split("/")[3] ===
-                                        "details"
+                                        (location.pathname.split("/")[3] === "details"
                                             ? "border-b border-b-orange-500"
                                             : "")
                                     }
@@ -349,8 +304,7 @@ export default function SingleResellerLayout() {
                                 <button
                                     className={
                                         "px-2 py-4 h-auto bg-transparent text-textColor font-medium rounded-none " +
-                                        (location.pathname.split("/")[3] ===
-                                        "transactions"
+                                        (location.pathname.split("/")[3] === "transactions"
                                             ? "border-b border-b-orange-500"
                                             : "")
                                     }
@@ -389,16 +343,12 @@ export default function SingleResellerLayout() {
                                     <button
                                         className={
                                             "px-2 py-4 h-auto bg-transparent text-textColor font-medium rounded-none " +
-                                            (location.pathname.split("/")[3] ===
-                                            "sub-agents"
+                                            (location.pathname.split("/")[3] === "sub-agents"
                                                 ? "border-b border-b-orange-500"
                                                 : "")
                                         }
                                     >
-                                        Sub Agents{" "}
-                                        {totalSubAgents
-                                            ? `(${totalSubAgents})`
-                                            : ""}
+                                        Sub Agents {totalSubAgents ? `(${totalSubAgents})` : ""}
                                     </button>
                                 </Link>
                             )}
@@ -408,8 +358,7 @@ export default function SingleResellerLayout() {
                                     <button
                                         className={
                                             "px-2 py-4 h-auto bg-transparent text-textColor font-medium rounded-none " +
-                                            (location.pathname.split("/")[3] ===
-                                            "special-markup"
+                                            (location.pathname.split("/")[3] === "special-markup"
                                                 ? "border-b border-b-orange-500"
                                                 : "")
                                         }
@@ -423,8 +372,7 @@ export default function SingleResellerLayout() {
                                     <button
                                         className={
                                             "px-2 py-4 h-auto bg-transparent text-textColor font-medium rounded-none " +
-                                            (location.pathname.split("/")[3] ===
-                                            "admin-access"
+                                            (location.pathname.split("/")[3] === "admin-access"
                                                 ? "border-b border-b-orange-500"
                                                 : "")
                                         }
@@ -438,8 +386,7 @@ export default function SingleResellerLayout() {
                                     <button
                                         className={
                                             "px-2 py-4 h-auto bg-transparent text-textColor font-medium rounded-none " +
-                                            (location.pathname.split("/")[3] ===
-                                            "market-strategy"
+                                            (location.pathname.split("/")[3] === "market-strategy"
                                                 ? "border-b border-b-orange-500"
                                                 : "")
                                         }

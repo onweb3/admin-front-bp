@@ -143,7 +143,7 @@ export default function VoucherDailyReportTable({
                                                   ?.pickupTimeFrom
                                           )
                                         : "N/A"}{" "}
-                                    -{" "}
+                                    -{" "}<br />
                                     {!isNaN(
                                         voucher?.voucherAmendment?.tours
                                             ?.pickupTimeTo

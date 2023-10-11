@@ -44,7 +44,7 @@ import { RiRefund2Line, RiProfileLine } from "react-icons/ri";
 import { GiWavyItinerary } from "react-icons/gi";
 import { FaGlobe } from "react-icons/fa";
 import { BsFillChatLeftQuoteFill } from "react-icons/bs";
-import { IoBusiness } from "react-icons/io5";
+import { IoBusiness, IoWalletOutline } from "react-icons/io5";
 
 const sidebarMenus = {
     Home: [
@@ -209,6 +209,18 @@ const sidebarMenus = {
             icon: <BiGitCompare />,
             link: "/hotels/comparison-list",
             permission: ["hotels", "view"],
+        },
+        {
+            name: "Hotel Settings",
+            icon: <MdAdminPanelSettings />,
+            link: "#",
+            dropdown: [
+                {
+                    name: "Cache Settings",
+                    link: "/hotels/cache-settings",
+                    permission: ["hotels-settings", "view"],
+                },
+            ],
         },
     ],
     Flight: [
@@ -447,6 +459,23 @@ const sidebarMenus = {
             ],
         },
         {
+            name: "B2B Wallet",
+            icon: <IoWalletOutline />,
+            link: "#",
+            dropdown: [
+                {
+                    name: "Wallet Statistics",
+                    link: "/b2b/wallet/statistics",
+                    permission: ["b2b-wallet-statistics", "view"],
+                },
+                {
+                    name: "Deposits List",
+                    link: "/b2b/wallet/deposits",
+                    permission: ["b2b-wallet-deposits", "view"],
+                },
+            ],
+        },
+        {
             name: "Location",
             icon: <HiOutlineLocationMarker />,
             link: "#",
@@ -488,6 +517,18 @@ const sidebarMenus = {
             icon: <HiOutlineDocumentReport />,
             link: "/vouchers/daily-reports",
             permission: ["daily-reports", "view"],
+        },
+        {
+            name: "Tour Settings",
+            icon: <MdAdminPanelSettings />,
+            link: "#",
+            dropdown: [
+                {
+                    name: "Voucher Settings",
+                    link: "/vouchers/settings",
+                    permission: ["voucher-settings", "view"],
+                },
+            ],
         },
     ],
     Marketing: [

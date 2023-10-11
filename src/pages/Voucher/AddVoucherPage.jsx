@@ -6,69 +6,6 @@ import { BtnLoader, RichTextEditor } from "../../components";
 import axios from "../../axios";
 import { TourTable } from "../../features/Voucher";
 import { useHandleClickOutside } from "../../hooks";
-import { config } from "../../constants";
-
-let TOC = `<p>Conditions:We at the ${config.COMPANY_NAME} will not be able to entertain any last moment
-changes, any changes in tour date or timing must be informed 24 hours prior to the given
-timing otherwise guest will be considered as a no show. Changes inTours will be subject to
-availability. Please note that the given timing for tour(s) pickups are approximate and
-guest are required to inform their presence Lobby to hotel concierge. Our tour guide will
-not be able wait for more than 10 minutes for pickup at the Hotel. Please note that if guests
-are late to reach the location between the above given timing then also, guest will be
-Considered no show.</p>
-<p><br></p>
-<ul>
-<li>Tourism Dirham fees has to be paid by the Guest directly upon check in at the hotel, if not
-    already paid byYourTravel Agent / Company in Advance
-</li>
-<li>Rooms &amp; Rates are Subject to Availability at the time of booking &amp; Standard Check IN
-    Time is 03:00 PM &amp; Early check in is subject to being booked in advance or as per hotel
-    availability &amp; in this case, may charge directly to the guest.
-</li>
-<li>It is important to note that 4 star &amp; 5 star hotels generally collect security deposit of
-    approx. USD 100 directly from the guest at the time of check in, which is then refunded at
-    the time of check out.
-</li>
-<li>Kindly provide prior information ofVeg &amp; Non-Veg meals for Group or FIT.
-</li>
-<li>At All Dhow Cruises orYacht Cruises, Upper &amp; Lower Deck at cruise will be subject to
-    availability.
-</li>
-<li>For the Lotus Mega yacht, tables are subject to first come first serve basis and only are
-    guaranteed forVIP tickets.
-</li>
-<li>All Burj Khalifa slots are to be considered as NON PRIME TIME hours (Night Slot), except
-    as mentioned in the
-    Voucher &amp; Burj Khalifa Slots are subject to availability &amp; can sold out anytime.
-</li>
-<li>Museum of Future slots are subject to availability &amp; can sold out anytime
-</li>
-<li>In case if any guest tested Covid-19 Positive, hotels can charge from USD 60 to USD 80
-    approximately to the Guest as charges to disinfect the room.
-</li>
-<li>Guest need to carry QR code vaccine certificate &amp; are required to provide a negative PCR
-    test result acquired within 48 hours. to enter Grand Mosque/Ferrari world Or any Mall
-    visit at Abu Dhabi (as Applicable)
-</li>
-<li>We can take the liberty to make any changes in a voucher if a tour gets sold out &amp; we will
-    adjust it on another day.
-</li>
-<li>Same Day Changes in theTours/transfer OR Cancellation ofTours/ Transfer consider as a
-    NO SHOW
-</li>
-<li>Please check &amp; acknowledge the visa copy same time If there is any correction kindly
-    advise us 02 days before travel date as later the company will not be responsible for any
-    kind of losses or similar</li>
-<li>For water parks Guest need to carry swim wear</li>
-</ul>
-<p><br></p>
-<p><strong>GRAND MOSQUE RULES</strong></p>
-<ul>
-<li>The Guests are requested to wear full sleeve cloths or decent cloth to follow MOSQUE
-    criteria.Women are requested not to wear tight cloth and put on the ABAYA as per the
-    GRAND MOSQUE Requirement. Hope everything in confirmation voucher is in order.
-    Please let us know 48 Hour Prior so we can assist you further so we can Update the Same</li>
-</ul>`;
 
 function AddVoucherPage() {
     const [isLoading, setIsLoading] = useState(false);
@@ -108,7 +45,7 @@ function AddVoucherPage() {
         arrivalNote: "",
         departureDate: "",
         departureNote: "",
-        termsAndConditions: TOC,
+        termsAndConditions: "",
     });
     const [tourData, setTourData] = useState([
         {
@@ -125,15 +62,10 @@ function AddVoucherPage() {
     const navigate = useNavigate();
     const { jwtToken } = useSelector((state) => state.admin);
     const hotelDropdownRef = useRef(null);
-    useHandleClickOutside(hotelDropdownRef, () =>
-        setIsHotelDropdownOpen(false)
-    );
+    useHandleClickOutside(hotelDropdownRef, () => setIsHotelDropdownOpen(false));
 
     const handleNoOfChildrenChange = (e) => {
-        const tempArray = Array.from(
-            { length: Number(e.target.value) },
-            () => "0"
-        );
+        const tempArray = Array.from({ length: Number(e.target.value) }, () => "0");
 
         setData((prev) => {
             return {
@@ -148,19 +80,13 @@ function AddVoucherPage() {
     };
 
     const handleNoOfInfantsChange = (e) => {
-        const tempArray = Array.from(
-            { length: Number(e.target.value) },
-            () => "0"
-        );
+        const tempArray = Array.from({ length: Number(e.target.value) }, () => "0");
 
         setData((prev) => {
             return {
                 ...prev,
                 noOfInfants: e.target.value,
-                infantAges: [...prev.infantAges, ...tempArray]?.slice(
-                    0,
-                    Number(e.target.value)
-                ),
+                infantAges: [...prev.infantAges, ...tempArray]?.slice(0, Number(e.target.value)),
             };
         });
     };
@@ -220,9 +146,7 @@ function AddVoucherPage() {
     };
 
     const filteredHotels = initialData.hotels?.filter((item) => {
-        return item?.hotelName
-            ?.toLowerCase()
-            ?.includes(data.hotelName?.toLowerCase());
+        return item?.hotelName?.toLowerCase()?.includes(data.hotelName?.toLowerCase());
     });
 
     const handleSubmit = async (e) => {
@@ -242,9 +166,7 @@ function AddVoucherPage() {
             setIsLoading(false);
             navigate(`/vouchers/${response?.data?._id}`);
         } catch (err) {
-            setError(
-                err?.response?.data?.error || "Something went wrong, Try again"
-            );
+            setError(err?.response?.data?.error || "Something went wrong, Try again");
             setIsLoading(false);
         }
     };
@@ -272,12 +194,22 @@ function AddVoucherPage() {
         fetchInitalData();
     }, []);
 
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await axios.get("/vouchers/settings", {
+                headers: { authorization: `Bearer ${jwtToken}` },
+            });
+            setData((prev) => {
+                return { ...prev, termsAndConditions: response?.data?.termsAndCondition || "" };
+            });
+        };
+        fetchData();
+    }, []);
+
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">
-                    Add Voucher
-                </h1>
+                <h1 className="font-[600] text-[15px] uppercase">Add Voucher</h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
@@ -319,8 +251,7 @@ function AddVoucherPage() {
                                             setData((prev) => {
                                                 return {
                                                     ...prev,
-                                                    passengerName:
-                                                        e.target.value,
+                                                    passengerName: e.target.value,
                                                     pagingName: e.target.value,
                                                 };
                                             });
@@ -348,73 +279,44 @@ function AddVoucherPage() {
                                         placeholder="0"
                                     />
                                 </div>
-                                {data.childrenAges &&
-                                    data.childrenAges?.length > 0 && (
-                                        <div className="col-span-2">
-                                            <label
-                                                htmlFor=""
-                                                className="w-[100%] max-w-[180px]"
-                                            >
-                                                Children Ages *
-                                            </label>
-                                            <div className="flex items-center flex-wrap gap-[10px]">
-                                                {data.childrenAges?.map(
-                                                    (age, index) => {
-                                                        return (
-                                                            <select
-                                                                name=""
-                                                                className="w-[100px]"
-                                                                value={
-                                                                    age || ""
-                                                                }
-                                                                key={index}
-                                                                onChange={(e) =>
-                                                                    handleChildrenAgeChange(
-                                                                        e,
-                                                                        index
-                                                                    )
-                                                                }
-                                                            >
+                                {data.childrenAges && data.childrenAges?.length > 0 && (
+                                    <div className="col-span-2">
+                                        <label htmlFor="" className="w-[100%] max-w-[180px]">
+                                            Children Ages *
+                                        </label>
+                                        <div className="flex items-center flex-wrap gap-[10px]">
+                                            {data.childrenAges?.map((age, index) => {
+                                                return (
+                                                    <select
+                                                        name=""
+                                                        className="w-[100px]"
+                                                        value={age || ""}
+                                                        key={index}
+                                                        onChange={(e) =>
+                                                            handleChildrenAgeChange(e, index)
+                                                        }
+                                                    >
+                                                        <option value="" hidden>
+                                                            None
+                                                        </option>
+                                                        {Array.from({
+                                                            length: 18,
+                                                        }).map((_, arrIndex) => {
+                                                            return (
                                                                 <option
-                                                                    value=""
-                                                                    hidden
+                                                                    value={arrIndex}
+                                                                    key={arrIndex}
                                                                 >
-                                                                    None
+                                                                    {arrIndex} - {arrIndex + 1} yrs
                                                                 </option>
-                                                                {Array.from({
-                                                                    length: 18,
-                                                                }).map(
-                                                                    (
-                                                                        _,
-                                                                        arrIndex
-                                                                    ) => {
-                                                                        return (
-                                                                            <option
-                                                                                value={
-                                                                                    arrIndex
-                                                                                }
-                                                                                key={
-                                                                                    arrIndex
-                                                                                }
-                                                                            >
-                                                                                {
-                                                                                    arrIndex
-                                                                                }{" "}
-                                                                                -{" "}
-                                                                                {arrIndex +
-                                                                                    1}{" "}
-                                                                                yrs
-                                                                            </option>
-                                                                        );
-                                                                    }
-                                                                )}
-                                                            </select>
-                                                        );
-                                                    }
-                                                )}
-                                            </div>
+                                                            );
+                                                        })}
+                                                    </select>
+                                                );
+                                            })}
                                         </div>
-                                    )}
+                                    </div>
+                                )}
                                 <div>
                                     <label htmlFor="">No Of Infants *</label>
                                     <input
@@ -425,134 +327,85 @@ function AddVoucherPage() {
                                         placeholder="0"
                                     />
                                 </div>
-                                {data.infantAges &&
-                                    data.infantAges?.length > 0 && (
-                                        <div className="col-span-2">
-                                            <label
-                                                htmlFor=""
-                                                className="w-[100%] max-w-[180px]"
-                                            >
-                                                Infant Ages *
-                                            </label>
-                                            <div className="flex items-center flex-wrap gap-[10px]">
-                                                {data.infantAges?.map(
-                                                    (age, index) => {
-                                                        return (
-                                                            <select
-                                                                name=""
-                                                                className="w-[100px]"
-                                                                value={
-                                                                    age || ""
-                                                                }
-                                                                key={index}
-                                                                onChange={(e) =>
-                                                                    handleInfantAgeChange(
-                                                                        e,
-                                                                        index
-                                                                    )
-                                                                }
-                                                            >
+                                {data.infantAges && data.infantAges?.length > 0 && (
+                                    <div className="col-span-2">
+                                        <label htmlFor="" className="w-[100%] max-w-[180px]">
+                                            Infant Ages *
+                                        </label>
+                                        <div className="flex items-center flex-wrap gap-[10px]">
+                                            {data.infantAges?.map((age, index) => {
+                                                return (
+                                                    <select
+                                                        name=""
+                                                        className="w-[100px]"
+                                                        value={age || ""}
+                                                        key={index}
+                                                        onChange={(e) =>
+                                                            handleInfantAgeChange(e, index)
+                                                        }
+                                                    >
+                                                        <option value="" hidden>
+                                                            None
+                                                        </option>
+                                                        {Array.from({
+                                                            length: 18,
+                                                        }).map((_, arrIndex) => {
+                                                            return (
                                                                 <option
-                                                                    value=""
-                                                                    hidden
+                                                                    value={arrIndex}
+                                                                    key={arrIndex}
                                                                 >
-                                                                    None
+                                                                    {arrIndex} - {arrIndex + 1} yrs
                                                                 </option>
-                                                                {Array.from({
-                                                                    length: 18,
-                                                                }).map(
-                                                                    (
-                                                                        _,
-                                                                        arrIndex
-                                                                    ) => {
-                                                                        return (
-                                                                            <option
-                                                                                value={
-                                                                                    arrIndex
-                                                                                }
-                                                                                key={
-                                                                                    arrIndex
-                                                                                }
-                                                                            >
-                                                                                {
-                                                                                    arrIndex
-                                                                                }{" "}
-                                                                                -{" "}
-                                                                                {arrIndex +
-                                                                                    1}{" "}
-                                                                                yrs
-                                                                            </option>
-                                                                        );
-                                                                    }
-                                                                )}
-                                                            </select>
-                                                        );
-                                                    }
-                                                )}
-                                            </div>
+                                                            );
+                                                        })}
+                                                    </select>
+                                                );
+                                            })}
                                         </div>
-                                    )}
+                                    </div>
+                                )}
                             </div>
 
                             <div className="grid grid-cols-3 gap-[20px] mt-4">
                                 <div className="col-span-2">
                                     <label htmlFor="">Hotel Name</label>
-                                    <div
-                                        className="relative"
-                                        ref={hotelDropdownRef}
-                                    >
+                                    <div className="relative" ref={hotelDropdownRef}>
                                         <input
                                             type="text"
                                             name="hotelName"
                                             onChange={handleChange}
                                             value={data.hotelName || ""}
                                             placeholder="Enter Hotel Name"
-                                            onFocus={() =>
-                                                setIsHotelDropdownOpen(true)
-                                            }
+                                            onFocus={() => setIsHotelDropdownOpen(true)}
                                         />
                                         {isHotelDropdownOpen && (
                                             <div className="absolute top-[100%] left-0 w-full bg-white shadow rounded overflow-y-auto max-h-[250px]">
-                                                {filteredHotels?.map(
-                                                    (hotel, index) => {
-                                                        return (
-                                                            <div
-                                                                key={index}
-                                                                className="py-[6px] px-4 text-[15px] cursor-pointer hover:bg-[#f3f6f9]"
-                                                                onClick={() => {
-                                                                    setData(
-                                                                        (
-                                                                            prev
-                                                                        ) => {
-                                                                            return {
-                                                                                ...prev,
-                                                                                hotelName:
-                                                                                    hotel?.hotelName,
-                                                                            };
-                                                                        }
-                                                                    );
-                                                                    setIsHotelDropdownOpen(
-                                                                        false
-                                                                    );
-                                                                }}
-                                                            >
-                                                                <span>
-                                                                    {
-                                                                        hotel?.hotelName
-                                                                    }
-                                                                </span>
-                                                            </div>
-                                                        );
-                                                    }
-                                                )}
+                                                {filteredHotels?.map((hotel, index) => {
+                                                    return (
+                                                        <div
+                                                            key={index}
+                                                            className="py-[6px] px-4 text-[15px] cursor-pointer hover:bg-[#f3f6f9]"
+                                                            onClick={() => {
+                                                                setData((prev) => {
+                                                                    return {
+                                                                        ...prev,
+                                                                        hotelName: hotel?.hotelName,
+                                                                    };
+                                                                });
+                                                                setIsHotelDropdownOpen(false);
+                                                            }}
+                                                        >
+                                                            <span>{hotel?.hotelName}</span>
+                                                        </div>
+                                                    );
+                                                })}
                                             </div>
                                         )}
                                     </div>
                                 </div>
                                 <div>
-                                    <label htmlFor="">
-                                        Confirmation Number
-                                    </label>
+                                    <label htmlFor="">Confirmation Number</label>
                                     <input
                                         type="text"
                                         name="confirmationNumber"
@@ -603,8 +456,7 @@ function AddVoucherPage() {
                                             setData((prev) => {
                                                 return {
                                                     ...prev,
-                                                    departureDate:
-                                                        e.target.value,
+                                                    departureDate: e.target.value,
                                                 };
                                             });
                                         }}
@@ -653,7 +505,7 @@ function AddVoucherPage() {
                                     />
                                 </div>
                                 <div>
-                                    <label htmlFor="">Basis Of Transfer</label>
+                                    <label htmlFor="">Basis Of Transfer *</label>
                                     <input
                                         type="text"
                                         name="basisOfTransfer"
@@ -684,18 +536,13 @@ function AddVoucherPage() {
                                         <option value="" hidden>
                                             Select Airport
                                         </option>
-                                        {initialData?.airports?.map(
-                                            (airport, index) => {
-                                                return (
-                                                    <option
-                                                        value={airport?._id}
-                                                        key={index}
-                                                    >
-                                                        {airport?.airportName}
-                                                    </option>
-                                                );
-                                            }
-                                        )}
+                                        {initialData?.airports?.map((airport, index) => {
+                                            return (
+                                                <option value={airport?._id} key={index}>
+                                                    {airport?.airportName}
+                                                </option>
+                                            );
+                                        })}
                                     </select>
                                 </div>
                             </div>
@@ -766,9 +613,7 @@ function AddVoucherPage() {
                                         />
                                     </div>
                                     <div>
-                                        <label htmlFor="">
-                                            Contact Number *
-                                        </label>
+                                        <label htmlFor="">Contact Number *</label>
                                         <input
                                             type="text"
                                             name="contactNumber"
@@ -787,9 +632,7 @@ function AddVoucherPage() {
                                 activities={initialData.activities || []}
                             />
                             <div className="mt-4">
-                                <h1 className="text-[14px]">
-                                    Terms And Conditions *
-                                </h1>
+                                <h1 className="text-[14px]">Terms And Conditions *</h1>
                                 <div className="mt-2">
                                     <div className="border border-t-0">
                                         <RichTextEditor
@@ -797,22 +640,17 @@ function AddVoucherPage() {
                                                 setData((prev) => {
                                                     return {
                                                         ...prev,
-                                                        termsAndConditions:
-                                                            value,
+                                                        termsAndConditions: value,
                                                     };
                                                 })
                                             }
-                                            initialValue={
-                                                data?.termsAndConditions || ""
-                                            }
+                                            initialValue={data?.termsAndConditions || ""}
                                         />
                                     </div>
                                 </div>
                             </div>
                             {error && (
-                                <span className="text-sm block text-red-500 mt-3">
-                                    {error}
-                                </span>
+                                <span className="text-sm block text-red-500 mt-3">{error}</span>
                             )}
                             <div className="flex items-center justify-end gap-[12px] mt-5">
                                 <button

@@ -75,7 +75,7 @@ export default function DriversPage() {
                         </div>
                         {drivers?.length < 1 ? (
                             <div className="p-6 flex flex-col items-center">
-                                <span className="text-sm text-sm text-grayColor block mt-[6px]">
+                                <span className="text-sm text-grayColor block mt-[6px]">
                                     Oops.. No Drivers found
                                 </span>
                             </div>
@@ -84,15 +84,9 @@ export default function DriversPage() {
                                 <table className="w-full">
                                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                         <tr>
-                                            <th className="font-[500] p-3">
-                                                Driver Name
-                                            </th>
-                                            <th className="font-[500] p-3">
-                                                Phone Number
-                                            </th>
-                                            <th className="font-[500] p-3">
-                                                Action
-                                            </th>
+                                            <th className="font-[500] p-3">Driver Name</th>
+                                            <th className="font-[500] p-3">Phone Number</th>
+                                            <th className="font-[500] p-3">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody className="text-sm">
@@ -102,9 +96,7 @@ export default function DriversPage() {
                                                     key={index}
                                                     className="border-b border-tableBorderColor"
                                                 >
-                                                    <td className="p-3">
-                                                        {driver?.driverName}
-                                                    </td>
+                                                    <td className="p-3">{driver?.driverName}</td>
                                                     <td className="p-3 capitalize">
                                                         {driver?.phoneNumber}
                                                     </td>
@@ -113,9 +105,7 @@ export default function DriversPage() {
                                                             <button
                                                                 className="h-auto bg-transparent text-red-500 text-xl"
                                                                 onClick={() =>
-                                                                    delDriver(
-                                                                        driver?._id
-                                                                    )
+                                                                    delDriver(driver?._id)
                                                                 }
                                                             >
                                                                 <MdDelete />
@@ -123,15 +113,11 @@ export default function DriversPage() {
                                                             <button
                                                                 className="h-auto bg-transparent text-green-500 text-xl"
                                                                 onClick={() => {
-                                                                    setSelectedDriver(
-                                                                        driver
-                                                                    );
-                                                                    setDriverModal(
-                                                                        {
-                                                                            isOpen: true,
-                                                                            isEdit: true,
-                                                                        }
-                                                                    );
+                                                                    setSelectedDriver(driver);
+                                                                    setDriverModal({
+                                                                        isOpen: true,
+                                                                        isEdit: true,
+                                                                    });
                                                                 }}
                                                             >
                                                                 <BiEditAlt />

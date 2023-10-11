@@ -191,6 +191,10 @@ import EditSeasonsPage from "../pages/Seasons/EditSeasonPage";
 import QuotationB2bListPage from "../pages/Quotation/QuotationResellerList";
 import QuotationsSingleResellerListPage from "../pages/Quotation/QuotationSingleResellerListPage";
 import A2aStatisticsPage from "../pages/A2A/A2aStatisticsPage";
+import B2bWalletStatisticsPage from "../pages/wallet/B2bWalletStatisticsPage";
+import B2bWallletDepositListPage from "../pages/wallet/B2bWallletDepositListPage";
+import CacheSettingsPage from "../pages/Hotels/CacheSettingsPage";
+import VoucherSettingsPage from "../pages/Voucher/VoucherSettingsPage";
 
 const ThemeRoutes = [
     {
@@ -254,6 +258,10 @@ const ThemeRoutes = [
             {
                 path: "/hotels/comparison-list",
                 element: <HotelComparisonList />,
+            },
+            {
+                path: "/hotels/cache-settings",
+                element: <CacheSettingsPage />,
             },
             {
                 path: "/hotels/room-occupancies",
@@ -526,6 +534,10 @@ const ThemeRoutes = [
                 ),
             },
             {
+                path: "/vouchers/settings",
+                element: <VoucherSettingsPage />,
+            },
+            {
                 path: "/markup/profile",
                 element: <ProfileListPage />,
             },
@@ -664,6 +676,14 @@ const ThemeRoutes = [
             {
                 path: "/b2b/:id/edit/configurations",
                 element: <UpdateResellerConfigPage />,
+            },
+            {
+                path: "/b2b/wallet/statistics",
+                element: <B2bWalletStatisticsPage />,
+            },
+            {
+                path: "/b2b/wallet/deposits",
+                element: <B2bWallletDepositListPage />,
             },
             {
                 path: "/b2b/:id",

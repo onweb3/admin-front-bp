@@ -47,9 +47,7 @@ export default function HotelRequestsPage() {
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">
-                    Hotel Requests
-                </h1>
+                <h1 className="font-[600] text-[15px] uppercase">Hotel Requests</h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
@@ -93,28 +91,17 @@ export default function HotelRequestsPage() {
                             </div>
                         ) : (
                             <div>
-                                <div className="overflow-x-auto">
-                                    <table className="w-full">
-                                        <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
+                                <div className="overflow-x-auto ">
+                                    <table className="w-full text-[14px]">
+                                        <thead className="bg-[#f3f6f9] text-grayColor text-left">
                                             <tr>
-                                                <th className="font-[500] p-3">
-                                                    Hotel Name
-                                                </th>
-                                                <th className="font-[500] p-3">
-                                                    CheckIn Date
-                                                </th>
-                                                <th className="font-[500] p-3">
-                                                    CheckOut Date
-                                                </th>
-                                                <th className="font-[500] p-3">
-                                                    Pax
-                                                </th>
-                                                <th className="font-[500] p-3">
-                                                    Requested By
-                                                </th>
-                                                <th className="font-[500] p-3">
-                                                    Actions
-                                                </th>
+                                                <th className="font-[500] p-3">Ref.No</th>
+                                                <th className="font-[500] p-3">Hotel Name</th>
+                                                <th className="font-[500] p-3">CheckIn Date</th>
+                                                <th className="font-[500] p-3">CheckOut Date</th>
+                                                <th className="font-[500] p-3">Room Type</th>
+                                                <th className="font-[500] p-3">Board Type</th>
+                                                <th className="font-[500] p-3">Pax</th>
                                             </tr>
                                         </thead>
                                         <tbody className="text-sm">
