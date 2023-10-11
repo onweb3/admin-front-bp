@@ -158,19 +158,18 @@ export default function AttractionProfileListTable({
                             value={filter.attractionName || ""}
                         />
                     </div>
-                    {type === "market" && (
-                        <div className="flex justify-end items-center w-full">
-                            <button
-                                className="w-[150px] flex gap-2 items-center p-4"
-                                onClick={(e) => {
-                                    setIsModal(true);
-                                }}
-                            >
-                                <BiEditAlt />
-                                Edit Markup
-                            </button>
-                        </div>
-                    )}
+
+                    <div className="flex justify-end items-center w-full">
+                        <button
+                            className="w-[150px] flex gap-2 items-center p-4"
+                            onClick={(e) => {
+                                setIsModal(true);
+                            }}
+                        >
+                            <BiEditAlt />
+                            Edit Markup
+                        </button>
+                    </div>
                 </div>
 
                 <table className="w-full">

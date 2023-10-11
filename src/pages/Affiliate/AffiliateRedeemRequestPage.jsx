@@ -13,6 +13,8 @@ import AddActivityPointModal from "../../features/Affiliate/components/AddActivi
 import { BsEyeFill, BsEyeSlash } from "react-icons/bs";
 import { FiCheck } from "react-icons/fi";
 import AffiliateRedeemRequestModal from "../../features/Affiliate/components/AfiiliateRedeemRequestModal";
+import { HiOutlineTicket } from "react-icons/hi";
+import AffiliateRedeemRequestRow from "../../features/Affiliate/components/AffiliateReedemRequestRow";
 
 export default function AffiliateRedeemRequestPage() {
     const [nationalities, setNationalities] = useState([]);
@@ -199,103 +201,21 @@ export default function AffiliateRedeemRequestPage() {
                                     <tbody className="text-sm">
                                         {requests?.map((request, index) => {
                                             return (
-                                                <tr
-                                                    key={index}
-                                                    className="border-b border-tableBorderColor"
-                                                >
-                                                    <td className="p-3 capitalize">
-                                                        {index + 1}
-                                                    </td>
-                                                    <td className="p-3">
-                                                        {request?.transactionNo}
-                                                    </td>
-
-                                                    <td className="p-3">
-                                                        {request?.user.name}
-                                                    </td>
-                                                    <td className="p-3 capitalize">
-                                                        {request?.redeemOption ||
-                                                            0}
-                                                    </td>
-                                                    <td className="p-3 capitalize">
-                                                        {request?.points || 0}
-                                                    </td>
-                                                    <td className="p-3 capitalize">
-                                                        {request?.currency || 0}
-                                                    </td>
-                                                    <td className="p-3 capitalize">
-                                                        {request?.feeDeduction ||
-                                                            0}
-                                                    </td>
-
-                                                    <td className="p-3 capitalize">
-                                                        {request?.amount.toFixed(
-                                                            2
-                                                        ) || 0}
-                                                    </td>
-                                                    <td className="p-3 capitalize">
-                                                        {request?.reason ||
-                                                            "N/A"}
-                                                    </td>
-                                                    {request?.status ===
-                                                    "pending" ? (
-                                                        <td className="p-3">
-                                                            <div className="flex gap-[10px]">
-                                                                <button
-                                                                    className="h-auto bg-transparent text-green-500 text-lg"
-                                                                    onClick={() =>
-                                                                        changeStatus(
-                                                                            {
-                                                                                redeemId:
-                                                                                    request?._id,
-                                                                                value: "approved",
-                                                                            }
-                                                                        )
-                                                                    }
-                                                                >
-                                                                    <FiCheck />
-                                                                </button>
-
-                                                                <button
-                                                                    className="h-auto bg-transparent text-red-500 text-lg"
-                                                                    onClick={() => {
-                                                                        changeStatus(
-                                                                            {
-                                                                                redeemId:
-                                                                                    request?._id,
-                                                                                value: "cancelled",
-                                                                            }
-                                                                        );
-                                                                    }}
-                                                                >
-                                                                    <MdClose />
-                                                                </button>
-
-                                                                {isModal && (
-                                                                    <AffiliateRedeemRequestModal
-                                                                        setIsModal={
-                                                                            setIsModal
-                                                                        }
-                                                                        redeemId={
-                                                                            request?._id
-                                                                        }
-                                                                        value={
-                                                                            value
-                                                                        }
-                                                                        setRequests={
-                                                                            setRequests
-                                                                        }
-                                                                    />
-                                                                )}
-                                                            </div>
-                                                        </td>
-                                                    ) : (
-                                                        <td className="p-3 capitalize">
-                                                            {request?.status ||
-                                                                "N/A"}
-                                                        </td>
-                                                    )}
-                                                </tr>
+                                                <>
+                                                    <AffiliateRedeemRequestRow
+                                                        index={index}
+                                                        request={request}
+                                                        setIsModal={request}
+                                                        value={value}
+                                                        setRequests={
+                                                            setRequests
+                                                        }
+                                                        changeStatus={
+                                                            changeStatus
+                                                        }
+                                                        isModal={isModal}
+                                                    />
+                                                </>
                                             );
                                         })}
                                     </tbody>

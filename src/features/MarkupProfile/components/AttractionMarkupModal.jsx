@@ -28,7 +28,7 @@ export default function AttracitonMarkupModal({
     useHandleClickOutside(wrapperRef, () => {
         setIsModal(false);
     });
-    const { id, marketId } = useParams();
+    const { id, marketId, profileId } = useParams();
     const { jwtToken } = useSelector((state) => state.admin);
 
     const handleChange = (e) => {
@@ -52,6 +52,27 @@ export default function AttracitonMarkupModal({
             } else {
                 const response = await axios.post(
                     `/market/b2b/update-transfer-profile/${id}`,
+                    formData,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+            }
+        } else {
+            if (profileId) {
+                console.log(profileId, "profileId");
+
+                const response = await axios.post(
+                    `/profile/update-attraction-profile/${profileId}`,
+                    formData,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+            } else {
+                console.log(id, "iddd");
+                const response = await axios.post(
+                    `/profile/b2b/update-attraction-profile/${id}`,
                     formData,
                     {
                         headers: { authorization: `Bearer ${jwtToken}` },

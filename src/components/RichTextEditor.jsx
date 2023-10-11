@@ -6,6 +6,7 @@ const RichTextEditor = ({ initialValue, getValue }) => {
     const editor = useRef(null);
 
     return (
+       
         <JoditEditor
             ref={editor}
             value={initialValue}
