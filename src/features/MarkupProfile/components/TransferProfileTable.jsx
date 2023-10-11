@@ -6,6 +6,8 @@ import { Pagination } from "../../../components";
 import FlightProfileRow from "./FlightProfileRow";
 import InsuranceProfileRow from "./InsuranceProfileRow";
 import TransferProfileRow from "./TransferProfileRow";
+import TransferMarkupModal from "./TransferMarkupModal";
+import { BiEditAlt } from "react-icons/bi";
 // import BookingsOrdersSingleRow from "./BookingsOrdersSingleRow";
 
 export default function TransferProfileTable({ type }) {
@@ -27,6 +29,7 @@ export default function TransferProfileTable({ type }) {
     const [groups, setGroups] = useState([]);
     const [airports, setAirports] = useState([]);
     const [areas, setAreas] = useState([]);
+    const [isModal, setIsModal] = useState(false);
 
     const handleChange = (e) => {
         console.log(e.target.value, "value");
@@ -185,6 +188,17 @@ export default function TransferProfileTable({ type }) {
     return (
         <div>
             <div className="overflow-x-auto">
+                <div className="flex justify-end items-center w-full">
+                    <button
+                        className="w-[150px] flex gap-2 items-center p-4"
+                        onClick={(e) => {
+                            setIsModal(true);
+                        }}
+                    >
+                        <BiEditAlt />
+                        Edit Markup
+                    </button>
+                </div>
                 <div className="flex items-center gap-[15px] justify-start pb-10">
                     <form
                         action=""
@@ -386,6 +400,13 @@ export default function TransferProfileTable({ type }) {
                     </tbody>
                 </table>
             </div>
+            {isModal && (
+                <TransferMarkupModal
+                    setIsModal={setIsModal}
+                    type={type}
+                    setTransfers={setTransfers}
+                />
+            )}
 
             <div className="p-4">
                 <Pagination
