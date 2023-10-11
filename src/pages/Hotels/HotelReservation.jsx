@@ -118,7 +118,7 @@ function HotelReservation() {
             <div className="p-6">
                 <div className="bg-white rounded shadow-sm">
                     <div className="flex items-center justify-between border-b border-dashed p-4">
-                        <h1 className="font-medium">Hotel</h1>
+                        <h1 className="font-medium">All Hotel Orders</h1>
                         <button
                             className="px-3 bg-[#299cdb] flex items-center justify-center gap-[10px]"
                             // onClick={handleDownload}
