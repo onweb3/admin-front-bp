@@ -6,12 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "../../../axios";
 import { BtnLoader } from "../../../components";
 
-export default function HotelContractAddFormButtons({
-    next,
-    prev,
-    goForward,
-    goBack,
-}) {
+export default function HotelContractAddFormButtons({ next, prev, goForward, goBack }) {
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
@@ -24,6 +19,7 @@ export default function HotelContractAddFormButtons({
         extraSupplements,
         childPolicies,
         childMealPolicies,
+        excludedDates,
     } = useSelector((state) => state.hotelContractForm);
     const navigate = useNavigate();
     const { contractGroupId } = useParams();
@@ -42,6 +38,7 @@ export default function HotelContractAddFormButtons({
                 extraSupplements,
                 childPolicies,
                 // childMealPolicies,
+                excludedDates,
             };
 
             await axios.post("/hotels/contracts/add", formData, {
@@ -51,18 +48,14 @@ export default function HotelContractAddFormButtons({
             setIsLoading(false);
             navigate(-1);
         } catch (err) {
-            setError(
-                err?.response?.data?.error || "Something went wrong, Try again"
-            );
+            setError(err?.response?.data?.error || "Something went wrong, Try again");
             setIsLoading(false);
         }
     };
 
     return (
         <div className="p-4">
-            {error && (
-                <span className="text-sm text-red-500 block mt-4">{error}</span>
-            )}
+            {error && <span className="text-sm text-red-500 block mt-4">{error}</span>}
 
             <div className="flex items-center justify-end gap-[12px]">
                 {prev ? (
@@ -83,11 +76,7 @@ export default function HotelContractAddFormButtons({
                     </button>
                 )}
                 {next ? (
-                    <button
-                        className="w-[100px] bg-primaryColor"
-                        type="button"
-                        onClick={goForward}
-                    >
+                    <button className="w-[100px] bg-primaryColor" type="button" onClick={goForward}>
                         next
                     </button>
                 ) : (

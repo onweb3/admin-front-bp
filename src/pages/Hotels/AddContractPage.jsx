@@ -12,6 +12,7 @@ import {
     RateMasterForm,
     TermsAndConditionForm,
     HotelContractAddFormButtons,
+    ContractExcludedDatesForm,
 } from "../../features/ContractUpsert";
 import { fetchInitialData, resetContractForm } from "../../redux/slices/hotelContractSlice";
 import { PageLoader } from "../../components";
@@ -24,6 +25,7 @@ const sections = {
     "child-policy": "Child Policy",
     // "child-meal-policy": "Child Meal Policy",
     "cancel-policy": "Cancellation Policy",
+    "excluded-dates": "Excluded Dates",
     "-inclusion": "Inclusion",
     "-tac": "Terms And Conditions",
     // "contract-file": "Contract File",
@@ -160,6 +162,13 @@ export default function AddContractPage() {
                             </div>
                             <div className={selectedSection === "-tac" ? "block" : "hidden"}>
                                 <TermsAndConditionForm />
+                            </div>
+                            <div
+                                className={
+                                    selectedSection === "excluded-dates" ? "block" : "hidden"
+                                }
+                            >
+                                <ContractExcludedDatesForm />
                             </div>
 
                             <HotelContractAddFormButtons

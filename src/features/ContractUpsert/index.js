@@ -10,6 +10,7 @@ import ContractFileForm from "./components/ContractFileForm";
 import HotelContractAddFormButtons from "./components/HotelContractAddButton";
 import HotelContractEditButtons from "./components/HotelContractEditButton";
 import ChildMealPolicyForm from "./components/ChildMealPolicyForm";
+import ContractExcludedDatesForm from "./components/ContractExcludedDatesForm";
 
 export {
     BasicInfoForm,
@@ -24,4 +25,5 @@ export {
     HotelContractAddFormButtons,
     HotelContractEditButtons,
     ChildMealPolicyForm,
+    ContractExcludedDatesForm,
 };

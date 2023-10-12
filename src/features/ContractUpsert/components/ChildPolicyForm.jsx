@@ -25,6 +25,7 @@ export default function ChildPolicyForm() {
             })
         );
     };
+
     return (
         <div className="p-4">
             <div className="overflow-x-auto">

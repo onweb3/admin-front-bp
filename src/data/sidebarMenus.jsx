@@ -703,6 +703,19 @@ const sidebarMenus = {
         //     link: "/otp-settings",
         // },
         {
+            name: "Invoice Settings",
+            icon: <FiHome />,
+            link: "#",
+            role: "super-admin",
+            dropdown: [
+                {
+                    name: "Invoice Settings",
+                    link: "/invoice/settings",
+                    permission: ["invoice-settings", "view"],
+                },
+            ],
+        },
+        {
             name: "Home Settings",
             icon: <FiHome />,
             link: "#",

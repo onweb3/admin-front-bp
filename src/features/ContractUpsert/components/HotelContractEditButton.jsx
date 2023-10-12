@@ -7,12 +7,7 @@ import axios from "../../../axios";
 import { BtnLoader } from "../../../components";
 import { hasPermission } from "../../../utils";
 
-export default function HotelContractEditButtons({
-    next,
-    prev,
-    goForward,
-    goBack,
-}) {
+export default function HotelContractEditButtons({ next, prev, goForward, goBack }) {
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
@@ -25,6 +20,7 @@ export default function HotelContractEditButtons({
         extraSupplements,
         childPolicies,
         childMealPolicies,
+        excludedDates,
     } = useSelector((state) => state.hotelContractForm);
     const navigate = useNavigate();
     const { contractGroupId, contractId } = useParams();
@@ -43,31 +39,24 @@ export default function HotelContractEditButtons({
                 extraSupplements,
                 childPolicies,
                 // childMealPolicies,
+                excludedDates,
             };
 
-            await axios.patch(
-                `/hotels/contracts/update/${contractId}`,
-                formData,
-                {
-                    headers: { authorization: `Bearer ${jwtToken}` },
-                }
-            );
+            await axios.patch(`/hotels/contracts/update/${contractId}`, formData, {
+                headers: { authorization: `Bearer ${jwtToken}` },
+            });
 
             setIsLoading(false);
             navigate(-1);
         } catch (err) {
-            setError(
-                err?.response?.data?.error || "Something went wrong, Try again"
-            );
+            setError(err?.response?.data?.error || "Something went wrong, Try again");
             setIsLoading(false);
         }
     };
 
     return (
         <div className="p-4">
-            {error && (
-                <span className="text-sm text-red-500 block mt-4">{error}</span>
-            )}
+            {error && <span className="text-sm text-red-500 block mt-4">{error}</span>}
 
             <div className="flex items-center justify-end gap-[12px]">
                 {prev ? (
@@ -101,11 +90,7 @@ export default function HotelContractEditButtons({
                     </button>
                 )}
                 {next && (
-                    <button
-                        className="w-[100px] bg-primaryColor"
-                        type="button"
-                        onClick={goForward}
-                    >
+                    <button className="w-[100px] bg-primaryColor" type="button" onClick={goForward}>
                         next
                     </button>
                 )}

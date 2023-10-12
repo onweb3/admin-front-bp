@@ -166,6 +166,7 @@ const initialState = {
             rate: "",
         },
     ],
+    excludedDates: [],
 };
 
 export const hotelContractFormSlice = createSlice({
@@ -422,6 +423,21 @@ export const hotelContractFormSlice = createSlice({
             }
             state.roomRates = tempRoomRates;
         },
+
+        addContractExcludedDatesRows: (state, action) => {
+            state.excludedDates.push({
+                fromDate: "",
+                toDate: "",
+            });
+        },
+        deleteContractExcludedDatesRow: (state, action) => {
+            const { index } = action.payload;
+            state.excludedDates.splice(index, 1);
+        },
+        handleContractExcludedDatesDataChange: (state, action) => {
+            state.excludedDates[action.payload?.index][action.payload?.name] =
+                action.payload?.value;
+        },
     },
     extraReducers: {
         [fetchInitialData.fulfilled]: (state, action) => {
@@ -488,6 +504,7 @@ export const hotelContractFormSlice = createSlice({
                 // markets,
                 termsAndConditions,
                 applyPromotion,
+                excludedDates,
             } = action.payload[1]?.data;
 
             state.data = {
@@ -667,6 +684,13 @@ export const hotelContractFormSlice = createSlice({
                     };
                 }) || [];
 
+            state.excludedDates = excludedDates?.map((dateRange) => {
+                return {
+                    fromDate: dateRange.fromDate ? convertIsoDateToYMD(dateRange.fromDate) : "",
+                    toDate: dateRange.toDate ? convertIsoDateToYMD(dateRange.toDate) : "",
+                };
+            });
+
             // state.childMealPolicies = childMealPolicies.map((policy) => {
             //     return {
             //         fromDate: convertIsoDateToYMD(policy.fromDate),
@@ -717,6 +741,9 @@ export const {
     addChildPoliciesPolicyRow,
     handleChildPolicyPoliciesChange,
     removeChildPoliciesPolicyRow,
+    addContractExcludedDatesRows,
+    deleteContractExcludedDatesRow,
+    handleContractExcludedDatesDataChange,
 } = hotelContractFormSlice.actions;
 
 export default hotelContractFormSlice.reducer;
