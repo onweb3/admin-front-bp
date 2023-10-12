@@ -32,6 +32,26 @@ export default function HotelOrderDetailsPage() {
         }
     };
 
+    const handleVocherDownload = async () => {
+        try {
+            const response = await axios.get(`/hotels/orders/b2b/voucher/${id}`, {
+                headers: { authorization: `Bearer ${jwtToken}` },
+                responseType: "arraybuffer",
+            });
+
+            const blob = new Blob([response.data], {
+                type: "application/pdf",
+            });
+            const link = document.createElement("a");
+            link.href = window.URL.createObjectURL(blob);
+            link.download = `voucher.pdf`;
+            document.body.appendChild(link);
+            link.click();
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     useEffect(() => {
         fetchHotelOrder();
     }, []);
@@ -122,6 +142,10 @@ export default function HotelOrderDetailsPage() {
                                             </Link>{" "}
                                             - ({hotelOrder?.reseller?.agentCode})
                                         </span>
+                                        <span className="block mt-1 text-sm">
+                                            {hotelOrder?.reseller?.name} (
+                                            {hotelOrder?.reseller?.email})
+                                        </span>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-[25px]">
@@ -135,7 +159,8 @@ export default function HotelOrderDetailsPage() {
                                     </div>
                                     <div>
                                         {hotelOrder?.status === "booked" ||
-                                        hotelOrder?.status === "cancel-pending" ? (
+                                        hotelOrder?.status === "cancel-pending" ||
+                                        hotelOrder?.status === "confirmed" ? (
                                             <div onClick={(e) => e.stopPropagation()}>
                                                 <select
                                                     className="h-[35px] py-0 w-[90px] capitalize"
@@ -187,12 +212,17 @@ export default function HotelOrderDetailsPage() {
                                             </span>
                                         )}
                                     </div>
-                                    <button className="px-3 bg-[#299cdb] flex items-center gap-2">
-                                        <span className="text-lg">
-                                            <AiOutlineCloudDownload />
-                                        </span>
-                                        Download
-                                    </button>
+                                    {hotelOrder?.status === "confirmed" && (
+                                        <button
+                                            className="px-3 bg-[#299cdb] flex items-center gap-2"
+                                            onClick={handleVocherDownload}
+                                        >
+                                            <span className="text-lg">
+                                                <AiOutlineCloudDownload />
+                                            </span>
+                                            Download
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                             <div className="mt-6 grid grid-cols-2 gap-6 w-full">
@@ -359,7 +389,7 @@ export default function HotelOrderDetailsPage() {
                                                                 <td className="p-2">
                                                                     Cancelled By
                                                                 </td>
-                                                                <td className="p-2">
+                                                                <td className="p-2 capitalize">
                                                                     {hotelOrder?.cancelledBy}
                                                                 </td>
                                                             </tr>
@@ -368,7 +398,8 @@ export default function HotelOrderDetailsPage() {
                                                                     Cancellation Charge
                                                                 </td>
                                                                 <td className="p-2">
-                                                                    {hotelOrder?.cancellationCharge}
+                                                                    {hotelOrder?.cancellationCharge}{" "}
+                                                                    AED
                                                                 </td>
                                                             </tr>
                                                             <tr className="odd:bg-[#f3f6f9]">
@@ -376,7 +407,8 @@ export default function HotelOrderDetailsPage() {
                                                                     Cancellation Remark
                                                                 </td>
                                                                 <td className="p-2">
-                                                                    {hotelOrder?.cancellationRemark}
+                                                                    {hotelOrder?.cancellationRemark ||
+                                                                        "N/A"}
                                                                 </td>
                                                             </tr>
                                                         </tbody>

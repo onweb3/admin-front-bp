@@ -38,13 +38,7 @@ export default function B2bListPage() {
         });
     };
 
-    const fetchResellers = async ({
-        skip,
-        limit,
-        status,
-        referenceNumber,
-        orderedBy,
-    }) => {
+    const fetchResellers = async ({ skip, limit, status, referenceNumber, orderedBy }) => {
         try {
             setIsLoading(true);
 
@@ -75,14 +69,8 @@ export default function B2bListPage() {
     // }
 
     useEffect(() => {
-        let skip =
-            Number(searchParams.get("skip")) > 0
-                ? Number(searchParams.get("skip")) - 1
-                : 0;
-        let limit =
-            Number(searchParams.get("limit")) > 0
-                ? Number(searchParams.get("limit"))
-                : 10;
+        let skip = Number(searchParams.get("skip")) > 0 ? Number(searchParams.get("skip")) - 1 : 0;
+        let limit = Number(searchParams.get("limit")) > 0 ? Number(searchParams.get("limit")) : 10;
         let referenceNumber = searchParams.get("referenceNumber") || "";
         let status = searchParams.get("status") || "";
         let query = searchParams.get("orderedBy") || "b2b";
@@ -105,9 +93,7 @@ export default function B2bListPage() {
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">
-                    Visa Application
-                </h1>
+                <h1 className="font-[600] text-[15px] uppercase">Visa Application</h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
@@ -149,9 +135,7 @@ export default function B2bListPage() {
                         <button
                             className={
                                 "px-2 py-4 h-auto bg-transparent text-primaryColor font-medium rounded-none " +
-                                (orderedBy === "b2b"
-                                    ? "border-b border-b-orange-500"
-                                    : "")
+                                (orderedBy === "b2b" ? "border-b border-b-orange-500" : "")
                             }
                             onClick={() =>
                                 setSearchParams((prev) => {
@@ -164,9 +148,7 @@ export default function B2bListPage() {
                         <button
                             className={
                                 "px-2 py-4 h-auto bg-transparent text-primaryColor font-medium rounded-none " +
-                                (orderedBy === "subAgent"
-                                    ? "border-b border-b-orange-500"
-                                    : "")
+                                (orderedBy === "subAgent" ? "border-b border-b-orange-500" : "")
                             }
                             onClick={() =>
                                 setSearchParams((prev) => {
@@ -179,9 +161,7 @@ export default function B2bListPage() {
                         <button
                             className={
                                 "px-2 py-4 h-auto bg-transparent text-primaryColor font-medium rounded-none " +
-                                (orderedBy === "b2c"
-                                    ? "border-b border-b-orange-500"
-                                    : "")
+                                (orderedBy === "b2c" ? "border-b border-b-orange-500" : "")
                             }
                             onClick={() =>
                                 setSearchParams((prev) => {
@@ -200,7 +180,7 @@ export default function B2bListPage() {
                         <PageLoader />
                     ) : visaApplications?.length < 1 ? (
                         <div className="p-6 flex flex-col items-center">
-                            <span className="text-sm text-sm text-grayColor block mt-[6px]">
+                            <span className="text-sm text-grayColor block mt-[6px]">
                                 Oops.. No Application found
                             </span>
                         </div>
@@ -210,47 +190,29 @@ export default function B2bListPage() {
                                 <table className="w-full">
                                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                         <tr>
-                                            <th className="font-[500] p-3">
-                                                Reference Number
-                                            </th>
-                                            <th className="font-[500] p-3">
-                                                Visa Title
-                                            </th>
+                                            <th className="font-[500] p-3">Reference Number</th>
+                                            <th className="font-[500] p-3">Visa Title</th>
                                             {orderedBy == "b2c" ? (
-                                                <th className="font-[500] p-3">
-                                                    User
-                                                </th>
+                                                <th className="font-[500] p-3">User</th>
                                             ) : (
-                                                <th className="font-[500] p-3">
-                                                    Reseller
-                                                </th>
+                                                <th className="font-[500] p-3">Reseller</th>
                                             )}
 
-                                            <th className="font-[500] p-3">
-                                                Traveller
-                                            </th>
-                                            <th className="font-[500] p-3">
-                                                Applied Date
-                                            </th>
-                                            <th className="font-[500] p-3">
-                                                Status
-                                            </th>
+                                            <th className="font-[500] p-3">Traveller</th>
+                                            <th className="font-[500] p-3">Applied Date</th>
+                                            <th className="font-[500] p-3">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody className="text-sm">
-                                        {visaApplications?.map(
-                                            (visaApplication, index) => {
-                                                return (
-                                                    <VisaApplicationTable
-                                                        orderedBy={orderedBy}
-                                                        visaApplication={
-                                                            visaApplication
-                                                        }
-                                                        key={index}
-                                                    />
-                                                );
-                                            }
-                                        )}
+                                        {visaApplications?.map((visaApplication, index) => {
+                                            return (
+                                                <VisaApplicationTable
+                                                    orderedBy={orderedBy}
+                                                    visaApplication={visaApplication}
+                                                    key={index}
+                                                />
+                                            );
+                                        })}
                                     </tbody>
                                 </table>
                             </div>

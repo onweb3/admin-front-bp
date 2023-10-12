@@ -151,7 +151,7 @@ export default function MarketProfileListPage() {
                             <PageLoader />
                         ) : profiles?.length < 1 ? (
                             <div className="p-6 flex flex-col items-center">
-                                <span className="text-sm text-sm text-grayColor block mt-[6px]">
+                                <span className="text-sm text-grayColor block mt-[6px]">
                                     Oops.. No Market Profile found
                                 </span>
                             </div>

@@ -26,9 +26,9 @@ function HotelReservationSingleRow({ order }) {
             <td className="p-3 min-w-[250px]">{order?.hotel?.hotelName}</td>
             <td className="p-3">
                 <span className="block whitespace-nowrap">
-                    {order?.reseller?.companyName}
+                    {order?.reseller?.companyName} ({order?.reseller?.agentCode})
                 </span>
-                <span className="block">{order?.reseller?.agentCode}</span>
+                <span className="block">{order?.reseller?.name}</span>
             </td>
             <td className="p-3">
                 {formatDate(order?.fromDate)} - {formatDate(order?.toDate)}

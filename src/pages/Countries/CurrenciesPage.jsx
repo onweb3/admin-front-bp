@@ -77,7 +77,7 @@ export default function CurrenciesPage() {
                         </div>
                         {!currencies || currencies?.length < 1 ? (
                             <div className="p-6 flex flex-col items-center">
-                                <span className="text-sm text-sm text-grayColor block mt-[6px]">
+                                <span className="text-sm text-grayColor block mt-[6px]">
                                     Oops.. No Currencies Found
                                 </span>
                             </div>
