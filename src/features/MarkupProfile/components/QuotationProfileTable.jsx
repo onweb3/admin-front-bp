@@ -53,17 +53,39 @@ export default function QuotationProfileTable({}) {
                         headers: { authorization: `Bearer ${jwtToken}` },
                     }
                 );
+                const {
+                    hotelMarkupType,
+                    hotelMarkup,
+                    landAttractionMarkupType,
+                    landAttractionMarkup,
+                    landTransferMarkupType,
+                    landTransferMarkup,
 
-                setQuotation(response.data);
-            } else {
-                const response = await axios.get(
-                    `/profile/b2b/get-all-quotation/${id}`,
-                    {
-                        headers: { authorization: `Bearer ${jwtToken}` },
-                    }
+                    visaMarkupType,
+                    visaMarkup,
+                } = response.data;
+                console.log(
+                    hotelMarkup,
+                    landAttractionMarkupType,
+                    landAttractionMarkup,
+                    landTransferMarkupType,
+                    landTransferMarkup,
+
+                    visaMarkupType,
+                    visaMarkup,
+                    "11111"
                 );
 
-                setQuotation(response.data);
+                setQuotation({
+                    hotelMarkup,
+                    landAttractionMarkupType,
+                    landAttractionMarkup,
+                    landTransferMarkupType,
+                    landTransferMarkup,
+
+                    visaMarkupType,
+                    visaMarkup,
+                });
             }
 
             setIsPageLoading(false);
@@ -201,11 +223,11 @@ export default function QuotationProfileTable({}) {
                         </tr>
                         <tr className="border-b border-tableBorderColor">
                             <td className="p-3">1</td>
-                            <td className="p-3">Landmark Transfer</td>
+                            <td className="p-3">Land Transfer</td>
                             {isLandTransferModalOpen ? (
                                 <td className="p-3">
                                     <select
-                                        name="landTranferMarkupType"
+                                        name="landTransferMarkupType"
                                         value={
                                             quotation?.landTransferMarkupType ||
                                             ""

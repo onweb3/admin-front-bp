@@ -9,9 +9,8 @@ import axios from "../../../axios";
 import { BtnLoader } from "../../../components";
 import { useHandleClickOutside } from "../../../hooks";
 
-export default function AttracitonMarkupModal({
-    setAttractionList,
-    setInitalAttractionList,
+export default function TransferMarkupModal({
+    setTransfers,
     setIsModal,
     type,
 }) {
@@ -43,36 +42,7 @@ export default function AttracitonMarkupModal({
         if (type === "market") {
             if (marketId) {
                 const response = await axios.post(
-                    `/market/update-attraction-profile/${marketId}`,
-                    formData,
-                    {
-                        headers: { authorization: `Bearer ${jwtToken}` },
-                    }
-                );
-            } else {
-                const response = await axios.post(
-                    `/market/b2b/update-transfer-profile/${id}`,
-                    formData,
-                    {
-                        headers: { authorization: `Bearer ${jwtToken}` },
-                    }
-                );
-            }
-        } else {
-            if (profileId) {
-                console.log(profileId, "profileId");
-
-                const response = await axios.post(
-                    `/profile/update-attraction-profile/${profileId}`,
-                    formData,
-                    {
-                        headers: { authorization: `Bearer ${jwtToken}` },
-                    }
-                );
-            } else {
-                console.log(id, "iddd");
-                const response = await axios.post(
-                    `/profile/b2b/update-attraction-profile/${id}`,
+                    `/market/update-all-transfer-profile/${marketId}`,
                     formData,
                     {
                         headers: { authorization: `Bearer ${jwtToken}` },
@@ -80,37 +50,17 @@ export default function AttracitonMarkupModal({
                 );
             }
         }
-        setAttractionList((preAttr) => {
-            return preAttr.map((attraction) => {
+        setTransfers((pre) => {
+            return pre.map((transfer) => {
                 return {
-                    ...attraction,
-                    activities: attraction.activities.map((activity) => {
-                        return {
-                            ...activity,
-                            markupType: formData?.markupType,
-                            markup: formData?.markup,
-                            isEdit: true,
-                        };
-                    }),
+                    ...transfer,
+                    markupType: formData?.markupType,
+                    markup: formData?.markup,
+                    isEdit: true,
                 };
             });
         });
 
-        setInitalAttractionList((preAttr) => {
-            return preAttr.map((attraction) => {
-                return {
-                    ...attraction,
-                    activities: attraction.activities.map((activity) => {
-                        return {
-                            ...activity,
-                            markupType: formData?.markupType,
-                            markup: formData?.markup,
-                            isEdit: true,
-                        };
-                    }),
-                };
-            });
-        });
         setIsLoading(false);
 
         setIsModal(false);

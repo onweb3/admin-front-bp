@@ -46,7 +46,7 @@ export default function AddProfileMarkupModal({ setIsModalOpen, type }) {
                     }
                 );
 
-                navigate(`/markup/profile/${response.data.profileId}/edit`);
+                navigate(`/market/startegy/${response.data.profileId}/edit`);
             } else {
                 const response = await axios.post(
                     "/profile/add-profile",
