@@ -200,6 +200,7 @@ import B2bWallletDepositListPage from "../pages/wallet/B2bWallletDepositListPage
 import CacheSettingsPage from "../pages/Hotels/CacheSettingsPage";
 import VoucherSettingsPage from "../pages/Voucher/VoucherSettingsPage";
 import AddTransactionPage from "../pages/transaction/AddTransactionPage";
+import InvoiceSettingsPage from "../pages/Invoice/InvoiceSettingsPage";
 
 const ThemeRoutes = [
     {
@@ -1028,7 +1029,10 @@ const ThemeRoutes = [
                 element: <EditSeasonsPage />,
             },
 
-            ,
+            {
+                path: "/invoice/settings",
+                element: <InvoiceSettingsPage />,
+            },
         ],
     },
     {

@@ -6,11 +6,7 @@ import { useHandleClickOutside } from "../../../hooks";
 import { BtnLoader } from "../../../components";
 import axios from "../../../axios";
 
-function HotelReservationConfirmModal({
-    setIsConfirmModal,
-    orderId,
-    setOrderData,
-}) {
+function HotelReservationConfirmModal({ setIsConfirmModal, orderId, setOrderData }) {
     const [data, setData] = useState({
         hotelBookingId: "",
     });
@@ -33,13 +29,9 @@ function HotelReservationConfirmModal({
             setIsLoading(true);
             setError("");
 
-            const response = await axios.post(
-                `/hotels/orders/b2b/confirm/${orderId}`,
-                data,
-                {
-                    headers: { authorization: `Bearer ${jwtToken}` },
-                }
-            );
+            const response = await axios.post(`/hotels/orders/b2b/confirm/${orderId}`, data, {
+                headers: { authorization: `Bearer ${jwtToken}` },
+            });
             setOrderData((prev) => {
                 return {
                     ...prev,
@@ -51,9 +43,7 @@ function HotelReservationConfirmModal({
             setIsLoading(false);
             setIsConfirmModal(false);
         } catch (err) {
-            setError(
-                err?.response?.data?.error || "Something went wrong, try again"
-            );
+            setError(err?.response?.data?.error || "Something went wrong, try again");
             setIsLoading(false);
         }
     };
@@ -79,7 +69,7 @@ function HotelReservationConfirmModal({
                             <label htmlFor="">Booking Id</label>
                             <input
                                 type="text"
-                                placeholder="enter booking id"
+                                placeholder="Enter booking id"
                                 name="hotelBookingId"
                                 value={data.hotelBookingId || ""}
                                 onChange={handleChange}
@@ -87,11 +77,7 @@ function HotelReservationConfirmModal({
                             />
                         </div>
 
-                        {error && (
-                            <span className="text-sm block text-red-500 mt-2">
-                                {error}
-                            </span>
-                        )}
+                        {error && <span className="text-sm block text-red-500 mt-2">{error}</span>}
                         <div className="mt-4 flex items-center justify-end gap-[12px]">
                             <button
                                 className="bg-slate-300 text-textColor px-[15px]"

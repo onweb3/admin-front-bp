@@ -439,8 +439,7 @@ const adminRoles = [
         permissions: [],
     },
 
-    //Users
-
+    // Users
     {
         name: "users",
         displayName: "Users",
@@ -448,12 +447,19 @@ const adminRoles = [
         permissions: [],
     },
 
-    //seasons
-
+    // seasons
     {
         name: "Seasons",
         displayName: "Seasons",
         category: "settings",
+        permissions: [],
+    },
+
+    // Invoice
+    {
+        name: "invoice-settings",
+        displayName: "Invoice Seasons",
+        category: "invoice",
         permissions: [],
     },
 ];

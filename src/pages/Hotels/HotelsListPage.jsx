@@ -19,11 +19,13 @@ function HotelsListPage() {
         loadedFrom: "",
         status: "",
         starCategory: "",
+        country: "",
     });
     const [isLoading, setIsLoading] = useState(true);
 
     const [searchParams, setSearchParams] = useSearchParams();
     const { jwtToken } = useSelector((state) => state.admin);
+    const { countries } = useSelector((state) => state.general);
 
     const prevSearchParams = (e) => {
         let params = {};
@@ -39,12 +41,45 @@ function HotelsListPage() {
         });
     };
 
-    const fetchHotels = async ({ skip, limit, searchInput, status, loadedFrom, starCategory }) => {
+    const handleHotelsListExcelDownload = async () => {
+        try {
+            const response = await axios.get(
+                `hotels/all/excel?skip=${filters.skip}&limit=${filters.limit}&search=${filters.searchInput}&loadedFrom=${filters.loadedFrom}&status=${filters.status}&starCategory=${filters.starCategory}&country=${filters.country}`,
+                {
+                    headers: { Authorization: `Bearer ${jwtToken}` },
+                    responseType: "blob",
+                }
+            );
+
+            const href = URL.createObjectURL(response.data);
+
+            const link = document.createElement("a");
+            link.href = href;
+            link.setAttribute("download", "hotels-list.xlsx");
+            document.body.appendChild(link);
+            link.click();
+
+            document.body.removeChild(link);
+            URL.revokeObjectURL(href);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const fetchHotels = async ({
+        skip,
+        limit,
+        searchInput,
+        status,
+        loadedFrom,
+        starCategory,
+        country,
+    }) => {
         try {
             setIsLoading(true);
 
             const response = await axios.get(
-                `/hotels/all?skip=${skip}&limit=${limit}&search=${searchInput}&loadedFrom=${loadedFrom}&status=${status}&starCategory=${starCategory}`,
+                `/hotels/all?skip=${skip}&limit=${limit}&search=${searchInput}&loadedFrom=${loadedFrom}&status=${status}&starCategory=${starCategory}&country=${country}`,
                 {
                     headers: { Authorization: `Bearer ${jwtToken}` },
                 }
@@ -87,6 +122,7 @@ function HotelsListPage() {
             loadedFrom: "",
             status: "",
             starCategory: "",
+            country: "",
         });
 
         fetchHotels({
@@ -97,6 +133,7 @@ function HotelsListPage() {
             loadedFrom: "",
             status: "",
             starCategory: "",
+            country: "",
         });
         let params = prevSearchParams();
         setSearchParams({
@@ -107,6 +144,7 @@ function HotelsListPage() {
             limit: 10,
             skip: 0,
             starCategory: "",
+            country: "",
         });
     };
 
@@ -117,12 +155,13 @@ function HotelsListPage() {
         let status = searchParams.get("status") || "";
         let loadedFrom = searchParams.get("loadedFrom") || "";
         let starCategory = searchParams.get("starCategory") || "";
+        let country = searchParams.get("country") || "";
 
         setFilters((prev) => {
-            return { ...prev, skip, limit, searchInput, status, loadedFrom, starCategory };
+            return { ...prev, skip, limit, searchInput, status, loadedFrom, starCategory, country };
         });
 
-        fetchHotels({ skip, limit, searchInput, status, loadedFrom, starCategory });
+        fetchHotels({ skip, limit, searchInput, status, loadedFrom, starCategory, country });
     }, []);
 
     return (
@@ -148,6 +187,9 @@ function HotelsListPage() {
                                     + Add Hotel
                                 </button>
                             </Link>
+                            <button className="px-3" onClick={handleHotelsListExcelDownload}>
+                                Download
+                            </button>
                         </div>
                     </div>
 
@@ -170,6 +212,7 @@ function HotelsListPage() {
                                 limit: filters.limit,
                                 skip: 0,
                                 starCategory: filters.starCategory,
+                                country: filters.country,
                             });
                         }}
                         className="grid grid-cols-7 items-end gap-4 border-b border-dashed p-4"
@@ -216,6 +259,29 @@ function HotelsListPage() {
                                 <option value="hotel-bed">Hotel Bed</option>
                             </select>
                         </div>
+                        <div>
+                            <label htmlFor="">Country</label>
+                            <select
+                                id=""
+                                name="country"
+                                value={filters.country}
+                                onChange={handleChange}
+                                className="capitalize"
+                            >
+                                <option value="">All</option>
+                                {countries?.map((country, cIndex) => {
+                                    return (
+                                        <option
+                                            value={country?._id}
+                                            key={cIndex}
+                                            className="capitalize"
+                                        >
+                                            {country?.countryName}
+                                        </option>
+                                    );
+                                })}
+                            </select>
+                        </div>
                         <div className="">
                             <label htmlFor="">Status</label>
                             <select
@@ -240,12 +306,13 @@ function HotelsListPage() {
                                 onChange={handleChange}
                             >
                                 <option value="10">10</option>
-                                <option value="25">25</option>
                                 <option value="50">50</option>
                                 <option value="100">100</option>
+                                <option value="500">500</option>
+                                <option value="1000">1000</option>
+                                <option value="1000000">All</option>
                             </select>
                         </div>
-                        <div></div>
                         <button className="flex items-center justify-center gap-[10px]">
                             <BiFilter /> Filter
                         </button>
