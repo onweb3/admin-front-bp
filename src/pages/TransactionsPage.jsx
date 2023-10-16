@@ -11,6 +11,7 @@ import {
     B2cTransactionsTable,
 } from "../features/Transactions";
 import AddTransactionPage from "./transaction/AddTransactionPage";
+import CompanyTransactionsTable from "../features/Transactions/components/CompanyTransactionsTable";
 
 export default function TransactionsPage() {
     const [transactions, setTransactions] = useState([]);
@@ -89,6 +90,13 @@ export default function TransactionsPage() {
                         headers: { Authorization: `Bearer ${jwtToken}` },
                     }
                 );
+            } else if (section === "company") {
+                response = await axios.get(
+                    `/transactions/company/all?${searchQuery}`,
+                    {
+                        headers: { Authorization: `Bearer ${jwtToken}` },
+                    }
+                );
             } else {
                 throw new Error("invalid arguments");
             }
@@ -121,9 +129,18 @@ export default function TransactionsPage() {
                         authorization: `Bearer ${jwtToken}`,
                     },
                 });
-            } else {
+            } else if (section === "b2b" || section === "reseller") {
                 response = await axios({
                     url: `/transactions/b2b/all/sheet?b2bRole=${section}&${searchQuery}`,
+                    method: "GET",
+                    responseType: "blob",
+                    headers: {
+                        authorization: `Bearer ${jwtToken}`,
+                    },
+                });
+            } else if (section === "company") {
+                response = await axios({
+                    url: `/transactions/company/all/sheet?${searchQuery}`,
                     method: "GET",
                     responseType: "blob",
                     headers: {
@@ -360,6 +377,21 @@ export default function TransactionsPage() {
                             >
                                 B2C
                             </button>
+                            <button
+                                className={
+                                    "px-2 py-4 h-auto bg-transparent text-primaryColor font-medium rounded-none " +
+                                    (section === "company"
+                                        ? "border-b border-b-orange-500"
+                                        : "")
+                                }
+                                onClick={() =>
+                                    setSearchParams((prev) => {
+                                        return { ...prev, section: "company" };
+                                    })
+                                }
+                            >
+                                Company
+                            </button>
                         </div>
 
                         {isLoading ? (
@@ -370,18 +402,26 @@ export default function TransactionsPage() {
                                     Oops.. No Transactions found
                                 </span>
                             </div>
-                        ) : section !== "b2c" ? (
+                        ) : section === "b2b" || section === "reseller" ? (
                             <B2bTransactionsTable
                                 transactions={transactions}
                                 filters={filters}
                                 setFilters={setFilters}
                             />
-                        ) : (
+                        ) : section === "b2c" ? (
                             <B2cTransactionsTable
                                 transactions={transactions}
                                 filters={filters}
                                 setFilters={setFilters}
                             />
+                        ) : section === "company" ? (
+                            <CompanyTransactionsTable
+                                transactions={transactions}
+                                filters={filters}
+                                setFilters={setFilters}
+                            />
+                        ) : (
+                            ""
                         )}
                     </div>
                 </div>

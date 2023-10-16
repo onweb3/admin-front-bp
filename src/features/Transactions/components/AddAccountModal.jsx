@@ -9,7 +9,7 @@ import axios from "../../../axios";
 import { BtnLoader } from "../../../components";
 import { useHandleClickOutside } from "../../../hooks";
 
-export default function AddAccountModal({ data, setData, setIsModal }) {
+export default function AddAccountModal({ data, setData, setIsAccountModal }) {
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -23,7 +23,7 @@ export default function AddAccountModal({ data, setData, setIsModal }) {
 
     const wrapperRef = useRef();
     useHandleClickOutside(wrapperRef, () => {
-        setIsModal(false);
+        setIsAccountModal(false);
     });
     const { id, marketId, profileId } = useParams();
     const { jwtToken } = useSelector((state) => state.admin);
@@ -60,7 +60,7 @@ export default function AddAccountModal({ data, setData, setIsModal }) {
 
         setIsLoading(false);
 
-        setIsModal(false);
+        setIsAccountModal(false);
     };
 
     console.log(data, "dattttaddad");
@@ -75,7 +75,7 @@ export default function AddAccountModal({ data, setData, setIsModal }) {
                     <h2 className="font-medium mb-2"> Add New Account </h2>
                     <button
                         className="h-auto bg-transparent text-textColor text-xl"
-                        onClick={() => setIsModal(false)}
+                        onClick={() => setIsAccountModal(false)}
                     >
                         <MdClose />
                     </button>
@@ -163,7 +163,7 @@ export default function AddAccountModal({ data, setData, setIsModal }) {
                         <button
                             className="bg-slate-300 text-textColor px-[15px]"
                             type="button"
-                            onClick={() => setIsModal(false)}
+                            onClick={() => setIsAccountModal(false)}
                         >
                             Cancel
                         </button>

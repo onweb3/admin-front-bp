@@ -12,6 +12,8 @@ export default function SelectDropdown({
     placeholder,
     bracketValue,
     disabled = false,
+    addNewButton = false,
+    handleButtonClick,
 }) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [selectedDataInfo, setSelectedDataInfo] = useState({});
@@ -22,13 +24,17 @@ export default function SelectDropdown({
 
     const filteredData = searchQuery
         ? data?.filter((item) => {
-              return item[displayName]?.toLowerCase().includes(searchQuery.toLowerCase());
+              return item[displayName]
+                  ?.toLowerCase()
+                  .includes(searchQuery.toLowerCase());
           })
         : data;
 
     useEffect(() => {
         if (selectedData) {
-            const dataObjIndex = data?.findIndex((item) => item[valueName] === selectedData);
+            const dataObjIndex = data?.findIndex(
+                (item) => item[valueName] === selectedData
+            );
             if (dataObjIndex !== -1) {
                 setSelectedDataInfo(data[dataObjIndex]);
             } else {
@@ -55,7 +61,11 @@ export default function SelectDropdown({
                         <input
                             type="text"
                             className="h-[100%] w-[100%] border-0"
-                            placeholder={!selectedDataInfo[displayName] ? "Search here..." : ""}
+                            placeholder={
+                                !selectedDataInfo[displayName]
+                                    ? "Search here..."
+                                    : ""
+                            }
                             value={searchQuery || ""}
                             onChange={(e) => {
                                 setSearchQuery(e.target.value);
@@ -65,7 +75,9 @@ export default function SelectDropdown({
                         {!searchQuery && selectedDataInfo[displayName] && (
                             <span className="absolute top-[50%] left-0 translate-y-[-50%] px-[15px] capitalize">
                                 {selectedDataInfo[displayName]}
-                                {bracketValue ? ` (${selectedDataInfo[bracketValue]})` : ""}
+                                {bracketValue
+                                    ? ` (${selectedDataInfo[bracketValue]})`
+                                    : ""}
                             </span>
                         )}
                     </div>
@@ -74,7 +86,9 @@ export default function SelectDropdown({
                         <span className="capitalize">
                             {selectedDataInfo[displayName]
                                 ? `${selectedDataInfo[displayName]}${
-                                      bracketValue ? ` (${selectedDataInfo[bracketValue]})` : ""
+                                      bracketValue
+                                          ? ` (${selectedDataInfo[bracketValue]})`
+                                          : ""
                                   }`
                                 : placeholder}
                         </span>
@@ -85,7 +99,7 @@ export default function SelectDropdown({
                 )}
             </div>
             {isDropdownOpen && disabled === false && (
-                <div className="absolute top-[100%] left-0 right-0 bg-white shadow-lg rounded max-h-[300px] overflow-y-auto z-10 text-[14px]">
+                <div className="absolute top-[100%] left-0 right-0 bg-white shadow-lg rounded z-10 text-[14px]">
                     {filteredData?.length < 1 ? (
                         <div className="p-2">
                             <span className="text-grayColor font-medium text-center block">
@@ -93,21 +107,37 @@ export default function SelectDropdown({
                             </span>
                         </div>
                     ) : (
-                        filteredData?.map((item, index) => {
-                            return (
-                                <div
-                                    key={index}
-                                    onClick={() => {
-                                        setSelectedData(item[valueName]);
-                                        setIsDropdownOpen(false);
-                                    }}
-                                    className="px-3 hover:bg-blue-500 hover:text-white capitalize py-1 cursor-pointer"
-                                >
-                                    {item[displayName]}{" "}
-                                    {bracketValue ? ` (${item[bracketValue]})` : ""}
-                                </div>
-                            );
-                        })
+                        <div className="max-h-[300px] overflow-y-auto">
+                            {filteredData?.map((item, index) => {
+                                return (
+                                    <>
+                                        <div
+                                            key={index}
+                                            onClick={() => {
+                                                setSelectedData(
+                                                    item[valueName]
+                                                );
+                                                setIsDropdownOpen(false);
+                                            }}
+                                            className="px-3 hover:bg-blue-500 hover:text-white capitalize py-1 cursor-pointer"
+                                        >
+                                            {item[displayName]}{" "}
+                                            {bracketValue
+                                                ? ` (${item[bracketValue]})`
+                                                : ""}
+                                        </div>
+                                    </>
+                                );
+                            })}
+                        </div>
+                    )}
+                    {addNewButton === true && (
+                        <div
+                            onClick={handleButtonClick}
+                            className="px-3 capitalize py-[5px] cursor-pointer text-center font-medium"
+                        >
+                            + Add New
+                        </div>
                     )}
                 </div>
             )}

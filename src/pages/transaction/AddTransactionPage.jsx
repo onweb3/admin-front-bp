@@ -4,7 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useHandleClickOutside } from "../../hooks";
 
 import axios from "../../axios";
-import { BtnLoader, MultipleSelectDropdown } from "../../components";
+import {
+    BtnLoader,
+    MultipleSelectDropdown,
+    SelectDropdown,
+} from "../../components";
 import { useImageChange } from "../../hooks";
 import { MdClose } from "react-icons/md";
 import AddSingleSelectDropdown from "../../components/AddSingleSelectDropdown";
@@ -37,13 +41,7 @@ export default function AddTransactionPage({ setIsModal }) {
     ];
 
     const paymentMethhods = ["cash-in-hand", "bank"];
-    const transactionTypes = [
-        "deposit",
-        "withdraw",
-        "deduct",
-        "refund",
-        "markup",
-    ];
+    const transactionTypes = ["deposit", "withdraw", "deduct", "refund"];
 
     const [transactionFor, setTransactionFor] = useState([
         { name: "b2b" },
@@ -54,7 +52,8 @@ export default function AddTransactionPage({ setIsModal }) {
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
     const [accounts, setAccounts] = useState([]);
     const [transactionCategories, setTransactionCategories] = useState([]);
-
+    const [isAccountModal, setIsAccountModal] = useState(false);
+    const [isCategoryModal, setIsCategoryModal] = useState(false);
     const [error, setError] = useState("");
     const [apis, setApis] = useState([]);
     const [resellers, setResellers] = useState([]);
@@ -65,7 +64,7 @@ export default function AddTransactionPage({ setIsModal }) {
     const [searchText, setSearchText] = useState("");
     const wrapperRef = useRef();
 
-    useHandleClickOutside(wrapperRef, () => setIsModal(false));
+    // useHandleClickOutside(wrapperRef, () => setIsModal(false));
 
     const handleChange = (e) => {
         if (e.target.name === "transactionType") {
@@ -223,7 +222,7 @@ export default function AddTransactionPage({ setIsModal }) {
                             <div>
                                 <label htmlFor="">Transaction For</label>
                                 <div className="">
-                                    <AddSingleSelectDropdown
+                                    <SelectDropdown
                                         data={transactionFor}
                                         setData={""}
                                         displayName={"name"}
@@ -234,13 +233,15 @@ export default function AddTransactionPage({ setIsModal }) {
                                                 value: value,
                                             })
                                         }
-                                        ComponentProp={AddAccountModal}
+                                        placeholder="transaction for"
                                         valueName={"name"}
                                         randomIndex={"name"}
+                                        disabled={false}
+                                        addNewButton={false}
                                     />
                                 </div>
                             </div>{" "}
-                            {transactionFor === "company" ? (
+                            {data.transactionFor === "b2b" ? (
                                 <div>
                                     <label htmlFor="">Transaction Type</label>
                                     <select
@@ -313,7 +314,7 @@ export default function AddTransactionPage({ setIsModal }) {
                                 <div>
                                     <label htmlFor=""> Add Account</label>
                                     <div className="">
-                                        <AddSingleSelectDropdown
+                                        <SelectDropdown
                                             data={accounts}
                                             setData={setAccounts}
                                             displayName={"accountName"}
@@ -324,10 +325,13 @@ export default function AddTransactionPage({ setIsModal }) {
                                                     value: value,
                                                 })
                                             }
-                                            ComponentProp={AddAccountModal}
                                             valueName={"_id"}
                                             randomIndex={"accountName"}
-                                            isEdit={true}
+                                            disabled={false}
+                                            addNewButton={true}
+                                            handleButtonClick={() => {
+                                                setIsAccountModal(true);
+                                            }}
                                         />
                                     </div>
                                 </div>
@@ -446,7 +450,7 @@ export default function AddTransactionPage({ setIsModal }) {
                                 <div>
                                     <label htmlFor=""> Category</label>
                                     <div className="">
-                                        <AddSingleSelectDropdown
+                                        <SelectDropdown
                                             data={transactionCategories}
                                             setData={setTransactionCategories}
                                             displayName={"name"}
@@ -457,12 +461,13 @@ export default function AddTransactionPage({ setIsModal }) {
                                                     value: value,
                                                 })
                                             }
-                                            ComponentProp={
-                                                AddTransactionCategoryModal
-                                            }
+                                            disabled={false}
+                                            addNewButton={true}
+                                            handleButtonClick={() => {
+                                                setIsCategoryModal(true);
+                                            }}
                                             valueName={"_id"}
                                             randomIndex={"name"}
-                                            isEdit={true}
                                         />
                                     </div>
                                 </div>
@@ -544,6 +549,21 @@ export default function AddTransactionPage({ setIsModal }) {
                     </form>
                 </div>
             </div>
+            {isAccountModal && (
+                <AddAccountModal
+                    setIsAccountModal={setIsAccountModal}
+                    setData={setAccounts}
+                    data={accounts}
+                />
+            )}
+
+            {isCategoryModal && (
+                <AddTransactionCategoryModal
+                    setIsCategoryModal={setIsCategoryModal}
+                    setData={setTransactionCategories}
+                    data={transactionCategories}
+                />
+            )}
         </div>
     );
 }

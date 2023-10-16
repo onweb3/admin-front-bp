@@ -12,7 +12,7 @@ import { useHandleClickOutside } from "../../../hooks";
 export default function AddTransactionCategoryModal({
     data,
     setData,
-    setIsModal,
+    setIsCategoryModal,
 }) {
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -23,7 +23,7 @@ export default function AddTransactionCategoryModal({
 
     const wrapperRef = useRef();
     useHandleClickOutside(wrapperRef, () => {
-        setIsModal(false);
+        setIsCategoryModal(false);
     });
     const { id, marketId, profileId } = useParams();
     const { jwtToken } = useSelector((state) => state.admin);
@@ -60,7 +60,7 @@ export default function AddTransactionCategoryModal({
 
         setIsLoading(false);
 
-        setIsModal(false);
+        setIsCategoryModal(false);
     };
 
     return (
@@ -73,7 +73,7 @@ export default function AddTransactionCategoryModal({
                     <h2 className="font-medium mb-2"> Add Category</h2>
                     <button
                         className="h-auto bg-transparent text-textColor text-xl"
-                        onClick={() => setIsModal(false)}
+                        onClick={() => setIsCategoryModal(false)}
                     >
                         <MdClose />
                     </button>
@@ -111,7 +111,7 @@ export default function AddTransactionCategoryModal({
                         <button
                             className="bg-slate-300 text-textColor px-[15px]"
                             type="button"
-                            onClick={() => setIsModal(false)}
+                            onClick={() => setIsCategoryModal(false)}
                         >
                             Cancel
                         </button>
