@@ -1,4 +1,8 @@
-import { AdminLayout, EditProfileLayout, SingleResellerLayout } from "../layouts";
+import {
+    AdminLayout,
+    EditProfileLayout,
+    SingleResellerLayout,
+} from "../layouts";
 import A2aAddTicketPage from "../pages/A2A/A2aAddTicketPage";
 import A2AEditTicketPage from "../pages/A2A/A2aEditTicketPage";
 import A2AEnquiryPage from "../pages/A2A/A2AEnquiryPage";
@@ -195,6 +199,7 @@ import B2bWalletStatisticsPage from "../pages/wallet/B2bWalletStatisticsPage";
 import B2bWallletDepositListPage from "../pages/wallet/B2bWallletDepositListPage";
 import CacheSettingsPage from "../pages/Hotels/CacheSettingsPage";
 import VoucherSettingsPage from "../pages/Voucher/VoucherSettingsPage";
+import AddTransactionPage from "../pages/transaction/AddTransactionPage";
 
 const ThemeRoutes = [
     {
@@ -779,6 +784,10 @@ const ThemeRoutes = [
             {
                 path: "/transactions",
                 element: <TransactionsPage />,
+            },
+            {
+                path: "/transactions/add",
+                element: <AddTransactionPage />,
             },
             {
                 path: "/payment-settings/services",
