@@ -50,6 +50,7 @@ export default function PromoCancellationForm() {
                             <th className="font-[500] p-2 border">Deduction Type</th>
                             <th className="font-[500] p-2 border">Cancel Before</th>
                             <th className="font-[500] p-2 border">Value</th>
+                            <th className="font-[500] p-2 border">Cancel Booking Before</th>
                         </tr>
                     </thead>
                     <tbody className="text-sm">
@@ -131,6 +132,14 @@ export default function PromoCancellationForm() {
                                                         value: "",
                                                     })
                                                 );
+                                                dispatch(
+                                                    handlePromotionRowDataChange({
+                                                        typeName: "cancellationPolicies",
+                                                        index,
+                                                        name: "requestCancelDaysBefore",
+                                                        value: "",
+                                                    })
+                                                );
                                             }
                                             handleChange(e, index);
                                         }}
@@ -146,7 +155,17 @@ export default function PromoCancellationForm() {
                                         type="number"
                                         name="daysBefore"
                                         value={cancellationPolicie?.daysBefore}
-                                        onChange={(e) => handleChange(e, index)}
+                                        onChange={(e) => {
+                                            handleChange(e, index);
+                                            dispatch(
+                                                handlePromotionRowDataChange({
+                                                    typeName: "cancellationPolicies",
+                                                    index,
+                                                    name: "requestCancelDaysBefore",
+                                                    value: e.target.value,
+                                                })
+                                            );
+                                        }}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
                                         disabled={
                                             cancellationPolicie?.cancellationChargeType ===
@@ -159,6 +178,19 @@ export default function PromoCancellationForm() {
                                         type="number"
                                         name="cancellationCharge"
                                         value={cancellationPolicie?.cancellationCharge}
+                                        onChange={(e) => handleChange(e, index)}
+                                        className="h-[100%] arrow-hidden p-0 px-2 border-0"
+                                        disabled={
+                                            cancellationPolicie?.cancellationChargeType ===
+                                            "non-refundable"
+                                        }
+                                    />
+                                </td>
+                                <td className="border min-w-[100px]">
+                                    <input
+                                        type="number"
+                                        name="requestCancelDaysBefore"
+                                        value={cancellationPolicie?.requestCancelDaysBefore}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
                                         disabled={

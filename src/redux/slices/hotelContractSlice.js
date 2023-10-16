@@ -120,6 +120,7 @@ const initialState = {
             daysBefore: "",
             cancellationChargeType: "flat",
             cancellationCharge: "",
+            requestCancelDaysBefore: "",
         },
     ],
     extraSupplements: [
@@ -366,6 +367,7 @@ export const hotelContractFormSlice = createSlice({
                 daysBefore: "",
                 cancellationChargeType: "flat",
                 cancellationCharge: "",
+                requestCancelDaysBefore: "",
             });
         },
 
@@ -653,6 +655,7 @@ export const hotelContractFormSlice = createSlice({
                         daysBefore: policy.daysBefore,
                         cancellationChargeType: policy.cancellationChargeType,
                         cancellationCharge: policy.cancellationCharge,
+                        requestCancelDaysBefore: policy.requestCancelDaysBefore,
                     };
                 }) || [];
 

@@ -242,6 +242,7 @@ export const hotelPromotionsFormSlice = createSlice({
                 daysBefore: "",
                 cancellationChargeType: "flat",
                 cancellationCharge: "",
+                requestCancelDaysBefore: "",
             });
         },
 
@@ -563,6 +564,7 @@ export const hotelPromotionsFormSlice = createSlice({
                     daysBefore: policies.daysBefore,
                     cancellationChargeType: policies.cancellationChargeType || "flat",
                     cancellationCharge: policies.cancellationCharge,
+                    requestCancelDaysBefore: policies?.requestCancelDaysBefore,
                 })) || [];
 
             state.excludedDates =
