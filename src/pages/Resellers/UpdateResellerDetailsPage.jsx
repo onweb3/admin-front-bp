@@ -27,6 +27,7 @@ export default function UpdateResellerDetailsPage() {
         status: "",
     });
     const [isLoading, setIsLoading] = useState(false);
+    const [sendEmail, setSendEmail] = useState(false);
     const [error, setError] = useState("");
     const { id } = useParams();
 
@@ -46,14 +47,12 @@ export default function UpdateResellerDetailsPage() {
             setIsLoading(true);
             setError("");
 
-            await axios.patch(`/resellers/update/${id}`, data, {
+            await axios.patch(`/resellers/update/${id}?sendEmail=${sendEmail}`, data, {
                 headers: { authorization: `Bearer ${jwtToken}` },
             });
             navigate(-1);
         } catch (err) {
-            setError(
-                err?.response?.data?.error || "Something went wrong, Try again"
-            );
+            setError(err?.response?.data?.error || "Something went wrong, Try again");
             setIsLoading(false);
         }
     };
@@ -117,9 +116,7 @@ export default function UpdateResellerDetailsPage() {
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">
-                    Edit Reseller
-                </h1>
+                <h1 className="font-[600] text-[15px] uppercase">Edit Reseller</h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
@@ -143,9 +140,7 @@ export default function UpdateResellerDetailsPage() {
                 <div className="p-6">
                     <div className="bg-white rounded p-6 shadow-sm">
                         <form action="" onSubmit={handleSubmit}>
-                            <h2 className="font-[600] text-lg mb-3">
-                                Company Information
-                            </h2>
+                            <h2 className="font-[600] text-lg mb-3">Company Information</h2>
                             <div className="grid grid-cols-3 gap-4">
                                 <div>
                                     <label htmlFor="">Company Name *</label>
@@ -205,9 +200,8 @@ export default function UpdateResellerDetailsPage() {
                                         })}
                                     </select>
                                 </div>
-                                {countries?.find(
-                                    (item) => item?._id === data.country
-                                )?.isocode === "AE" && (
+                                {countries?.find((item) => item?._id === data.country)?.isocode ===
+                                    "AE" && (
                                     <>
                                         <div>
                                             <label htmlFor="">TRN Number</label>
@@ -220,17 +214,12 @@ export default function UpdateResellerDetailsPage() {
                                             />
                                         </div>
                                         <div>
-                                            <label htmlFor="">
-                                                Company Registration Number
-                                            </label>
+                                            <label htmlFor="">Company Registration Number</label>
                                             <input
                                                 type="text"
                                                 placeholder="Enter Company Registration Number"
                                                 name="companyRegistration"
-                                                value={
-                                                    data.companyRegistration ||
-                                                    ""
-                                                }
+                                                value={data.companyRegistration || ""}
                                                 onChange={handleChange}
                                             />
                                         </div>
@@ -258,9 +247,7 @@ export default function UpdateResellerDetailsPage() {
                                     />
                                 </div>
                             </div>
-                            <h2 className="font-[600] text-lg mb-3 mt-8">
-                                Personal Information
-                            </h2>
+                            <h2 className="font-[600] text-lg mb-3 mt-8">Personal Information</h2>
                             <div className="grid grid-cols-3 gap-4">
                                 <div>
                                     <label htmlFor="">Agent Name *</label>
@@ -280,12 +267,9 @@ export default function UpdateResellerDetailsPage() {
                                             type="text"
                                             disabled
                                             value={
-                                                data.country &&
-                                                countries?.length > 0
+                                                data.country && countries?.length > 0
                                                     ? countries.find(
-                                                          (item) =>
-                                                              item?._id ===
-                                                              data.country
+                                                          (item) => item?._id === data.country
                                                       )?.phonecode
                                                     : ""
                                             }
@@ -308,12 +292,9 @@ export default function UpdateResellerDetailsPage() {
                                             type="text"
                                             disabled
                                             value={
-                                                data.country &&
-                                                countries?.length > 0
+                                                data.country && countries?.length > 0
                                                     ? countries.find(
-                                                          (item) =>
-                                                              item?._id ===
-                                                              data.country
+                                                          (item) => item?._id === data.country
                                                       )?.phonecode
                                                     : ""
                                             }
@@ -373,9 +354,7 @@ export default function UpdateResellerDetailsPage() {
                                 </div>
                             </div>
 
-                            <h2 className="font-[600] text-lg mb-3 mt-8">
-                                Other Info
-                            </h2>
+                            <h2 className="font-[600] text-lg mb-3 mt-8">Other Info</h2>
                             <div className="grid grid-cols-3 gap-4">
                                 <div>
                                     <label htmlFor="">Password</label>
@@ -401,20 +380,28 @@ export default function UpdateResellerDetailsPage() {
                                         </option>
                                         <option value="pending">Pending</option>
                                         <option value="ok">Ok</option>
-                                        <option value="cancelled">
-                                            Cancelled
-                                        </option>
-                                        <option value="disabled">
-                                            Disabled
-                                        </option>
+                                        <option value="cancelled">Cancelled</option>
+                                        <option value="disabled">Disabled</option>
                                     </select>
                                 </div>
                             </div>
 
+                            <div className="flex items-center gap-4 mt-8">
+                                <input
+                                    type="checkbox"
+                                    name="sendEmail"
+                                    checked={sendEmail || false}
+                                    onChange={(e) => setSendEmail(e.target.checked)}
+                                    className="w-[15px] h-[15px]"
+                                    id="sendEmail"
+                                />
+                                <label htmlFor="sendEmail" className="mb-0">
+                                    Do you want to send email with updated credentials?
+                                </label>
+                            </div>
+
                             {error && (
-                                <span className="text-sm block text-red-500 mt-2">
-                                    {error}
-                                </span>
+                                <span className="text-sm block text-red-500 mt-2">{error}</span>
                             )}
                             <div className="mt-4 flex items-center justify-end gap-[12px]">
                                 <button
@@ -424,12 +411,8 @@ export default function UpdateResellerDetailsPage() {
                                 >
                                     Cancel
                                 </button>
-                                <button className="w-[150px]">
-                                    {isLoading ? (
-                                        <BtnLoader />
-                                    ) : (
-                                        "Update Reseller"
-                                    )}
+                                <button className="w-[150px]" disabled={isLoading}>
+                                    {isLoading ? <BtnLoader /> : "Update Reseller"}
                                 </button>
                             </div>
                         </form>
