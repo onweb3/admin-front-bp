@@ -201,6 +201,10 @@ import CacheSettingsPage from "../pages/Hotels/CacheSettingsPage";
 import VoucherSettingsPage from "../pages/Voucher/VoucherSettingsPage";
 import AddTransactionPage from "../pages/transaction/AddTransactionPage";
 import InvoiceSettingsPage from "../pages/Invoice/InvoiceSettingsPage";
+import CreateAttractionOrder from "../pages/Attraction/CreateAttractionOrder";
+import CreateA2aOrder from "../pages/A2A/CreateA2aOrderPage";
+import CreateVisaOrderPag from "../pages/Visa/CreateVisaOrderPage";
+import CreateVisaOrderPage from "../pages/Visa/CreateVisaOrderPage";
 
 const ThemeRoutes = [
     {
@@ -1033,6 +1037,22 @@ const ThemeRoutes = [
                 path: "/invoice/settings",
                 element: <InvoiceSettingsPage />,
             },
+
+            //create orders
+            {
+                path: "/order/attraction",
+                element: <CreateAttractionOrder />,
+            },
+            {
+                path: "/order/a2a",
+                element: <CreateA2aOrder />,
+            },
+            {
+                path: "/order/visa",
+                element: <CreateVisaOrderPage />,
+            },
+
+            ,
         ],
     },
     {
