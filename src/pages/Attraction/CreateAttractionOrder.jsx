@@ -25,6 +25,7 @@ export default function CreateAttractionOrder() {
         email: "",
         hoursCount: "",
         selectedSlot: {},
+        selectedReseller: {},
     });
     const [totalAmount, setTotalAmount] = useState({
         calculatedChildPrice: "",
@@ -33,6 +34,7 @@ export default function CreateAttractionOrder() {
         totalPvtTransferPrice: "",
     });
     const { countries } = useSelector((state) => state.general);
+    const [wallet, setWallet] = useState("");
 
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
@@ -51,6 +53,29 @@ export default function CreateAttractionOrder() {
             return { ...prev, [e.target.name]: e.target.value };
         });
     };
+    const fetchWallet = async () => {
+        try {
+            setIsLoading(true);
+
+            const response = await axios.get(
+                `/wallets/b2b/single/${data.resellerId}`,
+
+                {
+                    headers: { Authorization: `Bearer ${jwtToken}` },
+                }
+            );
+
+            setWallet(response.data);
+
+            setIsLoading(false);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    useEffect(() => {
+        fetchWallet();
+    }, [data.resellerId]);
 
     const handleSingleChange = ({ name, value }) => {
         try {
@@ -97,7 +122,7 @@ export default function CreateAttractionOrder() {
                         childrenCount: data?.childrenCount
                             ? data?.childrenCount
                             : 0,
-                        hoursCount: data?.hoursCount ? data?.hoursCount : 0,
+                        hoursCount: data?.hoursCount ? data?.hoursCount : "",
                         infantCount: data.infantCount ? data.infantCount : 0,
                         transferType: data.value,
                     },
@@ -930,6 +955,13 @@ export default function CreateAttractionOrder() {
                                                             {" "}
                                                             ( {data?.value})
                                                         </span>
+                                                    </div>
+                                                    <div>
+                                                        Account Balance :{" "}
+                                                        {wallet?.balance.toFixed(
+                                                            2
+                                                        )}{" "}
+                                                        AED
                                                     </div>
                                                     <div class="font-bold text-md mb-2 text-gray-400"></div>
                                                     <div class="text-gray-700 text-base flex gap-4  items-center justify-between mb-2 ">

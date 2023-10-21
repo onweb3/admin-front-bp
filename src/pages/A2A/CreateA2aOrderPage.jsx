@@ -15,6 +15,7 @@ export default function CreateA2aOrder() {
     const [a2as, setA2as] = useState([]);
     const [tickets, setTickets] = useState([]);
     const [resellers, setResellers] = useState([]);
+    const [wallet, setWallet] = useState("");
     const navigate = useNavigate();
 
     const [isLoading, setIsLoading] = useState(false);
@@ -76,7 +77,29 @@ export default function CreateA2aOrder() {
             console.log(err);
         }
     };
+    const fetchWallet = async () => {
+        try {
+            setIsLoading(true);
 
+            const response = await axios.get(
+                `/wallets/b2b/single/${data.resellerId}`,
+
+                {
+                    headers: { Authorization: `Bearer ${jwtToken}` },
+                }
+            );
+
+            setWallet(response.data);
+
+            setIsLoading(false);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    useEffect(() => {
+        fetchWallet();
+    }, [data.resellerId]);
     const fetchA2a = async () => {
         try {
             setIsLoading(true);
@@ -122,7 +145,15 @@ export default function CreateA2aOrder() {
     const fetchA2aTickets = async () => {
         try {
             setIsLoading(true);
-
+            setData((prev) => {
+                return {
+                    ...prev,
+                    ["selectedTicket"]: "",
+                    ["selectedDetails"]: "",
+                    ["totalPax"]: 0,
+                };
+            });
+            setTickets([]);
             const response = await axios.post(
                 `/orders/a2a/single/${data?.selectedA2a}/${data?.resellerId}`,
                 { date: data.date },
@@ -143,6 +174,7 @@ export default function CreateA2aOrder() {
                     })`,
                 };
             });
+
             setTickets(reduceTicket);
             setIsLoading(false);
         } catch (err) {
@@ -293,6 +325,8 @@ export default function CreateA2aOrder() {
             console.log(err);
         }
     };
+
+    console.log(data?.selectedDetails, "DETAILSSS");
 
     return (
         <div>
@@ -841,14 +875,21 @@ export default function CreateA2aOrder() {
                                             )}
                                         </div>
 
-                                        <div className="p-8 flex justify-center max-h-[450px]">
+                                        <div className="p-8 flex justify-center max-h-[470px]">
                                             <div class="max-w-sm rounded overflow-hidden shadow-lg">
                                                 <div class="px-6 py-4 w-full">
+                                                    <div>
+                                                        Account Balance :{" "}
+                                                        {wallet?.balance.toFixed(
+                                                            2
+                                                        )}{" "}
+                                                        AED
+                                                    </div>
                                                     <div className="p-2 bg-gray-50">
                                                         <div className="font-semibold text-base my-2 flex items-center justify-center gap-3">
                                                             <MdOutlineFlightTakeoff className="text-xl " />
                                                             <span>
-                                                                Onward Fligth
+                                                                Onward Flight
                                                             </span>
                                                             <span className="font-light text-base">
                                                                 {
@@ -885,7 +926,7 @@ export default function CreateA2aOrder() {
                                                         <div className="font-semibold text-base my-2 flex items-center justify-center gap-3">
                                                             <MdOutlineFlightTakeoff className="text-xl scale-x-[-1]" />
                                                             <span>
-                                                                Return Fligth
+                                                                Return Flight
                                                             </span>
                                                             <span className="font-light text-base">
                                                                 {
