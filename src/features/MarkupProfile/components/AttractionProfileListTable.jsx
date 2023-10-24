@@ -5,6 +5,7 @@ import axios from "../../../axios";
 import AttractionProfileRow from "./AttractionProfileRow";
 import AttracitonMarkupModal from "./AttractionMarkupModal";
 import { BiEditAlt } from "react-icons/bi";
+import { PageLoader } from "../../../components";
 // import BookingsOrdersSingleRow from "./BookingsOrdersSingleRow";
 
 export default function AttractionProfileListTable({
@@ -171,29 +172,40 @@ export default function AttractionProfileListTable({
                         </button>
                     </div>
                 </div>
-
-                <table className="w-full">
-                    <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
-                        <tr className="flex justify-center item-center">
-                            <th className="font-[500] p-3">Attraction Name</th>
-                        </tr>
-                    </thead>
-                    <tbody className="text-sm ">
-                        {attractionList?.map((attraction, index) => {
-                            return (
-                                <AttractionProfileRow
-                                    key={index}
-                                    attraction={attraction}
-                                    setAttractionList={setAttractionList}
-                                    setInitalAttractionList={
-                                        setInitalAttractionList
-                                    }
-                                    type={type}
-                                />
-                            );
-                        })}
-                    </tbody>
-                </table>
+                {isPageLoading ? (
+                    <PageLoader />
+                ) : attractionList?.length < 1 ? (
+                    <div className="p-6 flex flex-col items-center">
+                        <span className="text-sm text-grayColor block mt-[6px]">
+                            Oops.. No Attraction found
+                        </span>
+                    </div>
+                ) : (
+                    <table className="w-full">
+                        <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
+                            <tr className="flex justify-center item-center">
+                                <th className="font-[500] p-3">
+                                    Attraction Name
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody className="text-sm ">
+                            {attractionList?.map((attraction, index) => {
+                                return (
+                                    <AttractionProfileRow
+                                        key={index}
+                                        attraction={attraction}
+                                        setAttractionList={setAttractionList}
+                                        setInitalAttractionList={
+                                            setInitalAttractionList
+                                        }
+                                        type={type}
+                                    />
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                )}
             </div>
             {isModal && (
                 <AttracitonMarkupModal

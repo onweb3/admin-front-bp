@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "../../../axios";
-import { Pagination } from "../../../components";
+import { PageLoader, Pagination } from "../../../components";
 import FlightProfileRow from "./FlightProfileRow";
 import InsuranceProfileRow from "./InsuranceProfileRow";
 import TransferProfileRow from "./TransferProfileRow";
@@ -370,35 +370,47 @@ export default function TransferProfileTable({ type }) {
                         </button>
                     </form>
                 </div>
-                <table className="w-full">
-                    <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
-                        <tr>
-                            <th className="font-[500] p-3">Index</th>
-                            <th className="font-[500] p-3">Transfer From </th>
-                            <th className="font-[500] p-3">Transfer To </th>
+                {isPageLoading ? (
+                    <PageLoader />
+                ) : transfers?.length < 1 ? (
+                    <div className="p-6 flex flex-col items-center">
+                        <span className="text-sm text-grayColor block mt-[6px]">
+                            Oops.. No transfer found
+                        </span>
+                    </div>
+                ) : (
+                    <table className="w-full">
+                        <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
+                            <tr>
+                                <th className="font-[500] p-3">Index</th>
+                                <th className="font-[500] p-3">
+                                    Transfer From{" "}
+                                </th>
+                                <th className="font-[500] p-3">Transfer To </th>
 
-                            <th className="font-[500] p-3">Markup Type</th>
-                            <th className="font-[500] p-3">Markup </th>
+                                <th className="font-[500] p-3">Markup Type</th>
+                                <th className="font-[500] p-3">Markup </th>
 
-                            <th className="font-[500] p-3">Edit</th>
-                        </tr>
-                    </thead>
-                    <tbody className="text-sm">
-                        {transfers?.map((transfer, index) => {
-                            return (
-                                <TransferProfileRow
-                                    key={transfer.transferId}
-                                    index={index}
-                                    transfer={transfer}
-                                    type={type}
-                                    setTransfers={setTransfers}
+                                <th className="font-[500] p-3">Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody className="text-sm">
+                            {transfers?.map((transfer, index) => {
+                                return (
+                                    <TransferProfileRow
+                                        key={transfer.transferId}
+                                        index={index}
+                                        transfer={transfer}
+                                        type={type}
+                                        setTransfers={setTransfers}
 
-                                    // section={section}
-                                />
-                            );
-                        })}
-                    </tbody>
-                </table>
+                                        // section={section}
+                                    />
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                )}
             </div>
             {isModal && (
                 <TransferMarkupModal
