@@ -148,17 +148,21 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                     divVal = totalPax;
 
                     let totalPvtPrice = totalPvtTransferPrice / divVal;
-                   
+
                     calculatedAdultPrice =
                         totalPvtPrice +
-                        (globalExcursion?.ticketPrice?.adultPrice
-                            ? globalExcursion?.ticketPrice?.adultPrice
-                            : 0);
+                        Number(
+                            globalExcursion?.ticketPrice?.adultPrice
+                                ? globalExcursion?.ticketPrice?.adultPrice
+                                : 0
+                        );
                     calculatedChildPrice =
                         totalPvtPrice +
-                        (globalExcursion?.ticketPrice?.childPrice
-                            ? globalExcursion?.ticketPrice?.childPrice
-                            : 0);
+                        Number(
+                            globalExcursion?.ticketPrice?.childPrice
+                                ? globalExcursion?.ticketPrice?.childPrice
+                                : 0
+                        );
                 }
             }
 
@@ -171,7 +175,10 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
             );
         }
     }, [excursion, noOfAdults, noOfChildren, globalExcursion, vehicles]);
-
+    console.log(
+        globalExcursion?.privateTransfer?.vehicleType,
+        "GLOBAL EXTRACTION"
+    );
     return (
         <div className="mb-6 bg-[#f6f6f6] p-4">
             <div className="flex items-start gap-[10px] ">
@@ -281,13 +288,13 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                                                                         vehTY
                                                                             .vehicle
                                                                             ._id,
-                                                                    price: globalExcursion?.privateTransfer.vehicleType?.find(
+                                                                    price: globalExcursion?.privateTransfer?.vehicleType?.find(
                                                                         (
                                                                             vt
                                                                         ) => {
                                                                             return (
-                                                                                vt?.vehicle?.toString() ===
-                                                                                vehTY.vehicle?._id?.toString()
+                                                                                vt?.vehicle?._id.toString() ===
+                                                                                vehTY?.vehicle?._id?.toString()
                                                                             );
                                                                         }
                                                                     ).price,

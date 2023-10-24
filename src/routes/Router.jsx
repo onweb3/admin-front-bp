@@ -206,6 +206,7 @@ import CreateA2aOrder from "../pages/A2A/CreateA2aOrderPage";
 import CreateVisaOrderPag from "../pages/Visa/CreateVisaOrderPage";
 import CreateVisaOrderPage from "../pages/Visa/CreateVisaOrderPage";
 import VisaDocumentUploadPage from "../pages/Visa/VisaDocumentUploadPage";
+import CreateFlightOrderPage from "../pages/Flight/CreateFlightOrderPage";
 
 const ThemeRoutes = [
     {
@@ -1056,6 +1057,11 @@ const ThemeRoutes = [
                 path: "/order/visa/:orderId",
                 element: <VisaDocumentUploadPage />,
             },
+            {
+                path: "/order/flight",
+                element: <CreateFlightOrderPage />,
+            },
+
             ,
         ],
     },

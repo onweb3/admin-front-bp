@@ -99,7 +99,7 @@ export default function AddTransactionPage({ setIsModal }) {
             });
 
             setIsSubmitLoading(false);
-            setIsModal(false)
+            setIsModal(false);
             navigate("/transactions");
         } catch (err) {
             setError(
