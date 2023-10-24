@@ -118,6 +118,7 @@ const initialState = {
             toDate: "",
             roomTypes: [],
             daysBefore: "",
+            cancellationType: "refundable",
             cancellationChargeType: "flat",
             cancellationCharge: "",
             requestCancelDaysBefore: "",
@@ -365,6 +366,7 @@ export const hotelContractFormSlice = createSlice({
                 toDate: "",
                 roomTypes: [],
                 daysBefore: "",
+                cancellationType: "refundable",
                 cancellationChargeType: "flat",
                 cancellationCharge: "",
                 requestCancelDaysBefore: "",
@@ -430,6 +432,7 @@ export const hotelContractFormSlice = createSlice({
             state.excludedDates.push({
                 fromDate: "",
                 toDate: "",
+                roomTypes: [],
             });
         },
         deleteContractExcludedDatesRow: (state, action) => {
@@ -653,7 +656,8 @@ export const hotelContractFormSlice = createSlice({
                         toDate: policy.toDate ? convertIsoDateToYMD(policy.toDate) : "",
                         roomTypes: policy.roomTypes,
                         daysBefore: policy.daysBefore,
-                        cancellationChargeType: policy.cancellationChargeType,
+                        cancellationType: policy?.cancellationType || "refundable",
+                        cancellationChargeType: policy.cancellationChargeType || "flat",
                         cancellationCharge: policy.cancellationCharge,
                         requestCancelDaysBefore: policy.requestCancelDaysBefore,
                     };
@@ -691,6 +695,7 @@ export const hotelContractFormSlice = createSlice({
                 return {
                     fromDate: dateRange.fromDate ? convertIsoDateToYMD(dateRange.fromDate) : "",
                     toDate: dateRange.toDate ? convertIsoDateToYMD(dateRange.toDate) : "",
+                    roomTypes: dateRange?.roomTypes || [],
                 };
             });
 

@@ -57,23 +57,18 @@ export default function AddAllocationPage() {
             navigate("/hotels/availability");
         } catch (err) {
             console.log(err);
-            setError(
-                err?.response?.data?.error || "Something went wrong, Try again"
-            );
+            setError(err?.response?.data?.error || "Something went wrong, Try again");
             setIsLoading(false);
         }
     };
 
     const fetchInitialData = async () => {
         try {
-            const response = await axios.get(
-                `/hotels/room-and-contract-group/${id}`,
-                {
-                    headers: {
-                        authorization: `Bearer ${jwtToken}`,
-                    },
-                }
-            );
+            const response = await axios.get(`/hotels/room-and-contract-group/${id}`, {
+                headers: {
+                    authorization: `Bearer ${jwtToken}`,
+                },
+            });
             setInitialData((prev) => {
                 return {
                     ...prev,
@@ -123,7 +118,7 @@ export default function AddAllocationPage() {
                         />
                     </div>
                     <div>
-                        <label htmlFor="allocationType">Type </label>
+                        <label htmlFor="allocationType">Allocation Type</label>
                         <select
                             name="allocationType"
                             value={data.allocationType || ""}
@@ -136,6 +131,18 @@ export default function AddAllocationPage() {
                             <option value="free-sale">Free Sale</option>
                             <option value="static">On Allocation</option>
                             <option value="on-request">On Request</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label htmlFor="rateType">Rate Type</label>
+                        <select
+                            name="rateType"
+                            value={data.rateType || ""}
+                            onChange={handleChange}
+                            required
+                        >
+                            <option value="all-promotions">All Promotions Applicable</option>
+                            <option value="contract-rate">Applicable On Contracted Rate</option>
                         </select>
                     </div>
                     <div>
@@ -207,11 +214,7 @@ export default function AddAllocationPage() {
                     )}
                 </div>
 
-                {error && (
-                    <span className="text-sm block text-red-500 mt-2">
-                        {error}
-                    </span>
-                )}
+                {error && <span className="text-sm block text-red-500 mt-2">{error}</span>}
 
                 <div className="mt-4 flex items-center justify-end gap-[12px]">
                     <button

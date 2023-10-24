@@ -10,12 +10,7 @@ import axios from "../../../axios";
 import { BtnLoader } from "../../../components";
 import { useHandleClickOutside } from "../../../hooks";
 
-export default function AddApproveMarkupModal({
-    setIsModalOpen,
-    setStatus,
-    status,
-    resellerId,
-}) {
+export default function AddApproveMarkupModal({ setIsModalOpen, setStatus, status, resellerId }) {
     const [formData, setFormData] = useState({
         profileId: "",
     });
@@ -33,14 +28,9 @@ export default function AddApproveMarkupModal({
 
     const fetchProfiles = async () => {
         try {
-            console.log("fetching resellers");
-            setIsLoading(true);
-
             const response = await axios.get(`/profile/get-all-profiles`, {
                 headers: { authorization: `Bearer ${jwtToken}` },
             });
-
-            console.log(response.data, "data");
 
             setProfiles(response?.data);
             // setFilters((prev) => {
@@ -49,7 +39,6 @@ export default function AddApproveMarkupModal({
             //         totalResellers: response.data?.totalResellers,
             //     };
             // });
-            setIsLoading(false);
         } catch (err) {
             console.log(err);
         }
@@ -133,9 +122,7 @@ export default function AddApproveMarkupModal({
                 <form action="" onSubmit={(e) => handleStatusChange("ok", e)}>
                     <>
                         <div className="flex items-center justify-between border-b p-4">
-                            <h2 className="font-medium mb-2">
-                                Add Profile Markup
-                            </h2>
+                            <h2 className="font-medium">Add Profile Markup</h2>
                             <button
                                 className="h-auto bg-transparent text-textColor text-xl"
                                 onClick={() => setIsModalOpen(false)}
@@ -156,17 +143,13 @@ export default function AddApproveMarkupModal({
                                         Select Profile Type
                                     </option>
                                     {profiles.map((profile) => (
-                                        <option value={profile._id}>
-                                            {profile.name}
-                                        </option>
+                                        <option value={profile._id}>{profile.name}</option>
                                     ))}
                                 </select>
                             </div>
 
                             {error && (
-                                <span className="text-sm block text-red-500 mt-2">
-                                    {error}
-                                </span>
+                                <span className="text-sm block text-red-500 mt-2">{error}</span>
                             )}
                             <div className="mt-4 flex items-center justify-end gap-[12px]">
                                 <button
@@ -180,7 +163,7 @@ export default function AddApproveMarkupModal({
                                     className="w-[160px]"
                                     onClick={(e) => handleStatusChange("ok", e)}
                                 >
-                                    {"Submit"}
+                                    {isLoading ? <BtnLoader /> : "Submit"}
                                 </button>
                             </div>
                         </div>

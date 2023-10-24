@@ -216,6 +216,16 @@ const sidebarMenus = {
             link: "#",
             dropdown: [
                 {
+                    name: "Featured Hotels",
+                    link: "/hotels/featured-hotels",
+                    permission: ["hotels-settings", "view"],
+                },
+                {
+                    name: "Hotel Banner Ads",
+                    link: "/hotels/banner-ads",
+                    permission: ["hotels-settings", "view"],
+                },
+                {
                     name: "Cache Settings",
                     link: "/hotels/cache-settings",
                     permission: ["hotels-settings", "view"],

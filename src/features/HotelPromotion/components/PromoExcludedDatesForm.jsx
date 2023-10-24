@@ -6,11 +6,12 @@ import {
     deletePromotionItemRow,
     handlePromotionRowDataChange,
 } from "../../../redux/slices/hotelPromotionsFormSlice";
+import { MultipleSelectDropdown } from "../../../components";
 
 export default function PromoExcludedDatesForm() {
     const dispatch = useDispatch();
 
-    const { excludedDates } = useSelector((state) => state.hotelPromotionsForm);
+    const { excludedDates, roomTypes } = useSelector((state) => state.hotelPromotionsForm);
 
     const handleAddRow = () => {
         dispatch(addExcludedDatesRows());
@@ -50,6 +51,7 @@ export default function PromoExcludedDatesForm() {
                             </th>
                             <th className="font-[500] p-2 border">From Date</th>
                             <th className="font-[500] p-2 border">To Date</th>
+                            <th className="font-[500] p-2 border">Room Types</th>
                         </tr>
                     </thead>
                     <tbody className="text-sm">
@@ -88,6 +90,25 @@ export default function PromoExcludedDatesForm() {
                                         value={dateRange?.toDate || ""}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%]  px-2 border-0"
+                                    />
+                                </td>
+                                <td className="border w-[180px] min-w-[180px]">
+                                    <MultipleSelectDropdown
+                                        data={roomTypes}
+                                        displayName={"roomName"}
+                                        valueName={"_id"}
+                                        selectedData={dateRange?.roomTypes}
+                                        setSelectedData={(selRoomTypes) => {
+                                            dispatch(
+                                                handlePromotionRowDataChange({
+                                                    typeName: "excludedDates",
+                                                    index,
+                                                    name: "roomTypes",
+                                                    value: selRoomTypes,
+                                                })
+                                            );
+                                        }}
+                                        randomIndex={index + "excludedDates"}
                                     />
                                 </td>
                             </tr>

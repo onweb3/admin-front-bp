@@ -196,6 +196,8 @@ import B2bWallletDepositListPage from "../pages/wallet/B2bWallletDepositListPage
 import CacheSettingsPage from "../pages/Hotels/CacheSettingsPage";
 import VoucherSettingsPage from "../pages/Voucher/VoucherSettingsPage";
 import InvoiceSettingsPage from "../pages/Invoice/InvoiceSettingsPage";
+import HotelBannerAdsPage from "../pages/Hotels/HotelBannerAdsPage";
+import FeaturedHotelsPage from "../pages/Hotels/FeaturedHotelsPage";
 
 const ThemeRoutes = [
     {
@@ -263,6 +265,14 @@ const ThemeRoutes = [
             {
                 path: "/hotels/cache-settings",
                 element: <CacheSettingsPage />,
+            },
+            {
+                path: "/hotels/banner-ads",
+                element: <HotelBannerAdsPage />,
+            },
+            {
+                path: "/hotels/featured-hotels",
+                element: <FeaturedHotelsPage />,
             },
             {
                 path: "/hotels/room-occupancies",

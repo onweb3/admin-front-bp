@@ -115,7 +115,6 @@ export default function HotelPromotionsPage() {
                                     <th className="font-[500] p-3">Name</th>
                                     <th className="font-[500] p-3">Promotion Code</th>
                                     <th className="font-[500] p-3">Priority</th>
-                                    <th className="font-[500] p-3">Banner</th>
                                     <th className="font-[500] p-3">Status</th>
                                     <th className="font-[500] p-3">Actions</th>
                                 </tr>

@@ -224,30 +224,6 @@ export default function PromotionBasicForm() {
             <div className="flex items-center justify-center gap-3">
                 <input
                     type="checkbox"
-                    name="isFeatured"
-                    checked={data?.isFeatured}
-                    onChange={handleChkBoxChange}
-                    className="w-[17px] h-[17px] flex item-center justify-center"
-                    id="isFeatured"
-                />
-                <label htmlFor="isFeatured" className="mb-0">
-                    Is Featured
-                </label>
-            </div>
-            <div>
-                <label htmlFor="basePlan">Featured Note</label>
-                <div>
-                    <input
-                        type="text"
-                        name="featuredNote"
-                        value={data.featuredNote || ""}
-                        onChange={handleChange}
-                    />
-                </div>
-            </div>
-            <div className="flex items-center justify-center gap-3">
-                <input
-                    type="checkbox"
                     name="applicableOnRatePromotion"
                     checked={data?.applicableOnRatePromotion}
                     onChange={handleChkBoxChange}

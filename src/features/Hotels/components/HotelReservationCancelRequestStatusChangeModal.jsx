@@ -1,21 +1,26 @@
-import React, { useState, useRef } from "react";
-import { MdClose } from "react-icons/md";
+import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
 import { useHandleClickOutside } from "../../../hooks";
+import { MdClose } from "react-icons/md";
 import { BtnLoader } from "../../../components";
 import axios from "../../../axios";
 
-function HotelReservationCancelModal({ setIsCancelModal, orderId, setOrderData, netPrice }) {
+export default function HotelReservationCancelRequestStatusChangeModal({
+    setIsCancelModalOpen,
+    hotelOrder,
+    setHotelOrder,
+    netPrice,
+    cancellationId,
+}) {
     const [data, setData] = useState({
         cancellationCharge: netPrice || "",
-        cancellationRemark: "",
     });
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
     const wrapperRef = useRef();
-    useHandleClickOutside(wrapperRef, () => setIsCancelModal(false));
+    useHandleClickOutside(wrapperRef, () => setIsCancelModalOpen(false));
     const { jwtToken } = useSelector((state) => state.admin);
 
     const handleChange = (e) => {
@@ -30,18 +35,28 @@ function HotelReservationCancelModal({ setIsCancelModal, orderId, setOrderData, 
             setIsLoading(true);
             setError("");
 
-            const response = await axios.post(`/hotels/orders/b2b/cancel/${orderId}`, data, {
-                headers: { authorization: `Bearer ${jwtToken}` },
+            const response = await axios.post(
+                `/hotels/orders/b2b/cancel-request/approve/${cancellationId}`,
+                data,
+                {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                }
+            );
+            let tempCancellations = hotelOrder?.cancellations;
+            const objIndex = tempCancellations?.findIndex((item) => {
+                return item?._id === cancellationId;
             });
-            setOrderData((prev) => {
+            tempCancellations[objIndex] = response.data?.orderCancellation;
+
+            setHotelOrder((prev) => {
                 return {
                     ...prev,
-                    status: response?.data?.status,
-                    cancellations: [response?.data?.orderCancellation, ...prev.cancellations],
+                    status: response.data.status,
+                    cancellations: tempCancellations,
                 };
             });
             setIsLoading(false);
-            setIsCancelModal(false);
+            setIsCancelModalOpen(false);
         } catch (err) {
             setError(err?.response?.data?.error || "Something went wrong, try again");
             setIsLoading(false);
@@ -58,7 +73,7 @@ function HotelReservationCancelModal({ setIsCancelModal, orderId, setOrderData, 
                     <h2 className="font-medium mb-2">Cancel Reservation</h2>
                     <button
                         className="h-auto bg-transparent text-textColor text-xl"
-                        onClick={() => setIsCancelModal(false)}
+                        onClick={() => setIsCancelModalOpen(false)}
                     >
                         <MdClose />
                     </button>
@@ -76,22 +91,13 @@ function HotelReservationCancelModal({ setIsCancelModal, orderId, setOrderData, 
                                 required
                             />
                         </div>
-                        <div>
-                            <label htmlFor="">Cancellation Remark</label>
-                            <textarea
-                                placeholder="Enter cancellation remark"
-                                name="cancellationRemark"
-                                value={data.cancellationRemark || ""}
-                                onChange={handleChange}
-                            />
-                        </div>
 
                         {error && <span className="text-sm block text-red-500 mt-2">{error}</span>}
                         <div className="mt-4 flex items-center justify-end gap-[12px]">
                             <button
                                 className="bg-slate-300 text-textColor px-[15px]"
                                 type="button"
-                                onClick={() => setIsCancelModal(false)}
+                                onClick={() => setIsCancelModalOpen(false)}
                             >
                                 Cancel
                             </button>
@@ -105,5 +111,3 @@ function HotelReservationCancelModal({ setIsCancelModal, orderId, setOrderData, 
         </div>
     );
 }
-
-export default HotelReservationCancelModal;

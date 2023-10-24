@@ -66,8 +66,6 @@ const initialState = {
         // markets: [],
         specificNations: false,
         applicableNations: [],
-        isFeatured: false,
-        featuredNote: "",
         isApplicableForExtraBed: false,
         isApplicableForSupplement: false,
         applicableOnRatePromotion: false,
@@ -240,6 +238,7 @@ export const hotelPromotionsFormSlice = createSlice({
                 toDate: "",
                 roomTypes: [],
                 daysBefore: "",
+                cancellationType: "refundable",
                 cancellationChargeType: "flat",
                 cancellationCharge: "",
                 requestCancelDaysBefore: "",
@@ -250,6 +249,7 @@ export const hotelPromotionsFormSlice = createSlice({
             state.excludedDates.push({
                 fromDate: "",
                 toDate: "",
+                roomTypes: [],
             });
         },
 
@@ -358,8 +358,6 @@ export const hotelPromotionsFormSlice = createSlice({
                 // markets,
                 specificNations,
                 applicableNations,
-                isFeatured,
-                featuredNote,
                 isApplicableForExtraBed,
                 isApplicableForSupplement,
                 applicableOnRatePromotion,
@@ -387,8 +385,6 @@ export const hotelPromotionsFormSlice = createSlice({
                 // markets: markets || [],
                 specificNations: specificNations || false,
                 applicableNations: applicableNations || [],
-                isFeatured,
-                featuredNote: featuredNote || "",
                 isApplicableForExtraBed: isApplicableForExtraBed || false,
                 isApplicableForSupplement: isApplicableForSupplement || false,
                 applicableOnRatePromotion: applicableOnRatePromotion || false,
@@ -562,6 +558,7 @@ export const hotelPromotionsFormSlice = createSlice({
                     toDate: policies.toDate ? convertIsoDateToYMD(policies.toDate) : "",
                     roomTypes: policies?.roomTypes,
                     daysBefore: policies.daysBefore,
+                    cancellationType: policies.cancellationType || "refundable",
                     cancellationChargeType: policies.cancellationChargeType || "flat",
                     cancellationCharge: policies.cancellationCharge,
                     requestCancelDaysBefore: policies?.requestCancelDaysBefore,
@@ -571,6 +568,7 @@ export const hotelPromotionsFormSlice = createSlice({
                 excludedDates?.map((dateRange) => ({
                     fromDate: dateRange.fromDate ? convertIsoDateToYMD(dateRange.fromDate) : "",
                     toDate: dateRange.toDate ? convertIsoDateToYMD(dateRange.toDate) : "",
+                    roomTypes: dateRange?.roomTypes || [],
                 })) || [];
 
             state.isPromotionLoading = false;

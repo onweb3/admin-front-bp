@@ -7,14 +7,30 @@ import { AiOutlineCloudDownload, AiOutlineMail, AiOutlinePhone } from "react-ico
 import { PageLoader } from "../../components";
 import axios from "../../axios";
 import { formatDate } from "../../utils";
-import { HotelReservationCancelModal, HotelReservationConfirmModal } from "../../features/Hotels";
+import {
+    HotelReservationCancelModal,
+    HotelReservationCancellationTableRow,
+    HotelReservationConfirmModal,
+} from "../../features/Hotels";
 import { config } from "../../constants";
+
+const sections = {
+    payments: "Payments",
+    cancellation: "Cancellation",
+    refund: "Refunds",
+    contracts: "Contracts",
+    discounts: "Discounts",
+    "meal-upgrades": "Meal Upgrades",
+    "room-upgrades": "Room Upgrades",
+    staypays: "Stay Pays",
+};
 
 export default function HotelOrderDetailsPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [hotelOrder, setHotelOrder] = useState({});
     const [isConfirmModalOpen, setIsConfirmModal] = useState(false);
     const [isCancelModalOpen, setIsCancelModal] = useState(false);
+    const [selectedSection, setSelectedSection] = useState("payments");
 
     const { jwtToken } = useSelector((state) => state.admin);
     const { id } = useParams();
@@ -25,7 +41,12 @@ export default function HotelOrderDetailsPage() {
             const response = await axios.get(`/hotels/orders/b2b/single/${id}`, {
                 headers: { authorization: `Bearer ${jwtToken}` },
             });
-            setHotelOrder(response.data);
+            setHotelOrder({
+                ...response.data?.hotelOrder,
+                payments: response.data?.payments,
+                refunds: response.data?.refunds,
+                cancellations: response.data?.cancellations,
+            });
             setIsLoading(false);
         } catch (err) {
             console.log(err);
@@ -100,9 +121,6 @@ export default function HotelOrderDetailsPage() {
                                     : `Hotel Order ${hotelOrder?.status}`}
                                 .
                             </span>
-                            <span className="text-sm ml-3">
-                                ({formatDate(hotelOrder.lastStatusChange, true)})
-                            </span>
                             {hotelOrder?.status === "cancelled" && (
                                 <span className="block text-sm mt-1">
                                     {hotelOrder?.cancellationRemark}
@@ -148,16 +166,36 @@ export default function HotelOrderDetailsPage() {
                                         </span>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-[25px]">
+                                <div className="flex items-start gap-[25px]">
                                     <div className="text-center">
-                                        <span className="block text-sm text-grayColor font-medium">
+                                        <span className="block text-[12px] text-grayColor font-medium">
                                             Net Price
                                         </span>
-                                        <span className="font-[600] text-lg">
+                                        <span className="font-[600] text-lg text-green-600">
                                             {hotelOrder?.netPrice} AED
                                         </span>
                                     </div>
-                                    <div>
+                                    <div className="text-center">
+                                        <span className="block text-[12px] text-grayColor font-medium mb-1">
+                                            Payment State
+                                        </span>
+                                        <span
+                                            className={
+                                                "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
+                                                (hotelOrder?.paymentState === "non-paid"
+                                                    ? "bg-[#f065481A] text-[#f06548]"
+                                                    : hotelOrder?.paymentState === "fully-paid"
+                                                    ? "text-[#0ab39c] bg-[#0ab39c1A]"
+                                                    : "bg-[#f7b84b1A] text-[#f7b84b]")
+                                            }
+                                        >
+                                            {hotelOrder?.paymentState || "N/A"}
+                                        </span>
+                                    </div>
+                                    <div className="text-center">
+                                        <span className="block text-[12px] text-grayColor font-medium mb-1">
+                                            Order Status
+                                        </span>
                                         {hotelOrder?.status === "booked" ||
                                         hotelOrder?.status === "cancel-pending" ||
                                         hotelOrder?.status === "confirmed" ? (
@@ -377,450 +415,6 @@ export default function HotelOrderDetailsPage() {
                                                 </div>
                                             </div>
                                         </div>
-                                        {hotelOrder?.status === "cancelled" && (
-                                            <div className="mt-7">
-                                                <h1 className="font-[600] flex items-center gap-[10px] text-[15px] mb-2">
-                                                    <BsFillArrowRightCircleFill /> Order Cancelled
-                                                </h1>
-                                                <div>
-                                                    <table className="w-full text-[15px]">
-                                                        <tbody>
-                                                            <tr className="odd:bg-[#f3f6f9]">
-                                                                <td className="p-2">
-                                                                    Cancelled By
-                                                                </td>
-                                                                <td className="p-2 capitalize">
-                                                                    {hotelOrder?.cancelledBy}
-                                                                </td>
-                                                            </tr>
-                                                            <tr className="odd:bg-[#f3f6f9]">
-                                                                <td className="p-2">
-                                                                    Cancellation Charge
-                                                                </td>
-                                                                <td className="p-2">
-                                                                    {hotelOrder?.cancellationCharge}{" "}
-                                                                    AED
-                                                                </td>
-                                                            </tr>
-                                                            <tr className="odd:bg-[#f3f6f9]">
-                                                                <td className="p-2">
-                                                                    Cancellation Remark
-                                                                </td>
-                                                                <td className="p-2">
-                                                                    {hotelOrder?.cancellationRemark ||
-                                                                        "N/A"}
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        )}
-                                        {hotelOrder?.isApiConnected === false && (
-                                            <div className="mt-7">
-                                                <h1 className="font-[600] flex items-center gap-[10px] text-[15px] mb-2">
-                                                    <BsFillArrowRightCircleFill /> Contracts By Day
-                                                </h1>
-                                                <div className="overflow-x-auto">
-                                                    <table className="w-full text-[14px]">
-                                                        <tbody>
-                                                            <tr className="odd:bg-[#f3f6f9]">
-                                                                <td className="p-2 text-sm text-grayColor font-medium">
-                                                                    Date
-                                                                </td>
-                                                                <td className="p-2 text-sm text-grayColor font-medium">
-                                                                    Contract
-                                                                </td>
-                                                                <td className="p-2 text-sm text-grayColor font-medium">
-                                                                    Special Rate
-                                                                </td>
-                                                                <td className="p-2 text-sm text-grayColor font-medium">
-                                                                    Room Price
-                                                                </td>
-                                                                <td className="p-2 text-sm text-grayColor font-medium">
-                                                                    Meal Supp Price
-                                                                </td>
-                                                                <td className="p-2 text-sm text-grayColor font-medium">
-                                                                    Ex.Bed Price
-                                                                </td>
-                                                                <td className="p-2 text-sm text-grayColor font-medium">
-                                                                    Chd suppl Price
-                                                                </td>
-                                                                <td className="p-2 text-sm text-grayColor font-medium">
-                                                                    Net Price
-                                                                </td>
-                                                            </tr>
-                                                            {hotelOrder?.contracts?.map(
-                                                                (contract, index) => {
-                                                                    return (
-                                                                        <tr
-                                                                            key={index}
-                                                                            className="odd:bg-[#f3f6f9]"
-                                                                        >
-                                                                            <td className="p-2">
-                                                                                {formatDate(
-                                                                                    contract?.date
-                                                                                )}
-                                                                            </td>
-                                                                            <td className="p-2">
-                                                                                {
-                                                                                    contract
-                                                                                        ?.contract
-                                                                                        ?.rateCode
-                                                                                }
-                                                                            </td>
-                                                                            <td className="p-2">
-                                                                                {contract?.isSpecialRate ===
-                                                                                true
-                                                                                    ? "yes"
-                                                                                    : "no"}{" "}
-                                                                                {(contract?.isSpecialRate ===
-                                                                                    true) ===
-                                                                                true
-                                                                                    ? `(${contract?.appliedRateCode})`
-                                                                                    : ""}
-                                                                            </td>
-                                                                            <td className="p-2 whitespace-nowrap">
-                                                                                {
-                                                                                    contract?.roomPrice
-                                                                                }{" "}
-                                                                                AED
-                                                                            </td>
-                                                                            <td className="p-2 whitespace-nowrap">
-                                                                                {
-                                                                                    contract?.mealSupplementPrice
-                                                                                }{" "}
-                                                                                AED
-                                                                            </td>
-                                                                            <td className="p-2 whitespace-nowrap">
-                                                                                {
-                                                                                    contract?.extraBedSupplementPrice
-                                                                                }{" "}
-                                                                                AED
-                                                                            </td>
-                                                                            <td className="p-2 whitespace-nowrap">
-                                                                                {
-                                                                                    contract?.childSupplementPrice
-                                                                                }{" "}
-                                                                                AED
-                                                                            </td>
-                                                                            <td className="p-2 whitespace-nowrap">
-                                                                                {contract?.netPrice}{" "}
-                                                                                AED
-                                                                            </td>
-                                                                        </tr>
-                                                                    );
-                                                                }
-                                                            )}
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        )}
-                                        {hotelOrder?.appliedMealUpgrades?.length > 0 && (
-                                            <div className="mt-7">
-                                                <h1 className="font-[600] flex items-center gap-[10px] text-[15px] mb-2">
-                                                    <BsFillArrowRightCircleFill /> Applied Meal
-                                                    Upgrades
-                                                </h1>
-                                                <div className="overflow-x-auto">
-                                                    <table className="w-full text-[14px]">
-                                                        <tbody>
-                                                            <tr className="odd:bg-[#f3f6f9]">
-                                                                <td className="p-2 text-sm text-grayColor font-medium">
-                                                                    Promotion
-                                                                </td>
-                                                                <td className="p-2 text-sm text-grayColor font-medium">
-                                                                    Rate Code
-                                                                </td>
-                                                                <td className="p-2 text-sm text-grayColor font-medium">
-                                                                    Dates
-                                                                </td>
-                                                            </tr>
-                                                            {hotelOrder?.appliedMealUpgrades?.map(
-                                                                (mealUpgrade, index) => {
-                                                                    return (
-                                                                        <tr
-                                                                            key={index}
-                                                                            className="odd:bg-[#f3f6f9]"
-                                                                        >
-                                                                            <td className="p-2">
-                                                                                {
-                                                                                    mealUpgrade
-                                                                                        ?.promotion
-                                                                                        ?.name
-                                                                                }
-                                                                            </td>
-                                                                            <td className="p-2">
-                                                                                {
-                                                                                    mealUpgrade?.rateCode
-                                                                                }
-                                                                            </td>
-                                                                            <td className="p-2">
-                                                                                {mealUpgrade?.dates?.map(
-                                                                                    (
-                                                                                        item,
-                                                                                        index
-                                                                                    ) => {
-                                                                                        return (
-                                                                                            <span
-                                                                                                key={
-                                                                                                    index
-                                                                                                }
-                                                                                            >
-                                                                                                {formatDate(
-                                                                                                    item
-                                                                                                )}
-                                                                                                {index <
-                                                                                                    mealUpgrade
-                                                                                                        ?.dates
-                                                                                                        ?.length -
-                                                                                                        1 &&
-                                                                                                    ", "}
-                                                                                            </span>
-                                                                                        );
-                                                                                    }
-                                                                                )}
-                                                                            </td>
-                                                                        </tr>
-                                                                    );
-                                                                }
-                                                            )}
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        )}
-                                        {hotelOrder?.appliedRoomTypeUpgrades?.length > 0 && (
-                                            <div className="mt-7">
-                                                <h1 className="font-[600] flex items-center gap-[10px] text-[15px] mb-2">
-                                                    <BsFillArrowRightCircleFill /> Applied Room Type
-                                                    Upgrades
-                                                </h1>
-                                                <div className="overflow-x-auto">
-                                                    <table className="w-full text-[14px]">
-                                                        <tbody>
-                                                            <tr className="odd:bg-[#f3f6f9]">
-                                                                <td className="p-2 text-sm text-grayColor font-medium">
-                                                                    Promotion
-                                                                </td>
-                                                                <td className="p-2 text-sm text-grayColor font-medium">
-                                                                    Rate Code
-                                                                </td>
-                                                                <td className="p-2 text-sm text-grayColor font-medium">
-                                                                    Dates
-                                                                </td>
-                                                            </tr>
-                                                            {hotelOrder?.appliedRoomTypeUpgrades?.map(
-                                                                (roomTypeUpgrade, index) => {
-                                                                    return (
-                                                                        <tr
-                                                                            key={index}
-                                                                            className="odd:bg-[#f3f6f9]"
-                                                                        >
-                                                                            <td className="p-2">
-                                                                                {
-                                                                                    roomTypeUpgrade
-                                                                                        ?.promotion
-                                                                                        ?.name
-                                                                                }
-                                                                            </td>
-                                                                            <td className="p-2">
-                                                                                {
-                                                                                    roomTypeUpgrade?.rateCode
-                                                                                }
-                                                                            </td>
-                                                                            <td className="p-2">
-                                                                                {roomTypeUpgrade?.dates?.map(
-                                                                                    (
-                                                                                        item,
-                                                                                        index
-                                                                                    ) => {
-                                                                                        return (
-                                                                                            <span
-                                                                                                key={
-                                                                                                    index
-                                                                                                }
-                                                                                            >
-                                                                                                {formatDate(
-                                                                                                    item
-                                                                                                )}
-                                                                                                {index <
-                                                                                                    roomTypeUpgrade
-                                                                                                        ?.dates
-                                                                                                        ?.length -
-                                                                                                        1 &&
-                                                                                                    ", "}
-                                                                                            </span>
-                                                                                        );
-                                                                                    }
-                                                                                )}
-                                                                            </td>
-                                                                        </tr>
-                                                                    );
-                                                                }
-                                                            )}
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        )}
-                                        {hotelOrder?.appliedStayPays?.length > 0 && (
-                                            <div className="mt-7">
-                                                <h1 className="font-[600] flex items-center gap-[10px] text-[15px] mb-2">
-                                                    <BsFillArrowRightCircleFill /> Applied Staypays
-                                                </h1>
-                                                <div className="overflow-x-auto">
-                                                    <table className="w-full text-[14px]">
-                                                        <tbody>
-                                                            <tr className="odd:bg-[#f3f6f9]">
-                                                                <td className="p-2 text-sm text-grayColor font-medium">
-                                                                    Promotion
-                                                                </td>
-                                                                <td className="p-2 text-sm text-grayColor font-medium">
-                                                                    Rate Code
-                                                                </td>
-                                                                <td className="p-2 text-sm text-grayColor font-medium">
-                                                                    Dates
-                                                                </td>
-                                                                <td className="p-2 text-sm text-grayColor font-medium">
-                                                                    Discount
-                                                                </td>
-                                                            </tr>
-                                                            {hotelOrder?.appliedStayPays?.map(
-                                                                (staypay, index) => {
-                                                                    return (
-                                                                        <tr
-                                                                            key={index}
-                                                                            className="odd:bg-[#f3f6f9]"
-                                                                        >
-                                                                            <td className="p-2">
-                                                                                {
-                                                                                    staypay
-                                                                                        ?.promotion
-                                                                                        ?.name
-                                                                                }
-                                                                            </td>
-                                                                            <td className="p-2">
-                                                                                {staypay?.rateCode}
-                                                                            </td>
-                                                                            <td className="p-2">
-                                                                                {staypay?.dates?.map(
-                                                                                    (
-                                                                                        item,
-                                                                                        index
-                                                                                    ) => {
-                                                                                        return (
-                                                                                            <span
-                                                                                                key={
-                                                                                                    index
-                                                                                                }
-                                                                                            >
-                                                                                                {formatDate(
-                                                                                                    item
-                                                                                                )}
-                                                                                                {index <
-                                                                                                    staypay
-                                                                                                        ?.dates
-                                                                                                        ?.length -
-                                                                                                        1 &&
-                                                                                                    ", "}
-                                                                                            </span>
-                                                                                        );
-                                                                                    }
-                                                                                )}
-                                                                            </td>
-                                                                            <td className="p-2">
-                                                                                {staypay?.discount}{" "}
-                                                                                AED
-                                                                            </td>
-                                                                        </tr>
-                                                                    );
-                                                                }
-                                                            )}
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        )}
-                                        {hotelOrder?.appliedDiscounts?.length > 0 && (
-                                            <div className="mt-7">
-                                                <h1 className="font-[600] flex items-center gap-[10px] text-[15px] mb-2">
-                                                    <BsFillArrowRightCircleFill /> Applied Discounts
-                                                </h1>
-                                                <div className="overflow-x-auto">
-                                                    <table className="w-full text-[14px]">
-                                                        <tbody>
-                                                            <tr className="odd:bg-[#f3f6f9]">
-                                                                <td className="p-2 text-sm text-grayColor font-medium">
-                                                                    Promotion
-                                                                </td>
-                                                                <td className="p-2 text-sm text-grayColor font-medium">
-                                                                    Rate Code
-                                                                </td>
-                                                                <td className="p-2 text-sm text-grayColor font-medium">
-                                                                    Dates
-                                                                </td>
-                                                                <td className="p-2 text-sm text-grayColor font-medium">
-                                                                    Discount
-                                                                </td>
-                                                            </tr>
-                                                            {hotelOrder?.appliedDiscounts?.map(
-                                                                (discount, index) => {
-                                                                    return (
-                                                                        <tr
-                                                                            key={index}
-                                                                            className="odd:bg-[#f3f6f9]"
-                                                                        >
-                                                                            <td className="p-2">
-                                                                                {
-                                                                                    discount
-                                                                                        ?.promotion
-                                                                                        ?.name
-                                                                                }
-                                                                            </td>
-                                                                            <td className="p-2">
-                                                                                {discount?.rateCode}
-                                                                            </td>
-                                                                            <td className="p-2">
-                                                                                {discount?.dates?.map(
-                                                                                    (
-                                                                                        item,
-                                                                                        index
-                                                                                    ) => {
-                                                                                        return (
-                                                                                            <span
-                                                                                                key={
-                                                                                                    index
-                                                                                                }
-                                                                                            >
-                                                                                                {formatDate(
-                                                                                                    item
-                                                                                                )}
-                                                                                                {index <
-                                                                                                    discount
-                                                                                                        ?.dates
-                                                                                                        ?.length -
-                                                                                                        1 &&
-                                                                                                    ", "}
-                                                                                            </span>
-                                                                                        );
-                                                                                    }
-                                                                                )}
-                                                                            </td>
-                                                                            <td className="p-2">
-                                                                                {discount?.discount}{" "}
-                                                                                AED
-                                                                            </td>
-                                                                        </tr>
-                                                                    );
-                                                                }
-                                                            )}
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        )}
                                         <div className="mt-7">
                                             <h1 className="font-[600] flex items-center gap-[10px] text-[15px] mb-2">
                                                 <BsFillArrowRightCircleFill /> Rate Key
@@ -1115,6 +709,581 @@ export default function HotelOrderDetailsPage() {
                                         </table>
                                     </div>
                                 </div>
+                            </div>
+
+                            <div className="mt-7">
+                                <div className="flex items-center">
+                                    <ul className="dir-btn">
+                                        {Object.keys(sections)?.map((section, index) => {
+                                            return (
+                                                <li
+                                                    key={index}
+                                                    className={
+                                                        selectedSection === section ? "active" : ""
+                                                    }
+                                                    onClick={() => {
+                                                        setSelectedSection(section);
+                                                    }}
+                                                >
+                                                    <span>{sections[section]}</span>
+                                                </li>
+                                            );
+                                        })}
+                                    </ul>
+                                </div>
+
+                                {selectedSection === "payments" && (
+                                    <div className="overflow-x-auto mt-2">
+                                        {hotelOrder?.payments?.length < 1 ? (
+                                            <div className="p-4 flex flex-col items-center">
+                                                <span className="text-sm text-grayColor block mt-[6px]">
+                                                    Oops.. No Payments Found
+                                                </span>
+                                            </div>
+                                        ) : (
+                                            <table className="w-full text-[14px]">
+                                                <tbody>
+                                                    <tr className="odd:bg-[#f3f6f9]">
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Date
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Payment Method
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Amount
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Message
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Status
+                                                        </td>
+                                                    </tr>
+                                                    {hotelOrder?.payments?.map((payment, index) => {
+                                                        return (
+                                                            <tr
+                                                                key={index}
+                                                                className="odd:bg-[#f3f6f9]"
+                                                            >
+                                                                <td className="p-2">
+                                                                    {formatDate(
+                                                                        payment?.createdAt,
+                                                                        true
+                                                                    )}
+                                                                </td>
+                                                                <td className="p-2 capitalize">
+                                                                    {payment?.paymentMethod}
+                                                                </td>
+                                                                <td className="p-2">
+                                                                    {payment?.amount?.toFixed(2)}{" "}
+                                                                    AED
+                                                                </td>
+                                                                <td className="p-2">
+                                                                    {payment?.paymentStateMessage ||
+                                                                        "N/A"}
+                                                                </td>
+                                                                <td className="p-2">
+                                                                    <span
+                                                                        className={
+                                                                            "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
+                                                                            (payment?.paymentState ===
+                                                                            "failed"
+                                                                                ? "bg-[#f065481A] text-[#f06548]"
+                                                                                : payment?.paymentState ===
+                                                                                  "success"
+                                                                                ? "text-[#0ab39c] bg-[#0ab39c1A]"
+                                                                                : "bg-[#f7b84b1A] text-[#f7b84b]")
+                                                                        }
+                                                                    >
+                                                                        {payment?.paymentState}
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                        );
+                                                    })}
+                                                </tbody>
+                                            </table>
+                                        )}
+                                    </div>
+                                )}
+                                {selectedSection === "cancellation" && (
+                                    <div className="overflow-x-auto mt-2">
+                                        {hotelOrder?.cancellations?.length < 1 ? (
+                                            <div className="p-4 flex flex-col items-center">
+                                                <span className="text-sm text-grayColor block mt-[6px]">
+                                                    Oops.. No Cancellations Found
+                                                </span>
+                                            </div>
+                                        ) : (
+                                            <table className="w-full text-[14px]">
+                                                <tbody>
+                                                    <tr className="odd:bg-[#f3f6f9]">
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Date
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Provider
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Charge
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Remark
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Cancelled By
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Admin
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Status
+                                                        </td>
+                                                    </tr>
+                                                    {hotelOrder?.cancellations?.map(
+                                                        (cancellation, index) => {
+                                                            return (
+                                                                <HotelReservationCancellationTableRow
+                                                                    key={index}
+                                                                    cancellation={cancellation}
+                                                                    hotelOrder={hotelOrder}
+                                                                    setHotelOrder={setHotelOrder}
+                                                                />
+                                                            );
+                                                        }
+                                                    )}
+                                                </tbody>
+                                            </table>
+                                        )}
+                                    </div>
+                                )}
+                                {selectedSection === "refund" && (
+                                    <div className="overflow-x-auto mt-2">
+                                        {hotelOrder?.refunds?.length < 1 ? (
+                                            <div className="p-4 flex flex-col items-center">
+                                                <span className="text-sm text-grayColor block mt-[6px]">
+                                                    Oops.. No Refunds Found
+                                                </span>
+                                            </div>
+                                        ) : (
+                                            <table className="w-full text-[14px]">
+                                                <tbody>
+                                                    <tr className="odd:bg-[#f3f6f9]">
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Date
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Payment Method
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Amount
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Note
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Status
+                                                        </td>
+                                                    </tr>
+                                                    {hotelOrder?.refunds?.map((refund, index) => {
+                                                        return (
+                                                            <tr
+                                                                key={index}
+                                                                className="odd:bg-[#f3f6f9]"
+                                                            >
+                                                                <td className="p-2">
+                                                                    {formatDate(
+                                                                        refund?.createdAt,
+                                                                        true
+                                                                    )}
+                                                                </td>
+                                                                <td className="p-2 capitalize">
+                                                                    {refund?.paymentMethod}
+                                                                </td>
+                                                                <td className="p-2 whitespace-nowrap">
+                                                                    {refund?.amount?.toFixed(2)} AED
+                                                                </td>
+                                                                <td className="p-2">
+                                                                    {refund?.note || "N/A"}
+                                                                </td>
+                                                                <td className="p-2">
+                                                                    <span
+                                                                        className={
+                                                                            "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
+                                                                            (refund?.status ===
+                                                                            "failed"
+                                                                                ? "bg-[#f065481A] text-[#f06548]"
+                                                                                : refund?.status ===
+                                                                                  "success"
+                                                                                ? "text-[#0ab39c] bg-[#0ab39c1A]"
+                                                                                : "bg-[#f7b84b1A] text-[#f7b84b]")
+                                                                        }
+                                                                    >
+                                                                        {refund?.status}
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                        );
+                                                    })}
+                                                </tbody>
+                                            </table>
+                                        )}
+                                    </div>
+                                )}
+                                {selectedSection === "contracts" && (
+                                    <div className="overflow-x-auto mt-2">
+                                        <table className="w-full text-[14px]">
+                                            <tbody>
+                                                <tr className="odd:bg-[#f3f6f9]">
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Date
+                                                    </td>
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Contract
+                                                    </td>
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Special Rate
+                                                    </td>
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Room Price
+                                                    </td>
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Meal Supp Price
+                                                    </td>
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Ex.Bed Price
+                                                    </td>
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Chd suppl Price
+                                                    </td>
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Net Price
+                                                    </td>
+                                                </tr>
+                                                {hotelOrder?.contracts?.map((contract, index) => {
+                                                    return (
+                                                        <tr
+                                                            key={index}
+                                                            className="odd:bg-[#f3f6f9]"
+                                                        >
+                                                            <td className="p-2">
+                                                                {formatDate(contract?.date)}
+                                                            </td>
+                                                            <td className="p-2">
+                                                                {contract?.contract?.rateCode}
+                                                            </td>
+                                                            <td className="p-2">
+                                                                {contract?.isSpecialRate === true
+                                                                    ? "Yes"
+                                                                    : "No"}{" "}
+                                                                {(contract?.isSpecialRate ===
+                                                                    true) ===
+                                                                true
+                                                                    ? `(${contract?.appliedRateCode})`
+                                                                    : ""}
+                                                            </td>
+                                                            <td className="p-2 whitespace-nowrap">
+                                                                {contract?.roomPrice} AED
+                                                            </td>
+                                                            <td className="p-2 whitespace-nowrap">
+                                                                {contract?.mealSupplementPrice} AED
+                                                            </td>
+                                                            <td className="p-2 whitespace-nowrap">
+                                                                {contract?.extraBedSupplementPrice}{" "}
+                                                                AED
+                                                            </td>
+                                                            <td className="p-2 whitespace-nowrap">
+                                                                {contract?.childSupplementPrice} AED
+                                                            </td>
+                                                            <td className="p-2 whitespace-nowrap">
+                                                                {contract?.netPrice} AED
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                })}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                )}
+                                {selectedSection === "discounts" && (
+                                    <div className="overflow-x-auto mt-2">
+                                        {hotelOrder?.appliedDiscounts?.length < 1 ? (
+                                            <div className="p-4 flex flex-col items-center">
+                                                <span className="text-sm text-grayColor block mt-[6px]">
+                                                    Oops.. No Discounts Found
+                                                </span>
+                                            </div>
+                                        ) : (
+                                            <table className="w-full text-[14px]">
+                                                <tbody>
+                                                    <tr className="odd:bg-[#f3f6f9]">
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Promotion
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Rate Code
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Dates
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Discount
+                                                        </td>
+                                                    </tr>
+                                                    {hotelOrder?.appliedDiscounts?.map(
+                                                        (discount, index) => {
+                                                            return (
+                                                                <tr
+                                                                    key={index}
+                                                                    className="odd:bg-[#f3f6f9]"
+                                                                >
+                                                                    <td className="p-2">
+                                                                        {discount?.promotion?.name}
+                                                                    </td>
+                                                                    <td className="p-2">
+                                                                        {discount?.rateCode}
+                                                                    </td>
+                                                                    <td className="p-2">
+                                                                        {discount?.dates?.map(
+                                                                            (item, index) => {
+                                                                                return (
+                                                                                    <span
+                                                                                        key={index}
+                                                                                    >
+                                                                                        {formatDate(
+                                                                                            item
+                                                                                        )}
+                                                                                        {index <
+                                                                                            discount
+                                                                                                ?.dates
+                                                                                                ?.length -
+                                                                                                1 &&
+                                                                                            ", "}
+                                                                                    </span>
+                                                                                );
+                                                                            }
+                                                                        )}
+                                                                    </td>
+                                                                    <td className="p-2">
+                                                                        {discount?.discount} AED
+                                                                    </td>
+                                                                </tr>
+                                                            );
+                                                        }
+                                                    )}
+                                                </tbody>
+                                            </table>
+                                        )}
+                                    </div>
+                                )}
+                                {selectedSection === "meal-upgrades" && (
+                                    <div className="overflow-x-auto mt-2">
+                                        {hotelOrder?.appliedMealUpgrades?.length < 1 ? (
+                                            <div className="p-4 flex flex-col items-center">
+                                                <span className="text-sm text-grayColor block mt-[6px]">
+                                                    Oops.. No Meal Upgrades Found
+                                                </span>
+                                            </div>
+                                        ) : (
+                                            <table className="w-full text-[14px]">
+                                                <tbody>
+                                                    <tr className="odd:bg-[#f3f6f9]">
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Promotion
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Rate Code
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Dates
+                                                        </td>
+                                                    </tr>
+                                                    {hotelOrder?.appliedMealUpgrades?.map(
+                                                        (mealUpgrade, index) => {
+                                                            return (
+                                                                <tr
+                                                                    key={index}
+                                                                    className="odd:bg-[#f3f6f9]"
+                                                                >
+                                                                    <td className="p-2">
+                                                                        {
+                                                                            mealUpgrade?.promotion
+                                                                                ?.name
+                                                                        }
+                                                                    </td>
+                                                                    <td className="p-2">
+                                                                        {mealUpgrade?.rateCode}
+                                                                    </td>
+                                                                    <td className="p-2">
+                                                                        {mealUpgrade?.dates?.map(
+                                                                            (item, index) => {
+                                                                                return (
+                                                                                    <span
+                                                                                        key={index}
+                                                                                    >
+                                                                                        {formatDate(
+                                                                                            item
+                                                                                        )}
+                                                                                        {index <
+                                                                                            mealUpgrade
+                                                                                                ?.dates
+                                                                                                ?.length -
+                                                                                                1 &&
+                                                                                            ", "}
+                                                                                    </span>
+                                                                                );
+                                                                            }
+                                                                        )}
+                                                                    </td>
+                                                                </tr>
+                                                            );
+                                                        }
+                                                    )}
+                                                </tbody>
+                                            </table>
+                                        )}
+                                    </div>
+                                )}
+                                {selectedSection === "room-upgrades" && (
+                                    <div className="overflow-x-auto mt-2">
+                                        {hotelOrder?.appliedRoomTypeUpgrades?.length < 1 ? (
+                                            <div className="p-4 flex flex-col items-center">
+                                                <span className="text-sm text-grayColor block mt-[6px]">
+                                                    Oops.. No Room Upgrades Found
+                                                </span>
+                                            </div>
+                                        ) : (
+                                            <table className="w-full text-[14px]">
+                                                <tbody>
+                                                    <tr className="odd:bg-[#f3f6f9]">
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Promotion
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Rate Code
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Dates
+                                                        </td>
+                                                    </tr>
+                                                    {hotelOrder?.appliedRoomTypeUpgrades?.map(
+                                                        (roomTypeUpgrade, index) => {
+                                                            return (
+                                                                <tr
+                                                                    key={index}
+                                                                    className="odd:bg-[#f3f6f9]"
+                                                                >
+                                                                    <td className="p-2">
+                                                                        {
+                                                                            roomTypeUpgrade
+                                                                                ?.promotion?.name
+                                                                        }
+                                                                    </td>
+                                                                    <td className="p-2">
+                                                                        {roomTypeUpgrade?.rateCode}
+                                                                    </td>
+                                                                    <td className="p-2">
+                                                                        {roomTypeUpgrade?.dates?.map(
+                                                                            (item, index) => {
+                                                                                return (
+                                                                                    <span
+                                                                                        key={index}
+                                                                                    >
+                                                                                        {formatDate(
+                                                                                            item
+                                                                                        )}
+                                                                                        {index <
+                                                                                            roomTypeUpgrade
+                                                                                                ?.dates
+                                                                                                ?.length -
+                                                                                                1 &&
+                                                                                            ", "}
+                                                                                    </span>
+                                                                                );
+                                                                            }
+                                                                        )}
+                                                                    </td>
+                                                                </tr>
+                                                            );
+                                                        }
+                                                    )}
+                                                </tbody>
+                                            </table>
+                                        )}
+                                    </div>
+                                )}
+                                {selectedSection === "staypays" && (
+                                    <div className="overflow-x-auto mt-2">
+                                        {hotelOrder?.appliedStayPays?.length < 1 ? (
+                                            <div className="p-4 flex flex-col items-center">
+                                                <span className="text-sm text-grayColor block mt-[6px]">
+                                                    Oops.. No Staypays Found
+                                                </span>
+                                            </div>
+                                        ) : (
+                                            <table className="w-full text-[14px]">
+                                                <tbody>
+                                                    <tr className="odd:bg-[#f3f6f9]">
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Promotion
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Rate Code
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Dates
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Discount
+                                                        </td>
+                                                    </tr>
+                                                    {hotelOrder?.appliedStayPays?.map(
+                                                        (staypay, index) => {
+                                                            return (
+                                                                <tr
+                                                                    key={index}
+                                                                    className="odd:bg-[#f3f6f9]"
+                                                                >
+                                                                    <td className="p-2">
+                                                                        {staypay?.promotion?.name}
+                                                                    </td>
+                                                                    <td className="p-2">
+                                                                        {staypay?.rateCode}
+                                                                    </td>
+                                                                    <td className="p-2">
+                                                                        {staypay?.dates?.map(
+                                                                            (item, index) => {
+                                                                                return (
+                                                                                    <span
+                                                                                        key={index}
+                                                                                    >
+                                                                                        {formatDate(
+                                                                                            item
+                                                                                        )}
+                                                                                        {index <
+                                                                                            staypay
+                                                                                                ?.dates
+                                                                                                ?.length -
+                                                                                                1 &&
+                                                                                            ", "}
+                                                                                    </span>
+                                                                                );
+                                                                            }
+                                                                        )}
+                                                                    </td>
+                                                                    <td className="p-2">
+                                                                        {staypay?.discount} AED
+                                                                    </td>
+                                                                </tr>
+                                                            );
+                                                        }
+                                                    )}
+                                                </tbody>
+                                            </table>
+                                        )}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>

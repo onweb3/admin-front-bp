@@ -41,9 +41,6 @@ export default function HotelPromotionTableRow({
             <td className="p-3 ">{promotion?.name}</td>
             <td className="p-3 ">{promotion?.promotionCode}</td>
             <td className="p-3 ">{promotion?.priority}</td>
-            <td className="p-3 underline text-blue-500">
-                <Link to={`${promotion?._id}/banner`}>Update Banner</Link>
-            </td>
             <td className="p-3">
                 <div className="flex items-center gap-[10px]">
                     <span

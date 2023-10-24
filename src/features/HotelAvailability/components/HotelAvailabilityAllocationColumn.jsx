@@ -31,7 +31,7 @@ export default function HotelAvailabilityAllocationColumn({
                 : ""}
             {allocation?.allocationType === "static"
                 ? (allocation?.unitWise === "room" ? " / R-" : " / P-") +
-                  allocation?.bookedAllocation
+                  allocation?.bookedAllocations
                 : ""}
             {isModalOpen && (
                 <HotelAvailabilityDetailsModal

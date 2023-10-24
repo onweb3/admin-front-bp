@@ -36,7 +36,6 @@ function HotelReservationConfirmModal({ setIsConfirmModal, orderId, setOrderData
                 return {
                     ...prev,
                     status: "confirmed",
-                    lastStatusChange: response?.data?.lastStatusChange,
                     hotelBookingId: response?.data?.hotelBookingId,
                 };
             });
