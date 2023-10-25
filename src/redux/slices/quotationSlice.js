@@ -46,6 +46,7 @@ const initialState = {
             },
         ],
     },
+    isTourisumFeeIncluded: false,
     dateError: "",
     selectedExcursions: [],
     excursionTotalPrice: 0,
@@ -727,7 +728,8 @@ export const quotationsSlice = createSlice({
                 action.payload?.amendment?.departureTerminalCode;
             state.isArrivalAirportDisabled =
                 action.payload?.amendment?.isArrivalAirportDisabled;
-
+            state.isTourisumFeeIncluded =
+                action.payload?.amendment?.isTourisumFeeIncluded || false;
             // if (action.payload?.amendment?.transferQuotation) {
             //     state.transfer = action.payload?.amendment?.transferQuotation;
             // }

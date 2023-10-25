@@ -95,13 +95,13 @@ function QuotationSingleEmailPage() {
                     <br />
                     <br />
                     <div className="cust-border">
-                        <span className="text-[13px] font-bold">
+                        <span className="text-[13px] font-bold cust-border">
                             Greetings from {config.COMPANY_NAME?.split(" ")[1]}
                             !!!!
                             <span />
                         </span>
                         <br />
-                        <span className="text-[13px]">
+                        <span className="text-[13px] cust-border">
                             Kindly find the below quote for your reference.
                         </span>
                     </div>
@@ -590,7 +590,7 @@ function QuotationSingleEmailPage() {
                                                 }
                                             </div>
                                         )}
-                                        {quotationList?.noOfChildren ? (
+                                        {quotationList?.noOfChildren > 0 ? (
                                             <div className="mt-1">
                                                 Per person Child price:{" "}
                                                 {quotationList?.perPersonChildPrice?.toFixed(
@@ -617,7 +617,7 @@ function QuotationSingleEmailPage() {
                                         {quotationList?.quotationCurrency}
                                     </div>
                                 )}
-                                {quotationList?.noOfChildren && (
+                                {quotationList?.noOfChildren > 0 && (
                                     <div className="mt-1 cust-border">
                                         Per person Child price:{" "}
                                         {quotationList?.perPersonChildPrice?.toFixed(
@@ -635,7 +635,7 @@ function QuotationSingleEmailPage() {
                             {quotationList?.excursionQuotation?.excursions
                                 ?.length ? (
                                 <div>
-                                    <h3 className="text-[12px] font-bold pt-5">
+                                    <h3 className="text-[12px] font-bold pt-5 cust-border">
                                         Inclusions
                                     </h3>
                                 </div>
@@ -691,7 +691,7 @@ function QuotationSingleEmailPage() {
                                         <>
                                             {" "}
                                             <div className="cust-border">
-                                                <h3 className=" text-[12px] font-bold pt-5">
+                                                <h3 className=" text-[12px] font-bold pt-5 cust-border">
                                                     Transfers
                                                 </h3>
                                             </div>
@@ -711,7 +711,7 @@ function QuotationSingleEmailPage() {
                                                                             }
                                                                             className="cust-border"
                                                                         >
-                                                                            <ul className="list-disc ml-6 text-xs">
+                                                                            <ul className="list-disc ml-6 text-[12px]">
                                                                                 <li className="cust-border">
                                                                                     {
                                                                                         stay?.transferToName
@@ -746,7 +746,7 @@ function QuotationSingleEmailPage() {
                             {quotationList?.excSupplementQuotation?.excursions
                                 ?.length ? (
                                 <div className="cust-border">
-                                    <h3 className=" text-[12px] font-bold pt-5">
+                                    <h3 className=" text-[12px] font-bold pt-5 cust-border">
                                         Suppliments
                                     </h3>
                                 </div>
@@ -758,7 +758,7 @@ function QuotationSingleEmailPage() {
                                     (exc) => {
                                         return (
                                             <div>
-                                                <ul className="list-disc ml-6 text-xs">
+                                                <ul className="list-disc ml-6 text-[12px]">
                                                     {exc?.transferType ===
                                                     "shared" ? (
                                                         <>
@@ -836,7 +836,7 @@ function QuotationSingleEmailPage() {
                                 <div className="pt-10 cust-border">
                                     <div className="relative overflow-x-auto">
                                         <div className="cust-border">
-                                            <h1 className="cust-border text-[12px] font-bold">
+                                            <h1 className="cust-border text-[12px] font-bold cust-border">
                                                 Visa{" "}
                                             </h1>
                                         </div>
@@ -1043,7 +1043,7 @@ function QuotationSingleEmailPage() {
 
                     <br />
                     <div className="cust-border">
-                        <h3 className=" mb-2 text-[12px] font-bold">
+                        <h3 className=" mb-2 text-[12px] font-bold cust-border">
                             Terms and Conditions
                         </h3>
                         <ul className="list-disc ml-6 text-[12px]">
