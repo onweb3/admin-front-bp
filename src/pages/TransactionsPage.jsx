@@ -198,7 +198,7 @@ export default function TransactionsPage() {
                                 onChange={handleChange}
                             />
                         </div>
-                        <div>
+                        {/* <div>
                             <label htmlFor="">Transaction Type</label>
                             <select
                                 id=""
@@ -213,7 +213,7 @@ export default function TransactionsPage() {
                                 <option value="deduct">Deduct</option>
                                 <option value="refund">Refund</option>
                             </select>
-                        </div>
+                        </div> */}
                         <div>
                             <label htmlFor="">Payment Processor</label>
                             <select
@@ -223,8 +223,8 @@ export default function TransactionsPage() {
                                 onChange={handleChange}
                             >
                                 <option value="">All</option>
-                                <option value="paypal">Paypal</option>
                                 <option value="wallet">Wallet</option>
+                                <option value="ccavenue">CCAvenue</option>
                             </select>
                         </div>
                         <div>

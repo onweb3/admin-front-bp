@@ -166,7 +166,7 @@ export default function HotelOrderDetailsPage() {
                                         </span>
                                     </div>
                                 </div>
-                                <div className="flex items-start gap-[25px]">
+                                <div className="flex items-center gap-[25px]">
                                     <div className="text-center">
                                         <span className="block text-[12px] text-grayColor font-medium">
                                             Net Price
@@ -192,7 +192,7 @@ export default function HotelOrderDetailsPage() {
                                             {hotelOrder?.paymentState || "N/A"}
                                         </span>
                                     </div>
-                                    <div className="text-center">
+                                    <div className="">
                                         <span className="block text-[12px] text-grayColor font-medium mb-1">
                                             Order Status
                                         </span>
