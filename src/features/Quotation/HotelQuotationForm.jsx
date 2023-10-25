@@ -20,6 +20,7 @@ export default function HotelQuotationForm() {
         isHotelQuotationDisabled,
         hotelDisabledRemark,
         isAlreadyBooked,
+        isTourisumFeeIncluded,
     } = useSelector((state) => state.quotations);
     const dispatch = useDispatch();
 
@@ -50,71 +51,155 @@ export default function HotelQuotationForm() {
                         <div class="flex justi items-center  border border-dashed bg-stone-100 p-5 w-full">
                             <div class="w-full ">
                                 <div className="flex items-center justify-center pb-4">
-                                    <p className="font-500 text-md text-orange-600">
+                                    <p className="font-500 text-md text-orange-600 w-full">
                                         {" "}
                                         Is Hotel Already Booked ?
                                     </p>
-                                </div>
-                                <div class="flex justify-evenly items-center w-full">
-                                    <div class="flex justify-center items-center gap-4">
-                                        <input
-                                            type="radio"
-                                            id="bookHotel"
-                                            name="isAlreadyBooked"
-                                            className="w-[18px] h-[18px]"
-                                            checked={isAlreadyBooked}
-                                            onChange={(e) => {
-                                                dispatch(
-                                                    handleQuotationDisableChange(
-                                                        {
-                                                            name: "isAlreadyBooked",
-                                                            value: e.target
-                                                                .checked,
-                                                        }
-                                                    )
-                                                );
-                                                dispatch(clearHotelDetails());
-                                                dispatch(handleTransferClear());
-                                            }}
-                                        />
-                                        <label
-                                            htmlFor=""
-                                            className="w-[100%] max-w-[180px] flex items-center"
-                                        >
-                                            <p class="whitespace-nowrap">
-                                                Yes Booked
-                                            </p>
-                                        </label>
+                                    <div class="flex justify-evenly items-center w-full">
+                                        <div class="flex justify-center items-center gap-4">
+                                            <input
+                                                type="radio"
+                                                id="bookHotel"
+                                                name="isAlreadyBooked"
+                                                className="w-[18px] h-[18px]"
+                                                checked={isAlreadyBooked}
+                                                onChange={(e) => {
+                                                    dispatch(
+                                                        handleQuotationDisableChange(
+                                                            {
+                                                                name: "isAlreadyBooked",
+                                                                value: e.target
+                                                                    .checked,
+                                                            }
+                                                        )
+                                                    );
+                                                    dispatch(
+                                                        clearHotelDetails()
+                                                    );
+                                                    dispatch(
+                                                        handleTransferClear()
+                                                    );
+                                                }}
+                                            />
+                                            <label
+                                                htmlFor=""
+                                                className="w-[100%] max-w-[180px] flex items-center"
+                                            >
+                                                <p class="whitespace-nowrap">
+                                                    Yes Booked
+                                                </p>
+                                            </label>
+                                        </div>
+                                        <div class="flex justify-center items-center gap-4">
+                                            <input
+                                                type="radio"
+                                                id="alreadyBooked"
+                                                name="isAlreadyBooked"
+                                                checked={!isAlreadyBooked}
+                                                className="w-[18px] h-[18px]"
+                                                onChange={(e) => {
+                                                    dispatch(
+                                                        handleQuotationDisableChange(
+                                                            {
+                                                                name: "isAlreadyBooked",
+                                                                value: !e.target
+                                                                    .checked,
+                                                            }
+                                                        )
+                                                    );
+                                                    dispatch(
+                                                        clearHotelDetails()
+                                                    );
+                                                    dispatch(
+                                                        handleTransferClear()
+                                                    );
+                                                }}
+                                            />
+                                            <label
+                                                htmlFor=""
+                                                className="w-[100%] max-w-[180px] flex items-center"
+                                            >
+                                                <p class="whitespace-nowrap">
+                                                    Not Booked
+                                                </p>
+                                            </label>
+                                        </div>
                                     </div>
-                                    <div class="flex justify-center items-center gap-4">
-                                        <input
-                                            type="radio"
-                                            id="alreadyBooked"
-                                            name="isAlreadyBooked"
-                                            checked={!isAlreadyBooked}
-                                            className="w-[18px] h-[18px]"
-                                            onChange={(e) => {
-                                                dispatch(
-                                                    handleQuotationDisableChange(
-                                                        {
-                                                            name: "isAlreadyBooked",
-                                                            value: !e.target
-                                                                .checked,
-                                                        }
-                                                    )
-                                                );
-                                                dispatch(clearHotelDetails());
-                                                dispatch(handleTransferClear());
-                                            }}
-                                        />
-                                        <label
-                                            htmlFor=""
-                                            className="w-[100%] max-w-[180px] flex items-center"
-                                        >
-                                            <p class="whitespace-nowrap">
-                                                Not Booked
-                                            </p>
-                                        </label>
+                                </div>
+                                <div className="flex items-center justify-center pb-4">
+                                    <p className="font-500 text-md text-orange-600 w-full">
+                                        {" "}
+                                        Is Tourisum Fee Required ?
+                                    </p>
+                                    <div class="flex justify-evenly items-center w-full">
+                                        <div class="flex justify-center items-center gap-4">
+                                            <input
+                                                type="radio"
+                                                id="bookHotel"
+                                                name="isTourisumFeeIncluded"
+                                                className="w-[18px] h-[18px]"
+                                                checked={isTourisumFeeIncluded}
+                                                onChange={(e) => {
+                                                    dispatch(
+                                                        handleQuotationDisableChange(
+                                                            {
+                                                                name: "isTourisumFeeIncluded",
+                                                                value: e.target
+                                                                    .checked,
+                                                            }
+                                                        )
+                                                    );
+                                                    dispatch(
+                                                        clearHotelDetails()
+                                                    );
+                                                    dispatch(
+                                                        handleTransferClear()
+                                                    );
+                                                }}
+                                            />
+                                            <label
+                                                htmlFor=""
+                                                className="w-[100%] max-w-[180px] flex items-center"
+                                            >
+                                                <p class="whitespace-nowrap">
+                                                    Yes
+                                                </p>
+                                            </label>
+                                        </div>
+                                        <div class="flex justify-center items-center gap-4">
+                                            <input
+                                                type="radio"
+                                                id="alreadyBooked"
+                                                name="isTourisumFeeIncluded"
+                                                checked={!isTourisumFeeIncluded}
+                                                className="w-[18px] h-[18px]"
+                                                onChange={(e) => {
+                                                    dispatch(
+                                                        handleQuotationDisableChange(
+                                                            {
+                                                                name: "isTourisumFeeIncluded",
+                                                                value: !e.target
+                                                                    .checked,
+                                                            }
+                                                        )
+                                                    );
+                                                    dispatch(
+                                                        clearHotelDetails()
+                                                    );
+                                                    dispatch(
+                                                        handleTransferClear()
+                                                    );
+                                                }}
+                                            />
+                                            <label
+                                                htmlFor=""
+                                                className="w-[100%] max-w-[180px] flex items-center"
+                                            >
+                                                <p class="whitespace-nowrap">
+                                                    No
+                                                </p>
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

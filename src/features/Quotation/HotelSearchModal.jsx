@@ -81,6 +81,7 @@ export default function HotelSearchModal({
         areas,
         states,
         hotelQt,
+        isTourisumFeeIncluded,
     } = useSelector((state) => state.quotations);
 
     const { jwtToken } = useSelector((state) => state.admin);
@@ -344,6 +345,7 @@ export default function HotelSearchModal({
                     hotelId: data?.hotelId,
                     roomTypeId: data?.roomTypeId,
                     boardTypeCode: data?.boardTypeCode,
+                    isTourisumFeeIncluded: isTourisumFeeIncluded,
                 },
                 {
                     headers: { Authorization: `Bearer ${jwtToken}` },
