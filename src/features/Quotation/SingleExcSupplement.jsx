@@ -146,14 +146,18 @@ export default function SingleExcSupplement({
 
                     calculatedAdultPrice =
                         totalPvtPrice +
-                        (globalExcursion?.ticketPrice?.adultPrice
-                            ? globalExcursion?.ticketPrice?.adultPrice
-                            : 0);
+                        Number(
+                            globalExcursion?.ticketPrice?.adultPrice
+                                ? globalExcursion?.ticketPrice?.adultPrice
+                                : 0
+                        );
                     calculatedChildPrice =
                         totalPvtPrice +
-                        (globalExcursion?.ticketPrice?.childPrice
-                            ? globalExcursion?.ticketPrice?.childPrice
-                            : 0);
+                        Number(
+                            globalExcursion?.ticketPrice?.childPrice
+                                ? globalExcursion?.ticketPrice?.childPrice
+                                : 0
+                        );
                 }
             }
 
@@ -165,7 +169,7 @@ export default function SingleExcSupplement({
                 })
             );
         }
-    }, [excursion.value, noOfAdults, noOfChildren, globalExcursion, vehicles]);
+    }, [excursion, noOfAdults, noOfChildren, globalExcursion, vehicles]);
 
     return (
         <div className="mb-6 bg-[#f6f6f6] p-4">
@@ -436,13 +440,13 @@ export default function SingleExcSupplement({
                                                                         vehTY
                                                                             ?.vehicle
                                                                             ?._id,
-                                                                    price: globalExcursion?.ticketPricing?.vehicleType?.find(
+                                                                    price: globalExcursion?.privateTransferTicket?.vehicleType?.find(
                                                                         (
                                                                             vt
                                                                         ) => {
                                                                             return (
-                                                                                vt?.vehicle?.toString() ===
-                                                                                vehTY?.vehicle?._id?.toString()
+                                                                                vt?.vehicle?._id?.toString() ===
+                                                                                vehTY.vehicle?._id?.toString()
                                                                             );
                                                                         }
                                                                     ).price,

@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "../../../axios";
 import VisaProfileRow from "./visaProfileRow";
+import { PageLoader } from "../../../components";
 // import BookingsOrdersSingleRow from "./BookingsOrdersSingleRow";
 
 export default function VisaProfileListTable({ type }) {
@@ -75,35 +76,47 @@ export default function VisaProfileListTable({ type }) {
     return (
         <div>
             <div className="overflow-x-auto">
-                <table className="w-full">
-                    <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
-                        <tr>
-                            <th className="font-[500] p-3">Index</th>
-                            <th className="font-[500] p-3">Visa Type Name</th>
+                {isPageLoading ? (
+                    <PageLoader />
+                ) : visaTypeList?.length < 1 ? (
+                    <div className="p-6 flex flex-col items-center">
+                        <span className="text-sm text-grayColor block mt-[6px]">
+                            Oops.. No Visa found
+                        </span>
+                    </div>
+                ) : (
+                    <table className="w-full">
+                        <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
+                            <tr>
+                                <th className="font-[500] p-3">Index</th>
+                                <th className="font-[500] p-3">
+                                    Visa Type Name
+                                </th>
 
-                            <th className="font-[500] p-3">Visa</th>
+                                <th className="font-[500] p-3">Visa</th>
 
-                            <th className="font-[500] p-3">Markup Type</th>
-                            <th className="font-[500] p-3">Markup </th>
+                                <th className="font-[500] p-3">Markup Type</th>
+                                <th className="font-[500] p-3">Markup </th>
 
-                            <th className="font-[500] p-3">Edit</th>
-                        </tr>
-                    </thead>
-                    <tbody className="text-sm">
-                        {visaTypeList?.map((visaType, index) => {
-                            return (
-                                <VisaProfileRow
-                                    index={index}
-                                    visaType={visaType}
-                                    visa={visa}
-                                    setVisa={setVisa}
-                                    // section={section}
-                                    type={type}
-                                />
-                            );
-                        })}
-                    </tbody>
-                </table>
+                                <th className="font-[500] p-3">Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody className="text-sm">
+                            {visaTypeList?.map((visaType, index) => {
+                                return (
+                                    <VisaProfileRow
+                                        index={index}
+                                        visaType={visaType}
+                                        visa={visa}
+                                        setVisa={setVisa}
+                                        // section={section}
+                                        type={type}
+                                    />
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                )}
             </div>
 
             {/* <div className="p-4">

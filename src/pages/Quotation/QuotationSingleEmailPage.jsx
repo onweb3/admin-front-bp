@@ -682,14 +682,19 @@ function QuotationSingleEmailPage() {
                             <div className="cust-border">
                                 {quotationList?.isTransferQuotationDisabled ===
                                     false &&
-                                    quotationList?.transferQuotation?.length &&
-                                    quotationList?.transferQuotation
-                                        ?.stayTransfers &&
-                                    quotationList?.transferQuotation
-                                        ?.stayTransfers[0].transfers &&
-                                    quotationList?.transferQuotation
-                                        ?.stayTransfers[0].transfers[0] && (
+                                    quotationList?.transferQuotation?.length >
+                                        0 &&
+                                    quotationList?.transferQuotation[0]
+                                        ?.stays[0] &&
+                                    quotationList?.transferQuotation[0]
+                                        ?.stays[0] && (
                                         <>
+                                            {" "}
+                                            <div className="cust-border">
+                                                <h3 className=" text-[12px] font-bold pt-5">
+                                                    Transfers
+                                                </h3>
+                                            </div>
                                             {quotationList?.transferQuotation?.map(
                                                 (tq, idx) => {
                                                     return (

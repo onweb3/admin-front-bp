@@ -638,6 +638,39 @@ const sidebarMenus = {
         },
     ],
 
+    Create_Orders: [
+        {
+            name: "Attraction",
+            icon: <MdOutlineSummarize />,
+            link: "/order/attraction",
+            permission: ["attraction-order", "view"],
+        },
+        {
+            name: "Visa",
+            icon: <HiOutlineDocumentText />,
+            link: "/order/visa",
+            permission: ["visa-order", "view"],
+        },
+        {
+            name: "A2A",
+            icon: <HiOutlineDocumentText />,
+            link: "/order/a2a",
+            permission: ["a2a-orders", "view"],
+        },
+        {
+            name: "Flight",
+            icon: <HiOutlineDocumentText />,
+            link: "/order/flight",
+            permission: ["flight-orders", "view"],
+        },
+        {
+            name: "Insurance",
+            icon: <HiOutlineDocumentText />,
+            link: "/order/insurance",
+            permission: ["insurance-orders", "view"],
+        },
+    ],
+
     settings: [
         {
             name: "Markup Profile",

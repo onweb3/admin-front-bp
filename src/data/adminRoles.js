@@ -462,6 +462,33 @@ const adminRoles = [
         category: "invoice",
         permissions: [],
     },
+
+    //orders
+
+    {
+        name: "attraction-order",
+        displayName: "Attraction ",
+        category: "order",
+        permissions: [],
+    },
+    {
+        name: "visa-order",
+        displayName: "Visa",
+        category: "order",
+        permissions: [],
+    },
+    {
+        name: "a2a-orders",
+        displayName: "A2a",
+        category: "order",
+        permissions: [],
+    },
+    {
+        name: "flight-orders",
+        displayName: "Flight",
+        category: "order",
+        permissions: [],
+    },
 ];
 
 export default adminRoles;

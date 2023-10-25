@@ -1,4 +1,8 @@
-import { AdminLayout, EditProfileLayout, SingleResellerLayout } from "../layouts";
+import {
+    AdminLayout,
+    EditProfileLayout,
+    SingleResellerLayout,
+} from "../layouts";
 import A2aAddTicketPage from "../pages/A2A/A2aAddTicketPage";
 import A2AEditTicketPage from "../pages/A2A/A2aEditTicketPage";
 import A2AEnquiryPage from "../pages/A2A/A2AEnquiryPage";
@@ -195,9 +199,16 @@ import B2bWalletStatisticsPage from "../pages/wallet/B2bWalletStatisticsPage";
 import B2bWallletDepositListPage from "../pages/wallet/B2bWallletDepositListPage";
 import CacheSettingsPage from "../pages/Hotels/CacheSettingsPage";
 import VoucherSettingsPage from "../pages/Voucher/VoucherSettingsPage";
+import AddTransactionPage from "../pages/transaction/AddTransactionPage";
 import InvoiceSettingsPage from "../pages/Invoice/InvoiceSettingsPage";
 import HotelBannerAdsPage from "../pages/Hotels/HotelBannerAdsPage";
 import FeaturedHotelsPage from "../pages/Hotels/FeaturedHotelsPage";
+import CreateAttractionOrder from "../pages/Attraction/CreateAttractionOrder";
+import CreateA2aOrder from "../pages/A2A/CreateA2aOrderPage";
+import CreateVisaOrderPag from "../pages/Visa/CreateVisaOrderPage";
+import CreateVisaOrderPage from "../pages/Visa/CreateVisaOrderPage";
+import VisaDocumentUploadPage from "../pages/Visa/VisaDocumentUploadPage";
+import CreateFlightOrderPage from "../pages/Flight/CreateFlightOrderPage";
 
 const ThemeRoutes = [
     {
@@ -792,6 +803,10 @@ const ThemeRoutes = [
                 element: <TransactionsPage />,
             },
             {
+                path: "/transactions/add",
+                element: <AddTransactionPage />,
+            },
+            {
                 path: "/payment-settings/services",
                 element: <PaymentServicesPage />,
             },
@@ -1034,6 +1049,30 @@ const ThemeRoutes = [
                 path: "/invoice/settings",
                 element: <InvoiceSettingsPage />,
             },
+
+            //create orders
+            {
+                path: "/order/attraction",
+                element: <CreateAttractionOrder />,
+            },
+            {
+                path: "/order/a2a",
+                element: <CreateA2aOrder />,
+            },
+            {
+                path: "/order/visa",
+                element: <CreateVisaOrderPage />,
+            },
+            {
+                path: "/order/visa/:orderId",
+                element: <VisaDocumentUploadPage />,
+            },
+            {
+                path: "/order/flight",
+                element: <CreateFlightOrderPage />,
+            },
+
+            ,
         ],
     },
     {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "../../../axios";
-import { Pagination } from "../../../components";
+import { PageLoader, Pagination } from "../../../components";
 import AttractionProfileRow from "./AttractionProfileRow";
 import HotelStarCategoryRow from "./HotelStarCategoryRow";
 // import BookingsOrdersSingleRow from "./BookingsOrdersSingleRow";
@@ -74,32 +74,46 @@ export default function HotelStarCategoryTable({ type }) {
     return (
         <div>
             <div className="overflow-x-auto ">
-                <table className="w-full">
-                    <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
-                        <tr>
-                            <th className="font-[500] p-3">Star Category</th>
-                            <th className="font-[500] p-3">Markup Type(API)</th>
-                            <th className="font-[500] p-3">Markup (API)</th>
-                            <th className="font-[500] p-3">Markup Type</th>
-                            <th className="font-[500] p-3">Markup </th>
+                {isPageLoading ? (
+                    <PageLoader />
+                ) : categories?.length < 1 ? (
+                    <div className="p-6 flex flex-col items-center">
+                        <span className="text-sm text-grayColor block mt-[6px]">
+                            Oops.. No Categories found
+                        </span>
+                    </div>
+                ) : (
+                    <table className="w-full">
+                        <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
+                            <tr>
+                                <th className="font-[500] p-3">
+                                    Star Category
+                                </th>
+                                <th className="font-[500] p-3">
+                                    Markup Type(API)
+                                </th>
+                                <th className="font-[500] p-3">Markup (API)</th>
+                                <th className="font-[500] p-3">Markup Type</th>
+                                <th className="font-[500] p-3">Markup </th>
 
-                            <th className="font-[500] p-3">Edit</th>
-                        </tr>
-                    </thead>
-                    <tbody className="text-sm ">
-                        {categories?.map((category, index) => {
-                            return (
-                                // <div>category</div>
-                                <HotelStarCategoryRow
-                                    key={index}
-                                    category={category}
-                                    setCategories={setCategories}
-                                    type={type}
-                                />
-                            );
-                        })}
-                    </tbody>
-                </table>
+                                <th className="font-[500] p-3">Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody className="text-sm ">
+                            {categories?.map((category, index) => {
+                                return (
+                                    // <div>category</div>
+                                    <HotelStarCategoryRow
+                                        key={index}
+                                        category={category}
+                                        setCategories={setCategories}
+                                        type={type}
+                                    />
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                )}
             </div>
 
             {/* <div className="p-4">

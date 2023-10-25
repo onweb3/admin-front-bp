@@ -603,7 +603,13 @@ export const quotationsSlice = createSlice({
                     ].push({
                         [action.payload?.name2]: action.payload.value,
                         count: 1,
+                        price: action.payload?.price,
                     });
+
+                    console.log(
+                        action.payload?.price,
+                        " action.payload?.price,"
+                    );
                 }
             }
         },

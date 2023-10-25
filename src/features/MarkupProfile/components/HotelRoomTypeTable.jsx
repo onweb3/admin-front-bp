@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "../../../axios";
-import { Pagination } from "../../../components";
+import { PageLoader, Pagination } from "../../../components";
 import AttractionProfileRow from "./AttractionProfileRow";
 import HotelStarCategoryRow from "./HotelStarCategoryRow";
 import HotelRoomTypeTableRow from "./HotelRoomTableRow";
@@ -94,9 +94,13 @@ export default function HotelRoomTypeTable({ type }) {
         }
     };
 
+    const handleSubmit = () => {
+        fetchHotelInitialData();
+    };
+
     useEffect(() => {
         fetchHotelInitialData();
-    }, [filters.skip, filters.limit, filters.searchInput]);
+    }, [filters.skip, filters.limit]);
     return (
         <div>
             <div className="overflow-x-auto ">
@@ -130,29 +134,56 @@ export default function HotelRoomTypeTable({ type }) {
                                     })
                                 }
                             />
-                            {/* <button className="px-5">Search</button> */}
+                            <button className="px-5" onClick={handleSubmit}>
+                                Search
+                            </button>
+                            <button
+                                className="px-5"
+                                onClick={() => {
+                                    setFilters((prev) => {
+                                        return {
+                                            ...prev,
+                                            skip: 0,
+                                            searchInput: "",
+                                        };
+                                    });
+                                }}
+                            >
+                                Clear
+                            </button>
                         </form>
                     </div>
                 </div>
-                <table className="w-full">
-                    <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
-                        <tr>
-                            <th className="font-[500] p-3">Hotels</th>
-                        </tr>
-                    </thead>
-                    <tbody className="text-sm ">
-                        {hotels?.map((hotel, index) => {
-                            return (
-                                // <div>category</div>
-                                <HotelRoomTypeTableRow
-                                    key={hotel._id}
-                                    hotel={hotel}
-                                    type={type}
-                                />
-                            );
-                        })}
-                    </tbody>
-                </table>
+
+                {isPageLoading ? (
+                    <PageLoader />
+                ) : hotels?.length < 1 ? (
+                    <div className="p-6 flex flex-col items-center">
+                        <span className="text-sm text-grayColor block mt-[6px]">
+                            Oops.. No Hotels found
+                        </span>
+                    </div>
+                ) : (
+                    <table className="w-full">
+                        <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
+                            <tr>
+                                <th className="font-[500] p-3">Hotels</th>
+                            </tr>
+                        </thead>
+                        <tbody className="text-sm ">
+                            {hotels?.map((hotel, index) => {
+                                return (
+                                    // <div>category</div>
+                                    <HotelRoomTypeTableRow
+                                        key={hotel._id}
+                                        hotel={hotel}
+                                        type={type}
+                                    />
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                )}
             </div>
 
             <div className="p-4">
