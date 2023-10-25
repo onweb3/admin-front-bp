@@ -20,7 +20,7 @@ export default function HotelQuotationForm() {
         isHotelQuotationDisabled,
         hotelDisabledRemark,
         isAlreadyBooked,
-        isTourisumFeeIncluded,
+        isTourismFeeIncluded,
     } = useSelector((state) => state.quotations);
     const dispatch = useDispatch();
 
@@ -136,14 +136,14 @@ export default function HotelQuotationForm() {
                                             <input
                                                 type="radio"
                                                 id="bookHotel"
-                                                name="isTourisumFeeIncluded"
+                                                name="isTourismFeeIncluded"
                                                 className="w-[18px] h-[18px]"
-                                                checked={isTourisumFeeIncluded}
+                                                checked={isTourismFeeIncluded}
                                                 onChange={(e) => {
                                                     dispatch(
                                                         handleQuotationDisableChange(
                                                             {
-                                                                name: "isTourisumFeeIncluded",
+                                                                name: "isTourismFeeIncluded",
                                                                 value: e.target
                                                                     .checked,
                                                             }
@@ -170,14 +170,14 @@ export default function HotelQuotationForm() {
                                             <input
                                                 type="radio"
                                                 id="alreadyBooked"
-                                                name="isTourisumFeeIncluded"
-                                                checked={!isTourisumFeeIncluded}
+                                                name="isTourismFeeIncluded"
+                                                checked={!isTourismFeeIncluded}
                                                 className="w-[18px] h-[18px]"
                                                 onChange={(e) => {
                                                     dispatch(
                                                         handleQuotationDisableChange(
                                                             {
-                                                                name: "isTourisumFeeIncluded",
+                                                                name: "isTourismFeeIncluded",
                                                                 value: !e.target
                                                                     .checked,
                                                             }
