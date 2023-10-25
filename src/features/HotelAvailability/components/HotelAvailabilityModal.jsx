@@ -18,6 +18,7 @@ export default function HotelAvailabilityModal({
         unitWise: "room",
         releaseDate: "",
         allocation: "",
+        rateType: "all-promotions",
     });
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -57,9 +58,7 @@ export default function HotelAvailabilityModal({
             setIsLoading(false);
             setAvailabilityModalOpen(false);
         } catch (err) {
-            setError(
-                err?.response?.data?.error || "Something went wrong, Try again"
-            );
+            setError(err?.response?.data?.error || "Something went wrong, Try again");
             setIsLoading(false);
         }
     };
@@ -71,7 +70,7 @@ export default function HotelAvailabilityModal({
                 className="bg-[#fff] w-full max-h-[90vh] max-w-[500px]  shadow-[0_1rem_3rem_rgb(0_0_0_/_18%)] overflow-y-auto"
             >
                 <div className="flex items-center justify-between border-b p-4">
-                    <h2 className="font-medium mb-2">Change Inventory</h2>
+                    <h2 className="font-medium">Change Inventory</h2>
                     <button
                         className="h-auto bg-transparent text-textColor text-xl"
                         onClick={() => setAvailabilityModalOpen(false)}
@@ -83,7 +82,7 @@ export default function HotelAvailabilityModal({
                     <form action="" onSubmit={handleSubmit}>
                         <div className="">
                             <div>
-                                <label htmlFor="allocationType">Type</label>
+                                <label htmlFor="allocationType">Allocation Type</label>
                                 <select
                                     name="allocationType"
                                     value={data.allocationType || ""}
@@ -94,19 +93,29 @@ export default function HotelAvailabilityModal({
                                         Select Allocation Type
                                     </option>
                                     <option value="free-sale">Free Sale</option>
-                                    <option value="static">
-                                        On Allocation
-                                    </option>
-                                    <option value="on-request">
-                                        On Request
-                                    </option>
+                                    <option value="static">On Allocation</option>
+                                    <option value="on-request">On Request</option>
                                     <option value="stop-sale">Stop Sale</option>
                                 </select>
                             </div>
                             <div className="mt-4">
-                                <label htmlFor="allocationType">
-                                    Room Types
-                                </label>
+                                <label htmlFor="rateType">Rate Type</label>
+                                <select
+                                    name="rateType"
+                                    value={data.rateType || ""}
+                                    onChange={handleChange}
+                                    required
+                                >
+                                    <option value="all-promotions">
+                                        All Promotions Applicable
+                                    </option>
+                                    <option value="contract-rate">
+                                        Applicable On Contracted Rate
+                                    </option>
+                                </select>
+                            </div>
+                            <div className="mt-4">
+                                <label htmlFor="allocationType">Room Types</label>
                                 <div className="">
                                     <MultipleSelectDropdown
                                         data={selectedHotel.roomTypes}
@@ -139,12 +148,13 @@ export default function HotelAvailabilityModal({
                                             name="unitWise"
                                             value={data.unitWise || ""}
                                             onChange={handleChange}
+                                            className="capitalize"
                                         >
                                             <option value="" hidden>
                                                 Select Unit Wise
                                             </option>
                                             {/* <option value="pax">pax </option> */}
-                                            <option value="room">room </option>
+                                            <option value="room">Room </option>
                                         </select>
                                     </div>
                                     <div className="mt-4">
@@ -162,11 +172,7 @@ export default function HotelAvailabilityModal({
                             )}
                         </div>
 
-                        {error && (
-                            <span className="text-sm block text-red-500 mt-2">
-                                {error}
-                            </span>
-                        )}
+                        {error && <span className="text-sm block text-red-500 mt-2">{error}</span>}
 
                         <div className="mt-4 flex items-center justify-end gap-[12px]">
                             <button

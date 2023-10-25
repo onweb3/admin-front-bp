@@ -6,12 +6,18 @@ import { AiOutlineClockCircle, AiOutlineCloudDownload } from "react-icons/ai";
 import moment from "moment";
 
 import axios from "../../axios";
-import { getFormatedDuration } from "../../utils";
+import { formatDate, getFormatedDuration } from "../../utils";
 import { PageLoader } from "../../components";
+
+const sections = {
+    payments: "Payments",
+    refund: "Refunds",
+};
 
 export default function SingleFlightBookingDetailsPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [flightBooking, setFlightBooking] = useState({});
+    const [selectedSection, setSelectedSection] = useState("payments");
 
     const { bookingId } = useParams();
     const { jwtToken } = useSelector((state) => state.admin);
@@ -24,7 +30,11 @@ export default function SingleFlightBookingDetailsPage() {
                 headers: { authorization: `Bearer ${jwtToken}` },
             });
 
-            setFlightBooking(response?.data);
+            setFlightBooking({
+                ...response?.data.flightBooking,
+                payments: response?.data?.payments,
+                refunds: response?.data?.refunds,
+            });
             setIsLoading(false);
         } catch (err) {
             console.log(err);
@@ -113,27 +123,49 @@ export default function SingleFlightBookingDetailsPage() {
                                     at {moment(flightBooking?.createdAt).format("D MMM YYYY")}
                                 </span>
                             </div>
-                            <div className="flex items-center gap-[25px]">
+                            <div className="flex items-start gap-[25px]">
                                 <div className="text-center">
-                                    <span className="block text-sm text-grayColor font-medium">
+                                    <span className="block text-[12px] text-grayColor font-medium">
                                         Net Fare
                                     </span>
                                     <span className="font-[600] text-lg">
                                         {flightBooking?.netFare} AED
                                     </span>
                                 </div>
-                                <span
-                                    className={
-                                        "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
-                                        (flightBooking?.status === "cancelled"
-                                            ? "bg-[#f065481A] text-[#f06548]"
-                                            : flightBooking?.status === "completed"
-                                            ? "text-[#0ab39c] bg-[#0ab39c1A]"
-                                            : "bg-[#f7b84b1A] text-[#f7b84b]")
-                                    }
-                                >
-                                    {flightBooking?.status}
-                                </span>
+                                <div className="text-center">
+                                    <span className="block text-[12px] text-grayColor font-medium mb-1">
+                                        Payment State
+                                    </span>
+                                    <span
+                                        className={
+                                            "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
+                                            (flightBooking?.paymentState === "non-paid"
+                                                ? "bg-[#f065481A] text-[#f06548]"
+                                                : flightBooking?.paymentState === "fully-paid"
+                                                ? "text-[#0ab39c] bg-[#0ab39c1A]"
+                                                : "bg-[#f7b84b1A] text-[#f7b84b]")
+                                        }
+                                    >
+                                        {flightBooking?.paymentState || "N/A"}
+                                    </span>
+                                </div>
+                                <div className="text-center">
+                                    <span className="block text-[12px] text-grayColor font-medium mb-1">
+                                        Net Fare
+                                    </span>
+                                    <span
+                                        className={
+                                            "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
+                                            (flightBooking?.status === "cancelled"
+                                                ? "bg-[#f065481A] text-[#f06548]"
+                                                : flightBooking?.status === "completed"
+                                                ? "text-[#0ab39c] bg-[#0ab39c1A]"
+                                                : "bg-[#f7b84b1A] text-[#f7b84b]")
+                                        }
+                                    >
+                                        {flightBooking?.status}
+                                    </span>
+                                </div>
                                 {flightBooking?.status === "completed" && (
                                     <button
                                         className="px-3 bg-[#299cdb] flex items-center gap-2"
@@ -244,90 +276,97 @@ export default function SingleFlightBookingDetailsPage() {
                                                                 </span>
                                                             </div>
                                                         </div>
-                                                        <div className="mt-4">
-                                                            <table className="w-full text-[14px]">
-                                                                <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
-                                                                    <tr>
-                                                                        <th className="p-2 text-sm text-grayColor font-medium">
-                                                                            Travellers
-                                                                        </th>
-                                                                        <th className="p-2 text-sm text-grayColor font-medium">
-                                                                            PNR
-                                                                        </th>
-                                                                        <th className="p-2 text-sm text-grayColor font-medium">
-                                                                            Ticket
-                                                                        </th>
-                                                                        <th className="p-2 text-sm text-grayColor font-medium">
-                                                                            Seat
-                                                                        </th>
-                                                                        <th className="p-2 text-sm text-grayColor font-medium">
-                                                                            Meal
-                                                                        </th>
-                                                                        <th className="p-2 text-sm text-grayColor font-medium">
-                                                                            Baggage
-                                                                        </th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    {segment?.passengers?.map(
-                                                                        (passenger, passIndex) => {
-                                                                            return (
-                                                                                <tr
-                                                                                    key={passIndex}
-                                                                                    className="border-b border-tableBorderColor last:border-b-0"
-                                                                                >
-                                                                                    <td className="p-2">
-                                                                                        {
-                                                                                            passenger?.nameTitle
-                                                                                        }{" "}
-                                                                                        {
-                                                                                            passenger?.firstName
-                                                                                        }{" "}
-                                                                                        {
-                                                                                            passenger?.lastName
+                                                        {segment?.passengers?.length > 0 && (
+                                                            <div className="mt-4">
+                                                                <table className="w-full text-[14px]">
+                                                                    <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
+                                                                        <tr>
+                                                                            <th className="p-2 text-sm text-grayColor font-medium">
+                                                                                Travellers
+                                                                            </th>
+                                                                            <th className="p-2 text-sm text-grayColor font-medium">
+                                                                                PNR
+                                                                            </th>
+                                                                            <th className="p-2 text-sm text-grayColor font-medium">
+                                                                                Ticket
+                                                                            </th>
+                                                                            <th className="p-2 text-sm text-grayColor font-medium">
+                                                                                Seat
+                                                                            </th>
+                                                                            <th className="p-2 text-sm text-grayColor font-medium">
+                                                                                Meal
+                                                                            </th>
+                                                                            <th className="p-2 text-sm text-grayColor font-medium">
+                                                                                Baggage
+                                                                            </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        {segment?.passengers?.map(
+                                                                            (
+                                                                                passenger,
+                                                                                passIndex
+                                                                            ) => {
+                                                                                return (
+                                                                                    <tr
+                                                                                        key={
+                                                                                            passIndex
                                                                                         }
-                                                                                    </td>
-                                                                                    <td className="p-2">
-                                                                                        {
-                                                                                            flightBooking?.bookingPNR
-                                                                                        }
-                                                                                    </td>
-                                                                                    <td className="p-2">
-                                                                                        {passenger?.ticketNumber ||
-                                                                                            "N/A"}
-                                                                                    </td>
-                                                                                    <td className="p-2">
-                                                                                        {passenger?.seatNumber
-                                                                                            ? passenger?.seatNumber
-                                                                                            : "N/A"}
-                                                                                    </td>
-                                                                                    <td className="p-2">
-                                                                                        {passenger
-                                                                                            ?.mealRequests
-                                                                                            ?.length >
-                                                                                        0
-                                                                                            ? passenger
-                                                                                                  ?.mealRequests[0]
-                                                                                                  ?.mealInfo
-                                                                                            : "N/A"}
-                                                                                    </td>
-                                                                                    <td className="p-2">
-                                                                                        {passenger
-                                                                                            ?.baggageRequests
-                                                                                            ?.length >
-                                                                                        0
-                                                                                            ? passenger
-                                                                                                  ?.baggageRequests[0]
-                                                                                                  ?.baggageInfo
-                                                                                            : "N/A"}
-                                                                                    </td>
-                                                                                </tr>
-                                                                            );
-                                                                        }
-                                                                    )}
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
+                                                                                        className="border-b border-tableBorderColor last:border-b-0"
+                                                                                    >
+                                                                                        <td className="p-2">
+                                                                                            {
+                                                                                                passenger?.nameTitle
+                                                                                            }{" "}
+                                                                                            {
+                                                                                                passenger?.firstName
+                                                                                            }{" "}
+                                                                                            {
+                                                                                                passenger?.lastName
+                                                                                            }
+                                                                                        </td>
+                                                                                        <td className="p-2">
+                                                                                            {
+                                                                                                flightBooking?.bookingPNR
+                                                                                            }
+                                                                                        </td>
+                                                                                        <td className="p-2">
+                                                                                            {passenger?.ticketNumber ||
+                                                                                                "N/A"}
+                                                                                        </td>
+                                                                                        <td className="p-2">
+                                                                                            {passenger?.seatNumber
+                                                                                                ? passenger?.seatNumber
+                                                                                                : "N/A"}
+                                                                                        </td>
+                                                                                        <td className="p-2">
+                                                                                            {passenger
+                                                                                                ?.mealRequests
+                                                                                                ?.length >
+                                                                                            0
+                                                                                                ? passenger
+                                                                                                      ?.mealRequests[0]
+                                                                                                      ?.mealInfo
+                                                                                                : "N/A"}
+                                                                                        </td>
+                                                                                        <td className="p-2">
+                                                                                            {passenger
+                                                                                                ?.baggageRequests
+                                                                                                ?.length >
+                                                                                            0
+                                                                                                ? passenger
+                                                                                                      ?.baggageRequests[0]
+                                                                                                      ?.baggageInfo
+                                                                                                : "N/A"}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                );
+                                                                            }
+                                                                        )}
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        )}
                                                     </div>
                                                 );
                                             })}
@@ -455,6 +494,175 @@ export default function SingleFlightBookingDetailsPage() {
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
+
+                        <div className="mt-7">
+                            <div className="flex items-center">
+                                <ul className="dir-btn">
+                                    {Object.keys(sections)?.map((section, index) => {
+                                        return (
+                                            <li
+                                                key={index}
+                                                className={
+                                                    selectedSection === section ? "active" : ""
+                                                }
+                                                onClick={() => {
+                                                    setSelectedSection(section);
+                                                }}
+                                            >
+                                                <span>{sections[section]}</span>
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
+                            </div>
+
+                            {selectedSection === "payments" && (
+                                <div className="overflow-x-auto mt-2">
+                                    {flightBooking?.payments?.length < 1 ? (
+                                        <div className="p-4 flex flex-col items-center">
+                                            <span className="text-sm text-grayColor block mt-[6px]">
+                                                Oops.. No Payments Found
+                                            </span>
+                                        </div>
+                                    ) : (
+                                        <table className="w-full text-[14px]">
+                                            <tbody>
+                                                <tr className="odd:bg-[#f3f6f9]">
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Date
+                                                    </td>
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Payment Method
+                                                    </td>
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Amount
+                                                    </td>
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Message
+                                                    </td>
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Status
+                                                    </td>
+                                                </tr>
+                                                {flightBooking?.payments?.map((payment, index) => {
+                                                    return (
+                                                        <tr
+                                                            key={index}
+                                                            className="odd:bg-[#f3f6f9]"
+                                                        >
+                                                            <td className="p-2">
+                                                                {formatDate(
+                                                                    payment?.createdAt,
+                                                                    true
+                                                                )}
+                                                            </td>
+                                                            <td className="p-2 capitalize">
+                                                                {payment?.paymentMethod}
+                                                            </td>
+                                                            <td className="p-2">
+                                                                {payment?.amount?.toFixed(2)} AED
+                                                            </td>
+                                                            <td className="p-2">
+                                                                {payment?.paymentStateMessage ||
+                                                                    "N/A"}
+                                                            </td>
+                                                            <td className="p-2">
+                                                                <span
+                                                                    className={
+                                                                        "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
+                                                                        (payment?.paymentState ===
+                                                                        "failed"
+                                                                            ? "bg-[#f065481A] text-[#f06548]"
+                                                                            : payment?.paymentState ===
+                                                                              "success"
+                                                                            ? "text-[#0ab39c] bg-[#0ab39c1A]"
+                                                                            : "bg-[#f7b84b1A] text-[#f7b84b]")
+                                                                    }
+                                                                >
+                                                                    {payment?.paymentState}
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                })}
+                                            </tbody>
+                                        </table>
+                                    )}
+                                </div>
+                            )}
+                            {selectedSection === "refund" && (
+                                <div className="overflow-x-auto mt-2">
+                                    {flightBooking?.refunds?.length < 1 ? (
+                                        <div className="p-4 flex flex-col items-center">
+                                            <span className="text-sm text-grayColor block mt-[6px]">
+                                                Oops.. No Refunds Found
+                                            </span>
+                                        </div>
+                                    ) : (
+                                        <table className="w-full text-[14px]">
+                                            <tbody>
+                                                <tr className="odd:bg-[#f3f6f9]">
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Date
+                                                    </td>
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Payment Method
+                                                    </td>
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Amount
+                                                    </td>
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Note
+                                                    </td>
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Status
+                                                    </td>
+                                                </tr>
+                                                {flightBooking?.refunds?.map((refund, index) => {
+                                                    return (
+                                                        <tr
+                                                            key={index}
+                                                            className="odd:bg-[#f3f6f9]"
+                                                        >
+                                                            <td className="p-2">
+                                                                {formatDate(
+                                                                    refund?.createdAt,
+                                                                    true
+                                                                )}
+                                                            </td>
+                                                            <td className="p-2 capitalize">
+                                                                {refund?.paymentMethod}
+                                                            </td>
+                                                            <td className="p-2 whitespace-nowrap">
+                                                                {refund?.amount?.toFixed(2)} AED
+                                                            </td>
+                                                            <td className="p-2">
+                                                                {refund?.note || "N/A"}
+                                                            </td>
+                                                            <td className="p-2">
+                                                                <span
+                                                                    className={
+                                                                        "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
+                                                                        (refund?.status === "failed"
+                                                                            ? "bg-[#f065481A] text-[#f06548]"
+                                                                            : refund?.status ===
+                                                                              "success"
+                                                                            ? "text-[#0ab39c] bg-[#0ab39c1A]"
+                                                                            : "bg-[#f7b84b1A] text-[#f7b84b]")
+                                                                    }
+                                                                >
+                                                                    {refund?.status}
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                })}
+                                            </tbody>
+                                        </table>
+                                    )}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

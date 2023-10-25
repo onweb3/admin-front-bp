@@ -36,7 +36,6 @@ function HotelReservationConfirmModal({ setIsConfirmModal, orderId, setOrderData
                 return {
                     ...prev,
                     status: "confirmed",
-                    lastStatusChange: response?.data?.lastStatusChange,
                     hotelBookingId: response?.data?.hotelBookingId,
                 };
             });
@@ -55,7 +54,7 @@ function HotelReservationConfirmModal({ setIsConfirmModal, orderId, setOrderData
                 className="bg-[#fff] w-full max-h-[90vh] max-w-[500px]  shadow-[0_1rem_3rem_rgb(0_0_0_/_18%)] overflow-y-auto"
             >
                 <div className="flex items-center justify-between border-b p-4">
-                    <h2 className="font-medium mb-2">Confirm Reservation</h2>
+                    <h2 className="font-medium">Confirm Reservation</h2>
                     <button
                         className="h-auto bg-transparent text-textColor text-xl"
                         onClick={() => setIsConfirmModal(false)}
@@ -64,7 +63,7 @@ function HotelReservationConfirmModal({ setIsConfirmModal, orderId, setOrderData
                     </button>
                 </div>
                 <div className="p-4">
-                    <form className="space-y-3" onSubmit={handleSubmit}>
+                    <form className="" onSubmit={handleSubmit}>
                         <div>
                             <label htmlFor="">Booking Id</label>
                             <input

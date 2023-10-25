@@ -46,9 +46,11 @@ export default function CancellationPolicyForm() {
                             <th className="font-[500] p-2 border">From Date</th>
                             <th className="font-[500] p-2 border">To Date</th>
                             <th className="font-[500] p-2 border">Room Types</th>
+                            <th className="font-[500] p-2 border">Cancellation Type</th>
                             <th className="font-[500] p-2 border">Deduction Type</th>
                             <th className="font-[500] p-2 border">Cancel Before</th>
                             <th className="font-[500] p-2 border">Value</th>
+                            <th className="font-[500] p-2 border">Cancel Booking Before</th>
                         </tr>
                     </thead>
                     <tbody className="text-sm">
@@ -110,8 +112,8 @@ export default function CancellationPolicyForm() {
                                     <select
                                         type="text"
                                         id=""
-                                        name="cancellationChargeType"
-                                        value={cPolicy?.cancellationChargeType || ""}
+                                        name="cancellationType"
+                                        value={cPolicy?.cancellationType || ""}
                                         onChange={(e) => {
                                             if (e.target.value === "non-refundable") {
                                                 dispatch(
@@ -128,14 +130,34 @@ export default function CancellationPolicyForm() {
                                                         index,
                                                     })
                                                 );
+                                                dispatch(
+                                                    handleCancellationPolicyDataChange({
+                                                        name: "requestCancelDaysBefore",
+                                                        value: "",
+                                                        index,
+                                                    })
+                                                );
                                             }
+                                            handleChange(e, index);
+                                        }}
+                                    >
+                                        <option value="refundable">Refundable</option>
+                                        <option value="non-refundable">Non Refundable</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select
+                                        type="text"
+                                        id=""
+                                        name="cancellationChargeType"
+                                        value={cPolicy?.cancellationChargeType || ""}
+                                        onChange={(e) => {
                                             handleChange(e, index);
                                         }}
                                     >
                                         <option value="percentage">Percentage</option>
                                         <option value="flat">Flat</option>
                                         <option value="night">Night</option>
-                                        <option value="non-refundable">Non Refundable</option>
                                     </select>
                                 </td>
                                 <td className="border min-w-[100px]">
@@ -143,11 +165,18 @@ export default function CancellationPolicyForm() {
                                         type="number"
                                         name="daysBefore"
                                         value={cPolicy?.daysBefore}
-                                        onChange={(e) => handleChange(e, index)}
+                                        onChange={(e) => {
+                                            handleChange(e, index);
+                                            dispatch(
+                                                handleCancellationPolicyDataChange({
+                                                    name: "requestCancelDaysBefore",
+                                                    value: e.target.value,
+                                                    index,
+                                                })
+                                            );
+                                        }}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
-                                        disabled={
-                                            cPolicy?.cancellationChargeType === "non-refundable"
-                                        }
+                                        disabled={cPolicy?.cancellationType === "non-refundable"}
                                     />
                                 </td>
                                 <td className="border min-w-[100px]">
@@ -157,9 +186,17 @@ export default function CancellationPolicyForm() {
                                         value={cPolicy?.cancellationCharge}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
-                                        disabled={
-                                            cPolicy?.cancellationChargeType === "non-refundable"
-                                        }
+                                        disabled={cPolicy?.cancellationType === "non-refundable"}
+                                    />
+                                </td>
+                                <td className="border min-w-[100px]">
+                                    <input
+                                        type="number"
+                                        name="requestCancelDaysBefore"
+                                        value={cPolicy?.requestCancelDaysBefore}
+                                        onChange={(e) => handleChange(e, index)}
+                                        className="h-[100%] arrow-hidden p-0 px-2 border-0"
+                                        disabled={cPolicy?.cancellationType === "non-refundable"}
                                     />
                                 </td>
                             </tr>

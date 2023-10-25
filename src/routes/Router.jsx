@@ -201,6 +201,8 @@ import CacheSettingsPage from "../pages/Hotels/CacheSettingsPage";
 import VoucherSettingsPage from "../pages/Voucher/VoucherSettingsPage";
 import AddTransactionPage from "../pages/transaction/AddTransactionPage";
 import InvoiceSettingsPage from "../pages/Invoice/InvoiceSettingsPage";
+import HotelBannerAdsPage from "../pages/Hotels/HotelBannerAdsPage";
+import FeaturedHotelsPage from "../pages/Hotels/FeaturedHotelsPage";
 import CreateAttractionOrder from "../pages/Attraction/CreateAttractionOrder";
 import CreateA2aOrder from "../pages/A2A/CreateA2aOrderPage";
 import CreateVisaOrderPag from "../pages/Visa/CreateVisaOrderPage";
@@ -274,6 +276,14 @@ const ThemeRoutes = [
             {
                 path: "/hotels/cache-settings",
                 element: <CacheSettingsPage />,
+            },
+            {
+                path: "/hotels/banner-ads",
+                element: <HotelBannerAdsPage />,
+            },
+            {
+                path: "/hotels/featured-hotels",
+                element: <FeaturedHotelsPage />,
             },
             {
                 path: "/hotels/room-occupancies",

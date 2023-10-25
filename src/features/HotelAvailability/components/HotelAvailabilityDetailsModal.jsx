@@ -3,11 +3,7 @@ import { MdClose } from "react-icons/md";
 import { useHandleClickOutside } from "../../../hooks";
 import { formatDate } from "../../../utils";
 
-export default function HotelAvailabilityDetailsModal({
-    setIsModalOpen,
-    allocation,
-    roomType,
-}) {
+export default function HotelAvailabilityDetailsModal({ setIsModalOpen, allocation, roomType }) {
     const wrapperRef = useRef();
     useHandleClickOutside(wrapperRef, () => setIsModalOpen(false));
 
@@ -35,63 +31,55 @@ export default function HotelAvailabilityDetailsModal({
                             <tr>
                                 <td className="p-1">Room Type</td>
                                 <td className="p-1">:</td>
-                                <td className="p-1">
-                                    {roomType?.roomTypeName || "N/A"}
-                                </td>
+                                <td className="p-1">{roomType?.roomTypeName || "N/A"}</td>
                             </tr>
                             <tr>
                                 <td className="p-1">Date</td>
                                 <td className="p-1">:</td>
                                 <td className="p-1">
-                                    {allocation?.date
-                                        ? formatDate(allocation?.date)
-                                        : "N/A"}
+                                    {allocation?.date ? formatDate(allocation?.date) : "N/A"}
                                 </td>
                             </tr>
                             <tr>
                                 <td className="p-1">Allocation Type</td>
                                 <td className="p-1">:</td>
+                                <td className="p-1">{allocation?.allocationType || "N/A"}</td>
+                            </tr>
+                            <tr>
+                                <td className="p-1">Rate Type</td>
+                                <td className="p-1">:</td>
                                 <td className="p-1">
-                                    {allocation?.allocationType || "N/A"}
+                                    {allocation?.rateType === "contract-rate"
+                                        ? "Applicable On Contracted Rate"
+                                        : "All Promotions Applicable"}
                                 </td>
                             </tr>
                             <tr>
                                 <td className="p-1">Allocation</td>
                                 <td className="p-1">:</td>
-                                <td className="p-1">
-                                    {allocation?.allocation || "N/A"}
-                                </td>
+                                <td className="p-1">{allocation?.allocation || "N/A"}</td>
                             </tr>
                             <tr>
                                 <td className="p-1">Unit Wise</td>
                                 <td className="p-1">:</td>
-                                <td className="p-1">
-                                    {allocation?.unitWise || "N/A"}
-                                </td>
+                                <td className="p-1">{allocation?.unitWise || "N/A"}</td>
                             </tr>
                             <tr>
                                 <td className="p-1">Release Date</td>
                                 <td className="p-1">:</td>
-                                <td className="p-1">
-                                    {allocation?.releaseDate || "N/A"}
-                                </td>
+                                <td className="p-1">{allocation?.releaseDate || "N/A"}</td>
                             </tr>
                             <tr>
                                 <td className="p-1">Booked Allocations</td>
                                 <td className="p-1">:</td>
-                                <td className="p-1">
-                                    {allocation?.bookedAllocations || "N/A"}
-                                </td>
+                                <td className="p-1">{allocation?.bookedAllocations || "N/A"}</td>
                             </tr>
                             <tr>
                                 <td className="p-1">Last Updated</td>
                                 <td className="p-1">:</td>
                                 <td className="p-1">
                                     {allocation?.updatedAt
-                                        ? formatDate(
-                                              allocation?.updatedAt,
-                                              true
-                                          )
+                                        ? formatDate(allocation?.updatedAt, true)
                                         : "N/A"}
                                 </td>
                             </tr>

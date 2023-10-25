@@ -3,11 +3,7 @@ import React from "react";
 import { Pagination } from "../../../components";
 import { formatDate } from "../../../utils";
 
-export default function B2bTransactionsTable({
-    transactions,
-    filters,
-    setFilters,
-}) {
+export default function B2bTransactionsTable({ transactions, filters, setFilters }) {
     return (
         <div>
             <div className="overflow-x-auto">
@@ -16,83 +12,59 @@ export default function B2bTransactionsTable({
                         <tr>
                             <th className="font-[500] p-3">Txn No</th>
                             <th className="font-[500] p-3">Reseller</th>
-                            <th className="font-[500] p-3">Amount</th>
-                            <th className="font-[500] p-3">Transaction Type</th>
-                            <th className="font-[500] p-3">
-                                Payment Processor
-                            </th>
-                            <th className="font-[500] p-3">Note</th>
-                            <th className="font-[500] p-3">Date</th>
-                            <th className="font-[500] p-3">Status</th>
+                            <th className="font-[500] p-3">Product</th>
+                            <th className="font-[500] p-3">Payment Processor</th>
+                            <th className="font-[500] p-3">Date & Time</th>
+                            <th className="font-[500] p-3">Description</th>
+                            <th className="font-[500] p-3">Debit</th>
+                            <th className="font-[500] p-3">Credit</th>
+                            <th className="font-[500] p-3">Direct</th>
+                            <th className="font-[500] p-3">Closing Balance</th>
+                            <th className="font-[500] p-3">Due Amount</th>
+                            <th className="font-[500] p-3">Remark</th>
                         </tr>
                     </thead>
                     <tbody className="text-sm">
                         {transactions?.map((transaction, index) => {
                             return (
-                                <tr
-                                    key={index}
-                                    className="border-b border-tableBorderColor"
-                                >
+                                <tr key={index} className="border-b border-tableBorderColor">
                                     <td className="p-3">
-                                        #
-                                        {transaction?.b2bTransactionNo ||
-                                            "00000"}
+                                        {transaction?.b2bTransactionNo || "N/A"}
                                     </td>
                                     <td className="p-3 capitalize">
                                         <span>
-                                            {transaction?.reseller?.companyName}
+                                            {transaction?.reseller?.companyName} (
+                                            {transaction?.reseller?.agentCode})
                                         </span>
-                                        <span className="block text-grayColor mt-[2px]">
-                                            {transaction?.reseller?.name}
-                                        </span>
-                                    </td>
-                                    <td className="p-3">
-                                        {transaction?.amount} AED
                                     </td>
                                     <td className="p-3 capitalize">
-                                        {transaction?.transactionType}
+                                        {transaction?.product || "N/A"}
                                     </td>
                                     <td className="p-3 capitalize">
                                         {transaction?.paymentProcessor}
-                                        {transaction?.paymentProcessor ===
-                                            "bank" && (
-                                            <span className="block">
-                                                {transaction?.referenceNo}
-                                            </span>
-                                        )}
-                                        {(transaction?.paymentProcessor ===
-                                            "bank" ||
-                                            transaction?.paymentProcessor ===
-                                                "cash-in-hand") && (
-                                            <span className="block">
-                                                Deposited By -{" "}
-                                                {transaction?.depositor?.name}
-                                            </span>
-                                        )}
                                     </td>
-                                    <td className="p-3">
-                                        {transaction?.note || "N/A"}
+                                    <td className="p-3 whitespace-nowrap">
+                                        {transaction.dateTime
+                                            ? formatDate(transaction.dateTime, true)
+                                            : "N/A"}
                                     </td>
-
-                                    <td className="p-3">
-                                        {formatDate(transaction.createdAt)}
+                                    <td className="p-3">{transaction?.description || "N/A"}</td>
+                                    <td className="p-3 whitespace-nowrap">
+                                        {transaction?.debitAmount?.toFixed(2) || 0.0} AED
                                     </td>
-                                    <td className="p-3">
-                                        <span
-                                            className={
-                                                "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
-                                                (transaction?.status ===
-                                                "failed"
-                                                    ? "bg-[#f065481A] text-[#f06548]"
-                                                    : transaction?.status ===
-                                                      "success"
-                                                    ? "text-[#0ab39c] bg-[#0ab39c1A]"
-                                                    : "bg-[#f7b84b1A] text-[#f7b84b]")
-                                            }
-                                        >
-                                            {transaction?.status}
-                                        </span>
+                                    <td className="p-3 whitespace-nowrap">
+                                        {transaction?.creditAmount?.toFixed(2) || 0.0} AED
                                     </td>
+                                    <td className="p-3 whitespace-nowrap">
+                                        {transaction?.directAmount?.toFixed(2) || 0.0} AED
+                                    </td>
+                                    <td className="p-3 whitespace-nowrap">
+                                        {transaction?.closingBalance?.toFixed(2) || 0.0} AED
+                                    </td>
+                                    <td className="p-3 whitespace-nowrap">
+                                        {transaction?.dueAmount?.toFixed(2) || 0.0} AED
+                                    </td>
+                                    <td className="p-3">{transaction?.remark || "N/A"}</td>
                                 </tr>
                             );
                         })}
