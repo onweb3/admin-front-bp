@@ -1,8 +1,4 @@
-import {
-    AdminLayout,
-    EditProfileLayout,
-    SingleResellerLayout,
-} from "../layouts";
+import { AdminLayout, EditProfileLayout, SingleResellerLayout } from "../layouts";
 import A2aAddTicketPage from "../pages/A2A/A2aAddTicketPage";
 import A2AEditTicketPage from "../pages/A2A/A2aEditTicketPage";
 import A2AEnquiryPage from "../pages/A2A/A2AEnquiryPage";
@@ -210,6 +206,7 @@ import CreateVisaOrderPage from "../pages/Visa/CreateVisaOrderPage";
 import VisaDocumentUploadPage from "../pages/Visa/VisaDocumentUploadPage";
 import CreateFlightOrderPage from "../pages/Flight/CreateFlightOrderPage";
 import CompleteFlightOrderPage from "../pages/Flight/CompletFightOrderPage";
+import SingleResellerHotelSettingsPage from "../pages/Resellers/SingleResellerHotelSettingsPage";
 
 const ThemeRoutes = [
     {
@@ -745,7 +742,10 @@ const ThemeRoutes = [
                         path: "market-strategy",
                         element: <ResellerMarketStrategyPage />,
                     },
-                    ,
+                    {
+                        path: "hotel-settings",
+                        element: <SingleResellerHotelSettingsPage />,
+                    },
                 ],
             },
             {
