@@ -11,6 +11,7 @@ import {
     clearTransferDetails,
     handleTransferClear,
 } from "../../redux/slices/quotationSlice";
+import { formatDate } from "../../utils";
 import HotelAlreadyAvailableSearchModal from "./HotelAlreadyAvailableSearchModal";
 import HotelSearchModal from "./HotelSearchModal";
 import StayMultiHotelForm from "./StayMultiHotelForm";
@@ -31,7 +32,14 @@ export default function SingleHotelForm({ stay, stayIndex }) {
     );
     const [isModal, setIsModal] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
+    console.log(
+        formatDate(new Date(checkOutDate)),
+        formatDate(
+            new Date(stay?.hotels[stay?.hotels?.length - 1]?.checkOutDate)
+        ),
 
+        "datess"
+    );
     return (
         <div className="border border-dashed p-5 mt-7 bg-[#f9f9f9]">
             <div className="mb-7 flex items-center justify-between gap-[10px]">
@@ -62,8 +70,11 @@ export default function SingleHotelForm({ stay, stayIndex }) {
                     />
                 ))}
 
-                {stay?.hotels[stay?.hotels?.length - 1]?.checkOutDate >=
-                checkOutDate ? (
+                {formatDate(
+                    new Date(
+                        stay?.hotels[stay?.hotels?.length - 1]?.checkOutDate
+                    )
+                ) === formatDate(new Date(checkOutDate)) ? (
                     ""
                 ) : (
                     <div className=" h-[180px] border-dashed border p-5 bg-stone-200">

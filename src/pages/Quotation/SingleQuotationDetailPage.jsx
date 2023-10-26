@@ -15,6 +15,8 @@ export default function SingleQuotationDetailsPage() {
     const [isModal, setIsModal] = useState(false);
     const [selectedAmendment, setSelectedAmendment] = useState({});
 
+    const [transfers, setTransfers] = useState([]);
+
     const { quotationNumber } = useParams();
     const { jwtToken } = useSelector((state) => state.admin);
 
@@ -209,13 +211,6 @@ const AmendmentTable = ({
                                 {new Date(
                                     amendment?.checkOutDate
                                 ).toDateString()}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="pr-[12px] py-1">Pax Type</td>
-                            <td className="px-[10px]">:</td>
-                            <td className="px-[10px]">
-                                {amendment?.paxType.toUpperCase()}
                             </td>
                         </tr>
                     </tbody>
