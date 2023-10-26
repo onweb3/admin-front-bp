@@ -395,6 +395,20 @@ export default function SingleResellerLayout() {
                                     </button>
                                 </Link>
                             )}
+                            {reseller?.role === "reseller" && (
+                                <Link to="./hotel-settings">
+                                    <button
+                                        className={
+                                            "px-2 py-4 h-auto bg-transparent text-textColor font-medium rounded-none " +
+                                            (location.pathname.split("/")[3] === "hotel-settings"
+                                                ? "border-b border-b-orange-500"
+                                                : "")
+                                        }
+                                    >
+                                        Hotel Settings
+                                    </button>
+                                </Link>
+                            )}
                         </div>
 
                         <Outlet context={{ reseller, setTotalSubAgents }} />

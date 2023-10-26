@@ -116,6 +116,7 @@ export default function FeaturedHotelModal({
                                     });
                                 }}
                                 valueName={"_id"}
+                                disabled={featuredModal?.isEdit}
                             />
                         </div>
                         <div className="mt-4">
@@ -132,6 +133,7 @@ export default function FeaturedHotelModal({
                                 }}
                                 valueName={"_id"}
                                 bracketValue={"address"}
+                                disabled={featuredModal?.isEdit}
                             />
                         </div>
                         <div className="mt-4">
