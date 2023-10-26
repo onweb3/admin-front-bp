@@ -26,7 +26,7 @@ const tourFee = {
 
 export default function SingleHotelForm({ stay, stayIndex }) {
     const dispatch = useDispatch();
-    const { hotelQt, isAlreadyBooked } = useSelector(
+    const { hotelQt, isAlreadyBooked, checkInDate, checkOutDate } = useSelector(
         (state) => state.quotations
     );
     const [isModal, setIsModal] = useState(false);
@@ -62,31 +62,36 @@ export default function SingleHotelForm({ stay, stayIndex }) {
                     />
                 ))}
 
-                <div className=" h-[180px] border-dashed border p-5 bg-stone-200">
-                    <div className=" h-full w-full  ">
-                        <div
-                            className="h-full w-full border border-dashed bg-stone-100 "
-                            onClick={() => {
-                                setIsModal(true);
-                                setIsEdit(false);
-                                // dispatch(addNewMultiHotel(stayIndex));
-                                // dispatch(
-                                //     clearTransferDetails({ name: "transfers" })
-                                // );
-                                dispatch(handleTransferClear());
-                            }}
-                        >
-                            <div className=" flex h-full flex-col items-center justify-center text-blue-500 hover:text-blue-300 ">
-                                <p className="text-4xl">
-                                    <BsClipboardPlus />
-                                </p>
-                                <p className="text-[15px] pt-2 text-gray-700">
-                                    Add hotel
-                                </p>
+                {stay?.hotels[stay?.hotels?.length - 1]?.checkOutDate >=
+                checkOutDate ? (
+                    ""
+                ) : (
+                    <div className=" h-[180px] border-dashed border p-5 bg-stone-200">
+                        <div className=" h-full w-full  ">
+                            <div
+                                className="h-full w-full border border-dashed bg-stone-100 "
+                                onClick={() => {
+                                    setIsModal(true);
+                                    setIsEdit(false);
+                                    // dispatch(addNewMultiHotel(stayIndex));
+                                    // dispatch(
+                                    //     clearTransferDetails({ name: "transfers" })
+                                    // );
+                                    dispatch(handleTransferClear());
+                                }}
+                            >
+                                <div className=" flex h-full flex-col items-center justify-center text-blue-500 hover:text-blue-300 ">
+                                    <p className="text-4xl">
+                                        <BsClipboardPlus />
+                                    </p>
+                                    <p className="text-[15px] pt-2 text-gray-700">
+                                        Add hotel
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                )}
             </div>
             {isModal && !isEdit ? (
                 isAlreadyBooked ? (

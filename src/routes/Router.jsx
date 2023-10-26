@@ -209,6 +209,7 @@ import CreateVisaOrderPag from "../pages/Visa/CreateVisaOrderPage";
 import CreateVisaOrderPage from "../pages/Visa/CreateVisaOrderPage";
 import VisaDocumentUploadPage from "../pages/Visa/VisaDocumentUploadPage";
 import CreateFlightOrderPage from "../pages/Flight/CreateFlightOrderPage";
+import CompleteFlightOrderPage from "../pages/Flight/CompletFightOrderPage";
 
 const ThemeRoutes = [
     {
@@ -1071,7 +1072,10 @@ const ThemeRoutes = [
                 path: "/order/flight",
                 element: <CreateFlightOrderPage />,
             },
-
+            {
+                path: "/order/flight/:tbId",
+                element: <CompleteFlightOrderPage />,
+            },
             ,
         ],
     },
