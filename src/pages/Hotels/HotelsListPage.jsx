@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { MdDelete } from "react-icons/md";
 import { BiEditAlt, BiFilter } from "react-icons/bi";
 import { Link, useSearchParams } from "react-router-dom";
-import { AiFillStar, AiOutlineSetting } from "react-icons/ai";
+import { AiFillEye, AiFillStar, AiOutlineSetting } from "react-icons/ai";
 import { useSelector } from "react-redux";
 
 import { PageLoader, Pagination } from "../../components";
 import axios from "../../axios";
 import { formatDate } from "../../utils";
+import { FaDownload } from "react-icons/fa";
+import { FiDownload } from "react-icons/fi";
 
 function HotelsListPage() {
     const [hotels, setHotels] = useState({});
@@ -113,6 +115,28 @@ function HotelsListPage() {
         }
     };
 
+    const handleContractsDownload = async (hotelId, hotelName) => {
+        try {
+            const response = await axios.get(`/hotels/contracts/download/xlsx/${hotelId}`, {
+                headers: { Authorization: `Bearer ${jwtToken}` },
+                responseType: "blob",
+            });
+
+            const href = URL.createObjectURL(response.data);
+
+            const link = document.createElement("a");
+            link.href = href;
+            link.setAttribute("download", `${hotelName || "hotel"}.xlsx`);
+            document.body.appendChild(link);
+            link.click();
+
+            document.body.removeChild(link);
+            URL.revokeObjectURL(href);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     const clearFilters = () => {
         setFilters({
             skip: 0,
@@ -187,7 +211,11 @@ function HotelsListPage() {
                                     + Add Hotel
                                 </button>
                             </Link>
-                            <button className="px-3" onClick={handleHotelsListExcelDownload}>
+                            <button
+                                className="px-3 flex items-center gap-1"
+                                onClick={handleHotelsListExcelDownload}
+                            >
+                                <FiDownload />
                                 Download
                             </button>
                         </div>
@@ -405,6 +433,26 @@ function HotelsListPage() {
                                                                 : "Inactive"}
                                                         </div>
                                                     </td>
+                                                    {/* <td className="p-3">
+                                                        <div className="flex gap-[10px]">
+                                                            <button
+                                                                className="h-auto bg-transparent font-[500] underline text-blue-500 flex items-center justify-center gap-1"
+                                                                onClick={() =>
+                                                                    handleContractsDownload(
+                                                                        hotel?._id
+                                                                    )
+                                                                }
+                                                            >
+                                                                <FiDownload />
+                                                                Download
+                                                            </button>
+                                                            <Link to={`${hotel?._id}/contracts`}>
+                                                                <button className="h-auto bg-transparent text-blue-500 text-xl flex items-center justify-center">
+                                                                    <AiFillEye />
+                                                                </button>
+                                                            </Link>
+                                                        </div>
+                                                    </td> */}
                                                     <td className="p-3">
                                                         <div className="flex gap-[10px]">
                                                             <button
@@ -412,19 +460,38 @@ function HotelsListPage() {
                                                                 onClick={() =>
                                                                     deleteHotel(hotel?._id)
                                                                 }
+                                                                title="Delete Hotel"
                                                             >
                                                                 <MdDelete />
                                                             </button>
                                                             <Link to={`${hotel?._id}/room-types`}>
-                                                                <button className="h-auto bg-transparent text-green-500 text-xl flex items-center justify-center">
+                                                                <button
+                                                                    className="h-auto bg-transparent text-green-500 text-xl flex items-center justify-center"
+                                                                    title="Hotel Settings"
+                                                                >
                                                                     <AiOutlineSetting />
                                                                 </button>
                                                             </Link>
                                                             <Link to={`${hotel?._id}/edit`}>
-                                                                <button className="h-auto bg-transparent text-green-500 text-xl flex items-center justify-center">
+                                                                <button
+                                                                    className="h-auto bg-transparent text-green-500 text-xl flex items-center justify-center"
+                                                                    title="Edit Hotel Details"
+                                                                >
                                                                     <BiEditAlt />
                                                                 </button>
                                                             </Link>
+                                                            <button
+                                                                className="h-auto bg-transparent font-[500] text-xl underline text-blue-500 flex items-center justify-center gap-1"
+                                                                onClick={() =>
+                                                                    handleContractsDownload(
+                                                                        hotel?._id,
+                                                                        hotel?.hotelName
+                                                                    )
+                                                                }
+                                                                title="Download Contracts And Promotions"
+                                                            >
+                                                                <FiDownload />
+                                                            </button>
                                                         </div>
                                                     </td>
                                                 </tr>
