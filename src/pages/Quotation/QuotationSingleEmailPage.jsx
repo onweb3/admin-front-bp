@@ -125,7 +125,8 @@ function QuotationSingleEmailPage() {
                         console.log(selectedIndex, "selected");
                         if (selectedIndex !== -1) {
                             cityToAirport[selectedIndex].transferFrom.push({
-                                transferFromHubName: transfer.transferToHubName,
+                                transferFromHubName:
+                                    transfer.transferFromHubName,
                                 transferFromName: transfer.transferFromName,
                             });
                         } else {
@@ -485,11 +486,13 @@ function QuotationSingleEmailPage() {
                                                                 <thead>
                                                                     <tr>
                                                                         <th className=" text-[12px] font-bold border px-[8px] py-[8px]">
-                                                                            Checkin
+                                                                            Check
+                                                                            In
                                                                             Date
                                                                         </th>
                                                                         <th className="text-[12px] font-bold border px-[8px] py-[8px]">
-                                                                            Checkout
+                                                                            Check
+                                                                            Out
                                                                             Date
                                                                         </th>
                                                                         <th className="text-[12px] font-bold border px-[8px] py-[8px]">
@@ -637,8 +640,8 @@ function QuotationSingleEmailPage() {
                                                                                                         className="border px-[10px]"
                                                                                                     >
                                                                                                         {roomOccupancy?.priceWithTransfer
-                                                                                                            ? roomOccupancy?.priceWithTransfer?.toFixed(
-                                                                                                                  2
+                                                                                                            ? Math.ceil(
+                                                                                                                  roomOccupancy?.priceWithTransfer
                                                                                                               ) +
                                                                                                               " " +
                                                                                                               quotationList?.quotationCurrency
@@ -732,35 +735,65 @@ function QuotationSingleEmailPage() {
                                                     key={index}
                                                     className="cust-border"
                                                 >
-                                                    <ul className="list-disc ml-6 text-xs">
-                                                        {exc?.transferType ===
-                                                        "shared" ? (
-                                                            <li className="cust-border">
+                                                    <ul className="list-disc ml-6 text-[12px]">
+                                                        <li className="cust-border">
+                                                            {exc?.excursionName}{" "}
+                                                            -{" "}
+                                                            <span className="capitalize">
+                                                                {exc?.excursionType ===
+                                                                "ticket"
+                                                                    ? exc?.value ===
+                                                                      "ticket"
+                                                                        ? "Only Ticket"
+                                                                        : exc?.value ===
+                                                                          "shared"
+                                                                        ? "Tickets With SIC Transfer"
+                                                                        : exc?.value ===
+                                                                          "private"
+                                                                        ? "Tickets With PVT Transfer"
+                                                                        : ""
+                                                                    : exc?.excursionType ===
+                                                                      "transfer"
+                                                                    ? exc?.value ===
+                                                                      "private"
+                                                                        ? "Only Transfer (Private)"
+                                                                        : exc?.value ===
+                                                                          "shared"
+                                                                        ? "Only Transfer (SIC)"
+                                                                        : ""
+                                                                    : ""}
+                                                            </span>
+                                                            <span>
                                                                 {" "}
+                                                                - (Adult -{" "}
+                                                                {quotationList?.quotationCurrency ===
+                                                                "AED"
+                                                                    ? exc?.adultPrice
+                                                                    : (
+                                                                          exc?.adultPrice /
+                                                                          3.65
+                                                                      )?.toFixed(
+                                                                          0
+                                                                      )}{" "}
                                                                 {
-                                                                    exc?.excursionName
-                                                                }{" "}
-                                                                - Tickets With
-                                                                SIC Transfer{" "}
-                                                            </li>
-                                                        ) : exc?.transferType ===
-                                                          "without" ? (
-                                                            <li className="cust-border">
+                                                                    quotationList?.quotationCurrency
+                                                                }
+                                                                , Child -{" "}
+                                                                {quotationList?.quotationCurrency ===
+                                                                "AED"
+                                                                    ? exc?.childPrice
+                                                                    : (
+                                                                          exc?.childPrice /
+                                                                          3.65
+                                                                      )?.toFixed(
+                                                                          0
+                                                                      )}{" "}
                                                                 {
-                                                                    exc.excursionName
-                                                                }{" "}
-                                                                - Only Ticket
-                                                            </li>
-                                                        ) : exc?.transferType ===
-                                                          "private" ? (
-                                                            <li className="cust-border">
-                                                                {
-                                                                    exc?.excursionName
-                                                                }{" "}
-                                                                - Tickets With
-                                                                PVT Transfer
-                                                            </li>
-                                                        ) : null}
+                                                                    quotationList?.quotationCurrency
+                                                                }
+                                                                )
+                                                            </span>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             );
@@ -802,14 +835,7 @@ function QuotationSingleEmailPage() {
                                                                                     <span className="text-xs">
                                                                                         {
                                                                                             to.transferToHubName
-                                                                                        }{" "}
-                                                                                        -
-                                                                                        (
-                                                                                        {
-                                                                                            to.transferToName
                                                                                         }
-
-                                                                                        )
                                                                                     </span>{" "}
                                                                                     {i !==
                                                                                         transfer
@@ -838,7 +864,7 @@ function QuotationSingleEmailPage() {
                                                                         To
                                                                     </span>{" "}
                                                                     {
-                                                                        transfer?.transferToName
+                                                                        transfer?.transferToHubName
                                                                     }{" "}
                                                                     - Private
                                                                     Transfer
@@ -858,13 +884,6 @@ function QuotationSingleEmailPage() {
                                                                                         {
                                                                                             from?.transferFromHubName
                                                                                         }{" "}
-                                                                                        -
-                                                                                        (
-                                                                                        {
-                                                                                            from?.transferFromName
-                                                                                        }
-
-                                                                                        )
                                                                                     </span>{" "}
                                                                                     {i !==
                                                                                         transfer
@@ -905,7 +924,7 @@ function QuotationSingleEmailPage() {
                                     ?.excursions?.length ? (
                                     <div className="cust-border">
                                         <h3 className=" text-[12px] font-bold pt-5 cust-border">
-                                            Suppliments
+                                            Optional Tours Cost
                                         </h3>
                                     </div>
                                 ) : (
@@ -913,78 +932,68 @@ function QuotationSingleEmailPage() {
                                 )}
                                 <div className="cust-border">
                                     {quotationList?.excSupplementQuotation?.excursions?.map(
-                                        (exc) => {
+                                        (exc, index) => {
                                             return (
                                                 <div>
                                                     <ul className="list-disc ml-6 text-[12px]">
-                                                        {exc?.transferType ===
-                                                        "shared" ? (
-                                                            <>
-                                                                <li>
-                                                                    {" "}
-                                                                    {
-                                                                        exc?.excursionName
-                                                                    }{" "}
-                                                                    - Tickets
-                                                                    With SIC
-                                                                    Transfer -
-                                                                    Adult Price
-                                                                    :{" "}
-                                                                    {
-                                                                        exc?.adultPrice
-                                                                    }
-                                                                    , Children
-                                                                    Price :{" "}
-                                                                    {
-                                                                        exc?.childPrice
-                                                                    }
-                                                                </li>
-                                                            </>
-                                                        ) : exc?.transferType ===
-                                                          "without" ? (
-                                                            <>
-                                                                <li>
-                                                                    {
-                                                                        exc.excursionName
-                                                                    }{" "}
-                                                                    - Only
-                                                                    Ticket -
-                                                                    Adult Price
-                                                                    :{" "}
-                                                                    {
-                                                                        exc?.adultPrice
-                                                                    }
-                                                                    , Children
-                                                                    Price :{" "}
-                                                                    {
-                                                                        exc?.childPrice
-                                                                    }
-                                                                </li>
-                                                            </>
-                                                        ) : exc?.transferType ===
-                                                          "private" ? (
-                                                            <>
-                                                                <li>
-                                                                    {
-                                                                        exc?.excursionName
-                                                                    }{" "}
-                                                                    - Tickets
-                                                                    With PVT Transfer
-                                                                    - Adult
-                                                                    Price :{" "}
-                                                                    {
-                                                                        exc?.adultPrice
-                                                                    }
-                                                                    , Children
-                                                                    Price :{" "}
-                                                                    {
-                                                                        exc?.childPrice
-                                                                    }
-                                                                </li>
-                                                            </>
-                                                        ) : (
-                                                            ""
-                                                        )}
+                                                        <li className="cust-border">
+                                                            {exc?.excursionName}{" "}
+                                                            -{" "}
+                                                            <span className="capitalize">
+                                                                {exc?.excursionType ===
+                                                                "ticket"
+                                                                    ? exc?.value ===
+                                                                      "ticket"
+                                                                        ? "Only Ticket"
+                                                                        : exc?.value ===
+                                                                          "shared"
+                                                                        ? "Tickets With SIC Transfer"
+                                                                        : exc?.value ===
+                                                                          "private"
+                                                                        ? "Tickets With PVT Transfer"
+                                                                        : ""
+                                                                    : exc?.excursionType ===
+                                                                      "transfer"
+                                                                    ? exc?.value ===
+                                                                      "private"
+                                                                        ? "Only Transfer (Private)"
+                                                                        : exc?.value ===
+                                                                          "shared"
+                                                                        ? "Only Transfer (SIC)"
+                                                                        : ""
+                                                                    : ""}
+                                                            </span>
+                                                            <span>
+                                                                {" "}
+                                                                - (Adult -{" "}
+                                                                {quotationList?.quotationCurrency ===
+                                                                "AED"
+                                                                    ? exc?.adultPrice
+                                                                    : (
+                                                                          exc?.adultPrice /
+                                                                          3.65
+                                                                      )?.toFixed(
+                                                                          0
+                                                                      )}{" "}
+                                                                {
+                                                                    quotationList?.quotationCurrency
+                                                                }
+                                                                , Child -{" "}
+                                                                {quotationList?.quotationCurrency ===
+                                                                "AED"
+                                                                    ? exc?.childPrice
+                                                                    : (
+                                                                          exc?.childPrice /
+                                                                          3.65
+                                                                      )?.toFixed(
+                                                                          0
+                                                                      )}{" "}
+                                                                {
+                                                                    quotationList?.quotationCurrency
+                                                                }
+                                                                )
+                                                            </span>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             );
@@ -1212,8 +1221,20 @@ function QuotationSingleEmailPage() {
                             </h3>
                             <ul className="list-disc ml-6 text-[12px]">
                                 <li className="cust-border">
-                                    All the above package cost is quoted in AED
-                                    per person and is valid till Mon May 01 2023
+                                    All the above package cost is quoted in
+                                    <span className="cust-border px-1">
+                                        {quotationList.quotationCurrency}
+                                    </span>{" "}
+                                    per person and is valid till{" "}
+                                    {new Date(
+                                        new Date(
+                                            quotationList?.createdAt
+                                        ).setDate(
+                                            new Date(
+                                                quotationList?.createdAt
+                                            ).getDate() + 2
+                                        )
+                                    ).toDateString()}
                                 </li>
                                 <li className="cust-border">
                                     The above rates are subject to change as per

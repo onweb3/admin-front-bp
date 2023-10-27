@@ -9,20 +9,25 @@ import axios from "../../../axios";
 import { useDispatch, useSelector } from "react-redux";
 import { handleMealCountChange } from "../../../redux/slices/FlightOrderSlice";
 
-export default function FlightAddMealModal({ setIsModal, mealSsr }) {
+export default function FlightAddMealModal({ setIsModal, mealSsr, totalPax }) {
     const wrapperRef = useRef();
     const [meals, setMeals] = useState([]);
+    const [totalCount, setTotalCount] = useState(0);
     const [selectedSegmentIndex, setSelectedSegmentIndex] = useState();
     const dispatch = useDispatch();
-    const onHandleChange = (e, index) => {
-        // Assuming mealSsr is an array containing objects with a "meals" property
-        const selectedMeal = mealSsr.find((meal, ind) => ind === index);
+    const onHandleChange = (index) => {
+        try {
+            const selectedMeal = mealSsr.find((meal, ind) => ind === index);
 
-        // Make sure to check if selectedMeal is not undefined before trying to access its "meals" property
-        if (selectedMeal) {
-            setMeals(selectedMeal.meals);
-            setSelectedSegmentIndex(index);
+            // Make sure to check if selectedMeal is not undefined before trying to access its "meals" property
+            if (selectedMeal) {
+                setMeals(selectedMeal.meals);
+                setSelectedSegmentIndex(index);
+            }
+        } catch (err) {
+            console.log(err);
         }
+        // Assuming mealSsr is an array containing objects with a "meals" property
     };
 
     const onHandleMealsChange = (e, index, value) => {
@@ -36,9 +41,21 @@ export default function FlightAddMealModal({ setIsModal, mealSsr }) {
                 index2: index,
             })
         );
+
+        // Assuming you have a variable named 'totalCount' and another variable named 'value'
+
+        if (value === "add") {
+            setTotalCount(totalCount + 1);
+        } else if (value === "substract" && totalCount > 0) {
+            setTotalCount(totalCount - 1);
+        }
     };
 
-    useEffect(() => {}, [mealSsr]);
+    useEffect(() => {
+        onHandleChange(selectedSegmentIndex);
+    }, [meals, mealSsr]);
+
+    console.log(mealSsr, meals, totalCount, "meals changed");
 
     return (
         <div className="fixed inset-0 w-full h-full bg-[#fff5] flex items-center justify-center z-20 ">
@@ -62,7 +79,7 @@ export default function FlightAddMealModal({ setIsModal, mealSsr }) {
                                 <div
                                     className="w-full"
                                     onClick={(e) => {
-                                        onHandleChange(e, index);
+                                        onHandleChange(index);
                                     }}
                                 >
                                     <div className="pb-1">onward</div>
@@ -80,13 +97,13 @@ export default function FlightAddMealModal({ setIsModal, mealSsr }) {
                                         </div>
                                         <div className="flex rounded rounded-full bg-white  flex-end p-1">
                                             <div className="text-sm font-semibold">
-                                                1{" "}
+                                                {totalCount}{" "}
                                             </div>
                                             <div className="text-sm font-semibold">
                                                 /
                                             </div>
                                             <div className="text-sm font-semibold">
-                                                2{" "}
+                                                {totalPax}{" "}
                                             </div>{" "}
                                         </div>
                                     </div>
@@ -111,17 +128,19 @@ export default function FlightAddMealModal({ setIsModal, mealSsr }) {
                                         <div
                                             className="text-sm font-semibold flex bg-gray-200 boreder rounded-full h-5 w-5 items-center justify-center"
                                             onClick={(e) => {
-                                                onHandleMealsChange(
-                                                    e,
-                                                    index,
-                                                    "add"
-                                                );
+                                                if (totalPax > totalCount) {
+                                                    onHandleMealsChange(
+                                                        e,
+                                                        index,
+                                                        "add"
+                                                    );
+                                                }
                                             }}
                                         >
                                             +
                                         </div>
                                         <div className="text-sm font-semibold">
-                                            {meal?.count}
+                                            {meal?.count || 0}
                                         </div>
                                         <div
                                             className="text-sm font-semibold flex bg-gray-200  boreder rounded-full h-5 w-5 items-center justify-center"
@@ -129,7 +148,7 @@ export default function FlightAddMealModal({ setIsModal, mealSsr }) {
                                                 onHandleMealsChange(
                                                     e,
                                                     index,
-                                                    "substarct"
+                                                    "substract"
                                                 );
                                             }}
                                         >

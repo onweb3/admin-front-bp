@@ -32,14 +32,7 @@ export default function SingleHotelForm({ stay, stayIndex }) {
     );
     const [isModal, setIsModal] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
-    console.log(
-        formatDate(new Date(checkOutDate)),
-        formatDate(
-            new Date(stay?.hotels[stay?.hotels?.length - 1]?.checkOutDate)
-        ),
-
-        "datess"
-    );
+   
     return (
         <div className="border border-dashed p-5 mt-7 bg-[#f9f9f9]">
             <div className="mb-7 flex items-center justify-between gap-[10px]">

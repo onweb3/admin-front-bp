@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../../axios";
 import { BtnLoader, SelectDropdown } from "../../components";
 import axioss from "axios";
 import FlightAvailabiltyModal from "../../features/Flight/components/FlightAvailabilityModal";
+import { handleDataChange } from "../../redux/slices/FlightOrderSlice";
 
 export default function CreateFlightOrderPage() {
     const [data, setData] = useState({
@@ -22,7 +23,7 @@ export default function CreateFlightOrderPage() {
     const [isAvailablityModal, setIsAvailabilityModal] = useState(false);
     const [flightResults, setFlightResults] = useState([]);
     const numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-
+    const dispatch = useDispatch();
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const { jwtToken } = useSelector((state) => state.admin);
@@ -114,12 +115,20 @@ export default function CreateFlightOrderPage() {
                 ],
                 travelClass: data.travelClass,
             };
+
             const response = await axios.post(
                 `/orders/flight/search/availability/${data.resellerId}`,
                 formData,
                 {
                     headers: { authorization: `Bearer ${jwtToken}` },
                 }
+            );
+
+            dispatch(
+                handleDataChange({
+                    name: "totalAncillariesPax",
+                    value: data.noOfAdults + data.noOfChildren,
+                })
             );
 
             if (response.data) {

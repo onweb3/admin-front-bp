@@ -398,8 +398,8 @@ const AmendmentTable = ({
                                                                                     className="border px-[10px]"
                                                                                 >
                                                                                     {roomOccupancy?.priceWithTransfer
-                                                                                        ? roomOccupancy?.priceWithTransfer?.toFixed(
-                                                                                              2
+                                                                                        ? Math.ceil(
+                                                                                              roomOccupancy?.priceWithTransfer
                                                                                           ) +
                                                                                           " " +
                                                                                           amendment?.quotationCurrency
@@ -426,14 +426,14 @@ const AmendmentTable = ({
                             {amendment?.noOfAdults && (
                                 <div>
                                     Per person Adult price:{" "}
-                                    {amendment?.perPersonAdultPrice?.toFixed(2)}{" "}
+                                    { Math.ceil(amendment?.perPersonAdultPrice)}{" "}
                                     {amendment?.quotationCurrency}
                                 </div>
                             )}
                             {amendment?.noOfChildren ? (
                                 <div className="mt-1">
                                     Per person Child price:{" "}
-                                    {amendment?.perPersonChildPrice?.toFixed(2)}{" "}
+                                    { Math.ceil(amendment?.perPersonChildPrice)}{" "}
                                     {amendment?.quotationCurrency}
                                 </div>
                             ) : (
@@ -608,14 +608,14 @@ const AmendmentTable = ({
                     {amendment?.noOfAdults && (
                         <div>
                             Per person Adult price:{" "}
-                            {amendment?.perPersonAdultPrice?.toFixed(2)}{" "}
+                            { Math.ceil(amendment?.perPersonAdultPrice)}{" "}
                             {amendment?.quotationCurrency}
                         </div>
                     )}
                     {amendment?.noOfChildren ? (
                         <div className="mt-1">
                             Per person Child price:{" "}
-                            {amendment?.perPersonChildPrice?.toFixed(2)}{" "}
+                            { Math.ceil(amendment?.perPersonChildPrice)}{" "}
                             {amendment?.quotationCurrency}
                         </div>
                     ) : (
@@ -682,7 +682,7 @@ const AmendmentTable = ({
             {amendment?.excSupplementQuotation && (
                 <div>
                     <h5 className="text-gray-500 font-medium mb-1 mt-7">
-                        Excursion Supplements
+                         Optional Tours Cost
                     </h5>
 
                     <ul className="text-[15px] list-disc ml-[16px]">

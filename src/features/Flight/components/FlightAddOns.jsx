@@ -10,7 +10,9 @@ import { useSelector } from "react-redux";
 import FlightAddMealModal from "./FlightAddMealsModal";
 
 export default function FlightAddOns({ flightAncillaries }) {
-    const { singleFlightDetails } = useSelector((state) => state.flightOrder);
+    const { singleFlightDetails, totalAncillariesPax } = useSelector(
+        (state) => state.flightOrder
+    );
     console.log(singleFlightDetails, "dsss");
     const [isMealModal, setIsMealModal] = useState(false);
     const [isSeatModal, setIsSeatModal] = useState(false);
@@ -82,6 +84,7 @@ export default function FlightAddOns({ flightAncillaries }) {
                 <FlightAddMealModal
                     setIsModal={setIsMealModal}
                     mealSsr={flightAncillaries?.mealsSsr}
+                    totalPax={totalAncillariesPax}
                 />
             )}
         </div>
