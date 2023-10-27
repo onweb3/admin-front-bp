@@ -4,9 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "../../../axios";
 import HotelStarCategoryMarkupModal from "./HotelStarCategoryMarkupModal";
 import RoomTypeListRow from "./RoomTypeListRow";
+import HotelMarkupModal from "./HotelMarkupModal";
 // import BookingsOrdersSingleRow from "./BookingsOrdersSingleRow";
 
-export default function HotelRoomTypeTableRow({ hotel, type }) {
+export default function HotelRoomTypeTableRow({ hotel, type, setHotels }) {
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
@@ -20,7 +21,7 @@ export default function HotelRoomTypeTableRow({ hotel, type }) {
     const fetchRoomTypes = async () => {
         try {
             setIsPageLoading(true);
-
+            setRoomTypes([]);
             if (type === "market") {
                 if (marketId) {
                     const response = await axios.get(
@@ -70,8 +71,10 @@ export default function HotelRoomTypeTableRow({ hotel, type }) {
     };
 
     useEffect(() => {
-        fetchRoomTypes();
-    }, []);
+        if (dropdownVisible) {
+            fetchRoomTypes();
+        }
+    }, [dropdownVisible]);
 
     return (
         <>
@@ -98,14 +101,14 @@ export default function HotelRoomTypeTableRow({ hotel, type }) {
                         </>
                     )}
                 </td>
-                {/* <td className="p-3 flex justify-end">
+                <td className="p-3 flex justify-end">
                     <button
                         className="w-[50px]"
                         onClick={() => setIsModalOpen(true)}
                     >
                         Edit{" "}
                     </button>
-                </td> */}
+                </td>
                 {/* )} */}
             </tr>
             <tr>
@@ -141,10 +144,14 @@ export default function HotelRoomTypeTableRow({ hotel, type }) {
                 </td>
             </tr>
             {isModalOpen ? (
-                <HotelStarCategoryMarkupModal
+                <HotelMarkupModal
                     setIsModalOpen={setIsModalOpen}
-                    setCategories={setCategories}
-                    category={category}
+                    hotelId={hotel._id}
+                    roomTypes={roomTypes}
+                    setRoomTypes={setRoomTypes}
+                    setHotels={setHotels}
+                    type={type}
+                    setDropdownVisible={setDropdownVisible}
                 />
             ) : (
                 ""
