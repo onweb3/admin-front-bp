@@ -1223,6 +1223,13 @@ export const quotationsSlice = createSlice({
         },
         handleHotelCustomMarkupChange: (state, action) => {
             const { stayIndex, hotelIndex, value } = action.payload;
+
+            console.log(
+                stayIndex,
+                hotelIndex,
+                value,
+                "stayIndex, hotelIndex, value"
+            );
             state.hotelQt.stays[stayIndex].hotels[
                 hotelIndex
             ].isCustomHotelMarkup = value;

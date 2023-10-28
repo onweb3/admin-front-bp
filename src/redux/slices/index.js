@@ -8,6 +8,7 @@ import hotelPromotionsFormReducer from "./hotelPromotionsFormSlice";
 import markupProfileFormSlice from "./markupProfileFormSlice";
 import quotationListSliceReducer from "./quotationListSlice";
 import quotationsReducer from "./quotationSlice";
+import flightOrderReducer from "./FlightOrderSlice";
 export {
     adminReducer,
     attractionFormReducer,
@@ -19,4 +20,5 @@ export {
     markupProfileFormSlice,
     quotationListSliceReducer,
     quotationsReducer,
+    flightOrderReducer,
 };

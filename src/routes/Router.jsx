@@ -205,6 +205,7 @@ import CreateVisaOrderPag from "../pages/Visa/CreateVisaOrderPage";
 import CreateVisaOrderPage from "../pages/Visa/CreateVisaOrderPage";
 import VisaDocumentUploadPage from "../pages/Visa/VisaDocumentUploadPage";
 import CreateFlightOrderPage from "../pages/Flight/CreateFlightOrderPage";
+import CompleteFlightOrderPage from "../pages/Flight/CompletFightOrderPage";
 import SingleResellerHotelSettingsPage from "../pages/Resellers/SingleResellerHotelSettingsPage";
 import BankAccountsListPage from "../pages/BankAccounts/BankAccountsListPage";
 import AddBankAccountPage from "../pages/BankAccounts/AddBankAccountPage";
@@ -1090,6 +1091,10 @@ const ThemeRoutes = [
             {
                 path: "/bank-accounts/:id/edit",
                 element: <UpdateBankAccountPage />,
+            },
+            {
+                path: "/order/flight/:tbId",
+                element: <CompleteFlightOrderPage />,
             },
         ],
     },

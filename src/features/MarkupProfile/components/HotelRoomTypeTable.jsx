@@ -165,9 +165,10 @@ export default function HotelRoomTypeTable({ type }) {
                     </div>
                 ) : (
                     <table className="w-full">
-                        <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
+                        <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left w-full">
                             <tr>
                                 <th className="font-[500] p-3">Hotels</th>
+                                <th className="font-[500] p-3"></th>
                             </tr>
                         </thead>
                         <tbody className="text-sm ">
@@ -178,6 +179,7 @@ export default function HotelRoomTypeTable({ type }) {
                                         key={hotel._id}
                                         hotel={hotel}
                                         type={type}
+                                        setHotels={setHotels}
                                     />
                                 );
                             })}

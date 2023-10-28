@@ -10,6 +10,7 @@ import {
     markupProfileFormSlice,
     quotationListSliceReducer,
     quotationsReducer,
+    flightOrderReducer,
 } from "./slices";
 
 export const store = configureStore({
@@ -24,5 +25,6 @@ export const store = configureStore({
         markupProfileForm: markupProfileFormSlice,
         quotationsList: quotationListSliceReducer,
         quotations: quotationsReducer,
+        flightOrder: flightOrderReducer,
     },
 });

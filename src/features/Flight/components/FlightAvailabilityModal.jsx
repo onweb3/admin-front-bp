@@ -18,6 +18,7 @@ export default function FlightAvailabiltyModal({
         fsrId: "",
         fareKey: "",
     });
+    const navigate = useNavigate();
     const { jwtToken } = useSelector((state) => state.admin);
 
     const [isLoading, setIsLoading] = useState(false);
@@ -69,7 +70,7 @@ export default function FlightAvailabiltyModal({
                 const formData = {
                     searchId: data?.searchId,
                     fsrId: selectedResult?.fsrId,
-                    fareKey: selectedValue?.fareKey,
+                    selectedFareKey: selectedValue?.fareKey,
                 };
                 const response = await axios.post(
                     `/orders/flight/addToCart`,
@@ -78,6 +79,8 @@ export default function FlightAvailabiltyModal({
                         headers: { authorization: `Bearer ${jwtToken}` },
                     }
                 );
+
+                navigate(`/order/flight/${response.data.tbId}`);
             } else {
                 setError(
                     err?.response?.data?.error ||
@@ -190,7 +193,7 @@ export default function FlightAvailabiltyModal({
                                                             .split(":")[1]
                                                     }
                                                 </div>
-                                                <div>PRICE</div>
+                                                {/* <div>PRICE</div> */}
                                             </>
                                         );
                                     })}
@@ -213,7 +216,8 @@ export default function FlightAvailabiltyModal({
                                                     <option
                                                         value={fare?.fareKey}
                                                     >
-                                                        {fare?.fareName}
+                                                        {fare?.fareName}- (
+                                                        {fare.netFare}AED)
                                                     </option>
                                                 );
                                             })}

@@ -13,6 +13,7 @@ import {
     handleHotelsTransferDataChange,
     handleTransferClear,
     handleRoomOccupancy,
+    handleHotelCustomMarkupChange,
 } from "../../redux/slices/quotationSlice";
 import { useHandleClickOutside } from "../../hooks";
 import { IoMdClose } from "react-icons/io";
@@ -42,7 +43,7 @@ export default function HotelSearchModal({
     const wrapperRef = useRef();
     const [isLoading, setIsLoading] = useState(false);
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
-
+    const [isNotAvailable, setIsNotAvailable] = useState(false);
     const [suggestions, setSuggestions] = useState([]);
     const [value, setValue] = useState(hotel?.hotelName?.toString() || "");
     const [datalist, setDatalist] = useState(false);
@@ -55,7 +56,7 @@ export default function HotelSearchModal({
     const [selectedHotel, setSelectedHotel] = useState([]);
     const [selectedRoomType, setSetSelectedRoomType] = useState([]);
     const [selectedBoardType, setSelectedBoardType] = useState([]);
-
+    const [confirmError, setConfirmError] = useState("");
     const [isAvailablityLoading, setIsAvailablityLoading] = useState(false);
     const [availableHotels, setAvailableHotels] = useState([]);
     const [responseData, setResponseData] = useState({
@@ -204,6 +205,8 @@ export default function HotelSearchModal({
             setNext(false);
 
             setSelectedHotel("");
+            setSelectedBoardType("");
+            setSetSelectedRoomType("");
 
             const response = await axioss.post(
                 `/quotations/hotels/availability?skip=${filters.skip}&limit=${filters.limit}`,
@@ -234,6 +237,88 @@ export default function HotelSearchModal({
                 toDate: response?.data?.toDate,
                 rooms: response?.data?.rooms,
             });
+            setButtonHidden(true);
+            // dispatch(
+            //     setHotelInStay({
+            //         stayIndex: selectedStayIndex,
+            //         hotelIndex: selectedHotelIndex,
+            //         name: "checkInDate",
+            //         value: response?.data?.fromDate,
+            //     })
+            // );
+            // dispatch(
+            //     setHotelInStay({
+            //         stayIndex: selectedStayIndex,
+            //         hotelIndex: selectedHotelIndex,
+            //         name: "checkOutDate",
+            //         value: response?.data?.toDate,
+            //     })
+            // );
+
+            setIsAvailablityLoading(false);
+        } catch (err) {
+            setAvailableHotels([]);
+
+            setError(err?.response?.data.error);
+            console.log(err);
+            setIsAvailablityLoading(false);
+        }
+    };
+
+    const fetchAvailability = async () => {
+        try {
+            // e.preventDefault();
+            setError("");
+            setIsAvailablityLoading(true);
+            setData((prev) => ({
+                ...prev,
+
+                roomTypeId: "",
+                boardTypeCode: "",
+                hotelName: "",
+                starCategory: "",
+                cityId: "",
+                areaId: "",
+                areaName: "",
+                roomOccupancies: "",
+                hotelData: "",
+            }));
+
+            setNext(false);
+
+            setSelectedHotel("");
+
+            const response = await axioss.get(
+                `/quotations/hotels/room-board/${searchQuery.id}`,
+
+                {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                }
+            );
+
+            setAvailableHotels([
+                {
+                    hotel: response?.data?.hotel,
+                    roomTypes: response?.data?.roomTypes,
+                },
+            ]);
+            if (response?.data?.hotels?.length < 1) {
+                setError("No availability found for this search query");
+            }
+
+            setFilters((prev) => {
+                return {
+                    ...prev,
+                    totalHotels: 1,
+                };
+            });
+
+            setIsNotAvailable(true);
+            // setResponseData({
+            //     fromDate: response?.data?.fromDate,
+            //     toDate: response?.data?.toDate,
+            //     rooms: response?.data?.rooms,
+            // });
             setButtonHidden(true);
             // dispatch(
             //     setHotelInStay({
@@ -331,6 +416,40 @@ export default function HotelSearchModal({
         }));
     };
 
+    const handleNotAvailSubmit = () => {
+        try {
+            // setIsSubmitLoading(true);
+            dispatch(
+                handleHotelsDataChange({
+                    data: {
+                        ...data,
+                        roomOccupancies: [
+                            { occupancyShortName: "SGL", price: "" },
+                            { occupancyShortName: "DBL", price: "" },
+                            { occupancyShortName: "TPL", price: "" },
+                            { occupancyShortName: "CWB", price: "" },
+                            { occupancyShortName: "CNB", price: "" },
+                        ],
+                        isCustomHotelMarkup: true,
+                    },
+                    hotelIndex: hotelIndex,
+                    stayIndex: stayIndex,
+                    edit: edit,
+                })
+            );
+
+            // setIsSubmitLoading(false);
+
+            setIsModal(false);
+
+            dispatch(handleTransferClear());
+            setIsEdit(false);
+            setNext(false);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     const handleSubmit = async () => {
         try {
             setIsSubmitLoading(true);
@@ -370,11 +489,11 @@ export default function HotelSearchModal({
             setNext(false);
         } catch (e) {
             setIsSubmitLoading(false);
-            setError(err?.response?.data.error);
+            setConfirmError(err?.response?.data.error);
         }
     };
 
-    console.log(data, "data");
+    console.log(availableHotels, "data");
 
     useEffect(() => {
         console.log("fetchAvailableHotels1");
@@ -390,7 +509,7 @@ export default function HotelSearchModal({
         }
     }, [filters.skip, filters.limit, filters.search]);
 
-    console.log(value, "value lllll ", locality, "value and locality");
+    console.log(selectedHotel, "value and locality");
 
     return (
         <div className="fixed inset-0 w-full h-full bg-[#fff5] flex items-center justify-center z-10 ">
@@ -891,21 +1010,40 @@ export default function HotelSearchModal({
                             data.roomTypeId &&
                             data.hotelId ? (
                                 <>
-                                    <div className="flex justify-end mt-6">
-                                        <button
-                                            className="w-[150px] bg-green-500"
-                                            onClick={() => {
-                                                handleSubmit();
-                                            }}
-                                            disabled={isSubmitLoading}
-                                        >
-                                            {isSubmitLoading ? (
-                                                <BtnLoader />
-                                            ) : (
-                                                "Confirm Hotel "
-                                            )}
-                                        </button>
-                                    </div>{" "}
+                                    {" "}
+                                    {isNotAvailable ? (
+                                        <div className="flex justify-end mt-6">
+                                            <button
+                                                className="w-[150px] bg-green-500"
+                                                onClick={() => {
+                                                    handleNotAvailSubmit();
+                                                }}
+                                                disabled={isSubmitLoading}
+                                            >
+                                                {isSubmitLoading ? (
+                                                    <BtnLoader />
+                                                ) : (
+                                                    "Confirm Hotel "
+                                                )}
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <div className="flex justify-end mt-6">
+                                            <button
+                                                className="w-[150px] bg-green-500"
+                                                onClick={() => {
+                                                    handleSubmit();
+                                                }}
+                                                disabled={isSubmitLoading}
+                                            >
+                                                {isSubmitLoading ? (
+                                                    <BtnLoader />
+                                                ) : (
+                                                    "Confirm Hotel "
+                                                )}
+                                            </button>
+                                        </div>
+                                    )}
                                 </>
                             ) : (
                                 // <>
@@ -925,9 +1063,26 @@ export default function HotelSearchModal({
                     </>
                 )}
                 {error && (
-                    <span className="text-sm block text-red-500 mt-2">
-                        {error}
-                    </span>
+                    <div className="flex flex-col gap-4">
+                        <span className="text-sm block text-red-500 mt-2">
+                            {error}
+                        </span>
+
+                        <button
+                            className="w-[150px]"
+                            onClick={fetchAvailability}
+                        >
+                            {" "}
+                            fetch{" "}
+                        </button>
+                    </div>
+                )}
+                {confirmError && (
+                    <div className="flex flex-col gap-4">
+                        <span className="text-sm block text-red-500 mt-2">
+                            {confirmError}
+                        </span>{" "}
+                    </div>
                 )}
             </div>
         </div>
