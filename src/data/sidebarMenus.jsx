@@ -107,6 +107,12 @@ const sidebarMenus = {
                 },
             ],
         },
+        {
+            name: "Guide",
+            icon: <GiWavyItinerary />,
+            link: "/attractions/guide",
+            permission: ["attr-itineraries", "view"],
+        },
     ],
     // Marketing: [
     //     {
