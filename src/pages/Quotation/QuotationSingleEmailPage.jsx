@@ -799,6 +799,31 @@ function QuotationSingleEmailPage() {
                                             );
                                         }
                                     )}
+                                </div>{" "}
+                                <div className="cust-border">
+                                    {quotationList?.guideQuotation?.guides?.map(
+                                        (guide, index) => {
+                                            return (
+                                                <div
+                                                    key={index}
+                                                    className="cust-border"
+                                                >
+                                                    <ul className="list-disc ml-6 text-[12px]">
+                                                        <li className="cust-border">
+                                                            Guide {guide?.name}{" "}
+                                                            -{" "}
+                                                            <span className="capitalize">
+                                                                Duration(
+                                                                {guide.duration}
+                                                                {""}hr X {""}
+                                                                {guide.count})
+                                                            </span>{" "}
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            );
+                                        }
+                                    )}
                                 </div>
                                 <div className="cust-border">
                                     {transfers.length > 0 && (
