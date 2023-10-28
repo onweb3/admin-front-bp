@@ -214,6 +214,10 @@ import SingleResellerHotelSettingsPage from "../pages/Resellers/SingleResellerHo
 import GuideListPage from "../pages/Attraction/GuideListPage";
 import AddGuidePage from "../pages/Attraction/AddGuidePage";
 import EditGuidePage from "../pages/Attraction/EditGuidePage";
+import BankAccountsListPage from "../pages/BankAccounts/BankAccountsListPage";
+import AddBankAccountPage from "../pages/BankAccounts/AddBankAccountPage";
+import UpdateBankAccountPage from "../pages/BankAccounts/UpdateBankAccountPage";
+import B2bWalletDepositsRequestPage from "../pages/wallet/B2bWalletDepositsRequestPage";
 
 const ThemeRoutes = [
     {
@@ -726,6 +730,10 @@ const ThemeRoutes = [
                 element: <B2bWallletDepositListPage />,
             },
             {
+                path: "/b2b/wallet/deposit-requests",
+                element: <B2bWalletDepositsRequestPage />,
+            },
+            {
                 path: "/b2b/:id",
                 element: <SingleResellerLayout />,
                 children: [
@@ -1093,10 +1101,21 @@ const ThemeRoutes = [
                 element: <CreateFlightOrderPage />,
             },
             {
+                path: "/bank-accounts",
+                element: <BankAccountsListPage />,
+            },
+            {
+                path: "/bank-accounts/add",
+                element: <AddBankAccountPage />,
+            },
+            {
+                path: "/bank-accounts/:id/edit",
+                element: <UpdateBankAccountPage />,
+            },
+            {
                 path: "/order/flight/:tbId",
                 element: <CompleteFlightOrderPage />,
             },
-            ,
         ],
     },
     {

@@ -33,6 +33,7 @@ import {
 import {
     AiFillCar,
     AiOutlineApi,
+    AiOutlineBank,
     AiOutlineGroup,
     AiOutlineSchedule,
     AiOutlineShop,
@@ -489,6 +490,11 @@ const sidebarMenus = {
                     link: "/b2b/wallet/deposits",
                     permission: ["b2b-wallet-deposits", "view"],
                 },
+                {
+                    name: "Deposits Requests",
+                    link: "/b2b/wallet/deposit-requests",
+                    permission: ["b2b-wallet-deposits", "view"],
+                },
             ],
         },
         {
@@ -576,7 +582,7 @@ const sidebarMenus = {
             ],
         },
     ],
-    Account: [
+    Accounts: [
         {
             name: "Transactions",
             link: "/transactions",
@@ -594,6 +600,12 @@ const sidebarMenus = {
                     permission: ["refunds-list", "view"],
                 },
             ],
+        },
+        {
+            name: "Bank Accounts",
+            link: "/bank-accounts",
+            icon: <AiOutlineBank />,
+            permission: ["bank-accounts", "view"],
         },
     ],
     // {
