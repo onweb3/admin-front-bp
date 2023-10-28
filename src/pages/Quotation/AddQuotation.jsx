@@ -6,6 +6,7 @@ import axios from "../../axios";
 import { PageLoader } from "../../components";
 import ExcSupplementQuotationForm from "../../features/Quotation/ExcSupplementQuotationForm";
 import ExcursionQuotationForm from "../../features/Quotation/ExcursionQuotationForm";
+import GuideQuotationForm from "../../features/Quotation/GuideQuotationForm";
 import HotelQuotationForm from "../../features/Quotation/HotelQuotationForm";
 import QuotationPax from "../../features/Quotation/QuotationPax";
 import QuotationSubmissionForm from "../../features/Quotation/QuotationSubmissionForm";
@@ -71,6 +72,10 @@ export default function AddQuotationPage() {
                         <hr />
                     </span>
                     <ExcursionQuotationForm />
+                    <span className="block py-10">
+                        <hr />
+                    </span>
+                    <GuideQuotationForm />
                     <span className="block py-10">
                         <hr />
                     </span>

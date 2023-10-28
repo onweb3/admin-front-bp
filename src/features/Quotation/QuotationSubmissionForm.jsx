@@ -66,6 +66,8 @@ export default function QuotationSubmissionForm({ isEdit = false }) {
         selectedVisaNationality,
         customMarkupType,
         customMarkup,
+        selectedGuides,
+        isGuideQuotationDisabled,
     } = useSelector((state) => state.quotations);
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -131,6 +133,9 @@ export default function QuotationSubmissionForm({ isEdit = false }) {
                             customMarkupType,
                             customMarkup,
                             isTourismFeeIncluded,
+
+                            selectedGuides,
+                            isGuideQuotationDisabled,
                         },
                         {
                             headers: { Authorization: `Bearer ${jwtToken}` },
@@ -181,6 +186,8 @@ export default function QuotationSubmissionForm({ isEdit = false }) {
                             customMarkupType,
                             customMarkup,
                             isTourismFeeIncluded,
+                            selectedGuides,
+                            isGuideQuotationDisabled,
                         },
                         {
                             headers: { Authorization: `Bearer ${jwtToken}` },

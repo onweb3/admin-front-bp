@@ -54,6 +54,26 @@ export default function GuideListPage() {
         }
     };
 
+    const deleteGuide = async (id) => {
+        try {
+            const response = await axios.delete(
+                `/attractions/guide/delete/${id}`,
+
+                {
+                    headers: { Authorization: `Bearer ${jwtToken}` },
+                }
+            );
+
+            const filteredGuides = guides.filter((item) => {
+                return item._id != id;
+            });
+
+            setGuides(filteredGuides);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     useEffect(() => {
         let skip =
             Number(searchParams.get("skip")) > 0
@@ -177,11 +197,11 @@ export default function GuideListPage() {
                                                         </Link>
                                                         <button
                                                             className="h-auto bg-transparent text-red-500 text-xl"
-                                                            // onClick={() =>
-                                                            //     deleteAirport(
-                                                            //         airport?._id
-                                                            //     )
-                                                            // }
+                                                            onClick={() =>
+                                                                deleteGuide(
+                                                                    guide?._id
+                                                                )
+                                                            }
                                                         >
                                                             <MdDelete />
                                                         </button>
