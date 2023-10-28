@@ -206,6 +206,10 @@ import CreateVisaOrderPage from "../pages/Visa/CreateVisaOrderPage";
 import VisaDocumentUploadPage from "../pages/Visa/VisaDocumentUploadPage";
 import CreateFlightOrderPage from "../pages/Flight/CreateFlightOrderPage";
 import SingleResellerHotelSettingsPage from "../pages/Resellers/SingleResellerHotelSettingsPage";
+import BankAccountsListPage from "../pages/BankAccounts/BankAccountsListPage";
+import AddBankAccountPage from "../pages/BankAccounts/AddBankAccountPage";
+import UpdateBankAccountPage from "../pages/BankAccounts/UpdateBankAccountPage";
+import B2bWalletDepositsRequestPage from "../pages/wallet/B2bWalletDepositsRequestPage";
 
 const ThemeRoutes = [
     {
@@ -705,6 +709,10 @@ const ThemeRoutes = [
                 element: <B2bWallletDepositListPage />,
             },
             {
+                path: "/b2b/wallet/deposit-requests",
+                element: <B2bWalletDepositsRequestPage />,
+            },
+            {
                 path: "/b2b/:id",
                 element: <SingleResellerLayout />,
                 children: [
@@ -1071,8 +1079,18 @@ const ThemeRoutes = [
                 path: "/order/flight",
                 element: <CreateFlightOrderPage />,
             },
-
-            ,
+            {
+                path: "/bank-accounts",
+                element: <BankAccountsListPage />,
+            },
+            {
+                path: "/bank-accounts/add",
+                element: <AddBankAccountPage />,
+            },
+            {
+                path: "/bank-accounts/:id/edit",
+                element: <UpdateBankAccountPage />,
+            },
         ],
     },
     {

@@ -306,6 +306,12 @@ const adminRoles = [
         category: "account",
         permissions: [],
     },
+    {
+        name: "bank-accounts",
+        displayName: "Bank Accounts",
+        category: "account",
+        permissions: [],
+    },
 
     // SETTINGS
     {
