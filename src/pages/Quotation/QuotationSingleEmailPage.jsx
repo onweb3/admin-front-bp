@@ -763,36 +763,6 @@ function QuotationSingleEmailPage() {
                                                                         : ""
                                                                     : ""}
                                                             </span>
-                                                            <span>
-                                                                {" "}
-                                                                - (Adult -{" "}
-                                                                {quotationList?.quotationCurrency ===
-                                                                "AED"
-                                                                    ? exc?.adultPrice
-                                                                    : (
-                                                                          exc?.adultPrice /
-                                                                          3.65
-                                                                      )?.toFixed(
-                                                                          0
-                                                                      )}{" "}
-                                                                {
-                                                                    quotationList?.quotationCurrency
-                                                                }
-                                                                , Child -{" "}
-                                                                {quotationList?.quotationCurrency ===
-                                                                "AED"
-                                                                    ? exc?.childPrice
-                                                                    : (
-                                                                          exc?.childPrice /
-                                                                          3.65
-                                                                      )?.toFixed(
-                                                                          0
-                                                                      )}{" "}
-                                                                {
-                                                                    quotationList?.quotationCurrency
-                                                                }
-                                                                )
-                                                            </span>
                                                         </li>
                                                     </ul>
                                                 </div>
