@@ -14,15 +14,17 @@ import {
 } from "../../features/Hotels";
 import { config } from "../../constants";
 
+// payments: "Payments",
+//     cancellation: "Cancellation",
+//     refund: "Refunds",
+
 const sections = {
-    payments: "Payments",
-    cancellation: "Cancellation",
-    refund: "Refunds",
     contracts: "Contracts",
     discounts: "Discounts",
     "meal-upgrades": "Meal Upgrades",
     "room-upgrades": "Room Upgrades",
     staypays: "Stay Pays",
+    ratekey: "Rate Key",
 };
 
 export default function HotelOrderDetailsPage() {
@@ -30,7 +32,7 @@ export default function HotelOrderDetailsPage() {
     const [hotelOrder, setHotelOrder] = useState({});
     const [isConfirmModalOpen, setIsConfirmModal] = useState(false);
     const [isCancelModalOpen, setIsCancelModal] = useState(false);
-    const [selectedSection, setSelectedSection] = useState("payments");
+    const [selectedSection, setSelectedSection] = useState("contracts");
 
     const { jwtToken } = useSelector((state) => state.admin);
     const { id } = useParams();
@@ -415,14 +417,6 @@ export default function HotelOrderDetailsPage() {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="mt-7">
-                                            <h1 className="font-[600] flex items-center gap-[10px] text-[15px] mb-2">
-                                                <BsFillArrowRightCircleFill /> Rate Key
-                                            </h1>
-                                            <span className="text-[14px] bg-[#f3f6f9] break-all">
-                                                {hotelOrder?.rateKey}
-                                            </span>
-                                        </div>
                                     </div>
                                 </div>
                                 <div>
@@ -712,6 +706,215 @@ export default function HotelOrderDetailsPage() {
                             </div>
 
                             <div className="mt-7">
+                                <h1 className="font-[600] flex items-center gap-[10px] text-[15px] mb-2">
+                                    <BsFillArrowRightCircleFill /> Payments
+                                </h1>
+                                {hotelOrder?.payments?.length < 1 ? (
+                                    <div className="p-4 flex flex-col items-center">
+                                        <span className="text-sm text-grayColor block mt-[6px]">
+                                            Oops.. No Payments Found
+                                        </span>
+                                    </div>
+                                ) : (
+                                    <div className="overflow-x-auto">
+                                        <table className="w-full text-[14px]">
+                                            <tbody>
+                                                <tr className="odd:bg-[#f3f6f9]">
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Date
+                                                    </td>
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Payment Method
+                                                    </td>
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Amount
+                                                    </td>
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Message
+                                                    </td>
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Status
+                                                    </td>
+                                                </tr>
+                                                {hotelOrder?.payments?.map((payment, index) => {
+                                                    return (
+                                                        <tr
+                                                            key={index}
+                                                            className="odd:bg-[#f3f6f9]"
+                                                        >
+                                                            <td className="p-2">
+                                                                {formatDate(
+                                                                    payment?.createdAt,
+                                                                    true
+                                                                )}
+                                                            </td>
+                                                            <td className="p-2 capitalize">
+                                                                {payment?.paymentMethod}
+                                                            </td>
+                                                            <td className="p-2">
+                                                                {payment?.amount?.toFixed(2)} AED
+                                                            </td>
+                                                            <td className="p-2">
+                                                                {payment?.paymentStateMessage ||
+                                                                    "N/A"}
+                                                            </td>
+                                                            <td className="p-2">
+                                                                <span
+                                                                    className={
+                                                                        "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
+                                                                        (payment?.paymentState ===
+                                                                        "failed"
+                                                                            ? "bg-[#f065481A] text-[#f06548]"
+                                                                            : payment?.paymentState ===
+                                                                              "success"
+                                                                            ? "text-[#0ab39c] bg-[#0ab39c1A]"
+                                                                            : "bg-[#f7b84b1A] text-[#f7b84b]")
+                                                                    }
+                                                                >
+                                                                    {payment?.paymentState}
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                })}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="mt-7">
+                                <h1 className="font-[600] flex items-center gap-[10px] text-[15px] mb-2">
+                                    <BsFillArrowRightCircleFill /> Cancellation Requests
+                                </h1>
+                                {hotelOrder?.cancellations?.length < 1 ? (
+                                    <div className="p-4 flex flex-col items-center">
+                                        <span className="text-sm text-grayColor block mt-[6px]">
+                                            Oops.. No Cancellations Found
+                                        </span>
+                                    </div>
+                                ) : (
+                                    <div className="overflow-x-auto">
+                                        <table className="w-full text-[14px]">
+                                            <tbody>
+                                                <tr className="odd:bg-[#f3f6f9]">
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Date
+                                                    </td>
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Provider
+                                                    </td>
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Charge
+                                                    </td>
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Remark
+                                                    </td>
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Cancelled By
+                                                    </td>
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Admin
+                                                    </td>
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Status
+                                                    </td>
+                                                </tr>
+                                                {hotelOrder?.cancellations?.map(
+                                                    (cancellation, index) => {
+                                                        return (
+                                                            <HotelReservationCancellationTableRow
+                                                                key={index}
+                                                                cancellation={cancellation}
+                                                                hotelOrder={hotelOrder}
+                                                                setHotelOrder={setHotelOrder}
+                                                            />
+                                                        );
+                                                    }
+                                                )}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="mt-7">
+                                <h1 className="font-[600] flex items-center gap-[10px] text-[15px] mb-2">
+                                    <BsFillArrowRightCircleFill /> Refunds
+                                </h1>
+                                {hotelOrder?.refunds?.length < 1 ? (
+                                    <div className="p-4 flex flex-col items-center">
+                                        <span className="text-sm text-grayColor block mt-[6px]">
+                                            Oops.. No Refunds Found
+                                        </span>
+                                    </div>
+                                ) : (
+                                    <div className="overflow-x-auto">
+                                        <table className="w-full text-[14px]">
+                                            <tbody>
+                                                <tr className="odd:bg-[#f3f6f9]">
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Date
+                                                    </td>
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Payment Method
+                                                    </td>
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Amount
+                                                    </td>
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Note
+                                                    </td>
+                                                    <td className="p-2 text-sm text-grayColor font-medium">
+                                                        Status
+                                                    </td>
+                                                </tr>
+                                                {hotelOrder?.refunds?.map((refund, index) => {
+                                                    return (
+                                                        <tr
+                                                            key={index}
+                                                            className="odd:bg-[#f3f6f9]"
+                                                        >
+                                                            <td className="p-2">
+                                                                {formatDate(
+                                                                    refund?.createdAt,
+                                                                    true
+                                                                )}
+                                                            </td>
+                                                            <td className="p-2 capitalize">
+                                                                {refund?.paymentMethod}
+                                                            </td>
+                                                            <td className="p-2 whitespace-nowrap">
+                                                                {refund?.amount?.toFixed(2)} AED
+                                                            </td>
+                                                            <td className="p-2">
+                                                                {refund?.note || "N/A"}
+                                                            </td>
+                                                            <td className="p-2">
+                                                                <span
+                                                                    className={
+                                                                        "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
+                                                                        (refund?.status === "failed"
+                                                                            ? "bg-[#f065481A] text-[#f06548]"
+                                                                            : refund?.status ===
+                                                                              "success"
+                                                                            ? "text-[#0ab39c] bg-[#0ab39c1A]"
+                                                                            : "bg-[#f7b84b1A] text-[#f7b84b]")
+                                                                    }
+                                                                >
+                                                                    {refund?.status}
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                })}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="mt-7">
                                 <div className="flex items-center">
                                     <ul className="dir-btn">
                                         {Object.keys(sections)?.map((section, index) => {
@@ -732,205 +935,6 @@ export default function HotelOrderDetailsPage() {
                                     </ul>
                                 </div>
 
-                                {selectedSection === "payments" && (
-                                    <div className="overflow-x-auto mt-2">
-                                        {hotelOrder?.payments?.length < 1 ? (
-                                            <div className="p-4 flex flex-col items-center">
-                                                <span className="text-sm text-grayColor block mt-[6px]">
-                                                    Oops.. No Payments Found
-                                                </span>
-                                            </div>
-                                        ) : (
-                                            <table className="w-full text-[14px]">
-                                                <tbody>
-                                                    <tr className="odd:bg-[#f3f6f9]">
-                                                        <td className="p-2 text-sm text-grayColor font-medium">
-                                                            Date
-                                                        </td>
-                                                        <td className="p-2 text-sm text-grayColor font-medium">
-                                                            Payment Method
-                                                        </td>
-                                                        <td className="p-2 text-sm text-grayColor font-medium">
-                                                            Amount
-                                                        </td>
-                                                        <td className="p-2 text-sm text-grayColor font-medium">
-                                                            Message
-                                                        </td>
-                                                        <td className="p-2 text-sm text-grayColor font-medium">
-                                                            Status
-                                                        </td>
-                                                    </tr>
-                                                    {hotelOrder?.payments?.map((payment, index) => {
-                                                        return (
-                                                            <tr
-                                                                key={index}
-                                                                className="odd:bg-[#f3f6f9]"
-                                                            >
-                                                                <td className="p-2">
-                                                                    {formatDate(
-                                                                        payment?.createdAt,
-                                                                        true
-                                                                    )}
-                                                                </td>
-                                                                <td className="p-2 capitalize">
-                                                                    {payment?.paymentMethod}
-                                                                </td>
-                                                                <td className="p-2">
-                                                                    {payment?.amount?.toFixed(2)}{" "}
-                                                                    AED
-                                                                </td>
-                                                                <td className="p-2">
-                                                                    {payment?.paymentStateMessage ||
-                                                                        "N/A"}
-                                                                </td>
-                                                                <td className="p-2">
-                                                                    <span
-                                                                        className={
-                                                                            "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
-                                                                            (payment?.paymentState ===
-                                                                            "failed"
-                                                                                ? "bg-[#f065481A] text-[#f06548]"
-                                                                                : payment?.paymentState ===
-                                                                                  "success"
-                                                                                ? "text-[#0ab39c] bg-[#0ab39c1A]"
-                                                                                : "bg-[#f7b84b1A] text-[#f7b84b]")
-                                                                        }
-                                                                    >
-                                                                        {payment?.paymentState}
-                                                                    </span>
-                                                                </td>
-                                                            </tr>
-                                                        );
-                                                    })}
-                                                </tbody>
-                                            </table>
-                                        )}
-                                    </div>
-                                )}
-                                {selectedSection === "cancellation" && (
-                                    <div className="overflow-x-auto mt-2">
-                                        {hotelOrder?.cancellations?.length < 1 ? (
-                                            <div className="p-4 flex flex-col items-center">
-                                                <span className="text-sm text-grayColor block mt-[6px]">
-                                                    Oops.. No Cancellations Found
-                                                </span>
-                                            </div>
-                                        ) : (
-                                            <table className="w-full text-[14px]">
-                                                <tbody>
-                                                    <tr className="odd:bg-[#f3f6f9]">
-                                                        <td className="p-2 text-sm text-grayColor font-medium">
-                                                            Date
-                                                        </td>
-                                                        <td className="p-2 text-sm text-grayColor font-medium">
-                                                            Provider
-                                                        </td>
-                                                        <td className="p-2 text-sm text-grayColor font-medium">
-                                                            Charge
-                                                        </td>
-                                                        <td className="p-2 text-sm text-grayColor font-medium">
-                                                            Remark
-                                                        </td>
-                                                        <td className="p-2 text-sm text-grayColor font-medium">
-                                                            Cancelled By
-                                                        </td>
-                                                        <td className="p-2 text-sm text-grayColor font-medium">
-                                                            Admin
-                                                        </td>
-                                                        <td className="p-2 text-sm text-grayColor font-medium">
-                                                            Status
-                                                        </td>
-                                                    </tr>
-                                                    {hotelOrder?.cancellations?.map(
-                                                        (cancellation, index) => {
-                                                            return (
-                                                                <HotelReservationCancellationTableRow
-                                                                    key={index}
-                                                                    cancellation={cancellation}
-                                                                    hotelOrder={hotelOrder}
-                                                                    setHotelOrder={setHotelOrder}
-                                                                />
-                                                            );
-                                                        }
-                                                    )}
-                                                </tbody>
-                                            </table>
-                                        )}
-                                    </div>
-                                )}
-                                {selectedSection === "refund" && (
-                                    <div className="overflow-x-auto mt-2">
-                                        {hotelOrder?.refunds?.length < 1 ? (
-                                            <div className="p-4 flex flex-col items-center">
-                                                <span className="text-sm text-grayColor block mt-[6px]">
-                                                    Oops.. No Refunds Found
-                                                </span>
-                                            </div>
-                                        ) : (
-                                            <table className="w-full text-[14px]">
-                                                <tbody>
-                                                    <tr className="odd:bg-[#f3f6f9]">
-                                                        <td className="p-2 text-sm text-grayColor font-medium">
-                                                            Date
-                                                        </td>
-                                                        <td className="p-2 text-sm text-grayColor font-medium">
-                                                            Payment Method
-                                                        </td>
-                                                        <td className="p-2 text-sm text-grayColor font-medium">
-                                                            Amount
-                                                        </td>
-                                                        <td className="p-2 text-sm text-grayColor font-medium">
-                                                            Note
-                                                        </td>
-                                                        <td className="p-2 text-sm text-grayColor font-medium">
-                                                            Status
-                                                        </td>
-                                                    </tr>
-                                                    {hotelOrder?.refunds?.map((refund, index) => {
-                                                        return (
-                                                            <tr
-                                                                key={index}
-                                                                className="odd:bg-[#f3f6f9]"
-                                                            >
-                                                                <td className="p-2">
-                                                                    {formatDate(
-                                                                        refund?.createdAt,
-                                                                        true
-                                                                    )}
-                                                                </td>
-                                                                <td className="p-2 capitalize">
-                                                                    {refund?.paymentMethod}
-                                                                </td>
-                                                                <td className="p-2 whitespace-nowrap">
-                                                                    {refund?.amount?.toFixed(2)} AED
-                                                                </td>
-                                                                <td className="p-2">
-                                                                    {refund?.note || "N/A"}
-                                                                </td>
-                                                                <td className="p-2">
-                                                                    <span
-                                                                        className={
-                                                                            "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
-                                                                            (refund?.status ===
-                                                                            "failed"
-                                                                                ? "bg-[#f065481A] text-[#f06548]"
-                                                                                : refund?.status ===
-                                                                                  "success"
-                                                                                ? "text-[#0ab39c] bg-[#0ab39c1A]"
-                                                                                : "bg-[#f7b84b1A] text-[#f7b84b]")
-                                                                        }
-                                                                    >
-                                                                        {refund?.status}
-                                                                    </span>
-                                                                </td>
-                                                            </tr>
-                                                        );
-                                                    })}
-                                                </tbody>
-                                            </table>
-                                        )}
-                                    </div>
-                                )}
                                 {selectedSection === "contracts" && (
                                     <div className="overflow-x-auto mt-2">
                                         <table className="w-full text-[14px]">
@@ -1282,6 +1286,18 @@ export default function HotelOrderDetailsPage() {
                                                 </tbody>
                                             </table>
                                         )}
+                                    </div>
+                                )}
+                                {selectedSection === "ratekey" && (
+                                    <div className="mt-2">
+                                        <div className="flex items-start gap-[10px]">
+                                            <span className="whitespace-nowrap">Rate Key:</span>
+                                            <div>
+                                                <span className="text-[14px] bg-yellow-500 break-all">
+                                                    {hotelOrder?.rateKey}
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
                                 )}
                             </div>
