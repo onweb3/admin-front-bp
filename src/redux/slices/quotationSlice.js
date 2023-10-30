@@ -918,10 +918,10 @@ export const quotationsSlice = createSlice({
             state.isCustomMarkup = false;
             state.customMarkup = 0;
             state.customMarkupType = "flat";
-            selectedGuides = [];
-            selectedGuidesIds = [];
-            guides = [];
-            isGuideQuotationDisabled = true;
+            state.selectedGuides = [];
+            state.selectedGuidesIds = [];
+            state.isGuideQuotationDisabled = true;
+            state.guides = [];
         },
         handleClientNameChange: (state, action) => {
             state.clientName = action.payload;
