@@ -426,14 +426,14 @@ const AmendmentTable = ({
                             {amendment?.noOfAdults && (
                                 <div>
                                     Per person Adult price:{" "}
-                                    { Math.ceil(amendment?.perPersonAdultPrice)}{" "}
+                                    {Math.ceil(amendment?.perPersonAdultPrice)}{" "}
                                     {amendment?.quotationCurrency}
                                 </div>
                             )}
                             {amendment?.noOfChildren ? (
                                 <div className="mt-1">
                                     Per person Child price:{" "}
-                                    { Math.ceil(amendment?.perPersonChildPrice)}{" "}
+                                    {Math.ceil(amendment?.perPersonChildPrice)}{" "}
                                     {amendment?.quotationCurrency}
                                 </div>
                             ) : (
@@ -608,14 +608,14 @@ const AmendmentTable = ({
                     {amendment?.noOfAdults && (
                         <div>
                             Per person Adult price:{" "}
-                            { Math.ceil(amendment?.perPersonAdultPrice)}{" "}
+                            {Math.ceil(amendment?.perPersonAdultPrice)}{" "}
                             {amendment?.quotationCurrency}
                         </div>
                     )}
                     {amendment?.noOfChildren ? (
                         <div className="mt-1">
                             Per person Child price:{" "}
-                            { Math.ceil(amendment?.perPersonChildPrice)}{" "}
+                            {Math.ceil(amendment?.perPersonChildPrice)}{" "}
                             {amendment?.quotationCurrency}
                         </div>
                     ) : (
@@ -678,11 +678,32 @@ const AmendmentTable = ({
                     </ul>
                 </div>
             )}
-
+            {amendment?.guideQuotation && (
+                <div className="text-[15px] mt-7">
+                    <h5 className="text-gray-500 font-medium mb-1">
+                        Guide Quotaion
+                    </h5>
+                    <ul className="text-[15px] list-disc ml-[16px]">
+                        {amendment?.guideQuotation?.guides?.map(
+                            (guide, index) => {
+                                return (
+                                    <li key={index} className="mb-1">
+                                        {guide?.name} -{" "}
+                                        <span className="capitalize">
+                                            Duration( {guide?.duration} hr x {" "}
+                                            {guide?.count})
+                                        </span>
+                                    </li>
+                                );
+                            }
+                        )}
+                    </ul>
+                </div>
+            )}
             {amendment?.excSupplementQuotation && (
                 <div>
                     <h5 className="text-gray-500 font-medium mb-1 mt-7">
-                         Optional Tours Cost
+                        Optional Tours Cost
                     </h5>
 
                     <ul className="text-[15px] list-disc ml-[16px]">

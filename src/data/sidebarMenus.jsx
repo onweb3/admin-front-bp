@@ -4,6 +4,7 @@ import {
     MdAddBusiness,
     MdAdminPanelSettings,
     MdAttractions,
+    MdEmojiPeople,
     MdEventAvailable,
     MdLocalAirport,
     MdOutlineFastfood,
@@ -28,6 +29,7 @@ import {
     BiGitCompare,
     BiHotel,
     BiMessageDetail,
+    BiSolidUserAccount,
     BiTransferAlt,
 } from "react-icons/bi";
 import {
@@ -43,9 +45,10 @@ import {
 } from "react-icons/ai";
 import { RiRefund2Line, RiProfileLine } from "react-icons/ri";
 import { GiWavyItinerary } from "react-icons/gi";
-import { FaGlobe } from "react-icons/fa";
+import { FaGlobe, FaThList } from "react-icons/fa";
 import { BsFillChatLeftQuoteFill } from "react-icons/bs";
 import { IoBusiness, IoWalletOutline } from "react-icons/io5";
+import { GrDocumentUser } from "react-icons/gr";
 
 const sidebarMenus = {
     Home: [
@@ -107,6 +110,12 @@ const sidebarMenus = {
                     permission: ["attraction-statistics", "view"],
                 },
             ],
+        },
+        {
+            name: "Guide",
+            icon: <MdEmojiPeople />,
+            link: "/attractions/guide",
+            permission: ["attr-itineraries", "view"],
         },
     ],
     // Marketing: [
@@ -336,31 +345,28 @@ const sidebarMenus = {
     ],
     Quotation: [
         {
-            name: "Quotation",
+            name: "Quotation Dashboard",
+            icon: <RxDashboard />,
+            link: "/quotations/dashboard",
+            permission: ["quotations-dashboard", "view"],
+        },
+        {
+            name: "Create Quotation",
             icon: <BsFillChatLeftQuoteFill />,
-            link: "#",
-            dropdown: [
-                {
-                    name: "Quotation Dashboard",
-                    link: "/quotations/dashboard",
-                    permission: ["quotations-dashboard", "view"],
-                },
-                {
-                    name: "Create Quotation",
-                    link: "/quotations/add",
-                    permission: ["create-quotations", "view"],
-                },
-                {
-                    name: "Quotation List",
-                    link: "/quotations",
-                    permission: ["quotations-list", "view"],
-                },
-                {
-                    name: "Quotation Reseller List",
-                    link: "/quotations/reseller",
-                    permission: ["quotations-reseller-list", "view"],
-                },
-            ],
+            link: "/quotations/add",
+            permission: ["create-quotations", "view"],
+        },
+        {
+            name: "Quotation List",
+            icon: <FaThList />,
+            link: "/quotations",
+            permission: ["quotations-list", "view"],
+        },
+        {
+            name: "Quotation Reseller List",
+            icon: <BiSolidUserAccount />,
+            link: "/quotations/reseller",
+            permission: ["quotations-reseller-list", "view"],
         },
     ],
     Insurance: [

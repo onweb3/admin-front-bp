@@ -76,6 +76,10 @@ const initialState = {
     isCustomMarkup: false,
     customMarkupType: "flat",
     customMarkup: 0,
+    selectedGuides: [],
+    selectedGuidesIds: [],
+    guides: [],
+    isGuideQuotationDisabled: true,
 };
 
 export const quotationsSlice = createSlice({
@@ -733,6 +737,9 @@ export const quotationsSlice = createSlice({
             // if (action.payload?.amendment?.transferQuotation) {
             //     state.transfer = action.payload?.amendment?.transferQuotation;
             // }
+            state.isGuideQuotationDisabled =
+                action.payload?.amendment?.isGuideQuotationDisabled;
+
             state.isAlreadyBooked = action.payload?.amendment?.isAlreadyBooked;
 
             state.isTransferQuotationDisabled =
@@ -765,6 +772,19 @@ export const quotationsSlice = createSlice({
                             return exc?.excursionId;
                         }
                     );
+            }
+
+            if (action.payload?.amendment?.guideQuotation) {
+                state.selectedGuides =
+                    action.payload?.amendment?.guideQuotation?.guides;
+                state.selectedGuidesIds =
+                    action.payload?.amendment?.guideQuotation?.guides?.map(
+                        (exc) => {
+                            return exc?.guideId;
+                        }
+                    );
+
+                state.guides = action.payload?.amendment?.guides;
             }
 
             if (action.payload?.amendment?.excSupplementQuotation) {
@@ -898,6 +918,10 @@ export const quotationsSlice = createSlice({
             state.isCustomMarkup = false;
             state.customMarkup = 0;
             state.customMarkupType = "flat";
+            state.selectedGuides = [];
+            state.selectedGuidesIds = [];
+            state.isGuideQuotationDisabled = true;
+            state.guides = [];
         },
         handleClientNameChange: (state, action) => {
             state.clientName = action.payload;
@@ -1254,6 +1278,57 @@ export const quotationsSlice = createSlice({
             state.hotelQt.stays[stayIndex].hotels[hotelIndex].roomOccupancies =
                 value;
         },
+
+        addGuide: (state, action) => {
+            if (action.payload) {
+                state.selectedGuides.push({
+                    guideId: action?.payload?.guide._id,
+                    name: action?.payload?.guide?.name,
+                    count: 0,
+                    duration: action.payload?.guide?.duration,
+                });
+                state.selectedGuidesIds.push(action.payload?.guide?._id);
+                state.guides.push(action?.payload?.guide);
+            }
+        },
+        removeSelectedGuide: (state, action) => {
+            console.log("called remove");
+            const filteredGuides = state.selectedGuides?.filter((item) => {
+                return item?.guideId !== action.payload;
+            });
+
+            console.log(filteredGuides, "filteredExcursions");
+            state.selectedGuides = filteredGuides;
+            const filteredIds = state.selectedGuidesIds?.filter((id) => {
+                return id !== action.payload;
+            });
+            console.log(filteredIds, "filteredIds");
+
+            state.selectedGuidesIds = filteredIds;
+        },
+        changeGuideCount: (state, action) => {
+            const selectedIndex = state.selectedGuides?.findIndex((item) => {
+                return item?.guideId === action.payload.guideId;
+            });
+
+            console.log(selectedIndex, "sleces");
+
+            if (selectedIndex !== -1) {
+                state.selectedGuides[selectedIndex].count =
+                    action.payload.value;
+            } else {
+            }
+        },
+        changeGuidePerPersonPrice: (state, action) => {
+            for (let i = 0; i < state.selectedGuides?.length; i++) {
+                if (state.selectedGuides[i]?.guideId === action.payload?._id) {
+                    state.selectedGuides[i].perPersonPrice =
+                        action.payload?.perPersonPrice;
+
+                    break;
+                }
+            }
+        },
     },
 });
 
@@ -1332,6 +1407,10 @@ export const {
     handleHotelCustomMarkupChange,
     handleRoomTypeChange,
     handleRoomOccupancy,
+    addGuide,
+    removeSelectedGuide,
+    changeGuideCount,
+    changeGuidePerPersonPrice,
 } = quotationsSlice.actions;
 
 export default quotationsSlice.reducer;
