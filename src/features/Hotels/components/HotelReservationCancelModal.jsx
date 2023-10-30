@@ -72,9 +72,27 @@ function HotelReservationCancelModal({ setIsCancelModal, orderId, setOrderData, 
                                 placeholder="0"
                                 name="cancellationCharge"
                                 value={data.cancellationCharge || ""}
-                                onChange={handleChange}
+                                onChange={(e) => {
+                                    if (Number(e.target.value) > netPrice) {
+                                        setData((prev) => {
+                                            return { ...prev, cancellationCharge: netPrice };
+                                        });
+                                    } else {
+                                        setData((prev) => {
+                                            return { ...prev, cancellationCharge: e.target.value };
+                                        });
+                                    }
+                                }}
                                 required
                             />
+                            <span className="block text-sm text-grayColor mt-2">
+                                Cancellation amount will be deducted from the paid amount and the
+                                balance{" "}
+                                <span className="font-medium text-[#333]">
+                                    {netPrice - Number(data.cancellationCharge)} AED
+                                </span>{" "}
+                                will be refunded to the wallet.
+                            </span>
                         </div>
                         <div>
                             <label htmlFor="">Cancellation Remark</label>
