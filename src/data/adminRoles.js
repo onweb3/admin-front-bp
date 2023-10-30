@@ -484,6 +484,12 @@ const adminRoles = [
         permissions: [],
     },
     {
+        name: "attraction-transaction",
+        displayName: "Attraction Transaction",
+        category: "order",
+        permissions: [],
+    },
+    {
         name: "visa-order",
         displayName: "Visa",
         category: "order",

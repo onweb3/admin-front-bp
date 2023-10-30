@@ -660,8 +660,19 @@ const sidebarMenus = {
         {
             name: "Attraction",
             icon: <MdOutlineSummarize />,
-            link: "/order/attraction",
-            permission: ["attraction-order", "view"],
+            link: "#",
+            dropdown: [
+                {
+                    name: " Create  Order",
+                    link: "/order/attraction",
+                    permission: ["attraction-order", "view"],
+                },
+                {
+                    name: " Transaction",
+                    link: "/order/attraction/transaction",
+                    permission: ["attraction-transaction", "view"],
+                },
+            ],
         },
         {
             name: "Visa",

@@ -218,6 +218,7 @@ import BankAccountsListPage from "../pages/BankAccounts/BankAccountsListPage";
 import AddBankAccountPage from "../pages/BankAccounts/AddBankAccountPage";
 import UpdateBankAccountPage from "../pages/BankAccounts/UpdateBankAccountPage";
 import B2bWalletDepositsRequestPage from "../pages/wallet/B2bWalletDepositsRequestPage";
+import AttractionTransactionsPage from "../pages/Attraction/AttractionTranscationPage";
 
 const ThemeRoutes = [
     {
@@ -1084,6 +1085,11 @@ const ThemeRoutes = [
                 path: "/order/attraction",
                 element: <CreateAttractionOrder />,
             },
+            {
+                path: "/order/attraction/transaction",
+                element: <AttractionTransactionsPage />,
+            },
+
             {
                 path: "/order/a2a",
                 element: <CreateA2aOrder />,

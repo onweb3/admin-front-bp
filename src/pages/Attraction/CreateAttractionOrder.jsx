@@ -6,6 +6,7 @@ import axios from "../../axios";
 import { BtnLoader, SelectDropdown } from "../../components";
 import { useImageChange } from "../../hooks";
 import { config } from "../../constants";
+import moment from "moment";
 
 export default function CreateAttractionOrder() {
     const [data, setData] = useState({
@@ -92,12 +93,26 @@ export default function CreateAttractionOrder() {
                     };
                 });
             }
-            setData((prev) => {
-                return {
-                    ...prev,
-                    [name]: value,
-                };
-            });
+
+            if (name === "selectedSlot") {
+                let selectedDetails = timeSlots.find((timeSlot) => {
+                    return timeSlot.EventID.toString() === value.toString(); // Added a return statement here
+                });
+
+                setData((prev) => {
+                    return {
+                        ...prev,
+                        ["selectedSlot"]: selectedDetails,
+                    };
+                });
+            } else {
+                setData((prev) => {
+                    return {
+                        ...prev,
+                        [name]: value,
+                    };
+                });
+            }
         } catch (err) {}
     };
 
@@ -125,6 +140,17 @@ export default function CreateAttractionOrder() {
                         hoursCount: data?.hoursCount ? data?.hoursCount : "",
                         infantCount: data.infantCount ? data.infantCount : 0,
                         transferType: data.value,
+                        slot: {
+                            EventID: data?.selectedSlot?.EventID,
+                            EventName: data?.selectedSlot?.EventName,
+                            StartDateTime: data?.selectedSlot?.StartDateTime,
+                            EndDateTime: data?.selectedSlot?.EndDateTime,
+                            ResourceID: data?.selectedSlot?.ResourceID,
+                            Status: data?.selectedSlot?.Status,
+                            AdultPrice: data?.selectedSlot?.AdultPrice,
+                            ChildPrice: data?.selectedSlot?.ChildPrice,
+                            Available: data?.selectedSlot?.Available,
+                        },
                     },
                 ],
             };
@@ -147,7 +173,7 @@ export default function CreateAttractionOrder() {
                 );
             }
             setIsLoading(false);
-            navigate(`/attractions/statistics`);
+            navigate(`/order/attraction/transaction`);
         } catch (err) {
             setError(
                 err?.response?.data?.error || "Something went wrong, Try again"
@@ -184,7 +210,21 @@ export default function CreateAttractionOrder() {
                     headers: { authorization: `Bearer ${jwtToken}` },
                 }
             );
-            setAttractions(response.data);
+
+            const timeSlots = response.data.map((timeSlot) => {
+                return {
+                    ...timeSlot,
+                    displayName: `${timeSlot.EventName}-avai(${
+                        timeSlot.Available
+                    })-adult(${timeSlot.AdultPrice} AED)-child(${
+                        timeSlot.ChildPrice
+                    } AED)-slot(${moment(timeSlot.StartDateTime).format(
+                        "h:mm A"
+                    )})`,
+                };
+            });
+
+            setTimeSlots(timeSlots);
         } catch (err) {
             setError(
                 err?.response?.data?.error || "Something went wrong, Try again"
@@ -242,7 +282,7 @@ export default function CreateAttractionOrder() {
             }
         } catch (err) {}
     };
-
+    console.log(data);
     useEffect(() => {
         fetchAttractions();
         fetchResellers();
@@ -250,6 +290,8 @@ export default function CreateAttractionOrder() {
 
     useEffect(() => {
         fetchActivities();
+        setSelectedActivity("");
+        setTimeSlots("");
     }, [data.attractionId]);
 
     useEffect(() => {
@@ -724,18 +766,20 @@ export default function CreateAttractionOrder() {
                                     <label htmlFor=""> Time Slot</label>
                                     <div className="">
                                         <SelectDropdown
-                                            data={resellers}
-                                            setData={setResellers}
-                                            displayName={"companyName"}
-                                            selectedData={data?.resellerId}
+                                            data={timeSlots}
+                                            setData={setTimeSlots}
+                                            displayName={"displayName"}
+                                            selectedData={
+                                                data?.selectedSlot?.EventID
+                                            }
                                             setSelectedData={(value) =>
                                                 handleSingleChange({
-                                                    name: "resellerId",
+                                                    name: "selectedSlot",
                                                     value: value,
                                                 })
                                             }
-                                            valueName={"_id"}
-                                            randomIndex={"companyName"}
+                                            valueName={"EventID"}
+                                            randomIndex={"EventID"}
                                             disabled={false}
                                             addNewButton={false}
                                         />
