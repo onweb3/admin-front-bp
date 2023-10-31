@@ -7,6 +7,8 @@ import { BtnLoader, SelectDropdown } from "../../components";
 import { useImageChange } from "../../hooks";
 import { config } from "../../constants";
 import moment from "moment";
+import { BiEdit } from "react-icons/bi";
+import CreateOrderMarkupModal from "../../features/Attractions/components/CreateOrderMarkupModal";
 
 export default function CreateAttractionOrder() {
     const [data, setData] = useState({
@@ -36,7 +38,7 @@ export default function CreateAttractionOrder() {
     });
     const { countries } = useSelector((state) => state.general);
     const [wallet, setWallet] = useState("");
-
+    const [isModal, setIsModal] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
     const [attractions, setAttractions] = useState([]);
@@ -48,7 +50,7 @@ export default function CreateAttractionOrder() {
     const navigate = useNavigate();
     const { image, handleImageChange, error: imageError } = useImageChange();
     const numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-
+    const [load, setLoad] = useState(false);
     const handleChange = (e) => {
         setData((prev) => {
             return { ...prev, [e.target.name]: e.target.value };
@@ -295,8 +297,9 @@ export default function CreateAttractionOrder() {
     }, [data.attractionId]);
 
     useEffect(() => {
+        setSelectedActivity("");
         fetchSingleActivity();
-    }, [data.attractionId, data?.activityId, data?.resellerId]);
+    }, [data.attractionId, data?.activityId, data?.resellerId, load]);
 
     useEffect(() => {
         if (
@@ -532,7 +535,13 @@ export default function CreateAttractionOrder() {
                     totalPvtTransferPrice,
             });
         }
-    }, [data?.value, data?.adultsCount, data?.childrenCount, data?.hoursCount]);
+    }, [
+        data?.value,
+        data?.adultsCount,
+        data?.childrenCount,
+        data?.hoursCount,
+        selectedActivity,
+    ]);
 
     return (
         <div>
@@ -657,8 +666,17 @@ export default function CreateAttractionOrder() {
                             </div>
                             <div className="grid grid-cols-3 gap-4">
                                 <div>
-                                    <label htmlFor="">Adult Count </label>
-                                    <select
+                                    <label htmlFor="">Adult Count </label>{" "}
+                                    <input
+                                        type="number"
+                                        name="adultsCount"
+                                        value={data.adultsCount || ""}
+                                        onChange={handleChange}
+                                        id=""
+                                        required
+                                        className="capitalize"
+                                    />
+                                    {/* <select
                                         name="adultsCount"
                                         value={data.adultsCount || ""}
                                         onChange={handleChange}
@@ -680,11 +698,19 @@ export default function CreateAttractionOrder() {
                                                 </option>
                                             );
                                         })}
-                                    </select>
+                                    </select> */}
                                 </div>
                                 <div>
-                                    <label htmlFor="">Children Count </label>
-                                    <select
+                                    <label htmlFor="">Children Count </label>{" "}
+                                    <input
+                                        type="number"
+                                        name="childrenCount"
+                                        value={data.childrenCount || ""}
+                                        onChange={handleChange}
+                                        id=""
+                                        className="capitalize"
+                                    />
+                                    {/* <select
                                         name="childrenCount"
                                         value={data.childrenCount || ""}
                                         onChange={handleChange}
@@ -705,11 +731,19 @@ export default function CreateAttractionOrder() {
                                                 </option>
                                             );
                                         })}
-                                    </select>
+                                    </select> */}
                                 </div>
                                 <div>
                                     <label htmlFor="">Infant Count </label>
-                                    <select
+                                    <input
+                                        type="number"
+                                        name="infantCount"
+                                        value={data.infantCount || ""}
+                                        onChange={handleChange}
+                                        id=""
+                                        className="capitalize"
+                                    />
+                                    {/* <select
                                         name="infantCount"
                                         value={data.infantCount || ""}
                                         onChange={handleChange}
@@ -730,7 +764,7 @@ export default function CreateAttractionOrder() {
                                                 </option>
                                             );
                                         })}
-                                    </select>
+                                    </select> */}
                                 </div>
                             </div>
                             {selectedActivity.base === "hourly" && (
@@ -981,8 +1015,18 @@ export default function CreateAttractionOrder() {
                                                     alt="Sunset in the mountains"
                                                 />
                                                 <div class="px-6 py-4 w-full">
-                                                    <div class="font-bold text-xl mb-2">
+                                                    <div class="font-bold text-xl mb-2 flex items-center gap-2">
                                                         {selectedActivity?.name}
+                                                        <span
+                                                            className="text-green-400"
+                                                            onClick={(e) => {
+                                                                setIsModal(
+                                                                    true
+                                                                );
+                                                            }}
+                                                        >
+                                                            <BiEdit />
+                                                        </span>
                                                     </div>
                                                     <div class="font-bold text-md mb-2 text-gray-500">
                                                         {
@@ -1144,6 +1188,14 @@ export default function CreateAttractionOrder() {
                     </form>
                 </div>
             </div>
+            {isModal && (
+                <CreateOrderMarkupModal
+                    selectedActivity={selectedActivity}
+                    resellerId={data.resellerId}
+                    setIsModal={setIsModal}
+                    setLoad={setLoad}
+                />
+            )}
         </div>
     );
 }

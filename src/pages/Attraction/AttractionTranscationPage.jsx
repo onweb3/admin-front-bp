@@ -237,7 +237,7 @@ export default function AttractionTransactionsPage() {
                         <div className="col-span-2">
                             <label htmlFor="">Transaction No</label>
                             <input
-                                type="number"
+                                type="string"
                                 placeholder="Search Reference No."
                                 className=""
                                 name="transactionNo"
