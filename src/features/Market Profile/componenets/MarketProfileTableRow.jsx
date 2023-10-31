@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { BiEditAlt } from "react-icons/bi";
+import { BiCopyAlt, BiEditAlt } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import axios from "../../../axios";
 import { BtnLoader } from "../../../components";
+import CloneProfileModal from "../../MarkupProfile/components/CloneProfileModal";
 // import ResellerSelectionModal from "./ResellerSelectionModal";
 
 function MarketProfileTableRow({ profile, index, profiles, setProfiles }) {
@@ -12,6 +13,7 @@ function MarketProfileTableRow({ profile, index, profiles, setProfiles }) {
     const [isLoading, setIsLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [profileId, setProfileId] = useState("");
+    const [isCloneModalOpen, setIsCloneModalOpen] = useState(false);
 
     const deleteProfile = async (id) => {
         try {
@@ -96,6 +98,12 @@ function MarketProfileTableRow({ profile, index, profiles, setProfiles }) {
                                 <BiEditAlt />
                             </button>
                         </Link>
+                        <button
+                            className="h-auto bg-transparent text-blue-500 text-xl"
+                            onClick={setIsCloneModalOpen}
+                        >
+                            <BiCopyAlt />
+                        </button>
                     </div>
                 </td>
             </tr>
@@ -108,6 +116,13 @@ function MarketProfileTableRow({ profile, index, profiles, setProfiles }) {
             ) : (
                 ""
             )} */}
+            {isCloneModalOpen && (
+                <CloneProfileModal
+                    setIsModalOpen={setIsCloneModalOpen}
+                    marketId={profile?._id}
+                    type={"market"}
+                />
+            )}
         </>
     );
 }

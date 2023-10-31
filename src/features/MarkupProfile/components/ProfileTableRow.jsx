@@ -1,16 +1,20 @@
 import React, { useState } from "react";
-import { BiEditAlt } from "react-icons/bi";
+import { BiCopyAlt, BiEditAlt } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import axios from "../../../axios";
 import { BtnLoader } from "../../../components";
+import AddProfileMarkupModal from "./AddProfileMarkupModal";
+import CloneProfileModal from "./CloneProfileModal";
 import ResellerSelectionModal from "./ResellerSelectionModal";
 
 function ProfileTableRow({ profile, index, profiles, setProfiles }) {
     const { jwtToken } = useSelector((state) => state.admin);
     const [isLoading, setIsLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isCloneModalOpen, setIsCloneModalOpen] = useState(false);
+
     const [profileId, setProfileId] = useState("");
 
     const deleteProfile = async (id) => {
@@ -96,6 +100,12 @@ function ProfileTableRow({ profile, index, profiles, setProfiles }) {
                                 <BiEditAlt />
                             </button>
                         </Link>
+                        <button
+                            className="h-auto bg-transparent text-blue-500 text-xl"
+                            onClick={setIsCloneModalOpen}
+                        >
+                            <BiCopyAlt />
+                        </button>
                     </div>
                 </td>
             </tr>
@@ -107,6 +117,13 @@ function ProfileTableRow({ profile, index, profiles, setProfiles }) {
                 />
             ) : (
                 ""
+            )}
+            {isCloneModalOpen && (
+                <CloneProfileModal
+                    setIsModalOpen={setIsCloneModalOpen}
+                    profileId={profile?._id}
+                    type={"profile"}
+                />
             )}
         </>
     );
