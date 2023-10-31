@@ -26,6 +26,7 @@ export default function AttractionProfileListTable({
     const [isModal, setIsModal] = useState(false);
     const [activity, setActivity] = useState([]);
     const { id } = useParams();
+    const { isLoggedIn, admin } = useSelector((state) => state.admin);
 
     const { profileId, marketId } = useParams();
     const navigate = useNavigate();
@@ -33,6 +34,8 @@ export default function AttractionProfileListTable({
     const [filter, setFilter] = useState({
         attractionName: "",
     });
+
+    
 
     const fetchAttractionInitialData = async () => {
         try {

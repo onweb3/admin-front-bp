@@ -16,6 +16,8 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 export default function AttractionTransactionsPage() {
     const [transactions, setTransactions] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const { admin } = useSelector((state) => state.admin);
+    const [visibilty, setVisibility] = useState(false);
     const [filters, setFilters] = useState({
         skip: 0,
         limit: 10,
@@ -42,6 +44,16 @@ export default function AttractionTransactionsPage() {
             return { ...prev, [e.target.name]: e.target.value };
         });
     };
+
+    useEffect(() => {
+        const access = admin.roles.find((role) => role.roleName == "owner");
+
+        if (access) {
+            setVisibility(true);
+        } else {
+            setVisibility(false);
+        }
+    }, []);
 
     const clearFilters = () => {
         setFilters((prev) => {
@@ -157,63 +169,65 @@ export default function AttractionTransactionsPage() {
                     <span>Attraction Transactions</span>
                 </div>
             </div>
-            <div className="p-6">
-                {" "}
-                <div className="grid grid-cols-4 gap-4 min-w-[100%]">
-                    <div className="bg-[#fff] p-4 rounded shadow-sm flex items-start justify-between">
-                        <div>
-                            <span className="block text-sm text-grayColor font-medium">
-                                Total Transactions
-                            </span>
-                            <span className="block text-xl font-[600] mt-1">
-                                {data?.totalTransactions || 0}
-                            </span>
-                        </div>
-                        <span className="text-2xl w-[40px] h-[40px] min-w-[40px] min-h-[40px] bg-primaryColor text-white rounded-full flex items-center justify-center">
-                            <AiOutlineShoppingCart />
-                        </span>
-                    </div>
-                    <div className="bg-[#fff] p-4 rounded shadow-sm flex items-start justify-between">
-                        <div>
-                            <span className="block text-sm text-grayColor font-medium">
-                                Total Profit
-                            </span>
-                            <span className="block text-xl font-[600] mt-1">
-                                {data?.totalProfit || 0}
+            {visibilty && (
+                <div className="p-6">
+                    {" "}
+                    <div className="grid grid-cols-4 gap-4 min-w-[100%]">
+                        <div className="bg-[#fff] p-4 rounded shadow-sm flex items-start justify-between">
+                            <div>
+                                <span className="block text-sm text-grayColor font-medium">
+                                    Total Transactions
+                                </span>
+                                <span className="block text-xl font-[600] mt-1">
+                                    {data?.totalTransactions || 0}
+                                </span>
+                            </div>
+                            <span className="text-2xl w-[40px] h-[40px] min-w-[40px] min-h-[40px] bg-primaryColor text-white rounded-full flex items-center justify-center">
+                                <AiOutlineShoppingCart />
                             </span>
                         </div>
-                        <span className="text-2xl w-[40px] h-[40px] min-w-[40px] min-h-[40px] bg-blue-500 text-white rounded-full flex items-center justify-center">
-                            <AiOutlineShoppingCart />
-                        </span>
-                    </div>
-                    <div className="bg-[#fff] p-4 rounded shadow-sm flex items-start justify-between">
-                        <div>
-                            <span className="block text-sm text-grayColor font-medium">
-                                Total Price
-                            </span>
-                            <span className="block text-xl font-[600] mt-1">
-                                {data?.totalPrice || 0}
-                            </span>
-                        </div>
-                        <span className="text-2xl w-[40px] h-[40px] min-w-[40px] min-h-[40px] bg-blue-500 text-white rounded-full flex items-center justify-center">
-                            <AiOutlineShoppingCart />
-                        </span>
-                    </div>{" "}
-                    <div className="bg-[#fff] p-4 rounded shadow-sm flex items-start justify-between">
-                        <div>
-                            <span className="block text-sm text-grayColor font-medium">
-                                Total Cost
-                            </span>
-                            <span className="block text-xl font-[600] mt-1">
-                                {data?.totalCost || 0}
+                        <div className="bg-[#fff] p-4 rounded shadow-sm flex items-start justify-between">
+                            <div>
+                                <span className="block text-sm text-grayColor font-medium">
+                                    Total Profit
+                                </span>
+                                <span className="block text-xl font-[600] mt-1">
+                                    {data?.totalProfit || 0}
+                                </span>
+                            </div>
+                            <span className="text-2xl w-[40px] h-[40px] min-w-[40px] min-h-[40px] bg-blue-500 text-white rounded-full flex items-center justify-center">
+                                <AiOutlineShoppingCart />
                             </span>
                         </div>
-                        <span className="text-2xl w-[40px] h-[40px] min-w-[40px] min-h-[40px] bg-blue-500 text-white rounded-full flex items-center justify-center">
-                            <AiOutlineShoppingCart />
-                        </span>
+                        <div className="bg-[#fff] p-4 rounded shadow-sm flex items-start justify-between">
+                            <div>
+                                <span className="block text-sm text-grayColor font-medium">
+                                    Total Price
+                                </span>
+                                <span className="block text-xl font-[600] mt-1">
+                                    {data?.totalPrice || 0}
+                                </span>
+                            </div>
+                            <span className="text-2xl w-[40px] h-[40px] min-w-[40px] min-h-[40px] bg-blue-500 text-white rounded-full flex items-center justify-center">
+                                <AiOutlineShoppingCart />
+                            </span>
+                        </div>{" "}
+                        <div className="bg-[#fff] p-4 rounded shadow-sm flex items-start justify-between">
+                            <div>
+                                <span className="block text-sm text-grayColor font-medium">
+                                    Total Cost
+                                </span>
+                                <span className="block text-xl font-[600] mt-1">
+                                    {data?.totalCost || 0}
+                                </span>
+                            </div>
+                            <span className="text-2xl w-[40px] h-[40px] min-w-[40px] min-h-[40px] bg-blue-500 text-white rounded-full flex items-center justify-center">
+                                <AiOutlineShoppingCart />
+                            </span>
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
 
             <div className="p-6">
                 <div className="bg-white rounded shadow-sm">
