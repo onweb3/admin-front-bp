@@ -13,6 +13,7 @@ export default function AddBankAccountPage() {
         accountNumber: "",
         ifscCode: "",
         ibanCode: "",
+        swiftCode: "",
         accountHolderName: "",
     });
     const [isLoading, setIsLoading] = useState(false);
@@ -130,6 +131,16 @@ export default function AddBankAccountPage() {
                                     placeholder="Enter IBAN Code"
                                     name="ibanCode"
                                     value={data.ibanCode || ""}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="">Swift Code</label>
+                                <input
+                                    type="text"
+                                    placeholder="Enter Swift Code"
+                                    name="swiftCode"
+                                    value={data.swiftCode || ""}
                                     onChange={handleChange}
                                 />
                             </div>

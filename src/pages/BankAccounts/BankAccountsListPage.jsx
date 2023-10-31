@@ -91,6 +91,7 @@ export default function BankAccountsListPage() {
                                             <th className="font-[500] p-3">Account Number</th>
                                             <th className="font-[500] p-3">IFSC Code</th>
                                             <th className="font-[500] p-3">IBAN Code</th>
+                                            <th className="font-[500] p-3">Swift Code</th>
                                             <th className="font-[500] p-3">Holder Name</th>
                                             <th className="font-[500] p-3">Action</th>
                                         </tr>
@@ -118,6 +119,7 @@ export default function BankAccountsListPage() {
                                                     <td className="p-3">
                                                         {bank?.ibanCode || "N/A"}
                                                     </td>
+                                                    <td>{bank?.swiftCode || "N/A"}</td>
                                                     <td className="p-3">
                                                         {bank?.accountHolderName}
                                                     </td>

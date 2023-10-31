@@ -13,6 +13,7 @@ export default function UpdateBankAccountPage() {
         accountNumber: "",
         ifscCode: "",
         ibanCode: "",
+        swiftCode: "",
         accountHolderName: "",
     });
     const [isLoading, setIsLoading] = useState(false);
@@ -63,6 +64,7 @@ export default function UpdateBankAccountPage() {
                     branchAddress: response?.data?.branchAddress,
                     ifscCode: response?.data?.ifscCode,
                     ibanCode: response?.data?.ibanCode,
+                    swiftCode: response?.data?.swiftCode,
                     accountNumber: response?.data?.accountNumber,
                     accountHolderName: response?.data?.accountHolderName,
                 };
@@ -169,6 +171,16 @@ export default function UpdateBankAccountPage() {
                                         placeholder="Enter IBAN Code"
                                         name="ibanCode"
                                         value={data.ibanCode || ""}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="">Swift Code</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Enter Swift Code"
+                                        name="swiftCode"
+                                        value={data.swiftCode || ""}
                                         onChange={handleChange}
                                     />
                                 </div>
