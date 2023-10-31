@@ -153,7 +153,13 @@ export default function VouchersDailyReportPage() {
                     <form
                         onSubmit={(e) => {
                             e.preventDefault();
-                            fetchVouchers({ ...filters });
+                            if (filters.skip === 0) {
+                                fetchVouchers({ ...filters });
+                            } else {
+                                setFilters((prev) => {
+                                    return { ...prev, skip: 0 };
+                                });
+                            }
                         }}
                         className="grid grid-cols-6 items-end gap-4 border-b border-dashed p-4"
                     >

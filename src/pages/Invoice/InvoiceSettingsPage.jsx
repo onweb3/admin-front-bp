@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { BtnLoader, PageLoader, RichTextEditor } from "../../components";
+import { BtnLoader, MultipleSelectDropdown, PageLoader, RichTextEditor } from "../../components";
 import { useImageChange } from "../../hooks";
 import { config } from "../../constants";
 import axios from "../../axios";
@@ -17,15 +17,12 @@ export default function InvoiceSettingsPage() {
         showTermsAndConditions: true,
         termsAndConditions: "",
         showBankDetails: true,
-        bankName: "",
-        accountNumber: "",
-        branch: "",
-        ibanNumber: "",
-        swiftCode: "",
         logoUrl: "",
+        bankAccounts: [],
     });
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [banks, setBanks] = useState([]);
 
     const { jwtToken } = useSelector((state) => state.admin);
     const {
@@ -55,17 +52,20 @@ export default function InvoiceSettingsPage() {
             const formData = new FormData();
             formData.append("logo", logoImg);
             formData.append("companyName", data.companyName);
-            formData.append("email", data.email);
             formData.append("phoneNumber", data.phoneNumber);
             formData.append("address", data.address);
             formData.append("showTermsAndConditions", data.showTermsAndConditions);
             formData.append("termsAndConditions", data.termsAndConditions);
             formData.append("showBankDetails", data.showBankDetails);
-            formData.append("bankName", data.bankName);
-            formData.append("accountNumber", data.accountNumber);
-            formData.append("branch", data.branch);
-            formData.append("ibanNumber", data.ibanNumber);
-            formData.append("swiftCode", data.swiftCode);
+            formData.append("bankAccounts", JSON.stringify(data.bankAccounts));
+
+            const tempEmailsList = data.email.split(",");
+            const emailsList = [];
+            tempEmailsList.forEach((element) => {
+                const tempEmail = element.trim();
+                if (tempEmail) emailsList.push(tempEmail);
+            });
+            formData.append("emails", JSON.stringify(emailsList));
 
             const response = await axios.patch("/invoice/update", formData, {
                 headers: { Authorization: `Bearer ${jwtToken}` },
@@ -77,6 +77,7 @@ export default function InvoiceSettingsPage() {
 
             setIsLoading(false);
         } catch (err) {
+            console.log(err);
             setError(err?.response?.data?.error || "Something went wrong, try again");
             setIsLoading(false);
         }
@@ -89,23 +90,25 @@ export default function InvoiceSettingsPage() {
                 headers: { Authorization: `Bearer ${jwtToken}` },
             });
 
-            const bankDetails = response?.data?.bankDetails;
             setData((prev) => {
                 return {
                     ...prev,
                     companyName: response?.data?.companyName,
-                    email: response?.data?.email,
+                    email:
+                        response?.data?.emails?.length > 0
+                            ? response?.data?.emails
+                                  ?.map((item, index) => {
+                                      return `${index !== 0 ? ", " : ""}${item}`;
+                                  })
+                                  ?.join("")
+                            : "",
                     phoneNumber: response?.data?.phoneNumber,
                     address: response?.data?.address,
                     showTermsAndConditions: response?.data?.showTermsAndConditions || false,
                     termsAndConditions: response?.data?.termsAndConditions,
                     showBankDetails: response?.data?.showBankDetails || false,
-                    accountNumber: bankDetails?.accountNumber,
-                    bankName: bankDetails?.bankName,
-                    branch: bankDetails?.branch,
-                    ibanNumber: bankDetails?.ibanNumber,
-                    swiftCode: bankDetails?.swiftCode,
                     logoUrl: response?.data?.companyLogo,
+                    bankAccounts: response.data?.bankAccounts || [],
                 };
             });
         } catch (err) {
@@ -117,6 +120,20 @@ export default function InvoiceSettingsPage() {
 
     useEffect(() => {
         fetchInvoiceSettings();
+    }, []);
+
+    useEffect(() => {
+        const fetchBankNames = async () => {
+            try {
+                const response = await axios.get("/company/bank-info/all/names", {
+                    headers: { Authorization: `Bearer ${jwtToken}` },
+                });
+                setBanks(response.data);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetchBankNames();
     }, []);
 
     return (
@@ -162,6 +179,9 @@ export default function InvoiceSettingsPage() {
                                         onChange={handleDataChange}
                                         required
                                     />
+                                    <span className="text-sm block mt-1 text-grayColor">
+                                        Add multiple emails separated by commas
+                                    </span>
                                 </div>
                                 <div>
                                     <label htmlFor="">Company Phone *</label>
@@ -226,56 +246,18 @@ export default function InvoiceSettingsPage() {
                                     </label>
                                 </div>
                                 <div className="grid grid-cols-3 gap-4">
-                                    <div>
-                                        <label htmlFor="">Bank Name</label>
-                                        <input
-                                            type="text"
-                                            placeholder="Enter bank name"
-                                            name="bankName"
-                                            value={data.bankName || ""}
-                                            onChange={handleDataChange}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor="">Account Number</label>
-                                        <input
-                                            type="text"
-                                            placeholder="Enter account number"
-                                            name="accountNumber"
-                                            value={data.accountNumber || ""}
-                                            onChange={handleDataChange}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor="">Branch</label>
-                                        <input
-                                            type="text"
-                                            placeholder="Enter branch name"
-                                            name="branch"
-                                            value={data.branch || ""}
-                                            onChange={handleDataChange}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor="">IBAN Number</label>
-                                        <input
-                                            type="text"
-                                            placeholder="Enter IBAN number"
-                                            name="ibanNumber"
-                                            value={data.ibanNumber || ""}
-                                            onChange={handleDataChange}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor="">Swift Code</label>
-                                        <input
-                                            type="text"
-                                            placeholder="Enter swift code"
-                                            name="swiftCode"
-                                            value={data.swiftCode || ""}
-                                            onChange={handleDataChange}
-                                        />
-                                    </div>
+                                    <MultipleSelectDropdown
+                                        data={banks}
+                                        displayName={"bankName"}
+                                        valueName={"_id"}
+                                        selectedData={data.bankAccounts}
+                                        setSelectedData={(val) => {
+                                            setData((prev) => {
+                                                return { ...prev, bankAccounts: val };
+                                            });
+                                        }}
+                                        randomIndex={"banksList0"}
+                                    />
                                 </div>
                             </div>
                             <div className="mt-6">
