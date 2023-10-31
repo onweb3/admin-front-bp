@@ -6,6 +6,9 @@ import axios from "../../axios";
 import { BtnLoader, SelectDropdown } from "../../components";
 import { useImageChange } from "../../hooks";
 import { config } from "../../constants";
+import moment from "moment";
+import { BiEdit } from "react-icons/bi";
+import CreateOrderMarkupModal from "../../features/Attractions/components/CreateOrderMarkupModal";
 
 export default function CreateAttractionOrder() {
     const [data, setData] = useState({
@@ -35,7 +38,7 @@ export default function CreateAttractionOrder() {
     });
     const { countries } = useSelector((state) => state.general);
     const [wallet, setWallet] = useState("");
-
+    const [isModal, setIsModal] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
     const [attractions, setAttractions] = useState([]);
@@ -47,7 +50,7 @@ export default function CreateAttractionOrder() {
     const navigate = useNavigate();
     const { image, handleImageChange, error: imageError } = useImageChange();
     const numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-
+    const [load, setLoad] = useState(false);
     const handleChange = (e) => {
         setData((prev) => {
             return { ...prev, [e.target.name]: e.target.value };
@@ -92,12 +95,26 @@ export default function CreateAttractionOrder() {
                     };
                 });
             }
-            setData((prev) => {
-                return {
-                    ...prev,
-                    [name]: value,
-                };
-            });
+
+            if (name === "selectedSlot") {
+                let selectedDetails = timeSlots.find((timeSlot) => {
+                    return timeSlot.EventID.toString() === value.toString(); // Added a return statement here
+                });
+
+                setData((prev) => {
+                    return {
+                        ...prev,
+                        ["selectedSlot"]: selectedDetails,
+                    };
+                });
+            } else {
+                setData((prev) => {
+                    return {
+                        ...prev,
+                        [name]: value,
+                    };
+                });
+            }
         } catch (err) {}
     };
 
@@ -125,6 +142,17 @@ export default function CreateAttractionOrder() {
                         hoursCount: data?.hoursCount ? data?.hoursCount : "",
                         infantCount: data.infantCount ? data.infantCount : 0,
                         transferType: data.value,
+                        slot: {
+                            EventID: data?.selectedSlot?.EventID,
+                            EventName: data?.selectedSlot?.EventName,
+                            StartDateTime: data?.selectedSlot?.StartDateTime,
+                            EndDateTime: data?.selectedSlot?.EndDateTime,
+                            ResourceID: data?.selectedSlot?.ResourceID,
+                            Status: data?.selectedSlot?.Status,
+                            AdultPrice: data?.selectedSlot?.AdultPrice,
+                            ChildPrice: data?.selectedSlot?.ChildPrice,
+                            Available: data?.selectedSlot?.Available,
+                        },
                     },
                 ],
             };
@@ -147,7 +175,7 @@ export default function CreateAttractionOrder() {
                 );
             }
             setIsLoading(false);
-            navigate(`/attractions/statistics`);
+            navigate(`/order/attraction/transaction`);
         } catch (err) {
             setError(
                 err?.response?.data?.error || "Something went wrong, Try again"
@@ -184,7 +212,21 @@ export default function CreateAttractionOrder() {
                     headers: { authorization: `Bearer ${jwtToken}` },
                 }
             );
-            setAttractions(response.data);
+
+            const timeSlots = response.data.map((timeSlot) => {
+                return {
+                    ...timeSlot,
+                    displayName: `${timeSlot.EventName}-avai(${
+                        timeSlot.Available
+                    })-adult(${timeSlot.AdultPrice} AED)-child(${
+                        timeSlot.ChildPrice
+                    } AED)-slot(${moment(timeSlot.StartDateTime).format(
+                        "h:mm A"
+                    )})`,
+                };
+            });
+
+            setTimeSlots(timeSlots);
         } catch (err) {
             setError(
                 err?.response?.data?.error || "Something went wrong, Try again"
@@ -242,7 +284,7 @@ export default function CreateAttractionOrder() {
             }
         } catch (err) {}
     };
-
+    console.log(data);
     useEffect(() => {
         fetchAttractions();
         fetchResellers();
@@ -250,11 +292,14 @@ export default function CreateAttractionOrder() {
 
     useEffect(() => {
         fetchActivities();
+        setSelectedActivity("");
+        setTimeSlots("");
     }, [data.attractionId]);
 
     useEffect(() => {
+        setSelectedActivity("");
         fetchSingleActivity();
-    }, [data.attractionId, data?.activityId, data?.resellerId]);
+    }, [data.attractionId, data?.activityId, data?.resellerId, load]);
 
     useEffect(() => {
         if (
@@ -490,7 +535,13 @@ export default function CreateAttractionOrder() {
                     totalPvtTransferPrice,
             });
         }
-    }, [data?.value, data?.adultsCount, data?.childrenCount, data?.hoursCount]);
+    }, [
+        data?.value,
+        data?.adultsCount,
+        data?.childrenCount,
+        data?.hoursCount,
+        selectedActivity,
+    ]);
 
     return (
         <div>
@@ -615,8 +666,17 @@ export default function CreateAttractionOrder() {
                             </div>
                             <div className="grid grid-cols-3 gap-4">
                                 <div>
-                                    <label htmlFor="">Adult Count </label>
-                                    <select
+                                    <label htmlFor="">Adult Count </label>{" "}
+                                    <input
+                                        type="number"
+                                        name="adultsCount"
+                                        value={data.adultsCount || ""}
+                                        onChange={handleChange}
+                                        id=""
+                                        required
+                                        className="capitalize"
+                                    />
+                                    {/* <select
                                         name="adultsCount"
                                         value={data.adultsCount || ""}
                                         onChange={handleChange}
@@ -638,11 +698,19 @@ export default function CreateAttractionOrder() {
                                                 </option>
                                             );
                                         })}
-                                    </select>
+                                    </select> */}
                                 </div>
                                 <div>
-                                    <label htmlFor="">Children Count </label>
-                                    <select
+                                    <label htmlFor="">Children Count </label>{" "}
+                                    <input
+                                        type="number"
+                                        name="childrenCount"
+                                        value={data.childrenCount || ""}
+                                        onChange={handleChange}
+                                        id=""
+                                        className="capitalize"
+                                    />
+                                    {/* <select
                                         name="childrenCount"
                                         value={data.childrenCount || ""}
                                         onChange={handleChange}
@@ -663,11 +731,19 @@ export default function CreateAttractionOrder() {
                                                 </option>
                                             );
                                         })}
-                                    </select>
+                                    </select> */}
                                 </div>
                                 <div>
                                     <label htmlFor="">Infant Count </label>
-                                    <select
+                                    <input
+                                        type="number"
+                                        name="infantCount"
+                                        value={data.infantCount || ""}
+                                        onChange={handleChange}
+                                        id=""
+                                        className="capitalize"
+                                    />
+                                    {/* <select
                                         name="infantCount"
                                         value={data.infantCount || ""}
                                         onChange={handleChange}
@@ -688,7 +764,7 @@ export default function CreateAttractionOrder() {
                                                 </option>
                                             );
                                         })}
-                                    </select>
+                                    </select> */}
                                 </div>
                             </div>
                             {selectedActivity.base === "hourly" && (
@@ -724,18 +800,20 @@ export default function CreateAttractionOrder() {
                                     <label htmlFor=""> Time Slot</label>
                                     <div className="">
                                         <SelectDropdown
-                                            data={resellers}
-                                            setData={setResellers}
-                                            displayName={"companyName"}
-                                            selectedData={data?.resellerId}
+                                            data={timeSlots}
+                                            setData={setTimeSlots}
+                                            displayName={"displayName"}
+                                            selectedData={
+                                                data?.selectedSlot?.EventID
+                                            }
                                             setSelectedData={(value) =>
                                                 handleSingleChange({
-                                                    name: "resellerId",
+                                                    name: "selectedSlot",
                                                     value: value,
                                                 })
                                             }
-                                            valueName={"_id"}
-                                            randomIndex={"companyName"}
+                                            valueName={"EventID"}
+                                            randomIndex={"EventID"}
                                             disabled={false}
                                             addNewButton={false}
                                         />
@@ -937,8 +1015,18 @@ export default function CreateAttractionOrder() {
                                                     alt="Sunset in the mountains"
                                                 />
                                                 <div class="px-6 py-4 w-full">
-                                                    <div class="font-bold text-xl mb-2">
+                                                    <div class="font-bold text-xl mb-2 flex items-center gap-2">
                                                         {selectedActivity?.name}
+                                                        <span
+                                                            className="text-green-400"
+                                                            onClick={(e) => {
+                                                                setIsModal(
+                                                                    true
+                                                                );
+                                                            }}
+                                                        >
+                                                            <BiEdit />
+                                                        </span>
                                                     </div>
                                                     <div class="font-bold text-md mb-2 text-gray-500">
                                                         {
@@ -1100,6 +1188,14 @@ export default function CreateAttractionOrder() {
                     </form>
                 </div>
             </div>
+            {isModal && (
+                <CreateOrderMarkupModal
+                    selectedActivity={selectedActivity}
+                    resellerId={data.resellerId}
+                    setIsModal={setIsModal}
+                    setLoad={setLoad}
+                />
+            )}
         </div>
     );
 }
