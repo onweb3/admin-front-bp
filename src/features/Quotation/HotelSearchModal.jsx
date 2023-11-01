@@ -223,7 +223,9 @@ export default function HotelSearchModal({
 
             setAvailableHotels(response?.data?.hotels);
             if (response?.data?.hotels?.length < 1) {
-                setError("No availability found for this search query");
+                setError(
+                    "No availability found for this search query . you can add hotel and custom price"
+                );
             }
 
             setFilters((prev) => {
@@ -303,7 +305,7 @@ export default function HotelSearchModal({
                 },
             ]);
             if (response?.data?.hotels?.length < 1) {
-                setError("No availability found for this search query");
+                setError("No availability found for this search query ");
             }
 
             setFilters((prev) => {
@@ -667,8 +669,21 @@ export default function HotelSearchModal({
                                     />
                                 </div>
                             </div>
-
-                            <div className="flex justify-end mt-12">
+                            <div className="flex justify-end mt-12 gap-2">
+                                <button
+                                    className="w-[200px]"
+                                    onClick={(e) => {
+                                        clearDetails();
+                                        fetchAvailability(e);
+                                    }}
+                                    // disabled={isAvailablityLoading}
+                                >
+                                    {setIsAvailablityLoading === true ? (
+                                        <BtnLoader />
+                                    ) : (
+                                        "Add Hotel"
+                                    )}
+                                </button>{" "}
                                 <button
                                     className="w-[200px]"
                                     onClick={(e) => {
@@ -680,7 +695,7 @@ export default function HotelSearchModal({
                                     {setIsAvailablityLoading === true ? (
                                         <BtnLoader />
                                     ) : (
-                                        "Search"
+                                        "Get Price"
                                     )}
                                 </button>
                             </div>
@@ -837,7 +852,8 @@ export default function HotelSearchModal({
                         </div>
                         {buttonHidden ? (
                             <>
-                                {filters?.totalHotels > 5 ? (
+                                {filters?.totalHotels > 5 &&
+                                availableHotels.length > 0 ? (
                                     <div className="p-4">
                                         <Pagination
                                             limit={filters?.limit}
@@ -1067,14 +1083,6 @@ export default function HotelSearchModal({
                         <span className="text-sm block text-red-500 mt-2">
                             {error}
                         </span>
-
-                        <button
-                            className="w-[150px]"
-                            onClick={fetchAvailability}
-                        >
-                            {" "}
-                            fetch{" "}
-                        </button>
                     </div>
                 )}
                 {confirmError && (
