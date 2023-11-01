@@ -9,18 +9,17 @@ import axios from "../../../axios";
 import { BtnLoader } from "../../../components";
 import { useHandleClickOutside } from "../../../hooks";
 
-export default function AddMoneyModal({ setIsAddMoneyModalOpen, setData }) {
+export default function AddWalletUsedCreditModal({ setUsedCreditModalOpen, setData }) {
     const [formData, setFormData] = useState({
         amount: "",
-        referenceNo: "",
-        paymentProcessor: "",
+        note: "",
     });
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
     const wrapperRef = useRef();
     useHandleClickOutside(wrapperRef, () => {
-        setIsAddMoneyModalOpen(false);
+        setUsedCreditModalOpen(false);
     });
     const { id } = useParams();
     const { jwtToken } = useSelector((state) => state.admin);
@@ -38,7 +37,7 @@ export default function AddMoneyModal({ setIsAddMoneyModalOpen, setData }) {
             setIsLoading(true);
 
             const response = await axios.post(
-                "/wallets/b2b/add-money",
+                "/wallets/b2b//add/used-credit",
                 {
                     resellerId: id,
                     ...formData,
@@ -58,11 +57,10 @@ export default function AddMoneyModal({ setIsAddMoneyModalOpen, setData }) {
             });
 
             setIsLoading(false);
-            setIsAddMoneyModalOpen(false);
+            setUsedCreditModalOpen(false);
         } catch (err) {
-            setError(
-                err?.response?.data?.error || "Something went wrong, Try again"
-            );
+            console.log(err);
+            setError(err?.response?.data?.error || "Something went wrong, Try again");
             setIsLoading(false);
         }
     };
@@ -74,10 +72,10 @@ export default function AddMoneyModal({ setIsAddMoneyModalOpen, setData }) {
                 className="bg-[#fff] w-full max-h-[90vh] max-w-[500px]  shadow-[0_1rem_3rem_rgb(0_0_0_/_18%)] overflow-y-auto"
             >
                 <div className="flex items-center justify-between border-b p-4">
-                    <h2 className="font-medium">Add Money</h2>
+                    <h2 className="font-medium">Add Used Credit</h2>
                     <button
                         className="h-auto bg-transparent text-textColor text-xl"
-                        onClick={() => setIsAddMoneyModalOpen(false)}
+                        onClick={() => setUsedCreditModalOpen(false)}
                     >
                         <MdClose />
                     </button>
@@ -85,23 +83,6 @@ export default function AddMoneyModal({ setIsAddMoneyModalOpen, setData }) {
                 <div className="p-4">
                     <form action="" onSubmit={handleSubmit}>
                         <div>
-                            <label htmlFor="">Payment Processor *</label>
-                            <select
-                                name="paymentProcessor"
-                                value={formData?.paymentProcessor || ""}
-                                onChange={handleChange}
-                                id=""
-                            >
-                                <option value="" hidden>
-                                    Select Payment Processor
-                                </option>
-                                <option value="bank">Bank</option>
-                                <option value="cash-in-hand">
-                                    Cash In Hand
-                                </option>
-                            </select>
-                        </div>
-                        <div className="mt-4">
                             <label htmlFor="">Amount *</label>
                             <input
                                 type="number"
@@ -112,34 +93,27 @@ export default function AddMoneyModal({ setIsAddMoneyModalOpen, setData }) {
                                 required
                             />
                         </div>
-                        {formData.paymentProcessor === "bank" && (
-                            <div className="mt-4">
-                                <label htmlFor="">Reference No *</label>
-                                <input
-                                    type="text"
-                                    placeholder="Enter reference number"
-                                    name="referenceNo"
-                                    value={formData.referenceNo || ""}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </div>
-                        )}
-                        {error && (
-                            <span className="text-sm block text-red-500 mt-2">
-                                {error}
-                            </span>
-                        )}
+                        <div className="mt-4">
+                            <label htmlFor="">Note</label>
+                            <input
+                                type="text"
+                                placeholder="Enter note"
+                                name="note"
+                                onChange={handleChange}
+                                value={formData.note || ""}
+                            />
+                        </div>
+                        {error && <span className="text-sm block text-red-500 mt-2">{error}</span>}
                         <div className="mt-4 flex items-center justify-end gap-[12px]">
                             <button
                                 className="bg-slate-300 text-textColor px-[15px]"
                                 type="button"
-                                onClick={() => setIsAddMoneyModalOpen(false)}
+                                onClick={() => setUsedCreditModalOpen(false)}
                             >
                                 Cancel
                             </button>
                             <button className="w-[160px]">
-                                {isLoading ? <BtnLoader /> : "Add Money"}
+                                {isLoading ? <BtnLoader /> : "Add Used Credit"}
                             </button>
                         </div>
                     </form>

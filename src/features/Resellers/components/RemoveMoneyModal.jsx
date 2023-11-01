@@ -9,10 +9,7 @@ import axios from "../../../axios";
 import { BtnLoader } from "../../../components";
 import { useHandleClickOutside } from "../../../hooks";
 
-export default function RemoveMoenyModal({
-    setIsRemoveMoneyModalOpen,
-    setData,
-}) {
+export default function RemoveMoenyModal({ setIsRemoveMoneyModalOpen, setData, data }) {
     const [formData, setFormData] = useState({
         amount: "",
         note: "",
@@ -60,9 +57,7 @@ export default function RemoveMoenyModal({
             setIsLoading(false);
             setIsRemoveMoneyModalOpen(false);
         } catch (err) {
-            setError(
-                err?.response?.data?.error || "Something went wrong, Try again"
-            );
+            setError(err?.response?.data?.error || "Something went wrong, Try again");
             setIsLoading(false);
         }
     };
@@ -94,23 +89,34 @@ export default function RemoveMoenyModal({
                                 value={formData.amount || ""}
                                 required
                             />
+                            <span className="block text-sm mt-1 text-grayColor">
+                                Select current{" "}
+                                <span
+                                    className="text-blue-500 font-[600] cursor-pointer"
+                                    onClick={() => {
+                                        if (data.balance > 0) {
+                                            setFormData((prev) => {
+                                                return { ...prev, amount: data.balance };
+                                            });
+                                        }
+                                    }}
+                                >
+                                    wallet balance
+                                </span>{" "}
+                                of the reseller.
+                            </span>
                         </div>
-                        <div>
+                        <div className="mt-4">
+                            <label htmlFor="">Note</label>
                             <input
                                 type="text"
                                 placeholder="Enter note"
                                 name="note"
-                                className="mt-5"
                                 onChange={handleChange}
                                 value={formData.note || ""}
-                                required
                             />
                         </div>
-                        {error && (
-                            <span className="text-sm block text-red-500 mt-2">
-                                {error}
-                            </span>
-                        )}
+                        {error && <span className="text-sm block text-red-500 mt-2">{error}</span>}
                         <div className="mt-4 flex items-center justify-end gap-[12px]">
                             <button
                                 className="bg-slate-300 text-textColor px-[15px]"

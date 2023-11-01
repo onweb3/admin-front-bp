@@ -75,7 +75,7 @@ export default function AddCreditModal({
                 className="bg-[#fff] w-full max-h-[90vh] max-w-[500px]  shadow-[0_1rem_3rem_rgb(0_0_0_/_18%)] overflow-y-auto"
             >
                 <div className="flex items-center justify-between border-b p-4">
-                    <h2 className="font-medium mb-2">Update Credit</h2>
+                    <h2 className="font-medium">Update Credit</h2>
                     <button
                         className="h-auto bg-transparent text-textColor text-xl"
                         onClick={() => setIsAddCreditModalOpen(false)}
