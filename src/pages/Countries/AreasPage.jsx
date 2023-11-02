@@ -81,7 +81,7 @@ export default function AreasPage() {
         if (objIndex !== -1) {
             tempAreas[objIndex] = area;
             setData((prev) => {
-                return { ...prev, areas: tempAreas };
+                return { ...prev, areas: JSON.parse(JSON.stringify(tempAreas)) };
             });
         }
     };

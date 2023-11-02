@@ -83,7 +83,7 @@ export default function StatesPage() {
         if (objIndex !== -1) {
             tempStates[objIndex] = state;
             setData((prev) => {
-                return { ...prev, states: tempStates };
+                return { ...prev, states: JSON.parse(JSON.stringify(tempStates)) };
             });
         }
     };
