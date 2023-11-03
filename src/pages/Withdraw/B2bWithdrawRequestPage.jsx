@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useSearchParams } from "react-router-dom";
-import axios from "../../axios";
 
+import axios from "../../axios";
 import { PageLoader, Pagination } from "../../components";
 import WithdrawRequestSingleRow from "../../features/WithdrawRequests/components/WithdrawRequestSingleRow";
 
@@ -16,10 +16,11 @@ export default function WithdrawRequestPage() {
         status: "",
         totalWithdrawRequests: 0,
     });
+    const [isLoading, setIsLoading] = useState(true);
+    const [banks, setBanks] = useState([]);
+
     const { jwtToken } = useSelector((state) => state.admin);
     const [searchParams, setSearchParams] = useSearchParams();
-
-    const [isLoading, setIsLoading] = useState(true);
 
     const fetchWithdrawalRequests = async ({ skip, limit, name, status }) => {
         try {
@@ -75,7 +76,19 @@ export default function WithdrawRequestPage() {
         fetchWithdrawalRequests({ skip, limit, name, status });
     }, [searchParams]);
 
-    console.log(withdrawRequests, "withdrawRequests");
+    useEffect(() => {
+        const fetchBankNames = async () => {
+            try {
+                const response = await axios.get("/company/bank-info/all/names", {
+                    headers: { Authorization: `Bearer ${jwtToken}` },
+                });
+                setBanks(response.data);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetchBankNames();
+    }, []);
 
     return (
         <div>
@@ -105,7 +118,6 @@ export default function WithdrawRequestPage() {
                                 <option value="">All</option>
                                 <option value="initiated">Initiated</option>
                                 <option value="pending">Pending</option>
-
                                 <option value="approved">Approved</option>
                                 <option value="cancelled">Cancelled</option>
                             </select>
@@ -124,7 +136,7 @@ export default function WithdrawRequestPage() {
                     ) : withdrawRequests?.length < 1 ? (
                         <div className="p-6 flex flex-col items-center">
                             <span className="text-sm text-grayColor block mt-[6px]">
-                                Oops.. No Withdraw Requests Found
+                                Oops.. No Withdrawal Requests Found
                             </span>
                         </div>
                     ) : (
@@ -146,6 +158,7 @@ export default function WithdrawRequestPage() {
                                             <WithdrawRequestSingleRow
                                                 key={index}
                                                 request={request}
+                                                banks={banks}
                                             />
                                         );
                                     })}

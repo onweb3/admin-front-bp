@@ -4,16 +4,16 @@ import { useSelector } from "react-redux";
 
 import axios from "../../axios";
 import { PageLoader, Pagination } from "../../components";
-import B2bWalletDepositListTableRow from "../../features/Wallet/components/B2bWalletDepositListTableRow";
 import { BiFilter } from "react-icons/bi";
+import B2bWalletWithdrawalsListTableRow from "../../features/Wallet/components/B2bWalletWithdrawalsListTableRow";
 
-export default function B2bWallletDepositListPage() {
-    const [walletDeposits, setWalletDeposits] = useState([]);
+export default function B2bWithdrawalsList() {
+    const [walletWithdrawals, setWalletWithdrawals] = useState([]);
     const [isPageLoading, setIsPageLoading] = useState(true);
     const [filters, setFilters] = useState({
         skip: 0,
         limit: 10,
-        totalDeposits: 0,
+        totalWithdrawals: 0,
         dateFrom: "",
         dateTo: "",
         referenceNo: "",
@@ -43,12 +43,12 @@ export default function B2bWallletDepositListPage() {
                 status: "",
                 paymentProcessor: "",
                 bankId: "",
-                totalDeposits: 0,
+                totalWithdrawals: 0,
             };
         });
 
         if (filters.skip === 0) {
-            fetchB2bWalletDeposits({
+            fetchWalletWithdrawals({
                 skip: 0,
                 limit: 15,
                 dateFrom: "",
@@ -61,7 +61,7 @@ export default function B2bWallletDepositListPage() {
         }
     };
 
-    const fetchB2bWalletDeposits = async ({
+    const fetchWalletWithdrawals = async ({
         skip,
         limit,
         dateFrom,
@@ -75,15 +75,15 @@ export default function B2bWallletDepositListPage() {
             setIsPageLoading(true);
 
             const response = await axios.get(
-                `/wallets/b2b/deposits/all?status=${status}&paymentProcessor=${paymentProcessor}&dateFrom=${dateFrom}&dateTo=${dateTo}&limit=${limit}&skip=${skip}&bankId=${bankId}&referenceNo=${referenceNo}`,
+                `/wallets/b2b/withdrawals/all?status=${status}&paymentProcessor=${paymentProcessor}&dateFrom=${dateFrom}&dateTo=${dateTo}&limit=${limit}&skip=${skip}&bankId=${bankId}&referenceNo=${referenceNo}`,
                 {
                     headers: { authorization: `Bearer ${jwtToken}` },
                 }
             );
 
-            setWalletDeposits(response?.data?.walletDeposits);
+            setWalletWithdrawals(response?.data?.walletWithdrawals);
             setFilters((prev) => {
-                return { ...prev, totalDeposits: response?.data?.totalDeposits };
+                return { ...prev, totalWithdrawals: response?.data?.totalWithdrawals };
             });
             setIsPageLoading(false);
         } catch (err) {
@@ -92,7 +92,7 @@ export default function B2bWallletDepositListPage() {
     };
 
     useEffect(() => {
-        fetchB2bWalletDeposits({ ...filters });
+        fetchWalletWithdrawals({ ...filters });
     }, [filters.skip]);
 
     useEffect(() => {
@@ -112,7 +112,7 @@ export default function B2bWallletDepositListPage() {
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">Wallet Deposits List</h1>
+                <h1 className="font-[600] text-[15px] uppercase">Wallet Withdrawals List</h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
@@ -124,13 +124,13 @@ export default function B2bWallletDepositListPage() {
                     <span>{">"} </span>
                     <span>Wallet </span>
                     <span>{">"} </span>
-                    <span>Deposits </span>
+                    <span>Withdrawals </span>
                 </div>
             </div>
             <div className="p-6">
                 <div className="bg-white rounded shadow-sm">
                     <div className="flex items-center justify-between border-b border-dashed p-4">
-                        <h1 className="font-medium">All B2B Wallet Deposits</h1>
+                        <h1 className="font-medium">All B2B Wallet Withdrawals</h1>
                         {/* <button className="px-3">+ Add Driver</button> */}
                     </div>
                     <form
@@ -139,7 +139,7 @@ export default function B2bWallletDepositListPage() {
                             if (filters.skip !== 0) {
                                 setFilters({ ...filters, skip: 0 });
                             } else {
-                                fetchB2bWalletDeposits({ ...filters });
+                                fetchWalletWithdrawals({ ...filters });
                             }
                         }}
                         className="grid grid-cols-7 items-end gap-4 border-b border-dashed p-4"
@@ -249,10 +249,10 @@ export default function B2bWallletDepositListPage() {
 
                     {isPageLoading ? (
                         <PageLoader />
-                    ) : walletDeposits?.length < 1 ? (
+                    ) : walletWithdrawals?.length < 1 ? (
                         <div className="p-6 flex flex-col items-center">
                             <span className="text-sm text-grayColor block mt-[6px]">
-                                Oops.. No Deposits Found
+                                Oops.. No Withdrawals Found
                             </span>
                         </div>
                     ) : (
@@ -262,20 +262,20 @@ export default function B2bWallletDepositListPage() {
                                     <tr>
                                         <th className="font-[500] p-3">Ref.No</th>
                                         <th className="font-[500] p-3">Reseller</th>
-                                        <th className="font-[500] p-3">Deposited</th>
-                                        <th className="font-[500] p-3">Credited</th>
+                                        <th className="font-[500] p-3">Amount</th>
                                         <th className="font-[500] p-3">Fee</th>
                                         <th className="font-[500] p-3">Payment Processor</th>
+                                        <th className="font-[500] p-3">Company Bank</th>
                                         <th className="font-[500] p-3">Date</th>
                                         <th className="font-[500] p-3">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody className="text-sm">
-                                    {walletDeposits?.map((deposit, index) => {
+                                    {walletWithdrawals?.map((withdraw, index) => {
                                         return (
-                                            <B2bWalletDepositListTableRow
+                                            <B2bWalletWithdrawalsListTableRow
                                                 key={index}
-                                                deposit={deposit}
+                                                withdraw={withdraw}
                                             />
                                         );
                                     })}
@@ -286,7 +286,7 @@ export default function B2bWallletDepositListPage() {
                                 <Pagination
                                     limit={filters?.limit}
                                     skip={filters?.skip}
-                                    total={filters?.totalDeposits}
+                                    total={filters?.totalWithdrawals}
                                     incOrDecSkip={(number) =>
                                         setFilters((prev) => {
                                             return {

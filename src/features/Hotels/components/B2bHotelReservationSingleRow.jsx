@@ -75,6 +75,7 @@ function HotelReservationSingleRow({ order }) {
                                 orderId={order?._id}
                                 setOrderData={setOrderData}
                                 netPrice={order?.netPrice}
+                                cancellationPolicies={order?.cancellationPolicies || []}
                             />
                         )}
                     </div>

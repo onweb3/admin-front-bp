@@ -464,11 +464,6 @@ const sidebarMenus = {
                     permission: ["sub-agents", "view"],
                 },
                 {
-                    name: "Withdraw Requests",
-                    link: "/withdraw-requests",
-                    permission: ["withdraw-requests", "view"],
-                },
-                {
                     name: "Configurations",
                     link: "/b2b/configurations",
                     permission: ["b2b-configurations", "view"],
@@ -494,6 +489,16 @@ const sidebarMenus = {
                     name: "Deposits Requests",
                     link: "/b2b/wallet/deposit-requests",
                     permission: ["b2b-wallet-deposits", "view"],
+                },
+                {
+                    name: "Withdrawals List",
+                    link: "/b2b/wallet/withdrawals",
+                    permission: ["b2b-wallet-withdrawals", "view"],
+                },
+                {
+                    name: "Withdraw Requests",
+                    link: "/b2b/wallet/withdraw-requests",
+                    permission: ["b2b-wallet-withdrawals", "view"],
                 },
             ],
         },

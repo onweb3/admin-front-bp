@@ -1,8 +1,4 @@
-import {
-    AdminLayout,
-    EditProfileLayout,
-    SingleResellerLayout,
-} from "../layouts";
+import { AdminLayout, EditProfileLayout, SingleResellerLayout } from "../layouts";
 import A2aAddTicketPage from "../pages/A2A/A2aAddTicketPage";
 import A2AEditTicketPage from "../pages/A2A/A2aEditTicketPage";
 import A2AEnquiryPage from "../pages/A2A/A2AEnquiryPage";
@@ -219,6 +215,7 @@ import AddBankAccountPage from "../pages/BankAccounts/AddBankAccountPage";
 import UpdateBankAccountPage from "../pages/BankAccounts/UpdateBankAccountPage";
 import B2bWalletDepositsRequestPage from "../pages/wallet/B2bWalletDepositsRequestPage";
 import AttractionTransactionsPage from "../pages/Attraction/AttractionTranscationPage";
+import B2bWithdrawalsList from "../pages/Withdraw/B2bWithdrawalsList";
 
 const ThemeRoutes = [
     {
@@ -857,7 +854,11 @@ const ThemeRoutes = [
                 element: <EditApiPage />,
             },
             {
-                path: "/withdraw-requests",
+                path: "/b2b/wallet/withdrawals",
+                element: <B2bWithdrawalsList />,
+            },
+            {
+                path: "/b2b/wallet/withdraw-requests",
                 element: <WithdrawRequestPage />,
             },
             {

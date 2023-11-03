@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { MdClose } from "react-icons/md";
 import { useSelector } from "react-redux";
 
@@ -6,9 +6,15 @@ import { useHandleClickOutside } from "../../../hooks";
 import { BtnLoader } from "../../../components";
 import axios from "../../../axios";
 
-function HotelReservationCancelModal({ setIsCancelModal, orderId, setOrderData, netPrice }) {
+function HotelReservationCancelModal({
+    setIsCancelModal,
+    orderId,
+    setOrderData,
+    netPrice,
+    cancellationPolicies,
+}) {
     const [data, setData] = useState({
-        cancellationCharge: netPrice || "",
+        cancellationCharge: netPrice || 0,
         cancellationRemark: "",
     });
     const [error, setError] = useState("");
@@ -48,6 +54,26 @@ function HotelReservationCancelModal({ setIsCancelModal, orderId, setOrderData, 
         }
     };
 
+    useEffect(() => {
+        if (cancellationPolicies?.length > 0) {
+            for (let i = 0; i < cancellationPolicies?.length; i++) {
+                const policy = cancellationPolicies[i];
+                if (new Date(policy?.from) <= new Date()) {
+                    setData((prev) => {
+                        return { ...prev, cancellationCharge: policy?.amount };
+                    });
+                    break;
+                }
+
+                if (i === cancellationPolicies?.length - 1) {
+                    setData((prev) => {
+                        return { ...prev, cancellationCharge: 0 };
+                    });
+                }
+            }
+        }
+    }, [cancellationPolicies]);
+
     return (
         <div className="fixed inset-0 w-full h-full bg-[#fff5] flex items-center justify-center z-20 ">
             <div
@@ -71,7 +97,7 @@ function HotelReservationCancelModal({ setIsCancelModal, orderId, setOrderData, 
                                 type="number"
                                 placeholder="0"
                                 name="cancellationCharge"
-                                value={data.cancellationCharge || ""}
+                                value={data.cancellationCharge || 0}
                                 onChange={(e) => {
                                     if (Number(e.target.value) > netPrice) {
                                         setData((prev) => {

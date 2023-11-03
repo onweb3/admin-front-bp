@@ -46,6 +46,7 @@ export default function HotelReservationCancellationTableRow({
                                 netPrice={hotelOrder?.netPrice}
                                 cancellationId={cancellation?._id}
                                 hotelOrder={hotelOrder}
+                                cancellationPolicies={hotelOrder?.cancellationPolicies || []}
                             />
                         )}
                     </div>
