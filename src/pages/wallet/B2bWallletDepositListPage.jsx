@@ -16,9 +16,12 @@ export default function B2bWallletDepositListPage() {
         totalDeposits: 0,
         dateFrom: "",
         dateTo: "",
+        referenceNo: "",
         paymentProcessor: "",
+        bankId: "",
         status: "",
     });
+    const [banks, setBanks] = useState([]);
 
     const { jwtToken } = useSelector((state) => state.admin);
 
@@ -36,8 +39,10 @@ export default function B2bWallletDepositListPage() {
                 limit: 15,
                 dateFrom: "",
                 dateTo: "",
+                referenceNo: "",
                 status: "",
                 paymentProcessor: "",
+                bankId: "",
                 totalDeposits: 0,
             };
         });
@@ -48,8 +53,10 @@ export default function B2bWallletDepositListPage() {
                 limit: 15,
                 dateFrom: "",
                 dateTo: "",
+                referenceNo: "",
                 status: "",
                 paymentProcessor: "",
+                bankId: "",
             });
         }
     };
@@ -59,14 +66,16 @@ export default function B2bWallletDepositListPage() {
         limit,
         dateFrom,
         dateTo,
+        referenceNo,
         status,
         paymentProcessor,
+        bankId,
     }) => {
         try {
             setIsPageLoading(true);
 
             const response = await axios.get(
-                `/wallets/b2b/deposits/all?status=${status}&paymentProcessor=${paymentProcessor}&dateFrom=${dateFrom}&dateTo=${dateTo}&limit=${limit}&skip=${skip}`,
+                `/wallets/b2b/deposits/all?status=${status}&paymentProcessor=${paymentProcessor}&dateFrom=${dateFrom}&dateTo=${dateTo}&limit=${limit}&skip=${skip}&bankId=${bankId}&referenceNo=${referenceNo}`,
                 {
                     headers: { authorization: `Bearer ${jwtToken}` },
                 }
@@ -85,6 +94,20 @@ export default function B2bWallletDepositListPage() {
     useEffect(() => {
         fetchB2bWalletDeposits({ ...filters });
     }, [filters.skip]);
+
+    useEffect(() => {
+        const fetchBankNames = async () => {
+            try {
+                const response = await axios.get("/company/bank-info/all/names", {
+                    headers: { Authorization: `Bearer ${jwtToken}` },
+                });
+                setBanks(response.data);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetchBankNames();
+    }, []);
 
     return (
         <div>
@@ -121,7 +144,7 @@ export default function B2bWallletDepositListPage() {
                         }}
                         className="grid grid-cols-7 items-end gap-4 border-b border-dashed p-4"
                     >
-                        {/* <div className="">
+                        <div className="">
                             <label htmlFor="">Reference Number</label>
                             <input
                                 type="text"
@@ -131,7 +154,7 @@ export default function B2bWallletDepositListPage() {
                                 value={filters.referenceNo || ""}
                                 onChange={handleChange}
                             />
-                        </div> */}
+                        </div>
                         <div className="">
                             <label htmlFor="">Date From</label>
                             <input
@@ -153,7 +176,7 @@ export default function B2bWallletDepositListPage() {
                             />
                         </div>
                         <div>
-                            <label htmlFor="">paymentProcessor</label>
+                            <label htmlFor="">Payment Processor</label>
                             <select
                                 name="paymentProcessor"
                                 id=""
@@ -167,6 +190,24 @@ export default function B2bWallletDepositListPage() {
                             </select>
                         </div>
                         <div>
+                            <label htmlFor="">Bank</label>
+                            <select
+                                name="bankId"
+                                id=""
+                                value={filters.bankId || ""}
+                                onChange={handleChange}
+                            >
+                                <option value="">All</option>
+                                {banks?.map((bank, index) => {
+                                    return (
+                                        <option value={bank?._id} key={index}>
+                                            {bank?.bankName}
+                                        </option>
+                                    );
+                                })}
+                            </select>
+                        </div>
+                        <div>
                             <label htmlFor="">Status</label>
                             <select
                                 name="status"
@@ -175,10 +216,9 @@ export default function B2bWallletDepositListPage() {
                                 onChange={handleChange}
                             >
                                 <option value="">All</option>
-                                <option value="booked">Booked</option>
                                 <option value="pending">Pending</option>
-                                <option value="confirmed">Confirmed</option>
-                                <option value="cancelled">Cancelled</option>
+                                <option value="completed">Completed</option>
+                                <option value="failed">Failed</option>
                             </select>
                         </div>
                         <div>

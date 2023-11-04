@@ -24,6 +24,7 @@ const sections = {
     "meal-upgrades": "Meal Upgrades",
     "room-upgrades": "Room Upgrades",
     staypays: "Stay Pays",
+    policies: "Cancellation Policies",
     ratekey: "Rate Key",
 };
 
@@ -234,6 +235,9 @@ export default function HotelOrderDetailsPage() {
                                                         orderId={hotelOrder?._id}
                                                         setOrderData={setHotelOrder}
                                                         netPrice={hotelOrder?.netPrice}
+                                                        cancellationPolicies={
+                                                            hotelOrder?.cancellationPolicies || []
+                                                        }
                                                     />
                                                 )}
                                             </div>
@@ -1278,6 +1282,47 @@ export default function HotelOrderDetailsPage() {
                                                                     </td>
                                                                     <td className="p-2">
                                                                         {staypay?.discount} AED
+                                                                    </td>
+                                                                </tr>
+                                                            );
+                                                        }
+                                                    )}
+                                                </tbody>
+                                            </table>
+                                        )}
+                                    </div>
+                                )}
+                                {selectedSection === "policies" && (
+                                    <div className="overflow-x-auto mt-2">
+                                        {hotelOrder?.cancellationPolicies?.length < 1 ? (
+                                            <div className="p-4 flex flex-col items-center">
+                                                <span className="text-sm text-grayColor block mt-[6px]">
+                                                    Oops.. No Cancellation Policies Found
+                                                </span>
+                                            </div>
+                                        ) : (
+                                            <table className="w-full text-[14px]">
+                                                <tbody>
+                                                    <tr className="odd:bg-[#f3f6f9]">
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            From
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Amount
+                                                        </td>
+                                                    </tr>
+                                                    {hotelOrder?.cancellationPolicies?.map(
+                                                        (policy, index) => {
+                                                            return (
+                                                                <tr
+                                                                    key={index}
+                                                                    className="odd:bg-[#f3f6f9]"
+                                                                >
+                                                                    <td className="p-2">
+                                                                        {formatDate(policy?.from)}
+                                                                    </td>
+                                                                    <td className="p-2">
+                                                                        {policy?.amount || 0} AED
                                                                     </td>
                                                                 </tr>
                                                             );

@@ -12,6 +12,7 @@ export default function HotelReservationCancelRequestStatusChangeModal({
     setHotelOrder,
     netPrice,
     cancellationId,
+    cancellationPolicies,
 }) {
     const [data, setData] = useState({
         cancellationCharge: netPrice || "",
@@ -23,11 +24,11 @@ export default function HotelReservationCancelRequestStatusChangeModal({
     useHandleClickOutside(wrapperRef, () => setIsCancelModalOpen(false));
     const { jwtToken } = useSelector((state) => state.admin);
 
-    const handleChange = (e) => {
-        setData((prev) => {
-            return { ...prev, [e.target.name]: e.target.value };
-        });
-    };
+    // const handleChange = (e) => {
+    //     setData((prev) => {
+    //         return { ...prev, [e.target.name]: e.target.value };
+    //     });
+    // };
 
     const handleSubmit = async (e) => {
         try {
@@ -62,6 +63,26 @@ export default function HotelReservationCancelRequestStatusChangeModal({
             setIsLoading(false);
         }
     };
+
+    useEffect(() => {
+        if (cancellationPolicies?.length > 0) {
+            for (let i = 0; i < cancellationPolicies?.length; i++) {
+                const policy = cancellationPolicies[i];
+                if (new Date(policy?.from) <= new Date()) {
+                    setData((prev) => {
+                        return { ...prev, cancellationCharge: policy?.amount };
+                    });
+                    break;
+                }
+
+                if (i === cancellationPolicies?.length - 1) {
+                    setData((prev) => {
+                        return { ...prev, cancellationCharge: 0 };
+                    });
+                }
+            }
+        }
+    }, [cancellationPolicies]);
 
     return (
         <div className="fixed inset-0 w-full h-full bg-[#fff5] flex items-center justify-center z-20 ">

@@ -9,7 +9,7 @@ import { Link, Outlet, useLocation, useParams } from "react-router-dom";
 import { avatarImg } from "../assets/images";
 import axios from "../axios";
 import { PageLoader } from "../components";
-import { AddMoneyModal, RemoveMoenyModal } from "../features/Resellers";
+import { AddMoneyModal, AddWalletUsedCreditModal, RemoveMoenyModal } from "../features/Resellers";
 import AddCreditModal from "../features/Resellers/components/AddCreditModal";
 
 export default function SingleResellerLayout() {
@@ -21,6 +21,7 @@ export default function SingleResellerLayout() {
     const [isAddCreditModalOpen, setIsAddCreditModalOpen] = useState(false);
     const [isRemoveMoneyModalOpen, setIsRemoveMoneyModalOpen] = useState(false);
     const [totalSubAgents, setTotalSubAgents] = useState(0);
+    const [usedCreditModalOpen, setUsedCreditModalOpen] = useState(false);
 
     const { id } = useParams();
     const location = useLocation();
@@ -133,6 +134,8 @@ export default function SingleResellerLayout() {
                                                 setIsRemoveMoneyModalOpen(true);
                                             } else if (e.target.value === "credit") {
                                                 setIsAddCreditModalOpen(true);
+                                            } else if (e.target.value === "used-credit") {
+                                                setUsedCreditModalOpen(true);
                                             }
                                         }}
                                     >
@@ -142,6 +145,7 @@ export default function SingleResellerLayout() {
                                         <option value="add">Add Money</option>
                                         <option value="remove">Remove Money</option>
                                         <option value="credit">Update Credit</option>
+                                        <option value="used-credit">Add Used Credit</option>
                                     </select>
                                     {isAddCreditModalOpen && (
                                         <AddCreditModal
@@ -159,6 +163,13 @@ export default function SingleResellerLayout() {
                                     {isRemoveMoneyModalOpen && (
                                         <RemoveMoenyModal
                                             setIsRemoveMoneyModalOpen={setIsRemoveMoneyModalOpen}
+                                            setData={setData}
+                                            data={data}
+                                        />
+                                    )}
+                                    {usedCreditModalOpen && (
+                                        <AddWalletUsedCreditModal
+                                            setUsedCreditModalOpen={setUsedCreditModalOpen}
                                             setData={setData}
                                         />
                                     )}

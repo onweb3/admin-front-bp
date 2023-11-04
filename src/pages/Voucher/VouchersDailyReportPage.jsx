@@ -23,6 +23,7 @@ export default function VouchersDailyReportPage() {
         totalVouchers: 0,
         referenceNumber: "",
         sortBy: "tourName:asc",
+        passengerName: "",
     });
 
     const { jwtToken } = useSelector((state) => state.admin);
@@ -96,7 +97,7 @@ export default function VouchersDailyReportPage() {
             setIsLoading(true);
 
             const response = await axios.get(
-                `/vouchers/daily-reports?skip=${filters.skip}&limit=${filters.limit}&tourName=${filters.tourName}&fromDate=${filters.fromDate}&toDate=${filters.toDate}&pickupFrom=${filters.pickupFrom}&pickupTimeFrom=${filters.pickupTimeFrom}&pickupTimeTo=${filters.pickupTimeTo}&referenceNumber=${filters.referenceNumber}&sortBy=${filters.sortBy}`,
+                `/vouchers/daily-reports?skip=${filters.skip}&limit=${filters.limit}&tourName=${filters.tourName}&fromDate=${filters.fromDate}&toDate=${filters.toDate}&pickupFrom=${filters.pickupFrom}&pickupTimeFrom=${filters.pickupTimeFrom}&pickupTimeTo=${filters.pickupTimeTo}&referenceNumber=${filters.referenceNumber}&sortBy=${filters.sortBy}&passengerName=${filters.passengerName}`,
                 {
                     headers: { authorization: `Bearer ${jwtToken}` },
                 }
@@ -173,7 +174,7 @@ export default function VouchersDailyReportPage() {
                                 placeholder="Ex: TST001"
                             />
                         </div>
-                        <div className="col-span-2">
+                        <div>
                             <label htmlFor="">Tour Name</label>
                             <input
                                 type="text"
@@ -181,6 +182,17 @@ export default function VouchersDailyReportPage() {
                                 className=""
                                 name="tourName"
                                 value={filters.tourName || ""}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="">Passenger Name</label>
+                            <input
+                                type="text"
+                                placeholder="Search Passenger Name"
+                                className=""
+                                name="passengerName"
+                                value={filters.passengerName || ""}
                                 onChange={handleChange}
                             />
                         </div>

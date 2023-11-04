@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import axios from "../../axios";
-import { BtnLoader, PageLoader, Toggle } from "../../components";
+import { BtnLoader, MultipleSelectDropdown, PageLoader, Toggle } from "../../components";
 
 export default function UpdateResellerConfigPage() {
     const [isPageLoading, setIsPageLoading] = useState(true);
@@ -18,6 +18,7 @@ export default function UpdateResellerConfigPage() {
         showA2a: false,
         showQuotaion: false,
         reseller: {},
+        allowedPaymentMethods: [],
     });
 
     const { id } = useParams();
@@ -39,6 +40,7 @@ export default function UpdateResellerConfigPage() {
                     showVisa: data.showVisa,
                     showA2a: data.showA2a,
                     showQuotaion: data.showQuotaion,
+                    allowedPaymentMethods: data.allowedPaymentMethods,
                 },
                 {
                     headers: { authorization: `Bearer ${jwtToken}` },
@@ -72,6 +74,8 @@ export default function UpdateResellerConfigPage() {
                     showVisa: response.data?.configuration?.showVisa || false,
                     showA2a: response.data?.configuration?.showA2a || false,
                     showQuotaion: response.data?.configuration?.showQuotaion || false,
+                    allowedPaymentMethods:
+                        response?.data?.configuration?.allowedPaymentMethods || [],
                 };
             });
             setIsPageLoading(false);
@@ -124,7 +128,7 @@ export default function UpdateResellerConfigPage() {
                     <div className="p-4 bg-white rounded shadow-sm">
                         <div className="mb-5">
                             <h2 className="font-[600]">
-                                {data.reseller?.companyName} - {data.reseller?.agentCode}
+                                {data.reseller?.companyName} - ({data.reseller?.agentCode})
                             </h2>
                             <span className="text-sm text-grayColor block">
                                 {data?.reseller?.email}
@@ -192,6 +196,27 @@ export default function UpdateResellerConfigPage() {
                                         handleToggleChange("showInsurance", e.target.checked)
                                     }
                                     value={data.showInsurance || false}
+                                />
+                            </div>
+                        </div>
+                        <div className="mt-8 grid grid-cols-4 gap-4">
+                            <div>
+                                <label htmlFor="">Allowed Payment Methods *</label>
+                                <MultipleSelectDropdown
+                                    data={[
+                                        { value: "wallet" },
+                                        { value: "ccavenue" },
+                                        { value: "pay-later" },
+                                    ]}
+                                    valueName="value"
+                                    displayName="value"
+                                    selectedData={data.allowedPaymentMethods}
+                                    setSelectedData={(val) => {
+                                        setData((prev) => {
+                                            return { ...prev, allowedPaymentMethods: val };
+                                        });
+                                    }}
+                                    randomIndex={"allowedPaymentMethods0001"}
                                 />
                             </div>
                         </div>

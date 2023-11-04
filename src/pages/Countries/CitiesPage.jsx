@@ -82,7 +82,7 @@ export default function CitiesPage() {
         if (objIndex !== -1) {
             tempCities[objIndex] = city;
             setData((prev) => {
-                return { ...prev, cities: tempCities };
+                return { ...prev, cities: JSON.parse(JSON.stringify(tempCities)) };
             });
         }
     };

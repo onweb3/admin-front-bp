@@ -9,17 +9,17 @@ import axios from "../../../axios";
 import { BtnLoader } from "../../../components";
 import { useHandleClickOutside } from "../../../hooks";
 
-export default function AddMarkupModal({ setIsModalOpen, data, setData }) {
+export default function AddWalletUsedCreditModal({ setUsedCreditModalOpen, setData }) {
     const [formData, setFormData] = useState({
-        markupType: data?.markupType || "",
-        markup: data?.markup || "",
+        amount: "",
+        note: "",
     });
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
     const wrapperRef = useRef();
     useHandleClickOutside(wrapperRef, () => {
-        setIsModalOpen(false);
+        setUsedCreditModalOpen(false);
     });
     const { id } = useParams();
     const { jwtToken } = useSelector((state) => state.admin);
@@ -36,8 +36,8 @@ export default function AddMarkupModal({ setIsModalOpen, data, setData }) {
             setError("");
             setIsLoading(true);
 
-            const response = await axios.patch(
-                "/markup/b2b/attraction/add",
+            const response = await axios.post(
+                "/wallets/b2b//add/used-credit",
                 {
                     resellerId: id,
                     ...formData,
@@ -50,16 +50,17 @@ export default function AddMarkupModal({ setIsModalOpen, data, setData }) {
             setData((prev) => {
                 return {
                     ...prev,
-                    markupType: response?.data?.markupType,
-                    markup: response?.data?.markup,
+                    balance: response?.data?.balance,
+                    creditAmount: response?.data?.creditAmount,
+                    creditUsed: response?.data?.creditUsed,
                 };
             });
+
             setIsLoading(false);
-            setIsModalOpen(false);
+            setUsedCreditModalOpen(false);
         } catch (err) {
-            setError(
-                err?.response?.data?.error || "Something went wrong, Try again"
-            );
+            console.log(err);
+            setError(err?.response?.data?.error || "Something went wrong, Try again");
             setIsLoading(false);
         }
     };
@@ -71,10 +72,10 @@ export default function AddMarkupModal({ setIsModalOpen, data, setData }) {
                 className="bg-[#fff] w-full max-h-[90vh] max-w-[500px]  shadow-[0_1rem_3rem_rgb(0_0_0_/_18%)] overflow-y-auto"
             >
                 <div className="flex items-center justify-between border-b p-4">
-                    <h2 className="font-medium">Add Markup</h2>
+                    <h2 className="font-medium">Add Used Credit</h2>
                     <button
                         className="h-auto bg-transparent text-textColor text-xl"
-                        onClick={() => setIsModalOpen(false)}
+                        onClick={() => setUsedCreditModalOpen(false)}
                     >
                         <MdClose />
                     </button>
@@ -82,47 +83,37 @@ export default function AddMarkupModal({ setIsModalOpen, data, setData }) {
                 <div className="p-4">
                     <form action="" onSubmit={handleSubmit}>
                         <div>
-                            <label htmlFor="">Markup Type *</label>
-                            <select
-                                name="markupType"
-                                value={formData?.markupType || ""}
-                                onChange={handleChange}
-                                id=""
-                                required
-                            >
-                                <option value="" hidden>
-                                    Select Markupup Type
-                                </option>
-                                <option value="flat">Flat</option>
-                                <option value="percentage">Percentage</option>
-                            </select>
-                        </div>
-                        <div className="mt-4">
-                            <label htmlFor="">Markup *</label>
+                            <label htmlFor="">Amount *</label>
                             <input
                                 type="number"
                                 placeholder="Enter amount"
-                                name="markup"
+                                name="amount"
                                 onChange={handleChange}
-                                value={formData.markup || ""}
+                                value={formData.amount || ""}
                                 required
                             />
                         </div>
-                        {error && (
-                            <span className="text-sm block text-red-500 mt-2">
-                                {error}
-                            </span>
-                        )}
+                        <div className="mt-4">
+                            <label htmlFor="">Note</label>
+                            <input
+                                type="text"
+                                placeholder="Enter note"
+                                name="note"
+                                onChange={handleChange}
+                                value={formData.note || ""}
+                            />
+                        </div>
+                        {error && <span className="text-sm block text-red-500 mt-2">{error}</span>}
                         <div className="mt-4 flex items-center justify-end gap-[12px]">
                             <button
                                 className="bg-slate-300 text-textColor px-[15px]"
                                 type="button"
-                                onClick={() => setIsModalOpen(false)}
+                                onClick={() => setUsedCreditModalOpen(false)}
                             >
                                 Cancel
                             </button>
                             <button className="w-[160px]">
-                                {isLoading ? <BtnLoader /> : "Add Markup"}
+                                {isLoading ? <BtnLoader /> : "Add Used Credit"}
                             </button>
                         </div>
                     </form>

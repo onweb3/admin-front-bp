@@ -281,6 +281,12 @@ const adminRoles = [
         permissions: [],
     },
     {
+        name: "b2b-wallet-withdrawals",
+        displayName: "Wallet Withdrawals",
+        category: "b2b-wallet",
+        permissions: [],
+    },
+    {
         name: "destinations",
         displayName: "Destinations",
         category: "core",

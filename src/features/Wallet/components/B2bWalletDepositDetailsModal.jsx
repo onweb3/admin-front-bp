@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
-import { useHandleClickOutside } from "../../../hooks";
 import { MdClose } from "react-icons/md";
+
+import { useHandleClickOutside } from "../../../hooks";
 import { formatDate } from "../../../utils";
 
 export default function B2bWalletDepositDetailsModal({ deposit, setIsDepositDetailsModalOpen }) {
@@ -16,7 +17,7 @@ export default function B2bWalletDepositDetailsModal({ deposit, setIsDepositDeta
                 className="bg-[#fff] w-full max-h-[90vh] rounded max-w-[500px]  shadow-[0_1rem_3rem_rgb(0_0_0_/_18%)] overflow-y-auto"
             >
                 <div className="flex items-center justify-between border-b p-4">
-                    <h2 className="font-medium">#1000</h2>
+                    <h2 className="font-medium">#{deposit?.b2bWalletDepositRefNumber}</h2>
                     <button
                         className="h-auto bg-transparent text-textColor text-xl"
                         onClick={(e) => {
@@ -50,11 +51,22 @@ export default function B2bWalletDepositDetailsModal({ deposit, setIsDepositDeta
                                 <td className="p-1">:</td>
                                 <td className="p-1 capitalize">{deposit?.paymentProcessor}</td>
                             </tr>
-                            <tr>
-                                <td className="p-1 pl-0">Bank Reference Number</td>
-                                <td className="p-1">:</td>
-                                <td className="p-1">{deposit?.referenceNo || "N/A"}</td>
-                            </tr>
+                            {deposit?.paymentProcessor === "bank" && (
+                                <>
+                                    <tr>
+                                        <td className="p-1 pl-0">Bank</td>
+                                        <td className="p-1">:</td>
+                                        <td className="p-1 capitalize">
+                                            {deposit?.companyBankId?.bankName || "N/A"}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td className="p-1 pl-0">Bank Reference Number</td>
+                                        <td className="p-1">:</td>
+                                        <td className="p-1">{deposit?.referenceNo || "N/A"}</td>
+                                    </tr>
+                                </>
+                            )}
                             <tr>
                                 <td className="p-1 pl-0">Date</td>
                                 <td className="p-1">:</td>
