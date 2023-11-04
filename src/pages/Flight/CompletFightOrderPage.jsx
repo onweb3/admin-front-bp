@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "../../axios";
-import { BtnLoader, SelectDropdown } from "../../components";
+import { BtnLoader, PageLoader, SelectDropdown } from "../../components";
 import axioss from "axios";
 import FlightAvailabiltyModal from "../../features/Flight/components/FlightAvailabilityModal";
 import FlightItinerary from "../../features/Flight/components/FlightItinerary";
 import FlightSeatSelection from "../../features/Flight/components/FlightSeatSelection";
 import FlightAddOns from "../../features/Flight/components/FlightAddOns";
 import { handleInitalDataChange } from "../../redux/slices/FlightOrderSlice";
+import FlightContactDetails from "../../features/Flight/components/FligthContactDetails";
 export default function CompleteFlightOrderPage() {
     const { singleFlightDetails, flightAncillaries } = useSelector(
         (state) => state.flightOrder
@@ -16,6 +17,7 @@ export default function CompleteFlightOrderPage() {
     const { jwtToken } = useSelector((state) => state.admin);
     const [isLoading, setIsLoading] = useState(false);
     const { tbId } = useParams();
+    const [showContacts, setShowContacts] = useState(false);
 
     const [error, setError] = useState("");
     const dispatch = useDispatch();
@@ -82,16 +84,32 @@ export default function CompleteFlightOrderPage() {
             </div>
             <div className="p-6">
                 <div className="bg-white rounded p-6 shadow-sm">
-                    {singleFlightDetails?.trips?.map((trip) => {
-                        return <FlightItinerary trip={trip} />;
-                    })}
+                    {singleFlightDetails?.trips ? (
+                        singleFlightDetails?.trips?.map((trip) => {
+                            return <FlightItinerary trip={trip} />;
+                        })
+                    ) : (
+                        <PageLoader />
+                    )}
                 </div>
             </div>
             <div className="p-6">
                 <div className="bg-white rounded p-6 shadow-sm">
-                    <FlightAddOns flightAncillaries={flightAncillaries} />
+                    <FlightAddOns
+                        flightAncillaries={flightAncillaries}
+                        setShowContacts={setShowContacts}
+                    />
                 </div>
             </div>
+            {showContacts && (
+                <div className="p-6">
+                    <div className="bg-white rounded p-6 shadow-sm">
+                        <FlightContactDetails
+                            flightAncillaries={flightAncillaries}
+                        />
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
