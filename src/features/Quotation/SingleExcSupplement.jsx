@@ -9,6 +9,8 @@ import {
     changeExcSupplementType,
     removeSelectedExcSupplement,
     updateSupplVehicleTransfer,
+    changeExcSuppMarkup,
+    changeExcSuppMarkupValue,
 } from "../../redux/slices/quotationSlice";
 
 export default function SingleExcSupplement({
@@ -525,6 +527,63 @@ export default function SingleExcSupplement({
                         ))}
                 </div>
             )}
+
+            <div className="grid grid-cols-1 gap-2 py-5">
+                {" "}
+                <div className="flex items-center gap-2">
+                    <label className="">Custom Markup</label>{" "}
+                    <input
+                        type="checkbox"
+                        className="w-[16px] h-[16px]"
+                        checked={excursion?.isMarkup}
+                        onChange={(e) => {
+                            dispatch(
+                                changeExcSuppMarkup({
+                                    value: e.target.checked,
+                                    _id: excursion?.excursionId,
+                                })
+                            );
+                        }}
+                    />
+                </div>
+                {excursion?.isMarkup === true && (
+                    <div className="flex items-center gap-2">
+                        <label className=""> Markup</label>{" "}
+                        <select
+                            value={excursion?.markupType}
+                            name="markupType"
+                            onChange={(e) => {
+                                dispatch(
+                                    changeExcSuppMarkupValue({
+                                        name: e.target.name,
+                                        value: e.target.value,
+                                        _id: excursion?.excursionId,
+                                    })
+                                );
+                            }}
+                        >
+                            <option value="">Select</option>
+                            <option value="flat">Flat</option>
+                            <option value="percentage">Percentage</option>
+                        </select>
+                        <input
+                            type="number"
+                            name="markup"
+                            value={excursion?.markup}
+                            onChange={(e) => {
+                                dispatch(
+                                    changeExcSuppMarkupValue({
+                                        name: e.target.name,
+                                        value: e.target.value,
+                                        _id: excursion?.excursionId,
+                                    })
+                                );
+                            }}
+                            className="w"
+                        />
+                    </div>
+                )}
+            </div>
             <div className="mt-5 text-sm grid grid-cols-2">
                 <span className="block">
                     Adult Price:{" "}

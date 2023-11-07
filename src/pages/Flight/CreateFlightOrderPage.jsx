@@ -135,7 +135,13 @@ export default function CreateFlightOrderPage() {
                 setFlightResults(response.data.flightResult);
                 setIsAvailabilityModal(true);
             }
-        } catch (err) {}
+            setIsLoading(false);
+        } catch (err) {
+            setError(
+                err?.response?.data?.error || "Something went wrong, Try again"
+            );
+            setIsLoading(false);
+        }
     };
 
     console.log(flightResults, "flightResults");
@@ -362,14 +368,18 @@ export default function CreateFlightOrderPage() {
                                         </select>
                                     </div>
                                 </div>
-                            </div>
+                            </div>{" "}
+                            {error && (
+                                <span className="text-sm block text-red-500 mt-2">
+                                    {error}
+                                </span>
+                            )}
                             <div className="mt-4 flex items-center justify-end gap-[12px]">
                                 <button
                                     className="w-[130px]"
                                     onClick={handleSubmit}
                                 >
-                                    click
-                                    {/* {isLoading ? <BtnLoader /> : "Submit"} */}
+                                    {isLoading ? <BtnLoader /> : "Submit"}
                                 </button>
                             </div>
                         </div>

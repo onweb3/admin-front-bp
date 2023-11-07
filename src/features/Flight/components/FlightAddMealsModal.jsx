@@ -4,13 +4,14 @@ import moment from "moment";
 import { useNavigate } from "react-router-dom";
 
 import { formatDate } from "../../../utils";
-import { MdClose } from "react-icons/md";
+import { MdClose, MdSetMeal } from "react-icons/md";
 import axios from "../../../axios";
 import { useDispatch, useSelector } from "react-redux";
 import {
     handleMealCountChange,
     handleTotalChange,
 } from "../../../redux/slices/FlightOrderSlice";
+import { GiHotMeal } from "react-icons/gi";
 
 export default function FlightAddMealModal({ setIsModal, mealSsr }) {
     const { singleFlightDetails, flightAncillaries } = useSelector(
@@ -72,7 +73,6 @@ export default function FlightAddMealModal({ setIsModal, mealSsr }) {
                 index2: index,
             })
         );
-
     };
 
     useEffect(() => {
@@ -101,7 +101,7 @@ export default function FlightAddMealModal({ setIsModal, mealSsr }) {
                         {mealSsr.map((mealSsr, index) => {
                             return (
                                 <div
-                                    className="w-full"
+                                    className="w-full hover:cursor-pointer"
                                     onClick={(e) => {
                                         onHandleChange(index);
                                     }}
@@ -150,8 +150,19 @@ export default function FlightAddMealModal({ setIsModal, mealSsr }) {
                         {meals.map((meal, index) => {
                             return (
                                 <div className="p-2 flex gap-10">
-                                    <div className="w-[100px] h-[20px]">
-                                        icons
+                                    <div className=" text-2xl text-red-500">
+                                        {meal?.mealImage ? (
+                                            <img
+                                                src={
+                                                    meal?.mealImage ||
+                                                    "https://img.freepik.com/free-vector/fast-food-set-with-hamburger-hotdog_1308-102865.jpg?w=2000"
+                                                }
+                                                alt=""
+                                                className="h-8 w-8"
+                                            />
+                                        ) : (
+                                            <GiHotMeal />
+                                        )}
                                     </div>
                                     <div className="flex justify-start w-[200px] ">
                                         {meal?.mealInfo}

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { IoMdArrowDropdown } from "react-icons/io";
+import { MdOutlineAirlineSeatReclineExtra } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { handleSeatCountChange } from "../../../redux/slices/FlightOrderSlice";
 
@@ -99,6 +100,9 @@ export default function SeatBox({
                 }}
                 disabled={status === "R"}
             >
+                {selected && (
+                    <MdOutlineAirlineSeatReclineExtra className="transform -scale-x-100" />
+                )}
                 {
                     <div
                         className={`p-2 z-50 group-hover:flex hidden absolute text-[16px] w-[100px] text-left ${

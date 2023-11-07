@@ -11,6 +11,7 @@ import {
     handleBagggageCountChange,
     handleTotalChange,
 } from "../../../redux/slices/FlightOrderSlice";
+import { BsBagFill } from "react-icons/bs";
 
 export default function FlightBaggageModal({ setIsModal, baggageSsr }) {
     const { singleFlightDetails, flightAncillaries } = useSelector(
@@ -109,12 +110,11 @@ export default function FlightBaggageModal({ setIsModal, baggageSsr }) {
                         {baggageSsr.map((baggageSsr, index) => {
                             return (
                                 <div
-                                    className="w-full"
+                                    className="w-full hover:cursor-pointer"
                                     onClick={(e) => {
                                         onHandleChange(index);
                                     }}
                                 >
-                                    
                                     <div
                                         className={`flex p-2 justify-between items-center ${
                                             selectedSegmentIndex === index
@@ -158,8 +158,8 @@ export default function FlightBaggageModal({ setIsModal, baggageSsr }) {
                         {baggages?.map((baggage, index) => {
                             return (
                                 <div className="p-2 flex gap-10">
-                                    <div className="w-[100px] h-[20px]">
-                                        icons
+                                    <div className="text-2xl text-blue-500">
+                                        <BsBagFill />
                                     </div>
                                     <div className="flex justify-start w-[200px] ">
                                         {baggage?.baggageInfo}
@@ -168,8 +168,8 @@ export default function FlightBaggageModal({ setIsModal, baggageSsr }) {
                                         {baggage?.price} AED
                                     </div>
                                     <div className="flex gap-3">
-                                        <div
-                                            className="text-sm font-semibold flex bg-gray-200 boreder rounded-full h-5 w-5 items-center justify-center"
+                                        <button
+                                            className="text-sm font-semibold flex bg-gray-400 boreder rounded-full h-5 w-5 items-center justify-center"
                                             onClick={(e) => {
                                                 if (
                                                     flightAncillaries
@@ -193,7 +193,7 @@ export default function FlightBaggageModal({ setIsModal, baggageSsr }) {
                                             }}
                                         >
                                             +
-                                        </div>
+                                        </button>
                                         <div className="text-sm font-semibold">
                                             {flightAncillaries.baggageSsr[
                                                 selectedSegmentIndex
@@ -206,8 +206,8 @@ export default function FlightBaggageModal({ setIsModal, baggageSsr }) {
                                                 }
                                             )?.count || 0}
                                         </div>
-                                        <div
-                                            className="text-sm font-semibold flex bg-gray-200  boreder rounded-full h-5 w-5 items-center justify-center"
+                                        <button
+                                            className="text-sm font-semibold flex bg-gray-400  boreder rounded-full h-5 w-5 items-center justify-center"
                                             onClick={(e) => {
                                                 onHandleMealsChange(
                                                     e,
@@ -218,7 +218,7 @@ export default function FlightBaggageModal({ setIsModal, baggageSsr }) {
                                             }}
                                         >
                                             -
-                                        </div>
+                                        </button>
                                     </div>
                                 </div>
                             );

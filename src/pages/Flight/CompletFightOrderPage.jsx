@@ -8,7 +8,10 @@ import FlightAvailabiltyModal from "../../features/Flight/components/FlightAvail
 import FlightItinerary from "../../features/Flight/components/FlightItinerary";
 import FlightSeatSelection from "../../features/Flight/components/FlightSeatSelection";
 import FlightAddOns from "../../features/Flight/components/FlightAddOns";
-import { handleInitalDataChange } from "../../redux/slices/FlightOrderSlice";
+import {
+    handleInitalDataChange,
+    clearAllData,
+} from "../../redux/slices/FlightOrderSlice";
 import FlightContactDetails from "../../features/Flight/components/FligthContactDetails";
 export default function CompleteFlightOrderPage() {
     const { singleFlightDetails, flightAncillaries } = useSelector(
@@ -62,7 +65,10 @@ export default function CompleteFlightOrderPage() {
         fetchInitialData();
     }, []);
 
-    console.log(`flight`, singleFlightDetails);
+    useEffect(() => {
+        return () => dispatch(clearAllData());
+    }, []);
+
     return (
         <div>
             {" "}

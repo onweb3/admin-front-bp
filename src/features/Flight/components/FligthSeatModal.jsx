@@ -61,7 +61,7 @@ export default function FlightSeatModal({ setIsModal, seatSsr }) {
                         {seatSsr.map((seatSsr, index) => {
                             return (
                                 <div
-                                    className="w-full"
+                                    className="w-full hover:cursor-pointer"
                                     onClick={(e) => {
                                         onHandleChange(index);
                                     }}

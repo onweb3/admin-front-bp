@@ -1329,6 +1329,29 @@ export const quotationsSlice = createSlice({
                 }
             }
         },
+        changeExcSuppMarkup: (state, action) => {
+            const selectedExcursionIndex =
+                state.selectedExcSupplements?.findIndex(
+                    (obj) => obj.excursionId === action.payload?._id
+                );
+
+            if (selectedExcursionIndex !== -1) {
+                state.selectedExcSupplements[selectedExcursionIndex].isMarkup =
+                    action.payload?.value;
+            }
+        },
+        changeExcSuppMarkupValue: (state, action) => {
+            const selectedExcursionIndex =
+                state.selectedExcSupplements?.findIndex(
+                    (obj) => obj.excursionId === action.payload?._id
+                );
+
+            if (selectedExcursionIndex !== -1) {
+                state.selectedExcSupplements[selectedExcursionIndex][
+                    action.payload?.name
+                ] = action.payload?.value;
+            }
+        },
     },
 });
 
@@ -1411,6 +1434,8 @@ export const {
     removeSelectedGuide,
     changeGuideCount,
     changeGuidePerPersonPrice,
+    changeExcSuppMarkup,
+    changeExcSuppMarkupValue,
 } = quotationsSlice.actions;
 
 export default quotationsSlice.reducer;

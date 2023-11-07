@@ -11,7 +11,7 @@ import FlightAddMealModal from "./FlightAddMealsModal";
 import FlightBaggageModal from "./FlightBaggageModal";
 import FlightSeatModal from "./FligthSeatModal";
 import axios from "../../../axios";
-import { PageLoader } from "../../../components";
+import { BtnLoader, PageLoader } from "../../../components";
 import { GiMeal } from "react-icons/gi";
 import { MdOutlineAirlineSeatReclineExtra } from "react-icons/md";
 
@@ -19,6 +19,8 @@ export default function FlightAddOns({ flightAncillaries, setShowContacts }) {
     const { singleFlightDetails, totalAncillariesPax } = useSelector(
         (state) => state.flightOrder
     );
+    const [isLoading, setIsLoading] = useState(false);
+
     console.log(singleFlightDetails, "dsss");
     const [isMealModal, setIsMealModal] = useState(false);
     const [isSeatModal, setIsSeatModal] = useState(false);
@@ -26,9 +28,12 @@ export default function FlightAddOns({ flightAncillaries, setShowContacts }) {
     console.log(flightAncillaries, "ancillaires");
     const { jwtToken } = useSelector((state) => state.admin);
     const { tbId } = useParams();
+    const [error, setError] = useState("");
 
     const handleSubmit = async () => {
         try {
+            setIsLoading(true);
+            setError("");
             const formData = {
                 tbId: tbId,
                 ancillaries: flightAncillaries?.priceQuoteResponse?.trips?.map(
@@ -177,7 +182,12 @@ export default function FlightAddOns({ flightAncillaries, setShowContacts }) {
             );
 
             setShowContacts(true);
+            setIsLoading(false);
         } catch (err) {
+            setError(
+                err?.response?.data?.error || "Something went wrong, Try again"
+            );
+            setIsLoading(false);
             console.log(err);
         }
     };
@@ -266,8 +276,13 @@ export default function FlightAddOns({ flightAncillaries, setShowContacts }) {
                             </div>
                         </div>
                     )}
+                    {error && (
+                        <span className="text-sm block text-red-500 mt-2">
+                            {error}
+                        </span>
+                    )}
                     <button className="w-[150px]" onClick={handleSubmit}>
-                        submit
+                        {isLoading ? <BtnLoader /> : "Submit"}
                     </button>
                 </div>
             ) : (

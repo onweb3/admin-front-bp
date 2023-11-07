@@ -7,6 +7,7 @@ import { formatDate } from "../../../utils";
 import { MdClose } from "react-icons/md";
 import axios from "../../../axios";
 import { useSelector } from "react-redux";
+import { BtnLoader } from "../../../components";
 
 export default function FlightAvailabiltyModal({
     flightResults,
@@ -53,7 +54,7 @@ export default function FlightAvailabiltyModal({
     const handleBook = async (e, index) => {
         try {
             e.preventDefault();
-            // setIsLoading(true);
+            setIsLoading(true);
             setError("");
             setSelectedIndex(index);
             const selectedResult = flightResults?.result.find(
@@ -65,7 +66,7 @@ export default function FlightAvailabiltyModal({
             );
 
             console.log(selectedValue, selectedResult, "resultttt");
-            if (selectedValue && selectedResult) {
+            if (selectedResult) {
                 console.log("call reached");
                 const formData = {
                     searchId: data?.searchId,
@@ -131,6 +132,7 @@ export default function FlightAvailabiltyModal({
                             <div className="text-gray-400 font-semibold text-md">
                                 Type
                             </div>
+
                             <div className="text-gray-400 font-semibold text-md ">
                                 Book
                             </div>
@@ -198,39 +200,53 @@ export default function FlightAvailabiltyModal({
                                             );
                                         })}
                                     </div>
-                                    <div>
-                                        <select
-                                            className=""
-                                            value={result?.value}
-                                            onChange={(e) => {
-                                                handleChange(
-                                                    index,
-                                                    e.target.value
-                                                );
-                                            }}
-                                        >
-                                            <option value="" hidden>
-                                                select
-                                            </option>
-                                            {result?.fares?.map((fare, i) => {
-                                                return (
-                                                    <option
-                                                        value={fare?.fareName}
-                                                    >
-                                                        {fare?.fareName}- (
-                                                        {fare.netFare}AED)
-                                                    </option>
-                                                );
-                                            })}
-                                        </select>
-                                    </div>
+                                    {result?.fares?.length > 1 && (
+                                        <div>
+                                            <select
+                                                className=""
+                                                value={result?.value}
+                                                onChange={(e) => {
+                                                    handleChange(
+                                                        index,
+                                                        e.target.value
+                                                    );
+                                                }}
+                                            >
+                                                <option value="" hidden>
+                                                    select
+                                                </option>
+                                                {result?.fares?.map(
+                                                    (fare, i) => {
+                                                        return (
+                                                            <option
+                                                                value={
+                                                                    fare?.fareName
+                                                                }
+                                                            >
+                                                                {fare?.fareName}
+                                                                - (
+                                                                {fare.netFare}
+                                                                AED)
+                                                            </option>
+                                                        );
+                                                    }
+                                                )}
+                                            </select>
+                                        </div>
+                                    )}
+
                                     <button
                                         className="w-[120px]"
                                         onClick={(e) => {
                                             handleBook(e, index);
                                         }}
                                     >
-                                        Book
+                                        {isLoading &&
+                                        selectedIndex === index ? (
+                                            <BtnLoader />
+                                        ) : (
+                                            "Book"
+                                        )}
                                     </button>
                                 </div>
                             </div>
