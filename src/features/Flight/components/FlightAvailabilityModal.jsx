@@ -7,6 +7,7 @@ import { formatDate } from "../../../utils";
 import { MdClose } from "react-icons/md";
 import axios from "../../../axios";
 import { useSelector } from "react-redux";
+import { BtnLoader } from "../../../components";
 
 export default function FlightAvailabiltyModal({
     flightResults,
@@ -53,7 +54,7 @@ export default function FlightAvailabiltyModal({
     const handleBook = async (e, index) => {
         try {
             e.preventDefault();
-            // setIsLoading(true);
+            setIsLoading(true);
             setError("");
             setSelectedIndex(index);
             const selectedResult = flightResults?.result.find(
@@ -61,11 +62,11 @@ export default function FlightAvailabiltyModal({
             );
 
             const selectedValue = selectedResult.fares.find(
-                (fare) => fare.fareKey === selectedResult.value
+                (fare) => fare.fareName === selectedResult.value
             );
 
             console.log(selectedValue, selectedResult, "resultttt");
-            if (selectedValue && selectedResult) {
+            if (selectedResult) {
                 console.log("call reached");
                 const formData = {
                     searchId: data?.searchId,
@@ -127,13 +128,12 @@ export default function FlightAvailabiltyModal({
                             <div className="text-gray-400 font-semibold text-md">
                                 Arrival{" "}
                             </div>
-                            <div className="text-gray-400 font-semibold text-md">
-                                Price
-                            </div>
+
                             <div className="text-gray-400 font-semibold text-md">
                                 Type
                             </div>
-                            <div className="text-gray-400 font-semibold text-md px-10">
+
+                            <div className="text-gray-400 font-semibold text-md ">
                                 Book
                             </div>
                         </div>
@@ -143,93 +143,110 @@ export default function FlightAvailabiltyModal({
                     return (
                         <div className="p-3 ">
                             <div className="w-full p-10 border border-rounded">
-                                <div className="w-full flex justify-between gap-5 py-2">
-                                    {result?.trips?.map((trip, ind) => {
-                                        return (
-                                            <>
-                                                <img
-                                                    src={
-                                                        trip?.airlines[0]
-                                                            ?.airlineLogo
-                                                    }
-                                                    alt=""
-                                                    className="h-[35px]"
-                                                />{" "}
-                                                <div>
-                                                    {
-                                                        trip?.airlines[0]
-                                                            ?.airlineName
-                                                    }
+                                <div className="w-full flex justify-between items-center gap-16 py-2">
+                                    <div className="flex flex-col  gap-2 w-full">
+                                        {result?.trips?.map((trip, ind) => {
+                                            return (
+                                                <div className="flex justify-between items-center w-full">
+                                                    <img
+                                                        src={
+                                                            trip?.airlines[0]
+                                                                ?.airlineLogo
+                                                        }
+                                                        alt=""
+                                                        className="h-[35px]"
+                                                    />{" "}
                                                     <div>
                                                         {
                                                             trip?.airlines[0]
-                                                                ?.airlineCode
+                                                                ?.airlineName
+                                                        }
+                                                        <div>
+                                                            {
+                                                                trip
+                                                                    ?.airlines[0]
+                                                                    ?.airlineCode
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        {
+                                                            trip?.flightSegments[0]?.departureDate
+                                                                .split("T")[1]
+                                                                .split(":")[0]
+                                                        }
+                                                        :{" "}
+                                                        {
+                                                            trip?.flightSegments[0]?.departureDate
+                                                                .split("T")[1]
+                                                                .split(":")[1]
                                                         }
                                                     </div>
+                                                    <div>
+                                                        {
+                                                            trip?.flightSegments[0]?.arrivalDate
+                                                                .split("T")[1]
+                                                                .split(":")[0]
+                                                        }
+                                                        :{" "}
+                                                        {
+                                                            trip?.flightSegments[0]?.arrivalDate
+                                                                .split("T")[1]
+                                                                .split(":")[1]
+                                                        }
+                                                    </div>
+                                                    {/* <div>PRICE</div> */}
                                                 </div>
-                                                <div>
-                                                    {
-                                                        trip?.flightSegments[0]?.departureDate
-                                                            .split("T")[1]
-                                                            .split(":")[0]
-                                                    }
-                                                    :{" "}
-                                                    {
-                                                        trip?.flightSegments[0]?.departureDate
-                                                            .split("T")[1]
-                                                            .split(":")[1]
-                                                    }
-                                                </div>
-                                                <div>
-                                                    {
-                                                        trip?.flightSegments[0]?.arrivalDate
-                                                            .split("T")[1]
-                                                            .split(":")[0]
-                                                    }
-                                                    :{" "}
-                                                    {
-                                                        trip?.flightSegments[0]?.arrivalDate
-                                                            .split("T")[1]
-                                                            .split(":")[1]
-                                                    }
-                                                </div>
-                                                {/* <div>PRICE</div> */}
-                                            </>
-                                        );
-                                    })}
-                                    <div>
-                                        <select
-                                            className=""
-                                            value={result?.value}
-                                            onChange={(e) => {
-                                                handleChange(
-                                                    index,
-                                                    e.target.value
-                                                );
-                                            }}
-                                        >
-                                            <option value="" hidden>
-                                                select
-                                            </option>
-                                            {result?.fares?.map((fare, i) => {
-                                                return (
-                                                    <option
-                                                        value={fare?.fareKey}
-                                                    >
-                                                        {fare?.fareName}- (
-                                                        {fare.netFare}AED)
-                                                    </option>
-                                                );
-                                            })}
-                                        </select>
+                                            );
+                                        })}
                                     </div>
+                                    {result?.fares?.length > 1 && (
+                                        <div>
+                                            <select
+                                                className=""
+                                                value={result?.value}
+                                                onChange={(e) => {
+                                                    handleChange(
+                                                        index,
+                                                        e.target.value
+                                                    );
+                                                }}
+                                            >
+                                                <option value="" hidden>
+                                                    select
+                                                </option>
+                                                {result?.fares?.map(
+                                                    (fare, i) => {
+                                                        return (
+                                                            <option
+                                                                value={
+                                                                    fare?.fareName
+                                                                }
+                                                            >
+                                                                {fare?.fareName}
+                                                                - (
+                                                                {fare.netFare}
+                                                                AED)
+                                                            </option>
+                                                        );
+                                                    }
+                                                )}
+                                            </select>
+                                        </div>
+                                    )}
+
                                     <button
                                         className="w-[120px]"
                                         onClick={(e) => {
                                             handleBook(e, index);
                                         }}
                                     >
-                                        Book
+                                        {isLoading &&
+                                        selectedIndex === index ? (
+                                            <BtnLoader />
+                                        ) : (
+                                            "Book"
+                                        )}
                                     </button>
                                 </div>
                             </div>

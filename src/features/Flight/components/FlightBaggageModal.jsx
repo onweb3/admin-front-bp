@@ -4,31 +4,33 @@ import moment from "moment";
 import { useNavigate } from "react-router-dom";
 
 import { formatDate } from "../../../utils";
-import { MdClose, MdSetMeal } from "react-icons/md";
+import { MdClose } from "react-icons/md";
 import axios from "../../../axios";
 import { useDispatch, useSelector } from "react-redux";
 import {
-    handleMealCountChange,
+    handleBagggageCountChange,
     handleTotalChange,
 } from "../../../redux/slices/FlightOrderSlice";
-import { GiHotMeal } from "react-icons/gi";
+import { BsBagFill } from "react-icons/bs";
 
-export default function FlightAddMealModal({ setIsModal, mealSsr }) {
+export default function FlightBaggageModal({ setIsModal, baggageSsr }) {
     const { singleFlightDetails, flightAncillaries } = useSelector(
         (state) => state.flightOrder
     );
     const wrapperRef = useRef();
-    const [meals, setMeals] = useState([]);
-    const [totalCount, setTotalCount] = useState(false);
+    const [baggages, setBaggage] = useState([]);
+    const [totalCount, setTotalCount] = useState(0);
     const [selectedSegmentIndex, setSelectedSegmentIndex] = useState();
     const dispatch = useDispatch();
     const onHandleChange = (index) => {
         try {
-            const selectedMeal = mealSsr.find((meal, ind) => ind === index);
+            const selectedBaggage = baggageSsr.find(
+                (meal, ind) => ind === index
+            );
 
             // Make sure to check if selectedMeal is not undefined before trying to access its "meals" property
-            if (selectedMeal) {
-                setMeals(selectedMeal.meals);
+            if (selectedBaggage) {
+                setBaggage(selectedBaggage?.baggages);
                 setSelectedSegmentIndex(index);
             }
         } catch (err) {
@@ -38,48 +40,55 @@ export default function FlightAddMealModal({ setIsModal, mealSsr }) {
     };
 
     useEffect(() => {
-        const mealsSsrArray = flightAncillaries.mealsSsr;
+        const baggageSsrArray = flightAncillaries.baggageSsr;
 
-        for (const mealsSsrItem of mealsSsrArray) {
+        // Initialize the total sum to zero
+
+        // Iterate over the mealsSsr array
+        for (const baggageSsrItem of baggageSsrArray) {
             let totalSum = 0;
+
             if (
-                mealsSsrItem.selectedMeals &&
-                Array.isArray(mealsSsrItem.selectedMeals)
+                baggageSsrItem.selectedBaggage &&
+                Array.isArray(baggageSsrItem.selectedBaggage)
             ) {
                 // Iterate over the meals array for each mealsSsr item
-                for (const meal of mealsSsrItem.selectedMeals) {
-                    totalSum += meal.count || 0;
+                for (const bagg of baggageSsrItem.selectedBaggage) {
+                    totalSum += bagg.count || 0;
                 }
             }
             dispatch(
                 handleTotalChange({
-                    name1: "mealsSsr",
-                    index1: mealsSsrArray.indexOf(mealsSsrItem),
+                    name1: "baggageSsr",
+                    index1: baggageSsrArray.indexOf(baggageSsrItem),
                     value: totalSum,
                 })
             );
         }
-    }, [flightAncillaries.mealsSsr[selectedSegmentIndex || 0]?.selectedMeals]);
+    }, [
+        flightAncillaries.baggageSsr[selectedSegmentIndex || 0]
+            ?.selectedBaggage,
+    ]);
 
-    const onHandleMealsChange = async (e, index, value, value1) => {
-        await dispatch(
-            handleMealCountChange({
+    const onHandleMealsChange = (e, index, value, value1) => {
+        dispatch(
+            handleBagggageCountChange({
                 name: "count",
-                value1: value1,
                 value: value,
-                name1: "mealsSsr",
+                value1: value1,
+                name1: "baggageSsr",
                 index1: selectedSegmentIndex,
-                name2: "meals",
+                name2: "baggages",
                 index2: index,
             })
         );
+
+        // Assuming you have a variable named 'totalCount' and another variable named 'value'
     };
 
     useEffect(() => {
         onHandleChange(selectedSegmentIndex || 0);
-    }, [meals, mealSsr]);
-
-    console.log(mealSsr, meals, totalCount, "meals changed");
+    }, [baggages, baggageSsr]);
 
     return (
         <div className="fixed inset-0 w-full h-full bg-[#fff5] flex items-center justify-center z-20 ">
@@ -88,7 +97,7 @@ export default function FlightAddMealModal({ setIsModal, mealSsr }) {
                 className="bg-[#fff] w-full max-h-[90vh] max-w-[800px]  shadow-[0_1rem_3rem_rgb(0_0_0_/_18%)] overflow-y-auto"
             >
                 <div className="flex items-center justify-between border-b p-4">
-                    <h2 className="font-medium mb-2">Available Meals</h2>
+                    <h2 className="font-medium mb-2">Available Baggage</h2>
                     <button
                         className="h-auto bg-transparent text-textColor text-xl"
                         onClick={() => setIsModal(false)}
@@ -98,7 +107,7 @@ export default function FlightAddMealModal({ setIsModal, mealSsr }) {
                 </div>
                 <div className="pt-10 border-t-1 p-5 flex gap-10">
                     <div className="w-[180px] h-full">
-                        {mealSsr.map((mealSsr, index) => {
+                        {baggageSsr.map((baggageSsr, index) => {
                             return (
                                 <div
                                     className="w-full hover:cursor-pointer"
@@ -106,7 +115,6 @@ export default function FlightAddMealModal({ setIsModal, mealSsr }) {
                                         onHandleChange(index);
                                     }}
                                 >
-                                    {/* <div className="pb-1">onward</div> */}
                                     <div
                                         className={`flex p-2 justify-between items-center ${
                                             selectedSegmentIndex === index
@@ -116,18 +124,18 @@ export default function FlightAddMealModal({ setIsModal, mealSsr }) {
                                     >
                                         <div className="flex flex-start">
                                             <div className="text-sm font-semibold">
-                                                {mealSsr.from}
+                                                {baggageSsr.from}
                                             </div>
                                             <div className="text-sm font-semibold">
                                                 -{" "}
                                             </div>
                                             <div className="text-sm font-semibold">
-                                                {mealSsr.to}
+                                                {baggageSsr.to}
                                             </div>{" "}
                                         </div>
                                         <div className="flex rounded rounded-full bg-white  flex-end p-1">
                                             <div className="text-sm font-semibold">
-                                                {mealSsr?.totalCount || 0}{" "}
+                                                {baggageSsr.totalCount || 0}{" "}
                                             </div>
                                             <div className="text-sm font-semibold">
                                                 /
@@ -147,28 +155,17 @@ export default function FlightAddMealModal({ setIsModal, mealSsr }) {
                         })}
                     </div>
                     <div className="w-full h-[500px]  overflow-y-auto">
-                        {meals.map((meal, index) => {
+                        {baggages?.map((baggage, index) => {
                             return (
                                 <div className="p-2 flex gap-10">
-                                    <div className=" text-2xl text-red-500">
-                                        {meal?.mealImage ? (
-                                            <img
-                                                src={
-                                                    meal?.mealImage ||
-                                                    "https://img.freepik.com/free-vector/fast-food-set-with-hamburger-hotdog_1308-102865.jpg?w=2000"
-                                                }
-                                                alt=""
-                                                className="h-8 w-8"
-                                            />
-                                        ) : (
-                                            <GiHotMeal />
-                                        )}
+                                    <div className="text-2xl text-blue-500">
+                                        <BsBagFill />
                                     </div>
                                     <div className="flex justify-start w-[200px] ">
-                                        {meal?.mealInfo}
+                                        {baggage?.baggageInfo}
                                     </div>
-                                    <div className="w-[70px]">
-                                        {meal?.price} AED
+                                    <div className="w-[50px]">
+                                        {baggage?.price} AED
                                     </div>
                                     <div className="flex gap-3">
                                         <button
@@ -181,14 +178,15 @@ export default function FlightAddMealModal({ setIsModal, mealSsr }) {
                                                         flightAncillaries
                                                             .priceQuoteResponse
                                                             .noOfChildren >
-                                                    flightAncillaries?.mealsSsr[
+                                                    flightAncillaries
+                                                        ?.baggageSsr[
                                                         selectedSegmentIndex
                                                     ]?.totalCount
                                                 ) {
                                                     onHandleMealsChange(
                                                         e,
                                                         index,
-                                                        meal,
+                                                        baggage,
                                                         "add"
                                                     );
                                                 }
@@ -197,14 +195,16 @@ export default function FlightAddMealModal({ setIsModal, mealSsr }) {
                                             +
                                         </button>
                                         <div className="text-sm font-semibold">
-                                            {flightAncillaries?.mealsSsr[
+                                            {flightAncillaries.baggageSsr[
                                                 selectedSegmentIndex
-                                            ]?.selectedMeals?.find((ml) => {
-                                                return (
-                                                    ml?.mealCode ===
-                                                    meal?.mealCode
-                                                );
-                                            })?.count || 0}
+                                            ].selectedBaggage?.find(
+                                                (seleBag) => {
+                                                    return (
+                                                        seleBag?.baggageInfo ===
+                                                        baggage?.baggageInfo
+                                                    );
+                                                }
+                                            )?.count || 0}
                                         </div>
                                         <button
                                             className="text-sm font-semibold flex bg-gray-400  boreder rounded-full h-5 w-5 items-center justify-center"
@@ -212,7 +212,7 @@ export default function FlightAddMealModal({ setIsModal, mealSsr }) {
                                                 onHandleMealsChange(
                                                     e,
                                                     index,
-                                                    meal,
+                                                    baggage,
                                                     "substract"
                                                 );
                                             }}

@@ -43,40 +43,34 @@ export default function FlightItinerary({ trip }) {
                                 <div className="">
                                     <div className="flex gap-3 items-center">
                                         <div>
-                                            {
-                                                trip?.flightSegments[0]?.departureDate
-                                                    .split("T")[1]
-                                                    .split(":")[0]
-                                            }
-                                            :{" "}
-                                            {
-                                                trip?.flightSegments[0]?.departureDate
-                                                    .split("T")[1]
-                                                    .split(":")[1]
-                                            }{" "}
+                                            {formatDate(segment?.departureDate)}
+                                            <span className="pl-2">
+                                                {
+                                                    segment?.departureDate
+                                                        .split("T")[1]
+                                                        .split(":")[0]
+                                                }
+                                                :{" "}
+                                                {
+                                                    segment?.departureDate
+                                                        .split("T")[1]
+                                                        .split(":")[1]
+                                                }{" "}
+                                            </span>
                                         </div>
                                         <div className="">
                                             {" "}
                                             <div className="">
                                                 {" "}
-                                                {
-                                                    trip?.flightSegments[0]
-                                                        .fromAirport
-                                                }
+                                                {segment.fromAirport}
                                             </div>{" "}
                                             <div className="">
                                                 {" "}
-                                                {
-                                                    trip?.flightSegments[0]
-                                                        .fromCountry
-                                                }
+                                                {segment.fromCountry}
                                             </div>
                                             <div className="">
                                                 {" "}
-                                                {
-                                                    trip?.flightSegments[0]
-                                                        .fromTerminal
-                                                }
+                                                {segment.fromTerminal}
                                             </div>
                                         </div>
                                     </div>{" "}
