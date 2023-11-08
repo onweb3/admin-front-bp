@@ -393,6 +393,7 @@ export default function SingleVoucherPage() {
                                         <tr>
                                             <th className="font-[500] p-3">#</th>
                                             <th className="font-[500] p-3">Tour Name</th>
+                                            <th className="font-[500] p-3">Tour Type</th>
                                             <th className="font-[500] p-3">Date</th>
                                             <th className="font-[500] p-3">Pickup From</th>
                                             <th className="font-[500] p-3">Pickup Time From</th>

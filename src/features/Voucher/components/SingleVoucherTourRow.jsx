@@ -39,6 +39,7 @@ export default function SingleVoucherTourRow({ tour, index, voucherAmendId }) {
         <tr className="border-b border-tableBorderColor">
             <td className="p-3">{index + 1}</td>
             <td className="p-3">{tour?.tourName}</td>
+            <td className="p-3 capitalize">{tour?.tourType || "N/A"}</td>
             <td className="p-3">{formatDate(tour?.date)}</td>
             <td className="p-3">{tour?.pickupFrom || "N/A"}</td>
             <td className="p-3">
