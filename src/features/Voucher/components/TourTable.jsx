@@ -17,8 +17,8 @@ export default function TourTable({
     };
 
     return (
-        <div className="mt-4">
-            <h2 className="font-medium mb-2 underline">Tours Itinerary</h2>
+        <div className="mt-6">
+            <h2 className="font-medium mb-2">Tours Itinerary</h2>
             <div className="">
                 <table className="w-full">
                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px]">
@@ -35,6 +35,7 @@ export default function TourTable({
                                 </div>
                             </th>
                             <th className="font-[500] p-2 border">Tour Name</th>
+                            <th className="font-[500] p-2 border">Tour Type</th>
                             <th className="font-[500] p-2 border">Date</th>
                             <th className="font-[500] p-2 border">
                                 PickupFrom

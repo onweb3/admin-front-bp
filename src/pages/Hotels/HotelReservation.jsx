@@ -19,8 +19,8 @@ function HotelReservation() {
         hotelBookingId: "",
         agentCode: "",
         supplier: "",
-        checkinDateFrom: "",
-        checkinDateTo: "",
+        checkInDate: "",
+        checkOutDate: "",
         orderedDateFrom: "",
         orderedDateTo: "",
         hotel: "",
@@ -45,8 +45,8 @@ function HotelReservation() {
                 hotelBookingId: "",
                 agentCode: "",
                 supplier: "",
-                checkinDateFrom: "",
-                checkinDateTo: "",
+                checkInDate: "",
+                checkOutDate: "",
                 orderedDateFrom: "",
                 orderedDateTo: "",
                 hotel: "",
@@ -60,8 +60,8 @@ function HotelReservation() {
             hotelBookingId: "",
             agentCode: "",
             supplier: "",
-            checkinDateFrom: "",
-            checkinDateTo: "",
+            checkInDate: "",
+            checkOutDate: "",
             orderedDateFrom: "",
             orderedDateTo: "",
             hotel: "",
@@ -74,7 +74,7 @@ function HotelReservation() {
             console.log("fetching orders...");
             setIsLoading(true);
             const response = await axios.get(
-                `/hotels/orders/b2b/all?skip=${filters.skip}&limit=${filters.limit}&referenceNumber=${filters.referenceNumber}&hotelBookingId=${filters.hotelBookingId}&agentCode=${filters.agentCode}&supplier=${filters.supplier}&checkinDateFrom=${filters.checkinDateFrom}&checkinDateTo=${filters.checkinDateTo}&orderedDateFrom=${filters.orderedDateFrom}&orderedDateTo=${filters.orderedDateTo}&hotel=${filters.hotel}&status=${filters.status}`,
+                `/hotels/orders/b2b/all?skip=${filters.skip}&limit=${filters.limit}&referenceNumber=${filters.referenceNumber}&hotelBookingId=${filters.hotelBookingId}&agentCode=${filters.agentCode}&supplier=${filters.supplier}&checkInDate=${filters.checkInDate}&checkOutDate=${filters.checkOutDate}&orderedDateFrom=${filters.orderedDateFrom}&orderedDateTo=${filters.orderedDateTo}&hotel=${filters.hotel}&status=${filters.status}`,
                 {
                     headers: { authorization: `Bearer ${jwtToken}` },
                 }
@@ -99,9 +99,7 @@ function HotelReservation() {
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">
-                    Hotel Orders
-                </h1>
+                <h1 className="font-[600] text-[15px] uppercase">Hotel Orders</h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
@@ -181,21 +179,21 @@ function HotelReservation() {
                             </select>
                         </div>
                         <div className="">
-                            <label htmlFor="">Checkin From</label>
+                            <label htmlFor="">Check-in Date</label>
                             <input
                                 type="date"
-                                name="checkinDateFrom"
-                                value={filters.checkinDateFrom || ""}
+                                name="checkInDate"
+                                value={filters.checkInDate || ""}
                                 onChange={handleChange}
                             />
                         </div>
                         <div className="">
-                            <label htmlFor="">Checkin To</label>
+                            <label htmlFor="">Check-out Date</label>
                             <input
                                 type="date"
                                 className=""
-                                name="checkinDateTo"
-                                value={filters.checkinDateTo || ""}
+                                name="checkOutDate"
+                                value={filters.checkOutDate || ""}
                                 onChange={handleChange}
                             />
                         </div>
@@ -283,30 +281,14 @@ function HotelReservation() {
                                 <table className="w-full">
                                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                         <tr>
-                                            <th className="font-[500] p-3">
-                                                Ref. No.
-                                            </th>
-                                            <th className="font-[500] p-3">
-                                                Created At
-                                            </th>
-                                            <th className="font-[500] p-3">
-                                                Hotel Name
-                                            </th>
-                                            <th className="font-[500] p-3">
-                                                Reseller
-                                            </th>
-                                            <th className="font-[500] p-3">
-                                                Booking Date
-                                            </th>
-                                            <th className="font-[500] p-3">
-                                                Pax
-                                            </th>
-                                            <th className="font-[500] p-3">
-                                                Price
-                                            </th>
-                                            <th className="font-[500] p-3">
-                                                Status
-                                            </th>
+                                            <th className="font-[500] p-3">Ref. No.</th>
+                                            <th className="font-[500] p-3">Created At</th>
+                                            <th className="font-[500] p-3">Hotel Name</th>
+                                            <th className="font-[500] p-3">Reseller</th>
+                                            <th className="font-[500] p-3">Booking Date</th>
+                                            <th className="font-[500] p-3">Pax</th>
+                                            <th className="font-[500] p-3">Price</th>
+                                            <th className="font-[500] p-3">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody className="text-sm">

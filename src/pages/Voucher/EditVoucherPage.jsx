@@ -50,6 +50,7 @@ export default function EditVoucherPage() {
     const [tourData, setTourData] = useState([
         {
             tourName: "",
+            tourType: "regular",
             date: "",
             pickupFrom: "",
             pickupTimeFrom: "",
@@ -60,25 +61,18 @@ export default function EditVoucherPage() {
     const [isHotelDropdownOpen, setIsHotelDropdownOpen] = useState(false);
 
     const hotelDropdownRef = useRef(null);
-    useHandleClickOutside(hotelDropdownRef, () =>
-        setIsHotelDropdownOpen(false)
-    );
+    useHandleClickOutside(hotelDropdownRef, () => setIsHotelDropdownOpen(false));
 
     const navigate = useNavigate();
     const { jwtToken } = useSelector((state) => state.admin);
     const { id } = useParams();
 
     const filteredHotels = initialData.hotels?.filter((item) => {
-        return item?.hotelName
-            ?.toLowerCase()
-            ?.includes(data.hotelName?.toLowerCase());
+        return item?.hotelName?.toLowerCase()?.includes(data.hotelName?.toLowerCase());
     });
 
     const handleNoOfChildrenChange = (e) => {
-        const tempArray = Array.from(
-            { length: Number(e.target.value) },
-            () => "0"
-        );
+        const tempArray = Array.from({ length: Number(e.target.value) }, () => "0");
 
         setData((prev) => {
             return {
@@ -101,19 +95,13 @@ export default function EditVoucherPage() {
     };
 
     const handleNoOfInfantsChange = (e) => {
-        const tempArray = Array.from(
-            { length: Number(e.target.value) },
-            () => "0"
-        );
+        const tempArray = Array.from({ length: Number(e.target.value) }, () => "0");
 
         setData((prev) => {
             return {
                 ...prev,
                 noOfInfants: e.target.value,
-                infantAges: [...prev.infantAges, ...tempArray]?.slice(
-                    0,
-                    Number(e.target.value)
-                ),
+                infantAges: [...prev.infantAges, ...tempArray]?.slice(0, Number(e.target.value)),
             };
         });
     };
@@ -131,6 +119,7 @@ export default function EditVoucherPage() {
             ...prev,
             {
                 tourName: "",
+                tourType: "regular",
                 date: "",
                 pickupFrom: "",
                 pickupTimeFrom: "",
@@ -181,9 +170,7 @@ export default function EditVoucherPage() {
             setIsLoading(false);
             navigate(`/vouchers/${id}`);
         } catch (err) {
-            setError(
-                err?.response?.data?.error || "Something went wrong, Try again"
-            );
+            setError(err?.response?.data?.error || "Something went wrong, Try again");
             setIsLoading(false);
         }
     };
@@ -281,26 +268,14 @@ export default function EditVoucherPage() {
 
             const updatedTours = tours?.map((item) => {
                 delete item._id;
-                if (
-                    !isNaN(item.pickupTimeFrom) &&
-                    item.pickupTimeFrom !== null
-                ) {
-                    item.pickupTimeFrom = convertMinutesTo24HourTime(
-                        item?.pickupTimeFrom
-                    );
+                if (!isNaN(item.pickupTimeFrom) && item.pickupTimeFrom !== null) {
+                    item.pickupTimeFrom = convertMinutesTo24HourTime(item?.pickupTimeFrom);
                 }
                 if (!isNaN(item.pickupTimeTo) && item.pickupTimeTo !== null) {
-                    item.pickupTimeTo = convertMinutesTo24HourTime(
-                        item?.pickupTimeTo
-                    );
+                    item.pickupTimeTo = convertMinutesTo24HourTime(item?.pickupTimeTo);
                 }
-                if (
-                    !isNaN(item.returnTimeFrom) &&
-                    item.returnTimeFrom !== null
-                ) {
-                    item.returnTimeFrom = convertMinutesTo24HourTime(
-                        item?.returnTimeFrom
-                    );
+                if (!isNaN(item.returnTimeFrom) && item.returnTimeFrom !== null) {
+                    item.returnTimeFrom = convertMinutesTo24HourTime(item?.returnTimeFrom);
                 }
                 return item;
             });
@@ -319,9 +294,7 @@ export default function EditVoucherPage() {
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">
-                    Edit Voucher
-                </h1>
+                <h1 className="font-[600] text-[15px] uppercase">Edit Voucher</h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
@@ -351,9 +324,7 @@ export default function EditVoucherPage() {
                             <div className="p-6">
                                 <div className="grid grid-cols-3 gap-[20px]">
                                     <div>
-                                        <label htmlFor="">
-                                            Reference Number *
-                                        </label>
+                                        <label htmlFor="">Reference Number *</label>
                                         <input
                                             type="text"
                                             name="referenceNumber"
@@ -363,9 +334,7 @@ export default function EditVoucherPage() {
                                         />
                                     </div>
                                     <div>
-                                        <label htmlFor="">
-                                            Passenger Name *
-                                        </label>
+                                        <label htmlFor="">Passenger Name *</label>
                                         <input
                                             type="text"
                                             name="passengerName"
@@ -385,9 +354,7 @@ export default function EditVoucherPage() {
                                         />
                                     </div>
                                     <div>
-                                        <label htmlFor="">
-                                            No Of Children *
-                                        </label>
+                                        <label htmlFor="">No Of Children *</label>
                                         <input
                                             type="number"
                                             name="noOfChildren"
@@ -396,82 +363,47 @@ export default function EditVoucherPage() {
                                             placeholder="0"
                                         />
                                     </div>
-                                    {data.childrenAges &&
-                                        data.childrenAges?.length > 0 && (
-                                            <div className="col-span-2">
-                                                <label
-                                                    htmlFor=""
-                                                    className="w-[100%] max-w-[180px]"
-                                                >
-                                                    Children Ages *
-                                                </label>
-                                                <div className="flex items-center flex-wrap gap-[10px]">
-                                                    {data.childrenAges?.map(
-                                                        (age, index) => {
-                                                            return (
-                                                                <select
-                                                                    name=""
-                                                                    className="w-[100px]"
-                                                                    value={
-                                                                        age ||
-                                                                        ""
-                                                                    }
-                                                                    key={index}
-                                                                    onChange={(
-                                                                        e
-                                                                    ) =>
-                                                                        handleChildrenAgeChange(
-                                                                            e,
-                                                                            index
-                                                                        )
-                                                                    }
-                                                                >
+                                    {data.childrenAges && data.childrenAges?.length > 0 && (
+                                        <div className="col-span-2">
+                                            <label htmlFor="" className="w-[100%] max-w-[180px]">
+                                                Children Ages *
+                                            </label>
+                                            <div className="flex items-center flex-wrap gap-[10px]">
+                                                {data.childrenAges?.map((age, index) => {
+                                                    return (
+                                                        <select
+                                                            name=""
+                                                            className="w-[100px]"
+                                                            value={age || ""}
+                                                            key={index}
+                                                            onChange={(e) =>
+                                                                handleChildrenAgeChange(e, index)
+                                                            }
+                                                        >
+                                                            <option value="" hidden>
+                                                                None
+                                                            </option>
+                                                            {Array.from({
+                                                                length: 18,
+                                                            }).map((_, arrIndex) => {
+                                                                return (
                                                                     <option
-                                                                        value=""
-                                                                        hidden
+                                                                        value={arrIndex}
+                                                                        key={arrIndex}
                                                                     >
-                                                                        None
+                                                                        {arrIndex} - {arrIndex + 1}{" "}
+                                                                        yrs
                                                                     </option>
-                                                                    {Array.from(
-                                                                        {
-                                                                            length: 18,
-                                                                        }
-                                                                    ).map(
-                                                                        (
-                                                                            _,
-                                                                            arrIndex
-                                                                        ) => {
-                                                                            return (
-                                                                                <option
-                                                                                    value={
-                                                                                        arrIndex
-                                                                                    }
-                                                                                    key={
-                                                                                        arrIndex
-                                                                                    }
-                                                                                >
-                                                                                    {
-                                                                                        arrIndex
-                                                                                    }{" "}
-                                                                                    -{" "}
-                                                                                    {arrIndex +
-                                                                                        1}{" "}
-                                                                                    yrs
-                                                                                </option>
-                                                                            );
-                                                                        }
-                                                                    )}
-                                                                </select>
-                                                            );
-                                                        }
-                                                    )}
-                                                </div>
+                                                                );
+                                                            })}
+                                                        </select>
+                                                    );
+                                                })}
                                             </div>
-                                        )}
+                                        </div>
+                                    )}
                                     <div>
-                                        <label htmlFor="">
-                                            No Of Infants *
-                                        </label>
+                                        <label htmlFor="">No Of Infants *</label>
                                         <input
                                             type="number"
                                             name="noOfInfants"
@@ -480,145 +412,91 @@ export default function EditVoucherPage() {
                                             placeholder="0"
                                         />
                                     </div>
-                                    {data.infantAges &&
-                                        data.infantAges?.length > 0 && (
-                                            <div className="col-span-2">
-                                                <label
-                                                    htmlFor=""
-                                                    className="w-[100%] max-w-[180px]"
-                                                >
-                                                    Infant Ages *
-                                                </label>
-                                                <div className="flex items-center flex-wrap gap-[10px]">
-                                                    {data.infantAges?.map(
-                                                        (age, index) => {
-                                                            return (
-                                                                <select
-                                                                    name=""
-                                                                    className="w-[100px]"
-                                                                    value={
-                                                                        age ||
-                                                                        ""
-                                                                    }
-                                                                    key={index}
-                                                                    onChange={(
-                                                                        e
-                                                                    ) =>
-                                                                        handleInfantAgeChange(
-                                                                            e,
-                                                                            index
-                                                                        )
-                                                                    }
-                                                                >
+                                    {data.infantAges && data.infantAges?.length > 0 && (
+                                        <div className="col-span-2">
+                                            <label htmlFor="" className="w-[100%] max-w-[180px]">
+                                                Infant Ages *
+                                            </label>
+                                            <div className="flex items-center flex-wrap gap-[10px]">
+                                                {data.infantAges?.map((age, index) => {
+                                                    return (
+                                                        <select
+                                                            name=""
+                                                            className="w-[100px]"
+                                                            value={age || ""}
+                                                            key={index}
+                                                            onChange={(e) =>
+                                                                handleInfantAgeChange(e, index)
+                                                            }
+                                                        >
+                                                            <option value="" hidden>
+                                                                None
+                                                            </option>
+                                                            {Array.from({
+                                                                length: 18,
+                                                            }).map((_, arrIndex) => {
+                                                                return (
                                                                     <option
-                                                                        value=""
-                                                                        hidden
+                                                                        value={arrIndex}
+                                                                        key={arrIndex}
                                                                     >
-                                                                        None
+                                                                        {arrIndex} - {arrIndex + 1}{" "}
+                                                                        yrs
                                                                     </option>
-                                                                    {Array.from(
-                                                                        {
-                                                                            length: 18,
-                                                                        }
-                                                                    ).map(
-                                                                        (
-                                                                            _,
-                                                                            arrIndex
-                                                                        ) => {
-                                                                            return (
-                                                                                <option
-                                                                                    value={
-                                                                                        arrIndex
-                                                                                    }
-                                                                                    key={
-                                                                                        arrIndex
-                                                                                    }
-                                                                                >
-                                                                                    {
-                                                                                        arrIndex
-                                                                                    }{" "}
-                                                                                    -{" "}
-                                                                                    {arrIndex +
-                                                                                        1}{" "}
-                                                                                    yrs
-                                                                                </option>
-                                                                            );
-                                                                        }
-                                                                    )}
-                                                                </select>
-                                                            );
-                                                        }
-                                                    )}
-                                                </div>
+                                                                );
+                                                            })}
+                                                        </select>
+                                                    );
+                                                })}
                                             </div>
-                                        )}
+                                        </div>
+                                    )}
                                 </div>
                                 <div className="grid grid-cols-3 gap-[20px] mt-4">
                                     <div className="col-span-2">
                                         <label htmlFor="">Hotel Name</label>
-                                        <div
-                                            className="relative"
-                                            ref={hotelDropdownRef}
-                                        >
+                                        <div className="relative" ref={hotelDropdownRef}>
                                             <input
                                                 type="text"
                                                 name="hotelName"
                                                 onChange={handleChange}
                                                 value={data.hotelName || ""}
                                                 placeholder="Enter Hotel Name"
-                                                onFocus={() =>
-                                                    setIsHotelDropdownOpen(true)
-                                                }
+                                                onFocus={() => setIsHotelDropdownOpen(true)}
                                             />
                                             {isHotelDropdownOpen && (
                                                 <div className="absolute top-[100%] left-0 w-full bg-white shadow rounded overflow-y-auto max-h-[250px]">
-                                                    {filteredHotels?.map(
-                                                        (hotel, index) => {
-                                                            return (
-                                                                <div
-                                                                    key={index}
-                                                                    className="py-[6px] px-4 text-[15px] cursor-pointer hover:bg-[#f3f6f9]"
-                                                                    onClick={() => {
-                                                                        setData(
-                                                                            (
-                                                                                prev
-                                                                            ) => {
-                                                                                return {
-                                                                                    ...prev,
-                                                                                    hotelName:
-                                                                                        hotel?.hotelName,
-                                                                                };
-                                                                            }
-                                                                        );
-                                                                        setIsHotelDropdownOpen(
-                                                                            false
-                                                                        );
-                                                                    }}
-                                                                >
-                                                                    <span>
-                                                                        {
-                                                                            hotel?.hotelName
-                                                                        }
-                                                                    </span>
-                                                                </div>
-                                                            );
-                                                        }
-                                                    )}
+                                                    {filteredHotels?.map((hotel, index) => {
+                                                        return (
+                                                            <div
+                                                                key={index}
+                                                                className="py-[6px] px-4 text-[15px] cursor-pointer hover:bg-[#f3f6f9]"
+                                                                onClick={() => {
+                                                                    setData((prev) => {
+                                                                        return {
+                                                                            ...prev,
+                                                                            hotelName:
+                                                                                hotel?.hotelName,
+                                                                        };
+                                                                    });
+                                                                    setIsHotelDropdownOpen(false);
+                                                                }}
+                                                            >
+                                                                <span>{hotel?.hotelName}</span>
+                                                            </div>
+                                                        );
+                                                    })}
                                                 </div>
                                             )}
                                         </div>
                                     </div>
                                     <div>
-                                        <label htmlFor="">
-                                            Confirmation Number
-                                        </label>
+                                        <label htmlFor="">Confirmation Number</label>
                                         <input
                                             type="text"
                                             name="confirmationNumber"
                                             onChange={handleChange}
-                                            value={
-                                                data.confirmationNumber || ""
-                                            }
+                                            value={data.confirmationNumber || ""}
                                             placeholder="Enter Confirmation Number"
                                         />
                                     </div>
@@ -626,9 +504,7 @@ export default function EditVoucherPage() {
 
                                 <div className="grid grid-cols-3 gap-[20px] mt-4">
                                     <div>
-                                        <label htmlFor="">
-                                            Check IN Date *
-                                        </label>
+                                        <label htmlFor="">Check IN Date *</label>
                                         <input
                                             type="date"
                                             name="checkInDate"
@@ -637,16 +513,13 @@ export default function EditVoucherPage() {
                                                 setData((prev) => {
                                                     return {
                                                         ...prev,
-                                                        arrivalDate:
-                                                            e.target.value,
+                                                        arrivalDate: e.target.value,
                                                     };
                                                 });
                                             }}
                                             value={
                                                 data?.checkInDate
-                                                    ? new Date(
-                                                          data?.checkInDate
-                                                      )
+                                                    ? new Date(data?.checkInDate)
                                                           .toISOString()
                                                           .substring(0, 10)
                                                     : ""
@@ -666,9 +539,7 @@ export default function EditVoucherPage() {
                                 </div>
                                 <div className="grid grid-cols-3 gap-[20px] mt-4">
                                     <div>
-                                        <label htmlFor="">
-                                            Check Out Date *
-                                        </label>
+                                        <label htmlFor="">Check Out Date *</label>
                                         <input
                                             type="date"
                                             name="checkOutDate"
@@ -677,16 +548,13 @@ export default function EditVoucherPage() {
                                                 setData((prev) => {
                                                     return {
                                                         ...prev,
-                                                        departureDate:
-                                                            e.target.value,
+                                                        departureDate: e.target.value,
                                                     };
                                                 });
                                             }}
                                             value={
                                                 data?.checkOutDate
-                                                    ? new Date(
-                                                          data?.checkOutDate
-                                                      )
+                                                    ? new Date(data?.checkOutDate)
                                                           .toISOString()
                                                           .substring(0, 10)
                                                     : ""
@@ -725,9 +593,7 @@ export default function EditVoucherPage() {
                                         />
                                     </div>
                                     <div>
-                                        <label htmlFor="">
-                                            Buffet Breakfast
-                                        </label>
+                                        <label htmlFor="">Buffet Breakfast</label>
                                         <input
                                             type="text"
                                             name="buffetBreakfast"
@@ -737,9 +603,7 @@ export default function EditVoucherPage() {
                                         />
                                     </div>
                                     <div>
-                                        <label htmlFor="">
-                                            Basis Of Transfer *
-                                        </label>
+                                        <label htmlFor="">Basis Of Transfer *</label>
                                         <input
                                             type="text"
                                             name="basisOfTransfer"
@@ -759,9 +623,7 @@ export default function EditVoucherPage() {
                                         />
                                     </div>
                                     <div>
-                                        <label htmlFor="">
-                                            Arrival Airport *
-                                        </label>
+                                        <label htmlFor="">Arrival Airport *</label>
                                         <select
                                             name="arrivalAirportId"
                                             value={data.arrivalAirportId || ""}
@@ -772,20 +634,13 @@ export default function EditVoucherPage() {
                                             <option value="" hidden>
                                                 Select Airport
                                             </option>
-                                            {initialData?.airports?.map(
-                                                (airport, index) => {
-                                                    return (
-                                                        <option
-                                                            value={airport?._id}
-                                                            key={index}
-                                                        >
-                                                            {
-                                                                airport?.airportName
-                                                            }
-                                                        </option>
-                                                    );
-                                                }
-                                            )}
+                                            {initialData?.airports?.map((airport, index) => {
+                                                return (
+                                                    <option value={airport?._id} key={index}>
+                                                        {airport?.airportName}
+                                                    </option>
+                                                );
+                                            })}
                                         </select>
                                     </div>
                                 </div>
@@ -797,9 +652,7 @@ export default function EditVoucherPage() {
                                             name="arrivalDate"
                                             value={
                                                 data?.arrivalDate
-                                                    ? new Date(
-                                                          data?.arrivalDate
-                                                      )
+                                                    ? new Date(data?.arrivalDate)
                                                           .toISOString()
                                                           .substring(0, 10)
                                                     : ""
@@ -826,9 +679,7 @@ export default function EditVoucherPage() {
                                             name="departureDate"
                                             value={
                                                 data?.departureDate
-                                                    ? new Date(
-                                                          data?.departureDate
-                                                      )
+                                                    ? new Date(data?.departureDate)
                                                           .toISOString()
                                                           .substring(0, 10)
                                                     : ""
@@ -856,15 +707,11 @@ export default function EditVoucherPage() {
                                         placeholder="Enter Print Note"
                                     ></textarea>
                                 </div>
-                                <div className="mt-4">
-                                    <h2 className="font-medium mb-2 underline">
-                                        Emergency Contact Info
-                                    </h2>
+                                <div className="mt-6">
+                                    <h2 className="font-medium mb-2">Emergency Contact Info</h2>
                                     <div className="grid grid-cols-3 gap-[20px]">
                                         <div>
-                                            <label htmlFor="">
-                                                Contact Name *
-                                            </label>
+                                            <label htmlFor="">Contact Name *</label>
                                             <input
                                                 type="text"
                                                 name="contactName"
@@ -874,9 +721,7 @@ export default function EditVoucherPage() {
                                             />
                                         </div>
                                         <div>
-                                            <label htmlFor="">
-                                                Contact Number *
-                                            </label>
+                                            <label htmlFor="">Contact Number *</label>
                                             <input
                                                 type="text"
                                                 name="contactNumber"
@@ -891,15 +736,11 @@ export default function EditVoucherPage() {
                                     addExtraRow={addExtraRow}
                                     deleteExtraRow={deleteExtraRow}
                                     tourData={tourData}
-                                    handleExtraDataChange={
-                                        handleExtraDataChange
-                                    }
+                                    handleExtraDataChange={handleExtraDataChange}
                                     activities={initialData.activities || []}
                                 />
                                 <div className="my-10">
-                                    <h1 className="text-[14px]">
-                                        Terms And Conditions *
-                                    </h1>
+                                    <h1 className="text-[14px]">Terms And Conditions *</h1>
                                     <div className="mt-2">
                                         <div className="border border-t-0">
                                             <RichTextEditor
@@ -907,23 +748,17 @@ export default function EditVoucherPage() {
                                                     setData((prev) => {
                                                         return {
                                                             ...prev,
-                                                            termsAndConditions:
-                                                                value,
+                                                            termsAndConditions: value,
                                                         };
                                                     })
                                                 }
-                                                initialValue={
-                                                    data?.termsAndConditions ||
-                                                    ""
-                                                }
+                                                initialValue={data?.termsAndConditions || ""}
                                             />
                                         </div>
                                     </div>
                                 </div>
                                 {error && (
-                                    <span className="text-sm block text-red-500 mt-2">
-                                        {error}
-                                    </span>
+                                    <span className="text-sm block text-red-500 mt-2">{error}</span>
                                 )}
                                 <div className="flex items-center justify-end gap-[12px]">
                                     <button
@@ -939,11 +774,7 @@ export default function EditVoucherPage() {
                                         onClick={handleSubmit}
                                         disabled={isLoading}
                                     >
-                                        {isLoading ? (
-                                            <BtnLoader />
-                                        ) : (
-                                            "Update Voucher"
-                                        )}
+                                        {isLoading ? <BtnLoader /> : "Update Voucher"}
                                     </button>
                                 </div>
                             </div>

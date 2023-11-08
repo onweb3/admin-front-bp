@@ -10,18 +10,13 @@ export default function TourTableRow({
     activities,
     handleExtraDataChange,
 }) {
-    const [isActivitiesDropdownOpen, setIsActivitiesDropdownOpen] =
-        useState(false);
+    const [isActivitiesDropdownOpen, setIsActivitiesDropdownOpen] = useState(false);
 
     const hotelDropdownRef = useRef(null);
-    useHandleClickOutside(hotelDropdownRef, () =>
-        setIsActivitiesDropdownOpen(false)
-    );
+    useHandleClickOutside(hotelDropdownRef, () => setIsActivitiesDropdownOpen(false));
 
     const filteredActivities = activities?.filter((item) => {
-        return item?.activity?.name
-            ?.toLowerCase()
-            ?.includes(tourData?.tourName?.toLowerCase());
+        return item?.activity?.name?.toLowerCase()?.includes(tourData?.tourName?.toLowerCase());
     });
 
     return (
@@ -75,15 +70,29 @@ export default function TourTableRow({
                     )}
                 </div>
             </td>
+            <td>
+                <select
+                    name="tourType"
+                    id=""
+                    value={tourData?.tourType || ""}
+                    onChange={(e) => handleChange(e, index)}
+                >
+                    <option value="" hidden>
+                        Select
+                    </option>
+                    <option value="regular">Regular</option>
+                    <option value="arrival">Arrival</option>
+                    <option value="departure">Departure</option>
+                    <option value="ticket-only">Ticket Only</option>
+                </select>
+            </td>
             <td className="border w-[140px] min-w-[140px]">
                 <input
                     type="date"
                     name="date"
                     value={
                         tourData?.date
-                            ? new Date(tourData?.date)
-                                  .toISOString()
-                                  .substring(0, 10)
+                            ? new Date(tourData?.date).toISOString().substring(0, 10)
                             : ""
                     }
                     onChange={(e) => handleChange(e, index)}
@@ -110,7 +119,7 @@ export default function TourTableRow({
                         className="h-[100%] arrow-hidden p-0 border-0"
                     />
                     <button
-                        className="h-auto w-[15px] min-w-[15px] h-[15px] min-h-[15px] ml-2 bg-gray-500"
+                        className="w-[15px] min-w-[15px] h-[15px] min-h-[15px] ml-2 bg-gray-500"
                         type="button"
                         onClick={() => {
                             handleExtraDataChange({
@@ -134,7 +143,7 @@ export default function TourTableRow({
                         className="h-[100%] arrow-hidden p-0 border-0"
                     />
                     <button
-                        className="h-auto w-[15px] min-w-[15px] h-[15px] min-h-[15px] ml-2 bg-gray-500"
+                        className="w-[15px] min-w-[15px] h-[15px] min-h-[15px] ml-2 bg-gray-500"
                         type="button"
                         onClick={() => {
                             handleExtraDataChange({
@@ -158,7 +167,7 @@ export default function TourTableRow({
                         className="h-[100%] arrow-hidden p-0  border-0"
                     />
                     <button
-                        className="h-auto w-[15px] min-w-[15px] h-[15px] min-h-[15px] ml-2 bg-gray-500"
+                        className="w-[15px] min-w-[15px] h-[15px] min-h-[15px] ml-2 bg-gray-500"
                         type="button"
                         onClick={() => {
                             handleExtraDataChange({

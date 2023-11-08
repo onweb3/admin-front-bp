@@ -50,6 +50,7 @@ function AddVoucherPage() {
     const [tourData, setTourData] = useState([
         {
             tourName: "",
+            tourType: "regular",
             date: "",
             pickupFrom: "",
             pickupTimeFrom: "",
@@ -112,6 +113,7 @@ function AddVoucherPage() {
             ...prev,
             {
                 tourName: "",
+                tourType: "regular",
                 date: "",
                 pickupFrom: "",
                 pickupTimeFrom: "",
