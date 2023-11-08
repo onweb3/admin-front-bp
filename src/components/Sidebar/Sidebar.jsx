@@ -4,11 +4,23 @@ import { useSelector } from "react-redux";
 
 import SidebarMenu from "./SidebarMenu";
 import { sidebarMenus } from "../../data";
-import { hasPermission } from "../../utils";
+import { hasAnyViewPermission, hasPermission } from "../../utils";
 import { config } from "../../constants";
+
+const names = [
+    "recent-hotel-reservations",
+    "hotel-expiring-paylater-report",
+    "next-day-arrival-hotel-reservations",
+    "next-day-departure-hotel-reservations",
+    "hotel-recent-cancellation-requests",
+    "top-hotel-reservation-hotels",
+    "top-hotel-reservation-resellers",
+];
 
 export default function Sidebar() {
     const { admin } = useSelector((state) => state.admin);
+
+    const isHotelDashboard = hasAnyViewPermission({ roles: admin?.roles || [], names });
 
     const filteredSidebars = {};
     Object.keys(sidebarMenus)?.map((item) => {
@@ -19,19 +31,25 @@ export default function Sidebar() {
                         hasPermission({
                             roles: admin?.roles,
                             name: subMenu?.permission && subMenu?.permission[0],
-                            permission:
-                                subMenu?.permission && subMenu?.permission[1],
+                            permission: subMenu?.permission && subMenu?.permission[1],
                         })
                     ) {
                         return subMenu;
                     }
                 });
                 if (subMenus?.length > 0) {
-                    console.log("hi");
                     menu.dropdown = subMenus;
                     return menu;
                 }
             } else if (menu?.link === "/") {
+                if (!isHotelDashboard) {
+                    return menu;
+                }
+            } else if (menu?.link === "/dashboard/hotel") {
+                if (isHotelDashboard) {
+                    return menu;
+                }
+            } else if (menu?.link === "/dashboard/attraction") {
                 return menu;
             } else if (menu?.link !== "#") {
                 if (
@@ -55,8 +73,10 @@ export default function Sidebar() {
         <div className="sidebar top-0 left-0 flex h-[100vh] w-[250px] fixed bg-primaryColor flex-col transition-all ">
             <Link to="/" className="flex items-center justify-center py-5">
                 <h2 className="text-lg font-[600] text-white uppercase">
-                    {config.COMPANY_NAME?.split(' ')[0]}{" "}
-                    <span className="text-sm text-red-500">{config.COMPANY_NAME?.split(' ')[1]}</span>
+                    {config.COMPANY_NAME?.split(" ")[0]}{" "}
+                    <span className="text-sm text-red-500">
+                        {config.COMPANY_NAME?.split(" ")[1]}
+                    </span>
                 </h2>
             </Link>
 
@@ -75,9 +95,7 @@ export default function Sidebar() {
                                     // ) {
                                     //     return <></>;
                                     // }
-                                    return (
-                                        <SidebarMenu key={index} {...item} />
-                                    );
+                                    return <SidebarMenu key={index} {...item} />;
                                 })}
                             </ul>
                         </div>

@@ -40,7 +40,7 @@ import CurrenciesPage from "../pages/Countries/CurrenciesPage";
 import DestinationsPage from "../pages/Countries/DestinationsPage";
 import StatesPage from "../pages/Countries/StatesPage";
 import CouponsPage from "../pages/CouponsPage";
-import Dashboard from "../pages/Dashboard";
+import Dashboard from "../pages/Dashboard/Dashboard";
 import DriversPage from "../pages/DriversPage";
 import EmailSettingsEmailsPage from "../pages/EmailSettings/EmailSettingsEmailsPage";
 import EmailSettingsPage from "../pages/EmailSettings/EmailSettingsPage";
@@ -216,6 +216,14 @@ import UpdateBankAccountPage from "../pages/BankAccounts/UpdateBankAccountPage";
 import B2bWalletDepositsRequestPage from "../pages/wallet/B2bWalletDepositsRequestPage";
 import AttractionTransactionsPage from "../pages/Attraction/AttractionTranscationPage";
 import B2bWithdrawalsList from "../pages/Withdraw/B2bWithdrawalsList";
+import HotelDashboardPage from "../pages/Dashboard/HotelDashboardPage";
+import DashboardPrivateRoute from "./DashboardPrivateRoute";
+import HotelDashboardPrivateRoute from "./HotelDashboardPrivateRoute";
+import HotelExpiringPayLaterOrdersPage from "../pages/Hotels/HotelExpiringPayLaterOrdersPage";
+import HotelCancellationRequestsPage from "../pages/Hotels/HotelCancellationRequestsPage";
+import TopSellingHotelsPage from "../pages/Hotels/TopSellingHotelsPage";
+import TopHotelSellingResllersPage from "../pages/Hotels/TopHotelSellingResllersPage";
+import AttractionDashboardPage from "../pages/Dashboard/AttractionDashboardPage";
 
 const ThemeRoutes = [
     {
@@ -226,7 +234,26 @@ const ThemeRoutes = [
             </AdminPrivateRoute>
         ),
         children: [
-            { path: "", element: <Dashboard /> },
+            {
+                path: "",
+                element: (
+                    <DashboardPrivateRoute>
+                        <Dashboard />
+                    </DashboardPrivateRoute>
+                ),
+            },
+            {
+                path: "/dashboard/hotel",
+                element: (
+                    <HotelDashboardPrivateRoute>
+                        <HotelDashboardPage />
+                    </HotelDashboardPrivateRoute>
+                ),
+            },
+            {
+                path: "/dashboard/attraction",
+                element: <AttractionDashboardPage />,
+            },
             { path: "/attractions", element: <AttractionsListPage /> },
             {
                 path: "/attractions/categories",
@@ -438,6 +465,22 @@ const ThemeRoutes = [
             {
                 path: "/hotels/reservation",
                 element: <HotelReservation />,
+            },
+            {
+                path: "/hotels/reservation/expiring/paylater",
+                element: <HotelExpiringPayLaterOrdersPage />,
+            },
+            {
+                path: "/hotels/reservation/cancellation-requests",
+                element: <HotelCancellationRequestsPage />,
+            },
+            {
+                path: "/hotels/reservation/top-hotels",
+                element: <TopSellingHotelsPage />,
+            },
+            {
+                path: "/hotels/reservation/top-resellers",
+                element: <TopHotelSellingResllersPage />,
             },
             {
                 path: "/hotels/reservation/:id",

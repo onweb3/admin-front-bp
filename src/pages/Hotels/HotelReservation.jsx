@@ -241,9 +241,6 @@ function HotelReservation() {
                                 <option value="booked">Booked</option>
                                 <option value="confirmed">Confirmed</option>
                                 <option value="cancelled">Cancelled</option>
-                                <option value="cancel-pending">
-                                    Cacel Pending
-                                </option>
                             </select>
                         </div>
                         <div>

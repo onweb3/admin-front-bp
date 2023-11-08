@@ -482,7 +482,6 @@ const adminRoles = [
     },
 
     //orders
-
     {
         name: "attraction-order",
         displayName: "Attraction ",
@@ -511,6 +510,50 @@ const adminRoles = [
         name: "flight-orders",
         displayName: "Flight",
         category: "order",
+        permissions: [],
+    },
+
+    // Reportings
+    {
+        name: "recent-hotel-reservations",
+        displayName: "Recent Hotel Reservations",
+        category: "reportings",
+        permissions: [],
+    },
+    {
+        name: "hotel-expiring-paylater-report",
+        displayName: "Hotel Expiring Paylater Report",
+        category: "reportings",
+        permissions: [],
+    },
+    {
+        name: "next-day-arrival-hotel-reservations",
+        displayName: "Next Day Arrival Hotel Reservations",
+        category: "reportings",
+        permissions: [],
+    },
+    {
+        name: "next-day-departure-hotel-reservations",
+        displayName: "Next Day Departure Hotel Reservations",
+        category: "reportings",
+        permissions: [],
+    },
+    {
+        name: "hotel-recent-cancellation-requests",
+        displayName: "Hotel Recent Cancellation Requests",
+        category: "reportings",
+        permissions: [],
+    },
+    {
+        name: "top-hotel-reservation-hotels",
+        displayName: "Top Hotels",
+        category: "reportings",
+        permissions: [],
+    },
+    {
+        name: "top-hotel-reservation-resellers",
+        displayName: "Top Hotel Resellers",
+        category: "reportings",
         permissions: [],
     },
 ];

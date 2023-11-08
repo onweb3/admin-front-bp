@@ -20,9 +20,7 @@ function HotelReservationSingleRow({ order }) {
             onClick={() => navigate(`${order?._id}`)}
         >
             <td className="p-3">{order?.referenceNumber}</td>
-            <td className="p-3 whitespace-nowrap">
-                {formatDate(order?.createdAt, true)}
-            </td>
+            <td className="p-3 whitespace-nowrap">{formatDate(order?.createdAt, true)}</td>
             <td className="p-3 min-w-[250px]">{order?.hotel?.hotelName}</td>
             <td className="p-3">
                 <span className="block whitespace-nowrap">
@@ -36,12 +34,9 @@ function HotelReservationSingleRow({ order }) {
             <td className="p-3 whitespace-nowrap">
                 {order?.totalAdults} ADT, {order?.totalChildren} CHD
             </td>
-            <td className="p-3 whitespace-nowrap">
-                {order?.netPrice?.toFixed(2)} AED
-            </td>
+            <td className="p-3 whitespace-nowrap">{order?.netPrice?.toFixed(2)} AED</td>
             <td className="p-3" onClick={(e) => e.stopPropagation()}>
-                {orderData?.status === "booked" ||
-                orderData?.status === "cancel-pending" ? (
+                {orderData?.status === "booked" ? (
                     <div onClick={(e) => e.stopPropagation()}>
                         <select
                             className="h-[35px] py-0 w-[90px] capitalize"

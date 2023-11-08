@@ -9,12 +9,7 @@ import { formatDate, hasPermission } from "../../../utils";
 import { Pagination } from "../../../components";
 import axios from "../../../axios";
 
-export default function VoucherDailyReportTable({
-    vouchers,
-    setVouchers,
-    filters,
-    setFilters,
-}) {
+export default function VoucherDailyReportTable({ vouchers, setVouchers, filters, setFilters }) {
     const { jwtToken, admin } = useSelector((state) => state?.admin);
 
     const downloadVoucherPdf = async (id) => {
@@ -67,19 +62,13 @@ export default function VoucherDailyReportTable({
                             <th className="font-[500] p-3">Passenger Name</th>
                             <th className="font-[500] p-3">Pax</th>
                             <th className="font-[500] p-3">Hotel Name</th>
-                            <th className="font-[500] p-3">
-                                Confirmation Number
-                            </th>
+                            <th className="font-[500] p-3">Confirmation Number</th>
                             <th className="font-[500] p-3">CheckIn Date</th>
                             <th className="font-[500] p-3">CheckOut Date</th>
                             <th className="font-[500] p-3">Room Detils</th>
                             <th className="font-[500] p-3">No Of Rooms</th>
-                            <th className="font-[500] p-3">
-                                Basis Of Transfer
-                            </th>
-                            <th className="font-[500] p-3">
-                                Daily Buffet Breakfast
-                            </th>
+                            <th className="font-[500] p-3">Basis Of Transfer</th>
+                            <th className="font-[500] p-3">Daily Buffet Breakfast</th>
                             <th className="font-[500] p-3">Paging Name</th>
                             <th className="font-[500] p-3">Airport Name</th>
                             <th className="font-[500] p-3">Arrival Date</th>
@@ -88,20 +77,18 @@ export default function VoucherDailyReportTable({
                             <th className="font-[500] p-3">Departure Note</th>
                             <th className="font-[500] p-3">Contact Name</th>
                             <th className="font-[500] p-3">Contact Number</th>
+                            <th className="font-[500] p-3">Cancellation Status</th>
                             <th className="font-[500] p-3">Actions</th>
                         </tr>
                     </thead>
                     <tbody className="text-sm">
                         {vouchers?.map((voucher, index) => {
                             return (
-                                <tr
-                                    key={index}
-                                    className="border-b border-tableBorderColor"
-                                >
-                                    <td className="p-3">{index + 1}</td>
+                                <tr key={index} className="border-b border-tableBorderColor">
                                     <td className="p-3">
-                                        {voucher?.voucherId}
+                                        {filters.skip * filters.limit + (index + 1)}
                                     </td>
+                                    <td className="p-3">{voucher?.voucherId}</td>
                                     <td className="p-3 whitespace-nowrap">
                                         {formatDate(voucher?.createdAt)}
                                     </td>
@@ -110,34 +97,24 @@ export default function VoucherDailyReportTable({
                                             to={`${voucher?._id}`}
                                             className="underline text-blue-500"
                                         >
-                                            {
-                                                voucher?.voucherAmendment
-                                                    ?.referenceNumber
-                                            }
+                                            {voucher?.voucherAmendment?.referenceNumber}
                                         </Link>
                                     </td>
                                     <td className="p-3 whitespace-nowrap">
-                                        {
-                                            voucher?.voucherAmendment
-                                                ?.passengerName
-                                        }
+                                        {voucher?.voucherAmendment?.passengerName}
                                     </td>
                                     <td className="p-3 min-w-[150px]">
-                                        {voucher?.voucherAmendment?.noOfAdults}{" "}
-                                        Adults
+                                        {voucher?.voucherAmendment?.noOfAdults} Adults
                                         {voucher?.voucherAmendment?.noOfChildren
                                             ? ` + ${
-                                                  voucher?.voucherAmendment
-                                                      ?.noOfChildren
+                                                  voucher?.voucherAmendment?.noOfChildren
                                               } Children (${voucher?.voucherAmendment?.childrenAges
                                                   ?.map(
                                                       (age, index) =>
                                                           `${age}${
                                                               index !==
-                                                              voucher
-                                                                  ?.voucherAmendment
-                                                                  ?.childrenAges
-                                                                  ?.length -
+                                                              voucher?.voucherAmendment
+                                                                  ?.childrenAges?.length -
                                                                   1
                                                                   ? ", "
                                                                   : ""
@@ -147,16 +124,13 @@ export default function VoucherDailyReportTable({
                                             : ""}
                                         {voucher?.voucherAmendment?.noOfInfants
                                             ? ` + ${
-                                                  voucher?.voucherAmendment
-                                                      ?.noOfInfants
+                                                  voucher?.voucherAmendment?.noOfInfants
                                               } Infants (${voucher?.voucherAmendment?.infantAges
                                                   ?.map(
                                                       (age, index) =>
                                                           `${age}${
                                                               index !==
-                                                              voucher
-                                                                  ?.voucherAmendment
-                                                                  ?.infantAges
+                                                              voucher?.voucherAmendment?.infantAges
                                                                   ?.length -
                                                                   1
                                                                   ? ", "
@@ -167,82 +141,71 @@ export default function VoucherDailyReportTable({
                                             : ""}
                                     </td>
                                     <td className="p-3 min-w-[200px]">
-                                        {voucher?.voucherAmendment?.hotelName ||
-                                            "N/A"}
+                                        {voucher?.voucherAmendment?.hotelName || "N/A"}
                                     </td>
                                     <td className="p-3 min-w-[150px]">
-                                        {voucher?.voucherAmendment
-                                            ?.confirmationNumber || "N/A"}
+                                        {voucher?.voucherAmendment?.confirmationNumber || "N/A"}
                                     </td>
                                     <td className="p-3 whitespace-nowrap">
-                                        {formatDate(
-                                            voucher?.voucherAmendment
-                                                ?.checkInDate
-                                        )}
+                                        {formatDate(voucher?.voucherAmendment?.checkInDate)}
                                     </td>
                                     <td className="p-3 whitespace-nowrap">
-                                        {formatDate(
-                                            voucher?.voucherAmendment
-                                                ?.checkOutDate
-                                        )}
+                                        {formatDate(voucher?.voucherAmendment?.checkOutDate)}
                                     </td>
                                     <td className="p-3">
-                                        {voucher?.voucherAmendment
-                                            ?.roomDetails || "N/A"}
+                                        {voucher?.voucherAmendment?.roomDetails || "N/A"}
                                     </td>
                                     <td className="p-3">
-                                        {voucher?.voucherAmendment?.noOfRooms ||
-                                            "N/A"}
+                                        {voucher?.voucherAmendment?.noOfRooms || "N/A"}
                                     </td>
                                     <td className="p-3">
-                                        {voucher?.voucherAmendment
-                                            ?.basisOfTransfer || "N/A"}
+                                        {voucher?.voucherAmendment?.basisOfTransfer || "N/A"}
                                     </td>
                                     <td className="p-3">
-                                        {voucher?.voucherAmendment
-                                            ?.buffetBreakfast || "N/A"}
+                                        {voucher?.voucherAmendment?.buffetBreakfast || "N/A"}
                                     </td>
                                     <td className="p-3 min-w-[200px]">
-                                        {voucher?.voucherAmendment
-                                            ?.pagingName || "N/A"}
+                                        {voucher?.voucherAmendment?.pagingName || "N/A"}
                                     </td>
                                     <td className="p-3 min-w-[200px]">
-                                        {voucher?.voucherAmendment
-                                            ?.arrivalAirportName || "N/A"}
+                                        {voucher?.voucherAmendment?.arrivalAirportName || "N/A"}
                                     </td>
                                     <td className="p-3 whitespace-nowrap">
                                         {voucher?.voucherAmendment?.arrivalDate
-                                            ? formatDate(
-                                                  voucher?.voucherAmendment
-                                                      ?.arrivalDate
-                                              )
+                                            ? formatDate(voucher?.voucherAmendment?.arrivalDate)
                                             : "N/A"}
                                     </td>
                                     <td className="p-3 min-w-[200px]">
-                                        {voucher?.voucherAmendment
-                                            ?.arrivalNote || "N/A"}
+                                        {voucher?.voucherAmendment?.arrivalNote || "N/A"}
                                     </td>
                                     <td className="p-3 whitespace-nowrap">
-                                        {voucher?.voucherAmendment
-                                            ?.departureDate
-                                            ? formatDate(
-                                                  voucher?.voucherAmendment
-                                                      ?.departureDate
-                                              )
+                                        {voucher?.voucherAmendment?.departureDate
+                                            ? formatDate(voucher?.voucherAmendment?.departureDate)
                                             : "N/A"}
                                     </td>
                                     <td className="p-3 min-w-[200px]">
-                                        {voucher?.voucherAmendment
-                                            ?.departureNote || "N/A"}
+                                        {voucher?.voucherAmendment?.departureNote || "N/A"}
                                     </td>
                                     <td className="p-3 min-w-[200px]">
                                         {voucher?.voucherAmendment?.contactName}
                                     </td>
                                     <td className="p-3 min-w-[200px]">
-                                        {
-                                            voucher?.voucherAmendment
-                                                ?.contactNumber
-                                        }
+                                        {voucher?.voucherAmendment?.contactNumber}
+                                    </td>
+                                    <td className="p-3 min-w-[200px]">
+                                        {voucher?.voucherAmendment?.isCancelled}
+                                        <span
+                                            className={
+                                                "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
+                                                (voucher?.voucherAmendment?.isCancelled === true
+                                                    ? "bg-[#f065481A] text-[#f06548]"
+                                                    : "text-[#0ab39c] bg-[#0ab39c1A]")
+                                            }
+                                        >
+                                            {voucher?.voucherAmendment?.isCancelled === true
+                                                ? "cancelled"
+                                                : "active"}
+                                        </span>
                                     </td>
                                     <td className="p-3">
                                         <div className="flex justify-center gap-[10px]">
@@ -250,9 +213,7 @@ export default function VoucherDailyReportTable({
                                                 className="h-auto flex items-center justify-center bg-transparent text-blue-500 text-lg"
                                                 onClick={() =>
                                                     downloadVoucherPdf(
-                                                        voucher
-                                                            ?.voucherAmendment
-                                                            ?._id
+                                                        voucher?.voucherAmendment?._id
                                                     )
                                                 }
                                             >
@@ -265,11 +226,7 @@ export default function VoucherDailyReportTable({
                                             }) && (
                                                 <button
                                                     className="h-auto flex items-center justify-center bg-transparent text-red-500 text-xl"
-                                                    onClick={() =>
-                                                        deleteVoucher(
-                                                            voucher?._id
-                                                        )
-                                                    }
+                                                    onClick={() => deleteVoucher(voucher?._id)}
                                                 >
                                                     <MdDelete />
                                                 </button>
@@ -279,9 +236,7 @@ export default function VoucherDailyReportTable({
                                                 name: "tour-schedules",
                                                 permission: "update",
                                             }) && (
-                                                <Link
-                                                    to={`${voucher?._id}/edit`}
-                                                >
+                                                <Link to={`${voucher?._id}/edit`}>
                                                     <button className="h-auto flex items-center justify-center bg-transparent text-green-500 text-xl">
                                                         <BiEditAlt />
                                                     </button>

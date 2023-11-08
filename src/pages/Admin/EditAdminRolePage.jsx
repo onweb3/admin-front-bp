@@ -24,11 +24,9 @@ export default function EditAdminRolePage() {
             return itm?.name === item?.name;
         });
         if (data[objIndex]?.permissions?.includes(option)) {
-            const filteredOptions = data[objIndex]?.permissions?.filter(
-                (opt) => {
-                    return opt !== option;
-                }
-            );
+            const filteredOptions = data[objIndex]?.permissions?.filter((opt) => {
+                return opt !== option;
+            });
             let tempData = data;
             tempData[objIndex].permissions = filteredOptions;
             setData(() => {
@@ -36,10 +34,7 @@ export default function EditAdminRolePage() {
             });
         } else {
             let tempData = data;
-            tempData[objIndex].permissions = [
-                ...tempData[objIndex].permissions,
-                option,
-            ];
+            tempData[objIndex].permissions = [...tempData[objIndex].permissions, option];
             setData(() => {
                 return [...tempData];
             });
@@ -62,9 +57,7 @@ export default function EditAdminRolePage() {
             setIsLoading(false);
             navigate("/admins/roles");
         } catch (err) {
-            setError(
-                err?.response?.data?.error || "something went wrong, try again"
-            );
+            setError(err?.response?.data?.error || "something went wrong, try again");
             setIsLoading(false);
         }
     };
@@ -82,10 +75,8 @@ export default function EditAdminRolePage() {
                 let matched = false;
                 for (let j = 0; j < response?.data?.roles?.length; j++) {
                     if (
-                        adminRoles[i]?.name ===
-                            response?.data?.roles[j]?.name &&
-                        adminRoles[i]?.category ===
-                            response?.data?.roles[j]?.category &&
+                        adminRoles[i]?.name === response?.data?.roles[j]?.name &&
+                        adminRoles[i]?.category === response?.data?.roles[j]?.category &&
                         adminRoles[i]?.displayName?.toLowerCase() ===
                             response?.data?.roles[j]?.displayName?.toLowerCase()
                     ) {
@@ -119,9 +110,7 @@ export default function EditAdminRolePage() {
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">
-                    Update Admin Role
-                </h1>
+                <h1 className="font-[600] text-[15px] uppercase">Update Admin Role</h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
@@ -165,19 +154,13 @@ export default function EditAdminRolePage() {
                                 <select
                                     name=""
                                     id=""
-                                    onChange={(e) =>
-                                        setSelectedType(e.target.value)
-                                    }
+                                    onChange={(e) => setSelectedType(e.target.value)}
                                     className="capitalize"
                                     value={selectedType || ""}
                                 >
                                     {selectionCategories.map((item, index) => {
                                         return (
-                                            <option
-                                                value={item}
-                                                key={index}
-                                                className="capitalize"
-                                            >
+                                            <option value={item} key={index} className="capitalize">
                                                 {item}
                                             </option>
                                         );
@@ -185,169 +168,179 @@ export default function EditAdminRolePage() {
                                 </select>
                             </div>
                         </div>
+
                         <div className="mt-5">
-                            <table className="w-full">
-                                <thead className="bg-[#f3f6f9] text-grayColor text-[14px]">
-                                    <tr>
-                                        <th className="font-[500] p-3 text-left">
-                                            Name
-                                        </th>
-                                        <th className="font-[500] p-3">View</th>
-                                        <th className="font-[500] p-3">
-                                            Create
-                                        </th>
-                                        <th className="font-[500] p-3">
-                                            Update
-                                        </th>
-                                        <th className="font-[500] p-3">
-                                            Delete
-                                        </th>
-                                        <th className="font-[500] p-3">
-                                            Approve
-                                        </th>
-                                        <th className="font-[500] p-3">
-                                            Cancel
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                            {selectedType !== "reportings" ? (
+                                <table className="w-full">
+                                    <thead className="bg-[#f3f6f9] text-grayColor text-[14px]">
+                                        <tr>
+                                            <th className="font-[500] p-3 text-left">Name</th>
+                                            <th className="font-[500] p-3">View</th>
+                                            <th className="font-[500] p-3">Create</th>
+                                            <th className="font-[500] p-3">Update</th>
+                                            <th className="font-[500] p-3">Delete</th>
+                                            <th className="font-[500] p-3">Approve</th>
+                                            <th className="font-[500] p-3">Cancel</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {filteredData?.map((item, index) => {
+                                            return (
+                                                <tr key={index}>
+                                                    <td className="p-3 border capitalize text-sm">
+                                                        {item?.displayName}
+                                                    </td>
+                                                    <td className="p-3 border">
+                                                        <span
+                                                            className={
+                                                                "flex items-center justify-center mx-auto w-[30px] h-[30px] rounded-full cursor-pointer " +
+                                                                (item.permissions?.includes("view")
+                                                                    ? "bg-[#333] text-white"
+                                                                    : "bg-[#f3f6f9]")
+                                                            }
+                                                            onClick={() =>
+                                                                handleItemChange(item, "view")
+                                                            }
+                                                        >
+                                                            <AiOutlineUserAdd />
+                                                        </span>
+                                                    </td>
+                                                    <td className="p-3 border">
+                                                        <span
+                                                            className={
+                                                                "flex items-center justify-center mx-auto w-[30px] h-[30px] rounded-full cursor-pointer " +
+                                                                (item.permissions?.includes(
+                                                                    "create"
+                                                                )
+                                                                    ? "bg-[#333] text-white"
+                                                                    : "bg-[#f3f6f9]")
+                                                            }
+                                                            onClick={() =>
+                                                                handleItemChange(item, "create")
+                                                            }
+                                                        >
+                                                            <AiOutlineUserAdd />
+                                                        </span>
+                                                    </td>
+                                                    <td className="p-3 border">
+                                                        <span
+                                                            className={
+                                                                "flex items-center justify-center mx-auto w-[30px] h-[30px] rounded-full cursor-pointer " +
+                                                                (item.permissions?.includes(
+                                                                    "update"
+                                                                )
+                                                                    ? "bg-[#333] text-white"
+                                                                    : "bg-[#f3f6f9]")
+                                                            }
+                                                            onClick={() =>
+                                                                handleItemChange(item, "update")
+                                                            }
+                                                        >
+                                                            <AiOutlineUserAdd />
+                                                        </span>
+                                                    </td>
+                                                    <td className="p-3 border">
+                                                        <span
+                                                            className={
+                                                                "flex items-center justify-center mx-auto w-[30px] h-[30px] rounded-full cursor-pointer " +
+                                                                (item.permissions?.includes(
+                                                                    "delete"
+                                                                )
+                                                                    ? "bg-[#333] text-white"
+                                                                    : "bg-[#f3f6f9]")
+                                                            }
+                                                            onClick={() =>
+                                                                handleItemChange(item, "delete")
+                                                            }
+                                                        >
+                                                            <AiOutlineUserAdd />
+                                                        </span>
+                                                    </td>
+                                                    <td className="p-3 border">
+                                                        <span
+                                                            className={
+                                                                "flex items-center justify-center mx-auto w-[30px] h-[30px] rounded-full cursor-pointer " +
+                                                                (item.permissions?.includes(
+                                                                    "approve"
+                                                                )
+                                                                    ? "bg-[#333] text-white"
+                                                                    : "bg-[#f3f6f9]")
+                                                            }
+                                                            onClick={() =>
+                                                                handleItemChange(item, "approve")
+                                                            }
+                                                        >
+                                                            <AiOutlineUserAdd />
+                                                        </span>
+                                                    </td>
+                                                    <td className="p-3 border">
+                                                        <span
+                                                            className={
+                                                                "flex items-center mx-auto justify-center w-[30px] h-[30px] rounded-full cursor-pointer " +
+                                                                (item.permissions?.includes(
+                                                                    "cancel"
+                                                                )
+                                                                    ? "bg-[#333] text-white"
+                                                                    : "bg-[#f3f6f9]")
+                                                            }
+                                                            onClick={() =>
+                                                                handleItemChange(item, "cancel")
+                                                            }
+                                                        >
+                                                            <AiOutlineUserAdd />
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
+                                    </tbody>
+                                </table>
+                            ) : (
+                                <div className="grid grid-cols-4 gap-5 flex-wrap">
                                     {filteredData?.map((item, index) => {
                                         return (
-                                            <tr key={index}>
-                                                <td className="p-3 border capitalize text-sm">
-                                                    {item?.displayName}
-                                                </td>
-                                                <td className="p-3 border">
-                                                    <span
-                                                        className={
-                                                            "flex items-center justify-center mx-auto w-[30px] h-[30px] rounded-full cursor-pointer " +
-                                                            (item.permissions?.includes(
-                                                                "view"
-                                                            )
-                                                                ? "bg-[#333] text-white"
-                                                                : "bg-[#f3f6f9]")
-                                                        }
-                                                        onClick={() =>
-                                                            handleItemChange(
-                                                                item,
-                                                                "view"
-                                                            )
-                                                        }
-                                                    >
-                                                        <AiOutlineUserAdd />
-                                                    </span>
-                                                </td>
-                                                <td className="p-3 border">
-                                                    <span
-                                                        className={
-                                                            "flex items-center justify-center mx-auto w-[30px] h-[30px] rounded-full cursor-pointer " +
-                                                            (item.permissions?.includes(
-                                                                "create"
-                                                            )
-                                                                ? "bg-[#333] text-white"
-                                                                : "bg-[#f3f6f9]")
-                                                        }
-                                                        onClick={() =>
-                                                            handleItemChange(
-                                                                item,
-                                                                "create"
-                                                            )
-                                                        }
-                                                    >
-                                                        <AiOutlineUserAdd />
-                                                    </span>
-                                                </td>
-                                                <td className="p-3 border">
-                                                    <span
-                                                        className={
-                                                            "flex items-center justify-center mx-auto w-[30px] h-[30px] rounded-full cursor-pointer " +
-                                                            (item.permissions?.includes(
-                                                                "update"
-                                                            )
-                                                                ? "bg-[#333] text-white"
-                                                                : "bg-[#f3f6f9]")
-                                                        }
-                                                        onClick={() =>
-                                                            handleItemChange(
-                                                                item,
-                                                                "update"
-                                                            )
-                                                        }
-                                                    >
-                                                        <AiOutlineUserAdd />
-                                                    </span>
-                                                </td>
-                                                <td className="p-3 border">
-                                                    <span
-                                                        className={
-                                                            "flex items-center justify-center mx-auto w-[30px] h-[30px] rounded-full cursor-pointer " +
-                                                            (item.permissions?.includes(
-                                                                "delete"
-                                                            )
-                                                                ? "bg-[#333] text-white"
-                                                                : "bg-[#f3f6f9]")
-                                                        }
-                                                        onClick={() =>
-                                                            handleItemChange(
-                                                                item,
-                                                                "delete"
-                                                            )
-                                                        }
-                                                    >
-                                                        <AiOutlineUserAdd />
-                                                    </span>
-                                                </td>
-                                                <td className="p-3 border">
-                                                    <span
-                                                        className={
-                                                            "flex items-center justify-center mx-auto w-[30px] h-[30px] rounded-full cursor-pointer " +
-                                                            (item.permissions?.includes(
-                                                                "approve"
-                                                            )
-                                                                ? "bg-[#333] text-white"
-                                                                : "bg-[#f3f6f9]")
-                                                        }
-                                                        onClick={() =>
-                                                            handleItemChange(
-                                                                item,
-                                                                "approve"
-                                                            )
-                                                        }
-                                                    >
-                                                        <AiOutlineUserAdd />
-                                                    </span>
-                                                </td>
-                                                <td className="p-3 border">
-                                                    <span
-                                                        className={
-                                                            "flex items-center mx-auto justify-center w-[30px] h-[30px] rounded-full cursor-pointer " +
-                                                            (item.permissions?.includes(
-                                                                "cancel"
-                                                            )
-                                                                ? "bg-[#333] text-white"
-                                                                : "bg-[#f3f6f9]")
-                                                        }
-                                                        onClick={() =>
-                                                            handleItemChange(
-                                                                item,
-                                                                "cancel"
-                                                            )
-                                                        }
-                                                    >
-                                                        <AiOutlineUserAdd />
-                                                    </span>
-                                                </td>
-                                            </tr>
+                                            <div key={index} className="flex items-center gap-2">
+                                                <input
+                                                    type="checkbox"
+                                                    name=""
+                                                    id={item?.name}
+                                                    className="w-[15px] min-w-[15px] h-[15px] min-h-[15px]"
+                                                    checked={item.permissions?.includes("view")}
+                                                    onChange={() => handleItemChange(item, "view")}
+                                                />
+                                                <label htmlFor={item?.name} className="mb-0">
+                                                    {item.displayName}
+                                                </label>
+                                            </div>
                                         );
                                     })}
-                                </tbody>
-                            </table>
+                                </div>
+                            )}
                         </div>
-                        {error && (
-                            <span className="text-sm block text-red-500 mt-2">
-                                {error}
-                            </span>
-                        )}
+                        {/* <div className="mt-6">
+                            <h2 className="font-[600] mb-3">Reportings</h2>
+                            <div>
+                                {adminReportings?.map((item, index) => {
+                                    if (item?.category !== selectedType) {
+                                        return <></>;
+                                    }
+                                    return (
+                                        <div key={index} className="flex items-center gap-2">
+                                            <input
+                                                type="checkbox"
+                                                name=""
+                                                id=""
+                                                className="w-[15px] h-[15px]"
+                                            />
+                                            <label htmlFor="" className="mb-0">
+                                                {item.displayName}
+                                            </label>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div> */}
+                        {error && <span className="text-sm block text-red-500 mt-2">{error}</span>}
                         <div className="mt-4 flex items-center justify-end gap-[12px]">
                             <button
                                 className="bg-slate-300 text-textColor px-[15px]"
@@ -356,10 +349,7 @@ export default function EditAdminRolePage() {
                             >
                                 Cancel
                             </button>
-                            <button
-                                className="w-[120px]"
-                                onClick={handleSubmit}
-                            >
+                            <button className="w-[120px]" onClick={handleSubmit}>
                                 {isLoading ? <BtnLoader /> : "Update Role"}
                             </button>
                         </div>

@@ -51,12 +51,22 @@ import { IoBusiness, IoWalletOutline } from "react-icons/io5";
 import { GrDocumentUser } from "react-icons/gr";
 
 const sidebarMenus = {
-    Home: [
+    Dashboard: [
         {
             name: "Dashboard",
             link: "/",
             icon: <RxDashboard />,
         },
+        {
+            name: "Hotel",
+            link: "/dashboard/hotel",
+            icon: <BiHotel />,
+        },
+        // {
+        //     name: "Attraction",
+        //     link: "/dashboard/attraction",
+        //     icon: <MdAttractions />,
+        // },
     ],
     Attraction: [
         {

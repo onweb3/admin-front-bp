@@ -10,19 +10,17 @@ import {
     ticketConfirmedPng,
     totalRevenuePng,
     usersPng,
-} from "../assets/images";
-import { TopCard } from "../features/Dashboard";
+} from "../../assets/images";
+import { TopCard } from "../../features/Dashboard";
 
-export default function Dashboard() {
+export default function AttractionDashboardPage() {
     const { admin } = useSelector((state) => state.admin);
 
     return (
         <div className="p-6">
             <div className="flex items-center justify-between gap-[10px] mb-5">
                 <div>
-                    <span className="font-medium text-textColor">
-                        Good morning, {admin?.name}
-                    </span>
+                    <span className="font-medium text-textColor">Good morning, {admin?.name}</span>
                     <span className="block mt-1 text-[13px] text-grayColor">
                         Here's what's happening with your website today.
                     </span>
@@ -114,14 +112,10 @@ export default function Dashboard() {
                     <tbody className="text-sm">
                         <tr className="border-b border-tableBorderColor">
                             <td className="p-3">#63b2cc</td>
-                            <td className="p-3">
-                                Pearl Heli Tour (12 Mins. Ride)
-                            </td>
+                            <td className="p-3">Pearl Heli Tour (12 Mins. Ride)</td>
                             <td className="p-3">January 3, 2023</td>
                             <td className="p-3">
-                                <span className="block text-sm capitalize">
-                                    Test
-                                </span>
+                                <span className="block text-sm capitalize">Test</span>
                                 <span>test@email.com</span>
                             </td>
                             <td className="p-3 ">1</td>

@@ -42,6 +42,7 @@ export default function VoucherDailyReportTable({ vouchers, filters, setFilters 
                         <th className="font-[500] p-3 whitespace-nowrap">Pickup Time</th>
                         <th className="font-[500] p-3 whitespace-nowrap">Return Time</th>
                         <th className="font-[500] p-3">Pickup From</th>
+                        <th className="font-[500] p-3">Status</th>
                         <th className="font-[500] p-3">Actions</th>
                     </tr>
                 </thead>
@@ -49,7 +50,9 @@ export default function VoucherDailyReportTable({ vouchers, filters, setFilters 
                     {vouchers?.map((voucher, index) => {
                         return (
                             <tr key={index} className="border-b border-tableBorderColor">
-                                <td className="p-3">{filters.skip * filters.limit + (index + 1)}</td>
+                                <td className="p-3">
+                                    {filters.skip * filters.limit + (index + 1)}
+                                </td>
                                 <td className="p-3">
                                     <Link
                                         to={`/vouchers/${voucher?._id}`}
@@ -129,6 +132,18 @@ export default function VoucherDailyReportTable({ vouchers, filters, setFilters 
                                 </td>
                                 <td className="p-3 min-w-[150px]">
                                     {voucher?.voucherAmendment?.tours?.pickupFrom || "N/A"}
+                                </td>
+                                <td className="p-3 whitespace-nowrap">
+                                    <span
+                                        className={
+                                            "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
+                                            (voucher?.voucherAmendment?.tours?.status === "booked"
+                                                ? "text-[#0ab39c] bg-[#0ab39c1A]"
+                                                : "bg-[#f7b84b1A] text-[#f7b84b]")
+                                        }
+                                    >
+                                        {voucher?.voucherAmendment?.tours?.status || "not-booked"}
+                                    </span>
                                 </td>
                                 <td className="p-3">
                                     <div className="flex justify-center gap-[10px]">
