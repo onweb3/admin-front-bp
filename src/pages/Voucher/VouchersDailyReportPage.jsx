@@ -54,6 +54,32 @@ export default function VouchersDailyReportPage() {
         }
     };
 
+    const handleDownloadExcelByTourType = async () => {
+        try {
+            let response = await axios({
+                url: `/vouchers/tour-type/excel/download?fromDate=${filters.fromDate}&toDate=${filters.toDate}&referenceNumber=${filters.referenceNumber}`,
+                method: "GET",
+                responseType: "blob",
+                headers: {
+                    authorization: `Bearer ${jwtToken}`,
+                },
+            });
+
+            const href = URL.createObjectURL(response.data);
+
+            const link = document.createElement("a");
+            link.href = href;
+            link.setAttribute("download", "vouchers-list.xlsx");
+            document.body.appendChild(link);
+            link.click();
+
+            document.body.removeChild(link);
+            URL.revokeObjectURL(href);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     const handleChange = (e) => {
         setFilters((prev) => {
             return { ...prev, [e.target.name]: e.target.value };
@@ -75,6 +101,7 @@ export default function VouchersDailyReportPage() {
                 totalVouchers: 0,
                 referenceNumber: "",
                 sortBy: "tourName:asc",
+                passengerName: "",
             };
         });
         fetchVouchers({
@@ -89,6 +116,7 @@ export default function VouchersDailyReportPage() {
             totalVouchers: 0,
             referenceNumber: "",
             sortBy: "tourName:asc",
+            passengerName: "",
         });
     };
 
@@ -142,6 +170,12 @@ export default function VouchersDailyReportPage() {
                     <div className="flex items-center justify-between border-b border-dashed p-4">
                         <h1 className="font-medium">Daily Reports</h1>
                         <div className="flex items-center gap-[10px]">
+                            <button
+                                className="px-3 bg-[#7c29db] flex items-center justify-center gap-[10px]"
+                                onClick={handleDownloadExcelByTourType}
+                            >
+                                <FiDownload /> Export Report
+                            </button>
                             <button
                                 className="px-3 bg-[#299cdb] flex items-center justify-center gap-[10px]"
                                 onClick={handleDownloadExcel}

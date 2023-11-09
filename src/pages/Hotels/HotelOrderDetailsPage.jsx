@@ -15,8 +15,8 @@ import {
 import { config } from "../../constants";
 
 // payments: "Payments",
-//     cancellation: "Cancellation",
-//     refund: "Refunds",
+// cancellation: "Cancellation",
+// refund: "Refunds",
 
 const sections = {
     contracts: "Contracts",
@@ -119,7 +119,7 @@ export default function HotelOrderDetailsPage() {
                             }
                         >
                             <span className="capitalize font-medium text-[15px]">
-                                {hotelOrder?.status === "cancel-pending"
+                                {hotelOrder?.isCancellationPending === true
                                     ? "Order cancellation request recieved from B2B"
                                     : `Hotel Order ${hotelOrder?.status}`}
                                 .
@@ -200,7 +200,6 @@ export default function HotelOrderDetailsPage() {
                                             Order Status
                                         </span>
                                         {hotelOrder?.status === "booked" ||
-                                        hotelOrder?.status === "cancel-pending" ||
                                         hotelOrder?.status === "confirmed" ? (
                                             <div onClick={(e) => e.stopPropagation()}>
                                                 <select
@@ -255,6 +254,27 @@ export default function HotelOrderDetailsPage() {
                                                 {hotelOrder?.status}
                                             </span>
                                         )}
+                                    </div>
+                                    <div className="text-center">
+                                        <span className="block text-[12px] text-grayColor font-medium mb-1">
+                                            Cancellation
+                                        </span>
+                                        <span
+                                            className={
+                                                "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
+                                                (hotelOrder?.status === "cancelled"
+                                                    ? "bg-[#f065481A] text-[#f06548]"
+                                                    : "bg-[#f7b84b1A] text-[#f7b84b]")
+                                            }
+                                        >
+                                            {hotelOrder?.isCancellationPending === true &&
+                                            (hotelOrder?.status === "booked" ||
+                                                hotelOrder?.status === "confirmed")
+                                                ? "Pending"
+                                                : hotelOrder?.status === "cancelled"
+                                                ? "cancelled"
+                                                : "N/A"}
+                                        </span>
                                     </div>
                                     {hotelOrder?.status === "confirmed" && (
                                         <button
