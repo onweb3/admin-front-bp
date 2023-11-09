@@ -1,4 +1,8 @@
-import { AdminLayout, EditProfileLayout, SingleResellerLayout } from "../layouts";
+import {
+    AdminLayout,
+    EditProfileLayout,
+    SingleResellerLayout,
+} from "../layouts";
 import A2aAddTicketPage from "../pages/A2A/A2aAddTicketPage";
 import A2AEditTicketPage from "../pages/A2A/A2aEditTicketPage";
 import A2AEnquiryPage from "../pages/A2A/A2AEnquiryPage";
@@ -1120,7 +1124,7 @@ const ThemeRoutes = [
                 element: <UpdateBankAccountPage />,
             },
             {
-                path: "/order/flight/:tbId",
+                path: "/order/flight/:tbId/:resellerId",
                 element: <CompleteFlightOrderPage />,
             },
         ],

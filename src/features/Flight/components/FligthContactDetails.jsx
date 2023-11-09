@@ -15,7 +15,7 @@ import {
     handlePassengerChange,
     handleContactChange,
 } from "../../../redux/slices/FlightOrderSlice";
-import { PageLoader } from "../../../components";
+import { BtnLoader, PageLoader } from "../../../components";
 
 export default function FlightContactDetails({ flightAncillaries }) {
     const { countries } = useSelector((state) => state.general);
@@ -23,20 +23,57 @@ export default function FlightContactDetails({ flightAncillaries }) {
     const { singleFlightDetails, totalAncillariesPax } = useSelector(
         (state) => state.flightOrder
     );
+    const [isLoading, setIsLoading] = useState(false);
+
+    const { tbId, resellerId } = useParams();
+    const { jwtToken } = useSelector((state) => state.admin);
 
     const handleSubmit = async () => {
         try {
+            setIsLoading(true);
             const formData = {
                 tbId: tbId,
+                contactDetails:
+                    flightAncillaries?.priceQuoteResponse?.contactDetails,
+                passengerDetails:
+                    flightAncillaries?.priceQuoteResponse?.passengers.map(
+                        (pass) => {
+                            return {
+                                paxId: pass.paxId,
+                                firstName: pass.firstName,
+                                lastName: pass.lastName,
+                                birthDate: pass.birthDate,
+                                passengerType: pass.type,
+                                gender: pass.gender,
+                                nationality: pass.nationality,
+                                passportNumber: pass.passportNumber,
+                                passportExpiry: pass.passportExpiry,
+                            };
+                        }
+                    ),
             };
 
             const response = await axios.post(
-                `/orders/flight//bookings/initiate`,
+                `/orders/flight/bookings/initiate/${resellerId}`,
                 formData,
                 {
                     headers: { authorization: `Bearer ${jwtToken}` },
                 }
             );
+            const isConfirm = window.confirm("Are you sure to complete order?");
+            if (isConfirm) {
+                await axios.post(
+                    `/orders/flight/bookings/complete`,
+                    {
+                        otp: 12345,
+                        orderId: "",
+                    },
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+            }
+            setIsLoading(false);
         } catch (err) {
             console.log(err);
         }
@@ -388,7 +425,7 @@ export default function FlightContactDetails({ flightAncillaries }) {
                         )}
                     </div>{" "}
                     <button className="w-[150px]" onClick={handleSubmit}>
-                        submit
+                        {isLoading ? <BtnLoader /> : "Order"}{" "}
                     </button>
                 </div>
             ) : (

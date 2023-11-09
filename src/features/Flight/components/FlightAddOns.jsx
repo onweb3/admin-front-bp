@@ -21,11 +21,9 @@ export default function FlightAddOns({ flightAncillaries, setShowContacts }) {
     );
     const [isLoading, setIsLoading] = useState(false);
 
-    console.log(singleFlightDetails, "dsss");
     const [isMealModal, setIsMealModal] = useState(false);
     const [isSeatModal, setIsSeatModal] = useState(false);
     const [isBaggageModal, setIsBaggageModal] = useState(false);
-    console.log(flightAncillaries, "ancillaires");
     const { jwtToken } = useSelector((state) => state.admin);
     const { tbId } = useParams();
     const [error, setError] = useState("");
@@ -209,7 +207,7 @@ export default function FlightAddOns({ flightAncillaries, setShowContacts }) {
                                     </div>{" "}
                                     <div>Meals are cheaper when pre-booked</div>
                                 </div>
-                            </div>
+                            </div>{" "}
                             <div>
                                 <button
                                     className="px-5"
@@ -221,7 +219,21 @@ export default function FlightAddOns({ flightAncillaries, setShowContacts }) {
                                 </button>
                             </div>
                         </div>
-                    )}
+                    )}{" "}
+                    <div>
+                        {flightAncillaries?.mealsSsr?.map((mealSsr) => (
+                            <div className="text-[12px]">
+                                {mealSsr.from} - {mealSsr.to}
+                                {mealSsr?.selectedMeals?.map((meal) => (
+                                    <span className="pl-6">
+                                        {meal.count
+                                            ? `${meal.mealInfo} x ${meal.count}`
+                                            : "N/A"}
+                                    </span>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
                     {flightAncillaries?.seatSsr?.length > 0 && (
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-5">
@@ -235,7 +247,7 @@ export default function FlightAddOns({ flightAncillaries, setShowContacts }) {
                                     </div>{" "}
                                     <div>Seat are cheaper when pre-booked</div>
                                 </div>
-                            </div>
+                            </div>{" "}
                             <div>
                                 <button
                                     className="px-5"
@@ -247,7 +259,19 @@ export default function FlightAddOns({ flightAncillaries, setShowContacts }) {
                                 </button>
                             </div>
                         </div>
-                    )}
+                    )}{" "}
+                    <div>
+                        {flightAncillaries?.seatSsr?.map((seatSsr) => (
+                            <div className="text-[12px]">
+                                {seatSsr?.from} - {seatSsr?.to}
+                                {seatSsr?.selectedSeats?.map((seat) => (
+                                    <span className="pl-6">
+                                        {seat ? `${seat?.seatCode} ` : "N/A"}
+                                    </span>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
                     {flightAncillaries?.baggageSsr?.length > 0 && (
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-5">
@@ -263,7 +287,7 @@ export default function FlightAddOns({ flightAncillaries, setShowContacts }) {
                                         Baggage are cheaper when pre-booked
                                     </div>
                                 </div>
-                            </div>
+                            </div>{" "}
                             <div>
                                 <button
                                     className="px-5"
@@ -275,7 +299,23 @@ export default function FlightAddOns({ flightAncillaries, setShowContacts }) {
                                 </button>
                             </div>
                         </div>
-                    )}
+                    )}{" "}
+                    <div>
+                        {flightAncillaries?.baggageSsr?.map((baggageSsr) => (
+                            <div className="text-[12px]">
+                                {baggageSsr?.from} - {baggageSsr?.to}
+                                {baggageSsr?.selectedBaggage?.map((bagg) => (
+                                    <span className="pl-6">
+                                        <span className="pl-6">
+                                            {bagg?.count
+                                                ? `${bagg?.baggageInfo} x ${bagg?.count}`
+                                                : "N/A"}
+                                        </span>
+                                    </span>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
                     {error && (
                         <span className="text-sm block text-red-500 mt-2">
                             {error}

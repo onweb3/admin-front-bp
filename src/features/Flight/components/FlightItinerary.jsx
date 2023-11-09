@@ -12,7 +12,7 @@ export default function FlightItinerary({ trip }) {
     const [expanded, setExpanded] = useState(false);
     const {} = useSelector((state) => state.flightOrder);
     return (
-        <>
+        <div className="flex">
             <div className="border-1">
                 <div className=" flex items-center gap-4 mb-5 ">
                     <div className="flex items-center gap-2">
@@ -92,6 +92,6 @@ export default function FlightItinerary({ trip }) {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }

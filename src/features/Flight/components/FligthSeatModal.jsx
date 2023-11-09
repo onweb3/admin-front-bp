@@ -38,7 +38,6 @@ export default function FlightSeatModal({ setIsModal, seatSsr }) {
         onHandleChange(selectedSegmentIndex || 0);
     }, [seats, seatSsr]);
 
-    console.log(seats, "seats");
 
     return (
         <div className="fixed inset-0 w-full h-full bg-[#fff5] flex items-center justify-center z-20 ">

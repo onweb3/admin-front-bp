@@ -13,6 +13,7 @@ export default function FlightAvailabiltyModal({
     flightResults,
     setIsAvailabilityModal,
     setFlightResults,
+    resellerId,
 }) {
     const [data, setData] = useState({
         searchId: flightResults?.searchId || "",
@@ -31,7 +32,6 @@ export default function FlightAvailabiltyModal({
 
     const handleChange = (index, value) => {
         try {
-            console.log("call");
             setFlightResults((prev) => {
                 return {
                     ...prev,
@@ -65,9 +65,7 @@ export default function FlightAvailabiltyModal({
                 (fare) => fare.fareName === selectedResult.value
             );
 
-            console.log(selectedValue, selectedResult, "resultttt");
             if (selectedResult) {
-                console.log("call reached");
                 const formData = {
                     searchId: data?.searchId,
                     fsrId: selectedResult?.fsrId,
@@ -81,7 +79,7 @@ export default function FlightAvailabiltyModal({
                     }
                 );
 
-                navigate(`/order/flight/${response.data.tbId}`);
+                navigate(`/order/flight/${response.data.tbId}/${resellerId}`);
             } else {
                 setError(
                     err?.response?.data?.error ||
