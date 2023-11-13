@@ -7,6 +7,7 @@ import convertMinutesTo24HourTime from "./convertMinutesTo24HourTime";
 import hasPermission from "./hasPermission";
 import getFormatedDuration from "./getFormatedDuration";
 import hasAnyViewPermission from "./hasAnyPermission";
+import getDates from "./getDates";
 
 export {
     isImageValid,
@@ -18,4 +19,5 @@ export {
     hasPermission,
     getFormatedDuration,
     hasAnyViewPermission,
+    getDates,
 };

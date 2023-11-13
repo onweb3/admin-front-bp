@@ -23,7 +23,7 @@ import {
     HiOutlineTicket,
     HiOutlineUsers,
 } from "react-icons/hi";
-import { RiHotelFill, RiHotelLine } from "react-icons/ri";
+import { RiHotelFill, RiHotelLine, RiSteeringFill } from "react-icons/ri";
 import {
     BiCategoryAlt,
     BiGitCompare,
@@ -49,6 +49,7 @@ import { FaGlobe, FaThList } from "react-icons/fa";
 import { BsFillChatLeftQuoteFill } from "react-icons/bs";
 import { IoBusiness, IoWalletOutline } from "react-icons/io5";
 import { GrDocumentUser } from "react-icons/gr";
+import { TbLicense } from "react-icons/tb";
 
 const sidebarMenus = {
     Dashboard: [
@@ -402,22 +403,22 @@ const sidebarMenus = {
                 {
                     name: "Create Transfer",
                     link: "/transfers/add",
-                    permission: ["create-transfer", "view"],
+                    permission: ["transfers", "view"],
                 },
                 {
                     name: "Transfer List",
                     link: "/transfers",
-                    permission: ["transfer-list", "view"],
+                    permission: ["transfers", "view"],
                 },
                 {
                     name: "Create Group Area ",
                     link: "/transfers/area-group/add",
-                    permission: ["create-group-area", "view"],
+                    permission: ["transfers", "view"],
                 },
                 {
                     name: "Group Area",
                     link: "/transfers/area-group",
-                    permission: ["group-area-list", "view"],
+                    permission: ["transfers", "view"],
                 },
             ],
         },
@@ -427,16 +428,38 @@ const sidebarMenus = {
             link: "#",
             dropdown: [
                 {
-                    name: "Create Vehicle",
-                    link: "/transfers/vehicle/add",
-                    permission: ["create-vehicle", "view"],
+                    name: "Vehicle List",
+                    link: "/transfers/vehicles",
+                    permission: ["vehicles", "view"],
                 },
                 {
-                    name: "Vehicle List",
-                    link: "/transfers/vehicle",
-                    permission: ["vehicle-list", "view"],
+                    name: "Vehicle Makes",
+                    link: "/transfers/vehicles/makes",
+                    permission: ["vehicles", "view"],
+                },
+                {
+                    name: "Vehicle Categories",
+                    link: "/transfers/vehicles/categories",
+                    permission: ["vehicles", "view"],
+                },
+                {
+                    name: "Vehicle Body Types",
+                    link: "/transfers/vehicles/body-types",
+                    permission: ["vehicles", "view"],
                 },
             ],
+        },
+        {
+            name: "Drivers",
+            link: "/drivers",
+            icon: <RiSteeringFill />,
+            permission: ["drivers", "view"],
+        },
+        {
+            name: "License Types",
+            link: "/license-types",
+            icon: <TbLicense />,
+            permission: ["license-types", "view"],
         },
     ],
     core: [
@@ -550,9 +573,27 @@ const sidebarMenus = {
             permission: ["tour-schedules", "view"],
         },
         {
+            name: "Tour Schedules v2",
+            icon: <AiOutlineSchedule />,
+            link: "/vouchers/v2",
+            permission: ["tour-schedules", "view"],
+        },
+        {
             name: "Daily Reports",
             icon: <HiOutlineDocumentReport />,
             link: "/vouchers/daily-reports",
+            permission: ["daily-reports", "view"],
+        },
+        {
+            name: "Daily Reports V2",
+            icon: <HiOutlineDocumentReport />,
+            link: "/vouchers/v2/daily-reports",
+            permission: ["daily-reports", "view"],
+        },
+        {
+            name: "Confirmed Qtns",
+            icon: <HiOutlineDocumentReport />,
+            link: "/confirmed-quotations",
             permission: ["daily-reports", "view"],
         },
         {
@@ -651,11 +692,6 @@ const sidebarMenus = {
     //    name: "Coupons",
     //     link: "/coupons",
     //     icon: <RiCoupon2Line />,
-    // },
-    // {
-    //     name: "Drivers",
-    //     link: "/drivers",
-    //     icon: <RiSteeringFill />,
     // },
     // {
     //     name: "Users",

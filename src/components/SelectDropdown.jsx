@@ -48,7 +48,7 @@ export default function SelectDropdown({
     return (
         <div className="relative" ref={wrapperRef}>
             <div
-                className="border border-[#ced4da] rounded w-ful text-[14px] text-[#212529] h-[40px] flex items-center"
+                className="bg-white border border-[#ced4da] rounded w-ful text-[14px] text-[#212529] h-[40px] flex items-center"
                 onClick={() => {
                     if (isDropdownOpen === false) {
                         setSearchQuery("");

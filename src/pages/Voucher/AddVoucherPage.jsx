@@ -626,6 +626,7 @@ function AddVoucherPage() {
                                     </div>
                                 </div>
                             </div>
+
                             <TourTable
                                 addExtraRow={addExtraRow}
                                 deleteExtraRow={deleteExtraRow}
@@ -633,6 +634,7 @@ function AddVoucherPage() {
                                 handleExtraDataChange={handleExtraDataChange}
                                 activities={initialData.activities || []}
                             />
+                            
                             <div className="mt-4">
                                 <h1 className="text-[14px]">Terms And Conditions *</h1>
                                 <div className="mt-2">

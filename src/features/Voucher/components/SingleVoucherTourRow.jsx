@@ -16,7 +16,7 @@ export default function SingleVoucherTourRow({ tour, index, voucherAmendId }) {
             if (isConfirm) {
                 setIsLoading(true);
                 await axios.patch(
-                    `/vouchers/tour-status/update`,
+                    `/v2/vouchers/tour-status/update`,
                     {
                         voucherAmendId,
                         status: status,
