@@ -9,7 +9,7 @@ import { formatDate, hasPermission } from "../../../utils";
 import { Pagination } from "../../../components";
 import axios from "../../../axios";
 
-export default function VoucherDailyReportTable({ vouchers, setVouchers, filters, setFilters }) {
+export default function VouchersTableV2({ vouchers, setVouchers, filters, setFilters }) {
     const { jwtToken, admin } = useSelector((state) => state?.admin);
 
     const downloadVoucherPdf = async (id) => {
@@ -61,12 +61,6 @@ export default function VoucherDailyReportTable({ vouchers, setVouchers, filters
                             <th className="font-[500] p-3">Ref Number</th>
                             <th className="font-[500] p-3">Passenger Name</th>
                             <th className="font-[500] p-3">Pax</th>
-                            <th className="font-[500] p-3">Hotel Name</th>
-                            <th className="font-[500] p-3">Confirmation Number</th>
-                            <th className="font-[500] p-3">CheckIn Date</th>
-                            <th className="font-[500] p-3">CheckOut Date</th>
-                            <th className="font-[500] p-3">Room Detils</th>
-                            <th className="font-[500] p-3">No Of Rooms</th>
                             <th className="font-[500] p-3">Basis Of Transfer</th>
                             <th className="font-[500] p-3">Daily Buffet Breakfast</th>
                             <th className="font-[500] p-3">Paging Name</th>
@@ -88,7 +82,7 @@ export default function VoucherDailyReportTable({ vouchers, setVouchers, filters
                                     <td className="p-3">
                                         {filters.skip * filters.limit + (index + 1)}
                                     </td>
-                                    <td className="p-3">{voucher?.voucherId}</td>
+                                    <td className="p-3">{voucher?.voucherV2Id}</td>
                                     <td className="p-3 whitespace-nowrap">
                                         {formatDate(voucher?.createdAt)}
                                     </td>
@@ -139,24 +133,6 @@ export default function VoucherDailyReportTable({ vouchers, setVouchers, filters
                                                   )
                                                   .join("")})`
                                             : ""}
-                                    </td>
-                                    <td className="p-3 min-w-[200px]">
-                                        {voucher?.voucherAmendment?.hotelName || "N/A"}
-                                    </td>
-                                    <td className="p-3 min-w-[150px]">
-                                        {voucher?.voucherAmendment?.confirmationNumber || "N/A"}
-                                    </td>
-                                    <td className="p-3 whitespace-nowrap">
-                                        {formatDate(voucher?.voucherAmendment?.checkInDate)}
-                                    </td>
-                                    <td className="p-3 whitespace-nowrap">
-                                        {formatDate(voucher?.voucherAmendment?.checkOutDate)}
-                                    </td>
-                                    <td className="p-3">
-                                        {voucher?.voucherAmendment?.roomDetails || "N/A"}
-                                    </td>
-                                    <td className="p-3">
-                                        {voucher?.voucherAmendment?.noOfRooms || "N/A"}
                                     </td>
                                     <td className="p-3">
                                         {voucher?.voucherAmendment?.basisOfTransfer || "N/A"}

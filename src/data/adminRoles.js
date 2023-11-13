@@ -378,40 +378,27 @@ const adminRoles = [
     },
 
     //Transfers
-
     {
-        name: "create-transfer",
-        displayName: "Create Transfer",
+        name: "transfers",
+        displayName: "Transfer",
         category: "transfer",
         permissions: [],
     },
     {
-        name: "transfer-list",
-        displayName: "Transfer Listing",
+        name: "vehicles",
+        displayName: "Vehicles",
         category: "transfer",
         permissions: [],
     },
     {
-        name: "create-group-area",
-        displayName: "Create Group Area",
+        name: "drivers",
+        displayName: "Drivers",
         category: "transfer",
         permissions: [],
     },
     {
-        name: "group-area-list",
-        displayName: "Group Area",
-        category: "transfer",
-        permissions: [],
-    },
-    {
-        name: "create-vehicle",
-        displayName: "Create Vehicle",
-        category: "transfer",
-        permissions: [],
-    },
-    {
-        name: "vehicle-list",
-        displayName: "Vehicle Listing",
+        name: "license-types",
+        displayName: "License Types",
         category: "transfer",
         permissions: [],
     },

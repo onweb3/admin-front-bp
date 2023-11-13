@@ -119,7 +119,7 @@ export default function TourTableRow({
                         className="h-[100%] arrow-hidden p-0 border-0"
                     />
                     <button
-                        className="w-[15px] min-w-[15px] h-[15px] min-h-[15px] ml-2 bg-gray-500"
+                        className="w-[15px] min-w-[15px] h-[15px] min-h-[15px] ml-2 bg-gray-500 p-0 flex items-center justify-center"
                         type="button"
                         onClick={() => {
                             handleExtraDataChange({
@@ -143,7 +143,7 @@ export default function TourTableRow({
                         className="h-[100%] arrow-hidden p-0 border-0"
                     />
                     <button
-                        className="w-[15px] min-w-[15px] h-[15px] min-h-[15px] ml-2 bg-gray-500"
+                        className="w-[15px] min-w-[15px] h-[15px] min-h-[15px] ml-2 bg-gray-500 p-0 flex items-center justify-center"
                         type="button"
                         onClick={() => {
                             handleExtraDataChange({
@@ -167,7 +167,7 @@ export default function TourTableRow({
                         className="h-[100%] arrow-hidden p-0  border-0"
                     />
                     <button
-                        className="w-[15px] min-w-[15px] h-[15px] min-h-[15px] ml-2 bg-gray-500"
+                        className="w-[15px] min-w-[15px] h-[15px] min-h-[15px] ml-2 bg-gray-500 p-0 flex items-center justify-center"
                         type="button"
                         onClick={() => {
                             handleExtraDataChange({

@@ -41,7 +41,7 @@ import DestinationsPage from "../pages/Countries/DestinationsPage";
 import StatesPage from "../pages/Countries/StatesPage";
 import CouponsPage from "../pages/CouponsPage";
 import Dashboard from "../pages/Dashboard/Dashboard";
-import DriversPage from "../pages/DriversPage";
+import DriversPage from "../pages/Driver/DriversPage";
 import EmailSettingsEmailsPage from "../pages/EmailSettings/EmailSettingsEmailsPage";
 import EmailSettingsPage from "../pages/EmailSettings/EmailSettingsPage";
 import EmailSettingsServicesPage from "../pages/EmailSettings/EmailSettingsServicesPage";
@@ -130,11 +130,8 @@ import AttractionOrdersStatistics from "../pages/Attraction/AttractionOrdersStat
 import AddResellerPage from "../pages/Resellers/AddResellerPage";
 import UpdateResellerDetailsPage from "../pages/Resellers/UpdateResellerDetailsPage";
 import TransferListPage from "../pages/Transfers/TransferListPage";
-import VehicleList from "../pages/Transfers/VehicleList";
 import AddTransferPage from "../pages/Transfers/AddTransferPage";
 import EditTransferPage from "../pages/Transfers/EditTransferPage";
-import AddVehiclePage from "../pages/Transfers/AddVehiclePage";
-import EditVehiclePage from "../pages/Transfers/EditVehiclePage";
 import QuotationListPage from "../pages/Quotation/QuotationListPage";
 import SingleQuotationDetailPage from "../pages/Quotation/SingleQuotationDetailPage";
 import QuotationDashboard from "../pages/Quotation/QuotationDashboradPage";
@@ -224,6 +221,25 @@ import HotelCancellationRequestsPage from "../pages/Hotels/HotelCancellationRequ
 import TopSellingHotelsPage from "../pages/Hotels/TopSellingHotelsPage";
 import TopHotelSellingResllersPage from "../pages/Hotels/TopHotelSellingResllersPage";
 import AttractionDashboardPage from "../pages/Dashboard/AttractionDashboardPage";
+import VehiclesListPage from "../pages/Vehicle/VehiclesListPage";
+import VehicleMakesPage from "../pages/Vehicle/VehicleMakesPage";
+import VehicleCategoriesPage from "../pages/Vehicle/VehicleCategoriesPage";
+import VehicleSubCategoriesPage from "../pages/Vehicle/VehicleSubCategoriesPage";
+import VehicleBodyTypesListPage from "../pages/Vehicle/VehicleBodyTypesListPage";
+import VehicleModelsListPage from "../pages/Vehicle/VehicleModelsListPage";
+import VehicleTrimListPage from "../pages/Vehicle/VehicleTrimListPage";
+import AddVehiclePage from "../pages/Vehicle/AddVehiclePage";
+import EditVehiclePage from "../pages/Vehicle/EditVehiclePage";
+import LicenseTypesPage from "../pages/Driver/LicenseTypesPage";
+import EditDriverPage from "../pages/Driver/EditDriverPage";
+import AddDriverPage from "../pages/Driver/AddDriverPage";
+import GenerateVoucherPage from "../pages/Voucher/AddVoucherPageV2";
+import ConfirmedQuotationsListPage from "../pages/Voucher/ConfirmedQuotationsListPage";
+import AddVoucherPageV2 from "../pages/Voucher/AddVoucherPageV2";
+import VouchersV2ListPage from "../pages/Voucher/VouchersV2ListPage";
+import SingleVoucherV2Page from "../pages/Voucher/SingleVoucherV2Page";
+import EditVoucherV2Page from "../pages/Voucher/EditVoucherV2Page";
+import VouchersV2DailyReportPage from "../pages/Voucher/VouchersV2DailyReportPage";
 
 const ThemeRoutes = [
     {
@@ -587,12 +603,24 @@ const ThemeRoutes = [
                 ),
             },
             {
+                path: "/vouchers/v2",
+                element: <VouchersV2ListPage />,
+            },
+            {
                 path: "/vouchers/daily-reports",
                 element: (
                     <PrivateRoute name="daily-reports" permission="view">
                         <VouchersDailyReportPage />
                     </PrivateRoute>
                 ),
+            },
+            {
+                path: "/vouchers/v2/daily-reports",
+                element: <VouchersV2DailyReportPage />,
+            },
+            {
+                path: "/vouchers/v2/add",
+                element: <AddVoucherPageV2 />,
             },
             {
                 path: "/vouchers/add",
@@ -611,6 +639,10 @@ const ThemeRoutes = [
                 ),
             },
             {
+                path: "/vouchers/v2/:id",
+                element: <SingleVoucherV2Page />,
+            },
+            {
                 path: "/vouchers/:id/edit",
                 element: (
                     <PrivateRoute name="tour-schedules" permission="update">
@@ -619,8 +651,16 @@ const ThemeRoutes = [
                 ),
             },
             {
+                path: "/vouchers/v2/:id/edit",
+                element: <EditVoucherV2Page />,
+            },
+            {
                 path: "/vouchers/settings",
                 element: <VoucherSettingsPage />,
+            },
+            {
+                path: "/confirmed-quotations",
+                element: <ConfirmedQuotationsListPage />,
             },
             {
                 path: "/markup/profile",
@@ -702,7 +742,6 @@ const ThemeRoutes = [
             },
             { path: "/users", element: <UsersPage /> },
             { path: "/coupons", element: <CouponsPage /> },
-            { path: "/drivers", element: <DriversPage /> },
             {
                 path: "/admins",
                 element: <AdminsListPage />,
@@ -996,15 +1035,43 @@ const ThemeRoutes = [
                 element: <EditTransferPage />,
             },
             {
-                path: "/transfers/vehicle",
-                element: <VehicleList />,
+                path: "/transfers/vehicles/makes",
+                element: <VehicleMakesPage />,
             },
             {
-                path: "/transfers/vehicle/add",
+                path: "/transfers/vehicles/makes/:makeId/models",
+                element: <VehicleModelsListPage />,
+            },
+            {
+                path: "/transfers/vehicles/makes/:makeId/models/:modelId/trim",
+                element: <VehicleTrimListPage />,
+            },
+            {
+                path: "/transfers/vehicles/categories",
+                element: <VehicleCategoriesPage />,
+            },
+            {
+                path: "/transfers/vehicles/categories/:categoryId/sub-categories",
+                element: <VehicleSubCategoriesPage />,
+            },
+            {
+                path: "/transfers/vehicles/body-types",
+                element: <VehicleBodyTypesListPage />,
+            },
+            { path: "/drivers", element: <DriversPage /> },
+            { path: "/drivers/add", element: <AddDriverPage /> },
+            { path: "/drivers/:driverId/edit", element: <EditDriverPage /> },
+            { path: "/license-types", element: <LicenseTypesPage /> },
+            {
+                path: "/transfers/vehicles",
+                element: <VehiclesListPage />,
+            },
+            {
+                path: "/transfers/vehicles/add",
                 element: <AddVehiclePage />,
             },
             {
-                path: "/transfers/vehicle/:id/edit",
+                path: "/transfers/vehicles/:vehicleId/edit",
                 element: <EditVehiclePage />,
             },
 
