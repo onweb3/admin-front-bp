@@ -232,6 +232,8 @@ export const quotationsSlice = createSlice({
                             transferTo: stay.hotels[j]?.areaId,
                             transferToName: stay.hotels[j].hotelName,
                             transferFromName: state.arrivalAirportName,
+                            transferToId: stay.hotels[j].hotelId,
+                            transferFromId: state.arrivalAirport,
                             transferType: "airport-city",
                             transferArrivalTerminalCode:
                                 state.arrivalTerminalCode,
@@ -245,6 +247,8 @@ export const quotationsSlice = createSlice({
                             transferTo: stay.hotels[j + 1].areaId,
                             transferFromName: stay.hotels[j].hotelName,
                             transferToName: stay.hotels[j + 1].hotelName,
+                            transferToId: stay.hotels[j].hotelId,
+                            transferFromId: stay.hotels[j + 1].hotelId,
                             transferType: "city-city",
                         });
                     }
@@ -258,6 +262,8 @@ export const quotationsSlice = createSlice({
                             transferFrom: stay.hotels[j].areaId,
                             transferFromName: stay.hotels[j].hotelName,
                             transferToName: state.departureAirportName,
+                            transferFromId: stay.hotels[j].hotelId,
+                            transferToId: state.departureAirport,
                             transferType: "city-airport",
                             transferDepartureTerminalCode:
                                 state?.departureTerminalCode,

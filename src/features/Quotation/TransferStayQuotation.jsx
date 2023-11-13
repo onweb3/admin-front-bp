@@ -29,8 +29,10 @@ export default function TransferStayQuotation({
     const [data, setData] = useState({
         transferFrom: stay.transferFrom,
         transferFromName: stay.transferFromName,
+        transferFromId: stay?.transferFromId || "",
         transferTo: stay.transferTo,
         transferToName: stay.transferToName,
+        transferToId: stay?.transferToId || "",
         transferType: stay.transferType,
         vehicleType: [],
         isAddTransfer: stay?.isAddTransfer || false,
