@@ -18,7 +18,6 @@ export default function SingleExcSupplement({
     excSupplementTransferType,
 }) {
     const [globalExcursion, setGlobalExcursion] = useState({});
-
     const {
         selectedExcSupplementIds,
         excursions,
@@ -42,14 +41,13 @@ export default function SingleExcSupplement({
 
     const onTransferChange = async (type) => {
         try {
-            console.log("type ", type);
-            if (type === "private" || excSupplementTransferType === "private") {
-                console.log("type ", type);
-
+            if (
+                type.toLowerCase() === "private" ||
+                excSupplementTransferType.toLowerCase() === "private"
+            ) {
                 setIsLoading(true);
                 setError("");
 
-                console.log("Fetching vehicles");
                 const response = await axios.post(
                     "/quotations/inital/transfer/excursion",
                     {
@@ -86,7 +84,6 @@ export default function SingleExcSupplement({
         onTransferChange(excursion?.value);
     }, [excSupplementTransferType, excursion?.value]);
 
-    console.log(excursion, "excursion");
 
     useEffect(() => {
         if (
@@ -102,8 +99,8 @@ export default function SingleExcSupplement({
             let calculatedAdultPrice = 0;
             let calculatedChildPrice = 0;
 
-            if (excursion?.excursionType === "transfer") {
-                if (excursion?.value === "private") {
+            if (excursion?.excursionType.toLowerCase() === "transfer") {
+                if (excursion?.value.toLowerCase() === "private") {
                     let totalPvtTransferPrice = 0;
 
                     for (let i = 0; i < excursion?.vehicleType?.length; i++) {
@@ -117,22 +114,22 @@ export default function SingleExcSupplement({
 
                     calculatedAdultPrice = totalPvtTransferPrice / divVal;
                     calculatedChildPrice = totalPvtTransferPrice / divVal;
-                } else if (excursion?.value === "shared") {
+                } else if (excursion?.value.toLowerCase() === "shared") {
                     calculatedAdultPrice = globalExcursion?.sicPrice?.price;
                     calculatedChildPrice = globalExcursion?.sicPrice?.price;
                 }
-            } else if (excursion?.excursionType === "ticket") {
-                if (excursion?.value === "ticket") {
+            } else if (excursion?.excursionType.toLowerCase() === "ticket") {
+                if (excursion?.value.toLowerCase() === "ticket") {
                     calculatedAdultPrice =
                         globalExcursion?.ticketPrice?.adultPrice;
                     calculatedChildPrice =
                         globalExcursion?.ticketPrice?.childPrice;
-                } else if (excursion?.value === "shared") {
+                } else if (excursion?.value.toLowerCase() === "shared") {
                     calculatedAdultPrice =
                         globalExcursion?.sicWithTicket?.adultPrice;
                     calculatedChildPrice =
                         globalExcursion?.sicWithTicket?.childPrice;
-                } else if (excursion?.value === "private") {
+                } else if (excursion?.value.toLowerCase() === "private") {
                     let totalPvtTransferPrice = 0;
 
                     for (let i = 0; i < excursion?.vehicleType?.length; i++) {
@@ -160,7 +157,7 @@ export default function SingleExcSupplement({
                                 ? globalExcursion?.ticketPrice?.childPrice
                                 : 0
                         );
-                }
+                } 
             }
 
             dispatch(

@@ -117,7 +117,6 @@ export default function StayMultiHotelForm({
         setIsModal(true);
     };
 
-    console.log(hotel, "selected hotel index");
 
     return (
         <>

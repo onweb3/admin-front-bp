@@ -35,22 +35,17 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
             (obj) => obj?.activityId === excursion?.excursionId
         );
 
-        console.log(selectedExc, "seelcted");
         setGlobalExcursion(selectedExc);
     }, [excursions, excursion.excursionId]);
 
-    console.log(excursionTransferType, "excursionTransferType");
 
     const onTransferChange = async (type) => {
         try {
-            console.log("type SSS ", type);
             if (type === "private" || excursionTransferType === "private") {
-                console.log("type ", type);
 
                 setIsLoading(true);
                 setError("");
 
-                console.log("Fetching vehicles");
                 const response = await axios.post(
                     "/quotations/inital/transfer/excursion",
                     {
@@ -87,10 +82,8 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
         onTransferChange(excursion?.value);
     }, [excursionTransferType, excursion?.value]);
 
-    console.log(excursions, "globak", excursion);
 
     useEffect(() => {
-        console.log(excursions, "rechhh", globalExcursion);
         if (
             excursion &&
             excursion.value &&
@@ -129,7 +122,6 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                         globalExcursion?.ticketPrice?.adultPrice;
                     calculatedChildPrice =
                         globalExcursion?.ticketPrice?.childPrice;
-                    console.log("Call reachedddd");
                 } else if (excursion?.value === "shared") {
                     calculatedAdultPrice =
                         globalExcursion?.sicWithTicket?.adultPrice;
@@ -175,10 +167,7 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
             );
         }
     }, [excursion, noOfAdults, noOfChildren, globalExcursion, vehicles]);
-    console.log(
-        globalExcursion?.privateTransfer?.vehicleType,
-        "GLOBAL EXTRACTION"
-    );
+    
     return (
         <div className="mb-6 bg-[#f6f6f6] p-4">
             <div className="flex items-start gap-[10px] ">
@@ -419,7 +408,6 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                             <div className="grid grid-cols-2 gap-[1.5em] w-full">
                                 {globalExcursion?.privateTransferTicket?.vehicleType.map(
                                     (vehTY) => (
-                                        // console.log(vehTY.vehicle?.name)
                                         <div key={vehTY.vehicle?._id}>
                                             <div className="flex items-center gap-[10px]">
                                                 <input

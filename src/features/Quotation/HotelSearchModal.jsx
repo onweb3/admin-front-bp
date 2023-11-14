@@ -88,7 +88,6 @@ export default function HotelSearchModal({
     const { jwtToken } = useSelector((state) => state.admin);
 
     function formatDateToYYYYMMDD(inputDate) {
-        console.log(inputDate, "imput date");
         // Extract the day and month from the given date
         const day = inputDate?.getDate(); // Use getDate() instead of getUTCDate()
         const month = inputDate?.getMonth() + 1; // Adding 1 because months are zero-based
@@ -103,20 +102,16 @@ export default function HotelSearchModal({
     }
 
     function formatDate(dateString) {
-        console.log(dateString, "date string");
         const date = new Date(dateString);
 
-        console.log(date, "date");
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, "0");
         const day = String(date.getDate()).padStart(2, "0");
         const formattedDate = `${year}-${month}-${day}`;
 
-        console.log(formattedDate, "formatted date");
         return formattedDate;
     }
 
-    console.log(hotel, " hotel?.checkOutDate ");
 
     const [data, setData] = useState({
         checkOutDate: hotel?.checkOutDate
@@ -181,7 +176,6 @@ export default function HotelSearchModal({
             [e.target.name]: e.target.value,
         }));
     };
-    console.log(isAvailablityLoading, "availablity loading");
 
     const fetchAvailableHotels = async () => {
         try {
@@ -262,7 +256,6 @@ export default function HotelSearchModal({
             setAvailableHotels([]);
 
             setError(err?.response?.data.error);
-            console.log(err);
             setIsAvailablityLoading(false);
         }
     };
@@ -495,23 +488,19 @@ export default function HotelSearchModal({
         }
     };
 
-    console.log(availableHotels, "data");
 
     useEffect(() => {
-        console.log("fetchAvailableHotels1");
         if (
             searchQuery.suggestionType &&
             data.checkInDate &&
             data.checkOutDate &&
             data.rooms
         ) {
-            console.log("fetchAvailableHotels2");
 
             fetchAvailableHotels();
         }
     }, [filters.skip, filters.limit, filters.search]);
 
-    console.log(selectedHotel, "value and locality");
 
     return (
         <div className="fixed inset-0 w-full h-full bg-[#fff5] flex items-center justify-center z-10 ">

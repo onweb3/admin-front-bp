@@ -9,7 +9,6 @@ import {
 } from "../../redux/slices/quotationSlice";
 
 export default function SingleGuide({ guide }) {
-    console.log(guide, "guide");
     const {
         selectedExcursionsIds,
         selectedExcursions,
@@ -50,7 +49,6 @@ export default function SingleGuide({ guide }) {
                     className="w-[16px] h-[16px] min-w-[16px] min-h-[16px] mt-[4px]"
                     onChange={() => {
                         if (selectedGuidesIds?.includes(guide?.guideId)) {
-                            console.log("called hereenshot");
                             dispatch(removeSelectedGuide(guide?.guideId));
                         }
                     }}

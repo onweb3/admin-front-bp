@@ -149,13 +149,11 @@ export default function QuotationPax({ isEdit }) {
         }
     };
 
-    console.log(resellers, isDropdownOpen, searchText, "resellers");
 
     useEffect(() => {
         fetchResellersData();
     }, [selectedReseller.resellerName]);
 
-    console.log(isResellerDisabled, "isResellerDisabled");
     return (
         <div>
             <div className="flex items-start gap-[2em] mt-6">

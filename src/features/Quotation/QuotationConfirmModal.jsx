@@ -81,7 +81,6 @@ export default function QuotationConfirmModal({
                                         ...amen.hotelQuotation,
                                         stays: amen?.hotelQuotation?.stays?.map(
                                             (stays, ind) => {
-                                                console.log("call");
                                                 if (ind == data?.selectedStay) {
                                                     return {
                                                         ...stays,

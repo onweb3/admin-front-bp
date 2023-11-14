@@ -21,7 +21,6 @@ function Datalist({
     const { enquiry, areas, states, cities } = useSelector(
         (state) => state.quotations
     );
-    console.log(areas, states, suggestions);
     return (
         <>
             {datalist && (

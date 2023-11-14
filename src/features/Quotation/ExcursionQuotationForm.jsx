@@ -49,13 +49,11 @@ export default function ExcursionQuotationForm() {
     };
 
     useEffect(() => {
-        console.log("call");
         if (searchText) {
             fetchExcursion(searchText);
         }
     }, [searchText, excursions, excursionTransferType]);
 
-    console.log(selectedExcursions, "selected excursions");
 
     useEffect(() => {
         let adultTotal = 0;

@@ -25,7 +25,6 @@ export default function TransferStayQuotation({
     stay,
     type,
 }) {
-    console.log(stay, "stayyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
     const [data, setData] = useState({
         transferFrom: stay.transferFrom,
         transferFromName: stay.transferFromName,
@@ -64,7 +63,6 @@ export default function TransferStayQuotation({
             setIsLoading(true);
             setError("");
 
-            console.log("Fetching vehicles");
             const response = await axios.post(
                 "/quotations/inital/transfer",
                 {
@@ -78,7 +76,6 @@ export default function TransferStayQuotation({
                 }
             );
 
-            console.log(response.data, "response vehicle");
 
             setVehicles(response?.data);
             dispatch(
