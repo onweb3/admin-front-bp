@@ -1,5 +1,5 @@
 import AddVehicleCategoryModal from "./components/AddVehicleCategoryModal";
-import AddVehicleSubCategoryModal from "./components/AddVehicleSubCategoryModal";
+import AddVehicleTypeModal from "./components/AddVehicleTypeModal";
 import AddVehicleMakeModal from "./components/AddVehicleMakeModal";
 import AddVehicleBodyTypeModal from "./components/AddVehicleBodyTypeModal";
 import AddVehicleModelModal from "./components/AddVehicleModelModal";
@@ -7,7 +7,7 @@ import AddVehicleTrimModal from "./components/AddVehicleTrimModal";
 
 export {
     AddVehicleCategoryModal,
-    AddVehicleSubCategoryModal,
+    AddVehicleTypeModal,
     AddVehicleMakeModal,
     AddVehicleBodyTypeModal,
     AddVehicleModelModal,

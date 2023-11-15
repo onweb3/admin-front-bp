@@ -7,7 +7,7 @@ import { BtnLoader } from "../../../components";
 import axios from "../../../axios";
 import { useParams } from "react-router-dom";
 
-export default function AddVehicleSubCategoryModal({
+export default function AddVehicleTypeModal({
     categoryModal,
     setCategoryModal,
     selectedCategory,
@@ -15,13 +15,23 @@ export default function AddVehicleSubCategoryModal({
     updateCategory,
 }) {
     const [data, setData] = useState({
-        subCategoryName: (categoryModal?.isEdit && selectedCategory?.subCategoryName) || "",
+        name: (categoryModal?.isEdit && selectedCategory?.name) || "",
+        normalSeatingCapacity:
+            (categoryModal?.isEdit &&
+                selectedCategory?.normalSeatingCapacity) ||
+            "",
+        airportSeatingCapacity:
+            (categoryModal?.isEdit &&
+                selectedCategory?.airportSeatingCapacity) ||
+            "",
     });
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
     const wrapperRef = useRef();
-    useHandleClickOutside(wrapperRef, () => setCategoryModal({ isEdit: false, isOpen: false }));
+    useHandleClickOutside(wrapperRef, () =>
+        setCategoryModal({ isEdit: false, isOpen: false })
+    );
     const { jwtToken } = useSelector((state) => state.admin);
     const { categoryId } = useParams();
 
@@ -39,7 +49,7 @@ export default function AddVehicleSubCategoryModal({
 
             if (categoryModal?.isEdit) {
                 const response = await axios.patch(
-                    `/transfers/vehicles/sub-categories/update/${selectedCategory?._id}`,
+                    `/transfers/vehicles/vehicle-type/update/${selectedCategory?._id}`,
                     { ...data, vehicleCategoryId: categoryId },
                     {
                         headers: { Authorization: `Bearer ${jwtToken}` },
@@ -49,7 +59,7 @@ export default function AddVehicleSubCategoryModal({
                 updateCategory(response.data);
             } else {
                 const response = await axios.post(
-                    "/transfers/vehicles/sub-categories/add",
+                    "/transfers/vehicles/vehicle-type/add",
                     { ...data, vehicleCategoryId: categoryId },
                     {
                         headers: { Authorization: `Bearer ${jwtToken}` },
@@ -59,7 +69,9 @@ export default function AddVehicleSubCategoryModal({
             }
             setCategoryModal({ isOpen: false, isEdit: false });
         } catch (err) {
-            setError(err?.response?.data?.error || "Something went wrong, Try again");
+            setError(
+                err?.response?.data?.error || "Something went wrong, Try again"
+            );
             setIsLoading(false);
         }
     };
@@ -73,12 +85,14 @@ export default function AddVehicleSubCategoryModal({
                 <div className="flex items-center justify-between border-b p-4">
                     <h2 className="font-medium">
                         {categoryModal?.isEdit
-                            ? "Update Vehicle Sub Category"
-                            : "Add Vehicle Sub Category"}
+                            ? "Update Vehicle Type"
+                            : "Add Vehicle Type"}
                     </h2>
                     <button
                         className="h-auto bg-transparent text-textColor text-xl"
-                        onClick={() => setCategoryModal({ isOpen: false, isEdit: false })}
+                        onClick={() =>
+                            setCategoryModal({ isOpen: false, isEdit: false })
+                        }
                     >
                         <MdClose />
                     </button>
@@ -86,17 +100,43 @@ export default function AddVehicleSubCategoryModal({
                 <div className="p-4">
                     <form action="" onSubmit={handleSubmit}>
                         <div>
-                            <label htmlFor="">Category Name</label>
+                            <label htmlFor=""> Name</label>
                             <input
                                 type="text"
                                 placeholder="Ex: 7 Seater"
-                                name="subCategoryName"
-                                value={data.subCategoryName || ""}
+                                name="name"
+                                value={data.name || ""}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>{" "}
+                        <div>
+                            <label htmlFor=""> Airport Seating Capacity</label>
+                            <input
+                                type="number"
+                                placeholder="Ex: 5"
+                                name="airportSeatingCapacity"
+                                value={data.airportSeatingCapacity || ""}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>{" "}
+                        <div>
+                            <label htmlFor=""> Normal Seating Capacity</label>
+                            <input
+                                type="number"
+                                placeholder="Ex:7 "
+                                name="normalSeatingCapacity"
+                                value={data.normalSeatingCapacity || ""}
                                 onChange={handleChange}
                                 required
                             />
                         </div>
-                        {error && <span className="text-sm block text-red-500 mt-2">{error}</span>}
+                        {error && (
+                            <span className="text-sm block text-red-500 mt-2">
+                                {error}
+                            </span>
+                        )}
                         <div className="mt-4 flex items-center justify-end gap-[12px]">
                             <button
                                 className="bg-slate-300 text-textColor px-[15px]"
@@ -114,9 +154,9 @@ export default function AddVehicleSubCategoryModal({
                                 {isLoading ? (
                                     <BtnLoader />
                                 ) : categoryModal?.isEdit ? (
-                                    "Update Sub Category"
+                                    "Update "
                                 ) : (
-                                    "Add Sub Category"
+                                    "Add "
                                 )}
                             </button>
                         </div>

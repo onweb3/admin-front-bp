@@ -6,9 +6,9 @@ import { Link, useParams } from "react-router-dom";
 
 import axios from "../../axios";
 import { PageLoader } from "../../components";
-import { AddVehicleSubCategoryModal } from "../../features/Vehicle";
+import { AddVehicleTypeModal } from "../../features/Vehicle";
 
-export default function VehicleSubCategoriesPage() {
+export default function VehicleTypePage() {
     const [categories, setCategories] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [categoryModal, setCategoryModal] = useState({
@@ -25,12 +25,12 @@ export default function VehicleSubCategoriesPage() {
         try {
             setIsLoading(true);
             const response = await axios.get(
-                `/transfers/vehicles/categories/single/${categoryId}/sub-categories`,
+                `/transfers/vehicles/categories/single/${categoryId}/vehicle-type`,
                 {
                     headers: { authorization: `Bearer ${jwtToken}` },
                 }
             );
-            setCategories(response?.data?.vehicleSubCategories);
+            setCategories(response?.data?.vehicleTypes);
             setVehicleCategory(response?.data?.vehicleCategory);
             setIsLoading(false);
         } catch (err) {
@@ -58,9 +58,12 @@ export default function VehicleSubCategoriesPage() {
             const isConfirm = window.confirm("Are you sure to delete?");
 
             if (isConfirm) {
-                await axios.delete(`/transfers/vehicles/sub-categories/delete/${id}`, {
-                    headers: { authorization: `Bearer ${jwtToken}` },
-                });
+                await axios.delete(
+                    `/transfers/vehicles/vehicle-type/delete/${id}`,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
 
                 const filteredCategories = categories.filter((category) => {
                     return category?._id !== id;
@@ -79,7 +82,9 @@ export default function VehicleSubCategoriesPage() {
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">Vehicle Sub CATEGORIES</h1>
+                <h1 className="font-[600] text-[15px] uppercase">
+                    Vehicle Types
+                </h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
@@ -93,7 +98,10 @@ export default function VehicleSubCategoriesPage() {
                         Vehicles{" "}
                     </Link>
                     <span>{">"} </span>
-                    <Link to="/transfers/vehicles/categories" className="text-textColor">
+                    <Link
+                        to="/transfers/vehicles/categories"
+                        className="text-textColor"
+                    >
                         Categories{" "}
                     </Link>
                     <span>{">"} </span>
@@ -101,12 +109,12 @@ export default function VehicleSubCategoriesPage() {
                         {categoryId?.slice(0, 3)}...{categoryId?.slice(-3)}
                     </span>
                     <span>{">"} </span>
-                    <span>Sub Categories</span>
+                    <span>Vehicle Type</span>
                 </div>
             </div>
 
             {categoryModal?.isOpen && (
-                <AddVehicleSubCategoryModal
+                <AddVehicleTypeModal
                     categoryModal={categoryModal}
                     selectedCategory={selectedCategory}
                     setCategoryModal={setCategoryModal}
@@ -122,8 +130,9 @@ export default function VehicleSubCategoriesPage() {
                     <div className="bg-white rounded shadow-sm">
                         <div className="flex items-center justify-between border-b border-dashed p-4">
                             <h1 className="font-medium">
-                                All Vehicle Sub Categories{" "}
-                                {vehicleCategory && `(${vehicleCategory?.categoryName})`}
+                                All Vehicle Vehicle Types{" "}
+                                {vehicleCategory &&
+                                    `(${vehicleCategory?.categoryName})`}
                             </h1>
                             <button
                                 className="px-3"
@@ -134,13 +143,13 @@ export default function VehicleSubCategoriesPage() {
                                     })
                                 }
                             >
-                                + Add Sub Category
+                                + Add Vehicle Type
                             </button>
                         </div>
                         {categories?.length < 1 ? (
                             <div className="p-6 flex flex-col items-center">
                                 <span className="text-sm text-grayColor block mt-[6px]">
-                                    Oops.. No Vehicle Sub Categories found
+                                    Oops.. No Vehicle Vehicle Type found
                                 </span>
                             </div>
                         ) : (
@@ -148,8 +157,21 @@ export default function VehicleSubCategoriesPage() {
                                 <table className="w-full">
                                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                         <tr>
-                                            <th className="font-[500] p-3">Category Name</th>
-                                            <th className="font-[500] p-3">Action</th>
+                                            <th className="font-[500] p-3">
+                                                Index
+                                            </th>{" "}
+                                            <th className="font-[500] p-3">
+                                                Name
+                                            </th>{" "}
+                                            <th className="font-[500] p-3">
+                                                Normal Seating Capacity
+                                            </th>{" "}
+                                            <th className="font-[500] p-3">
+                                                Airport Seating Capacity
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Action
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="text-sm">
@@ -160,14 +182,29 @@ export default function VehicleSubCategoriesPage() {
                                                     className="border-b border-tableBorderColor"
                                                 >
                                                     <td className="p-3">
-                                                        {category?.subCategoryName}
+                                                        {index + 1}
+                                                    </td>
+                                                    <td className="p-3">
+                                                        {category?.name}
+                                                    </td>
+                                                    <td className="p-3">
+                                                        {
+                                                            category?.normalSeatingCapacity
+                                                        }
+                                                    </td>
+                                                    <td className="p-3">
+                                                        {
+                                                            category?.airportSeatingCapacity
+                                                        }
                                                     </td>
                                                     <td className="p-3">
                                                         <div className="flex gap-[10px]">
                                                             <button
                                                                 className="h-auto bg-transparent text-red-500 text-xl"
                                                                 onClick={() =>
-                                                                    deleteCategory(category?._id)
+                                                                    deleteCategory(
+                                                                        category?._id
+                                                                    )
                                                                 }
                                                             >
                                                                 <MdDelete />
@@ -175,11 +212,15 @@ export default function VehicleSubCategoriesPage() {
                                                             <button
                                                                 className="h-auto bg-transparent text-green-500 text-xl"
                                                                 onClick={() => {
-                                                                    setSelectedCategory(category);
-                                                                    setCategoryModal({
-                                                                        isOpen: true,
-                                                                        isEdit: true,
-                                                                    });
+                                                                    setSelectedCategory(
+                                                                        category
+                                                                    );
+                                                                    setCategoryModal(
+                                                                        {
+                                                                            isOpen: true,
+                                                                            isEdit: true,
+                                                                        }
+                                                                    );
                                                                 }}
                                                             >
                                                                 <BiEditAlt />
