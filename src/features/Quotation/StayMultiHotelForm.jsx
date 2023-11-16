@@ -117,7 +117,6 @@ export default function StayMultiHotelForm({
         setIsModal(true);
     };
 
-
     return (
         <>
             <div className="h-min-[200px]  border-dashed border bg-stone-200 mb-5 ">
@@ -266,7 +265,8 @@ export default function StayMultiHotelForm({
                                                             placeholder="Ex: 60"
                                                             // name="adultAgeLimit"
                                                             value={
-                                                                roomOccup?.price
+                                                                roomOccup?.price ||
+                                                                ""
                                                             }
                                                             onChange={(e) => {
                                                                 dispatch(

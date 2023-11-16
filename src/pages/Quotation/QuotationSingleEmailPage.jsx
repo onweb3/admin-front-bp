@@ -208,8 +208,7 @@ function QuotationSingleEmailPage() {
                         <br />
                         <div className="cust-border">
                             <span className="text-[13px] font-bold cust-border">
-                                Greetings from{" "}
-                                {config.COMPANY_NAME?.split(" ")[1]}
+                                Greetings from {config.COMPANY_NAME}
                                 !!!!
                                 <span />
                             </span>
@@ -284,9 +283,10 @@ function QuotationSingleEmailPage() {
                                             }}
                                             className="cust-border"
                                         >
-                                            {quotationList?.noOfAdults} Adult,{" "}
-                                            {quotationList?.noOfChildren}{" "}
-                                            Children
+                                            {quotationList?.noOfAdults} Adult{" "}
+                                            {quotationList?.noOfChildren > 0
+                                                ? `${quotationList.noOfChildren} Children`
+                                                : ""}
                                         </td>
                                     </tr>
 
@@ -611,10 +611,48 @@ function QuotationSingleEmailPage() {
                                                                                             }
                                                                                         </span>
                                                                                     </td>
-                                                                                    <td className="border px-[10px]">
-                                                                                        {item?.city ||
-                                                                                            "N/A"}
+                                                                                    <td
+                                                                                        className="border px-[10px] "
+                                                                                        style={{
+                                                                                            width: "50px",
+                                                                                            overflow:
+                                                                                                "hidden",
+                                                                                            whiteSpace:
+                                                                                                "nowrap",
+                                                                                            textOverflow:
+                                                                                                "ellipsis",
+                                                                                        }}
+                                                                                    >
+                                                                                        <div className="flex items-center gap-2">
+                                                                                            <span className="block mt-1">
+                                                                                                {
+                                                                                                    item?.area
+                                                                                                }
+
+                                                                                                ,
+                                                                                            </span>{" "}
+                                                                                            <span className="block mt-1">
+                                                                                                {
+                                                                                                    item?.city
+                                                                                                }
+
+                                                                                                ,
+                                                                                            </span>{" "}
+                                                                                            <span className="block mt-1">
+                                                                                                {
+                                                                                                    item?.state
+                                                                                                }
+
+                                                                                                ,
+                                                                                            </span>{" "}
+                                                                                            <span className="block mt-1">
+                                                                                                {
+                                                                                                    item?.country
+                                                                                                }
+                                                                                            </span>
+                                                                                        </div>
                                                                                     </td>
+
                                                                                     {multiHotelIndex <
                                                                                         1 &&
                                                                                         stay?.roomOccupancyList?.map(
@@ -740,24 +778,24 @@ function QuotationSingleEmailPage() {
                                                             {exc?.excursionName}{" "}
                                                             -{" "}
                                                             <span className="capitalize">
-                                                                {exc?.excursionType ===
+                                                                {exc?.excursionType.toLowerCase() ===
                                                                 "ticket"
-                                                                    ? exc?.value ===
+                                                                    ? exc?.value.toLowerCase() ===
                                                                       "ticket"
                                                                         ? "Only Ticket"
-                                                                        : exc?.value ===
+                                                                        : exc?.value.toLowerCase() ===
                                                                           "shared"
                                                                         ? "Tickets With SIC Transfer"
-                                                                        : exc?.value ===
+                                                                        : exc?.value.toLowerCase() ===
                                                                           "private"
                                                                         ? "Tickets With PVT Transfer"
                                                                         : ""
-                                                                    : exc?.excursionType ===
+                                                                    : exc?.excursionType.toLowerCase() ===
                                                                       "transfer"
-                                                                    ? exc?.value ===
+                                                                    ? exc?.value.toLowerCase() ===
                                                                       "private"
                                                                         ? "Only Transfer (Private)"
-                                                                        : exc?.value ===
+                                                                        : exc?.value.toLowerCase() ===
                                                                           "shared"
                                                                         ? "Only Transfer (SIC)"
                                                                         : ""
@@ -937,13 +975,13 @@ function QuotationSingleEmailPage() {
                                                             <span className="capitalize">
                                                                 {exc?.excursionType ===
                                                                 "ticket"
-                                                                    ? exc?.value ===
+                                                                    ? exc?.value.toLowerCase() ===
                                                                       "ticket"
                                                                         ? "Only Ticket"
-                                                                        : exc?.value ===
+                                                                        : exc?.value.toLowerCase() ===
                                                                           "shared"
                                                                         ? "Tickets With SIC Transfer"
-                                                                        : exc?.value ===
+                                                                        : exc?.value.toLowerCase() ===
                                                                           "private"
                                                                         ? "Tickets With PVT Transfer"
                                                                         : ""
