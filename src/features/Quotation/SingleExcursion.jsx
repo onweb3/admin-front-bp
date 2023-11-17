@@ -11,7 +11,11 @@ import {
     updateVehicleTransfer,
 } from "../../redux/slices/quotationSlice";
 
-export default function SingleExcursion({ excursion, excursionTransferType }) {
+export default function SingleExcursion({
+    excursion,
+    excursionTransferType,
+    isEdit,
+}) {
     const [globalExcursion, setGlobalExcursion] = useState({});
 
     const {
@@ -27,6 +31,7 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
     const [isLoading, setIsLoading] = useState(false);
     const { jwtToken } = useSelector((state) => state.admin);
     const [vehicles, setVehicles] = useState([]);
+    const [edit, setEdit] = useState(isEdit || false);
 
     const dispatch = useDispatch();
 
@@ -44,7 +49,10 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
     const onTransferChange = async (type) => {
         try {
             console.log("type SSS ", type);
-            if (type === "private" || excursionTransferType === "private") {
+            if (
+                (type === "private" || excursionTransferType === "private") &&
+                edit === false
+            ) {
                 console.log("type ", type);
 
                 setIsLoading(true);
@@ -70,7 +78,7 @@ export default function SingleExcursion({ excursion, excursionTransferType }) {
                         vehicleType: response.data,
                     })
                 );
-
+                setEdit(false);
                 setIsLoading(false);
             }
         } catch (err) {
