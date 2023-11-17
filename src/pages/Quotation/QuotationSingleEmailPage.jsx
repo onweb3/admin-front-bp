@@ -354,10 +354,11 @@ function QuotationSingleEmailPage() {
                                             }}
                                             className="cust-border"
                                         >
-                                            {quotationList?.checkInDate?.slice(
-                                                0,
-                                                10
-                                            )}
+                                            {quotationList?.checkInDate
+                                                ?.slice(0, 10)
+                                                ?.split("-")
+                                                ?.reverse()
+                                                ?.join("-")}
                                         </td>
                                     </tr>
                                     <tr>
@@ -390,10 +391,11 @@ function QuotationSingleEmailPage() {
                                             }}
                                             className="cust-border"
                                         >
-                                            {quotationList?.checkOutDate?.slice(
-                                                0,
-                                                10
-                                            )}
+                                            {quotationList.checkOutDate
+                                                .slice(0, 10)
+                                                .split("-")
+                                                .reverse()
+                                                .join("-")}
                                         </td>
                                     </tr>
                                     <tr>
