@@ -43,7 +43,6 @@ export default function SingleExcursion({
         setGlobalExcursion(selectedExc);
     }, [excursions, excursion.excursionId]);
 
-
     const onTransferChange = async (type) => {
         try {
             console.log("type SSS ", type);
@@ -91,7 +90,6 @@ export default function SingleExcursion({
     useEffect(() => {
         onTransferChange(excursion?.value);
     }, [excursionTransferType, excursion?.value]);
-
 
     useEffect(() => {
         if (
@@ -141,6 +139,10 @@ export default function SingleExcursion({
                     let totalPvtTransferPrice = 0;
 
                     for (let i = 0; i < excursion?.vehicleType?.length; i++) {
+                        console.log(
+                            excursion?.vehicleType[i],
+                            "excursion?.vehicleType[i] excursion"
+                        );
                         let vehicleType = excursion?.vehicleType[i];
                         totalPvtTransferPrice +=
                             vehicleType?.price * vehicleType?.count;
@@ -177,7 +179,7 @@ export default function SingleExcursion({
             );
         }
     }, [excursion, noOfAdults, noOfChildren, globalExcursion, vehicles]);
-    
+
     return (
         <div className="mb-6 bg-[#f6f6f6] p-4">
             <div className="flex items-start gap-[10px] ">
@@ -227,6 +229,7 @@ export default function SingleExcursion({
                                         _id: excursion?.excursionId,
                                     })
                                 );
+                                setEdit(false);
 
                                 onTransferChange(
                                     excursion?.excursionId,
@@ -387,6 +390,8 @@ export default function SingleExcursion({
                                             value: e.target.value,
                                         })
                                     );
+                                    setEdit(false);
+
                                     onTransferChange(
                                         excursion?.excursionId,
                                         e.target.value

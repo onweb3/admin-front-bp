@@ -10,7 +10,7 @@ import { useHandleClickOutside } from "../../hooks";
 import SingleExcSupplement from "./SingleExcSupplement";
 import axios from "../../axios";
 
-export default function ExcSupplementQuotationForm() {
+export default function ExcSupplementQuotationForm({ isEdit }) {
     const [searchedExcursions, setSearchedExcursions] = useState([]);
     const [searchText, setSearchText] = useState("");
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -280,6 +280,7 @@ export default function ExcSupplementQuotationForm() {
                                                     excSupplementTransferType={
                                                         excSupplementTransferType
                                                     }
+                                                    isEdit={isEdit}
                                                 />
                                             );
                                         })

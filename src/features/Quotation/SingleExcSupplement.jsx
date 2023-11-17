@@ -16,6 +16,7 @@ import {
 export default function SingleExcSupplement({
     excursion,
     excSupplementTransferType,
+    isEdit,
 }) {
     const [globalExcursion, setGlobalExcursion] = useState({});
     const {
@@ -30,6 +31,7 @@ export default function SingleExcSupplement({
     const [isLoading, setIsLoading] = useState(false);
     const { jwtToken } = useSelector((state) => state.admin);
     const [vehicles, setVehicles] = useState([]);
+    const [edit, setEdit] = useState(isEdit || false);
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -42,8 +44,9 @@ export default function SingleExcSupplement({
     const onTransferChange = async (type) => {
         try {
             if (
-                type.toLowerCase() === "private" ||
-                excSupplementTransferType.toLowerCase() === "private"
+                (type.toLowerCase() === "private" ||
+                    excSupplementTransferType.toLowerCase() === "private") &&
+                edit === false
             ) {
                 setIsLoading(true);
                 setError("");
@@ -67,6 +70,7 @@ export default function SingleExcSupplement({
                         vehicleType: response.data,
                     })
                 );
+                setEdit(false);
 
                 setIsLoading(false);
             }
@@ -83,7 +87,6 @@ export default function SingleExcSupplement({
     useEffect(() => {
         onTransferChange(excursion?.value);
     }, [excSupplementTransferType, excursion?.value]);
-
 
     useEffect(() => {
         if (
@@ -136,6 +139,11 @@ export default function SingleExcSupplement({
                         let vehicleType = excursion?.vehicleType[i];
                         totalPvtTransferPrice +=
                             vehicleType?.price * vehicleType?.count;
+
+                        console.log(
+                            excursion?.vehicleType[i],
+                            "excursion?.vehicleType[i]  suppp"
+                        );
                     }
                     let divVal = 1;
 
@@ -157,7 +165,7 @@ export default function SingleExcSupplement({
                                 ? globalExcursion?.ticketPrice?.childPrice
                                 : 0
                         );
-                } 
+                }
             }
 
             dispatch(
@@ -221,6 +229,7 @@ export default function SingleExcSupplement({
                                         _id: excursion?.excursionId,
                                     })
                                 );
+                                setEdit(false);
 
                                 onTransferChange(
                                     excursion?.excursionId,
@@ -379,6 +388,7 @@ export default function SingleExcSupplement({
                                             value: e.target.value,
                                         })
                                     );
+                                    setEdit(false);
 
                                     onTransferChange(
                                         excursion?.excursionId,
