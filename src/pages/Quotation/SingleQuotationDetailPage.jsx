@@ -8,6 +8,7 @@ import { PageLoader } from "../../components";
 import { config } from "../../constants";
 import { GiConfirmed } from "react-icons/gi";
 import QuotationConfirmModal from "../../features/Quotation/QuotationConfirmModal";
+import { BiCheck } from "react-icons/bi";
 
 export default function SingleQuotationDetailsPage() {
     const [quotation, setQuotation] = useState({});
@@ -43,6 +44,7 @@ export default function SingleQuotationDetailsPage() {
     if (isLoading) {
         return <PageLoader />;
     }
+    console.log(quotation, "quotation");
 
     return (
         <div>
@@ -119,11 +121,12 @@ const AmendmentTable = ({
                     <span className="ml-5 text-green-500">
                         ({new Date(amendment?.createdAt).toLocaleDateString()})
                     </span>
-                    {quotation.confirmedAmendment === amendment._id && (
-                        <span className="ml-5 text-green-500">
-                            {quotation.status}
-                        </span>
-                    )}
+                    {quotation.confirmedAmendment === amendment._id &&
+                        quotation.status === "confirmed" && (
+                            <span className="ml-5 text-green-500">
+                                {quotation.status}
+                            </span>
+                        )}
                 </h3>
                 <div className="flex items-center gap-3">
                     {index === 0 ? (
@@ -254,9 +257,23 @@ const AmendmentTable = ({
                             (stay, index) => {
                                 return (
                                     <div className="mt-6">
-                                        <h2 className="cust-border mb-2 font-[600]">
-                                            Stay Option {index + 1}
-                                        </h2>
+                                        <div className="flex gap-2 items-center mb-2 ">
+                                            <h2 className="cust-border font-[600]">
+                                                Stay Option {index + 1}
+                                            </h2>
+                                            {stay.selected &&
+                                                quotation.confirmedAmendment ==
+                                                    amendment._id &&
+                                                quotation.status ==
+                                                    "confirmed" && (
+                                                    <div className="flex items-center gap-2">
+                                                        <p>(Confirmed)</p>
+                                                        <div className="text-green-500 text-xl flex items-center">
+                                                            <BiCheck />{" "}
+                                                        </div>
+                                                    </div>
+                                                )}
+                                        </div>
                                         <table className="w-full text-left">
                                             <thead>
                                                 <tr>
@@ -690,7 +707,7 @@ const AmendmentTable = ({
                                     <li key={index} className="mb-1">
                                         {guide?.name} -{" "}
                                         <span className="capitalize">
-                                            Duration( {guide?.duration} hr x {" "}
+                                            Duration( {guide?.duration} hr x{" "}
                                             {guide?.count})
                                         </span>
                                     </li>

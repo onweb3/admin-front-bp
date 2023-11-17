@@ -130,7 +130,7 @@ export default function CreateAttractionOrder() {
                 country: data.country,
                 email: data.email,
                 agentReferenceNumber: data.agentReferenceNumber,
-
+                type: "b2b",
                 selectedActivities: [
                     {
                         activity: data.activityId,

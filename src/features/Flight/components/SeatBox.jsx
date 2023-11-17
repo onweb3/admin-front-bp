@@ -31,7 +31,6 @@ export default function SeatBox({
 
     const selectedSeat = () => {
         const seatSsrArray = flightAncillaries.seatSsr;
-        console.log("call1");
         let seatFound = false; // Flag to track if a matching seat is found
 
         // Iterate over the seatSsrArray
@@ -41,12 +40,10 @@ export default function SeatBox({
                 seatSsrArray.indexOf(seatSsrItem) === selectedSegmentIndex &&
                 Array.isArray(seatSsrItem?.selectedSeats)
             ) {
-                console.log("call1");
 
                 // Iterate over the selectedSeats array for each seatSsrItem
                 for (const selectedSeat of seatSsrItem?.selectedSeats) {
                     if (selectedSeat.seatNumber === seat.seatNumber) {
-                        console.log("call1");
 
                         setSelected(true);
                         seatFound = true;
@@ -61,7 +58,6 @@ export default function SeatBox({
         }
 
         if (!seatFound) {
-            console.log("call1");
             setSelected(false);
         }
     };

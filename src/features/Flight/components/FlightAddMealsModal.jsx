@@ -79,7 +79,6 @@ export default function FlightAddMealModal({ setIsModal, mealSsr }) {
         onHandleChange(selectedSegmentIndex || 0);
     }, [meals, mealSsr]);
 
-    console.log(mealSsr, meals, totalCount, "meals changed");
 
     return (
         <div className="fixed inset-0 w-full h-full bg-[#fff5] flex items-center justify-center z-20 ">

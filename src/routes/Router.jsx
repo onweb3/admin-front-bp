@@ -1,4 +1,8 @@
-import { AdminLayout, EditProfileLayout, SingleResellerLayout } from "../layouts";
+import {
+    AdminLayout,
+    EditProfileLayout,
+    SingleResellerLayout,
+} from "../layouts";
 import A2aAddTicketPage from "../pages/A2A/A2aAddTicketPage";
 import A2AEditTicketPage from "../pages/A2A/A2aEditTicketPage";
 import A2AEnquiryPage from "../pages/A2A/A2AEnquiryPage";
@@ -224,7 +228,6 @@ import AttractionDashboardPage from "../pages/Dashboard/AttractionDashboardPage"
 import VehiclesListPage from "../pages/Vehicle/VehiclesListPage";
 import VehicleMakesPage from "../pages/Vehicle/VehicleMakesPage";
 import VehicleCategoriesPage from "../pages/Vehicle/VehicleCategoriesPage";
-import VehicleSubCategoriesPage from "../pages/Vehicle/VehicleSubCategoriesPage";
 import VehicleBodyTypesListPage from "../pages/Vehicle/VehicleBodyTypesListPage";
 import VehicleModelsListPage from "../pages/Vehicle/VehicleModelsListPage";
 import VehicleTrimListPage from "../pages/Vehicle/VehicleTrimListPage";
@@ -240,6 +243,7 @@ import VouchersV2ListPage from "../pages/Voucher/VouchersV2ListPage";
 import SingleVoucherV2Page from "../pages/Voucher/SingleVoucherV2Page";
 import EditVoucherV2Page from "../pages/Voucher/EditVoucherV2Page";
 import VouchersV2DailyReportPage from "../pages/Voucher/VouchersV2DailyReportPage";
+import VehicleTypePage from "../pages/Vehicle/VehicleTypePage";
 
 const ThemeRoutes = [
     {
@@ -1051,8 +1055,8 @@ const ThemeRoutes = [
                 element: <VehicleCategoriesPage />,
             },
             {
-                path: "/transfers/vehicles/categories/:categoryId/sub-categories",
-                element: <VehicleSubCategoriesPage />,
+                path: "/transfers/vehicles/categories/:categoryId/vehicle-type",
+                element: <VehicleTypePage />,
             },
             {
                 path: "/transfers/vehicles/body-types",
@@ -1228,7 +1232,7 @@ const ThemeRoutes = [
                 element: <UpdateBankAccountPage />,
             },
             {
-                path: "/order/flight/:tbId",
+                path: "/order/flight/:tbId/:resellerId",
                 element: <CompleteFlightOrderPage />,
             },
         ],

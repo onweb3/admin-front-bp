@@ -12,13 +12,15 @@ import {
     handleQuotationCurrencyChange,
     handleCustomMarkupChange,
 } from "../../redux/slices/quotationSlice";
+import QuotationConfirmModal from "./QuotationConfirmModal";
 
 export default function QuotationSubmissionForm({ isEdit = false }) {
     const [markupError, setMarkupError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
     const { isCustomMarkup } = useSelector((state) => state.quotations);
-
+    const [isModal, setIsModal] = useState(false);
+    const [amendment, setAmendment] = useState();
     const { jwtToken } = useSelector((state) => state.admin);
     const {
         hotelQt,
@@ -195,11 +197,18 @@ export default function QuotationSubmissionForm({ isEdit = false }) {
                     );
                 }
 
-                navigate(`/quotations/${response?.data?.quotationNumber}`);
+                if (response?.data?.amendment?.confirmedAmendment) {
+                    setIsLoading(false);
+                    setIsModal(true);
+                    setAmendment(response?.data?.amendment);
+                } else {
+                    navigate(`/quotations/${response?.data?.quotationNumber}`);
+                }
             }
 
             // dispatchEvent((clear))
         } catch (err) {
+            console.log(err);
             setError(
                 err?.response?.data?.error || "Something went wrong, Try again"
             );
@@ -367,6 +376,13 @@ export default function QuotationSubmissionForm({ isEdit = false }) {
                     )}
                 </button>
             </div>
+            {isModal && (
+                <QuotationConfirmModal
+                    amendment={amendment}
+                    setIsModal={setIsModal}
+                    edit={true}
+                />
+            )}
         </div>
     );
 }

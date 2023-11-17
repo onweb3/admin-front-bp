@@ -144,7 +144,6 @@ export default function CreateFlightOrderPage() {
         }
     };
 
-    console.log(flightResults, "flightResults");
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
@@ -391,6 +390,7 @@ export default function CreateFlightOrderPage() {
                     flightResults={flightResults}
                     setIsAvailabilityModal={setIsAvailabilityModal}
                     setFlightResults={setFlightResults}
+                    resellerId={data?.resellerId}
                 />
             )}
         </div>
