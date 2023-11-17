@@ -189,12 +189,12 @@ export default function VehicleTypePage() {
                                                     </td>
                                                     <td className="p-3">
                                                         {
-                                                            category?.normalSeatingCapacity
+                                                            category?.normalOccupancy
                                                         }
                                                     </td>
                                                     <td className="p-3">
                                                         {
-                                                            category?.airportSeatingCapacity
+                                                            category?.airportOccupancy
                                                         }
                                                     </td>
                                                     <td className="p-3">

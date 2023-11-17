@@ -16,14 +16,10 @@ export default function AddVehicleTypeModal({
 }) {
     const [data, setData] = useState({
         name: (categoryModal?.isEdit && selectedCategory?.name) || "",
-        normalSeatingCapacity:
-            (categoryModal?.isEdit &&
-                selectedCategory?.normalSeatingCapacity) ||
-            "",
-        airportSeatingCapacity:
-            (categoryModal?.isEdit &&
-                selectedCategory?.airportSeatingCapacity) ||
-            "",
+        normalOccupancy:
+            (categoryModal?.isEdit && selectedCategory?.normalOccupancy) || "",
+        airportOccupancy:
+            (categoryModal?.isEdit && selectedCategory?.airportOccupancy) || "",
     });
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -115,8 +111,8 @@ export default function AddVehicleTypeModal({
                             <input
                                 type="number"
                                 placeholder="Ex: 5"
-                                name="airportSeatingCapacity"
-                                value={data.airportSeatingCapacity || ""}
+                                name="airportOccupancy"
+                                value={data.airportOccupancy || ""}
                                 onChange={handleChange}
                                 required
                             />
@@ -126,8 +122,8 @@ export default function AddVehicleTypeModal({
                             <input
                                 type="number"
                                 placeholder="Ex:7 "
-                                name="normalSeatingCapacity"
-                                value={data.normalSeatingCapacity || ""}
+                                name="normalOccupancy"
+                                value={data.normalOccupancy || ""}
                                 onChange={handleChange}
                                 required
                             />
