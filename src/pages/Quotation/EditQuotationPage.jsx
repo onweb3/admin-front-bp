@@ -106,7 +106,7 @@ export default function EditQuotationPage() {
                     <span className="block py-10">
                         <hr />
                     </span>
-                    <ExcursionQuotationForm />
+                    <ExcursionQuotationForm isEdit={true} />
                     <span className="block py-10">
                         <hr />
                     </span>
@@ -115,7 +115,7 @@ export default function EditQuotationPage() {
                         <hr />
                     </span>
 
-                    <ExcSupplementQuotationForm />
+                    <ExcSupplementQuotationForm isEdit={true} />
                     <span className="block py-10">
                         <hr />
                     </span>

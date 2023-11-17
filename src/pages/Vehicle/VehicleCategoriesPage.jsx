@@ -36,7 +36,11 @@ export default function VehicleCategoriesPage() {
             );
             setCategories(response?.data?.vehicleCategories);
             setFilters((prev) => {
-                return { ...prev, totalVehicleCategories: response?.data?.totalVehicleCategories };
+                return {
+                    ...prev,
+                    totalVehicleCategories:
+                        response?.data?.totalVehicleCategories,
+                };
             });
             setIsLoading(false);
         } catch (err) {
@@ -64,9 +68,12 @@ export default function VehicleCategoriesPage() {
             const isConfirm = window.confirm("Are you sure to delete?");
 
             if (isConfirm) {
-                await axios.delete(`/transfers/vehicles/categories/delete/${id}`, {
-                    headers: { authorization: `Bearer ${jwtToken}` },
-                });
+                await axios.delete(
+                    `/transfers/vehicles/categories/delete/${id}`,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
 
                 const filteredCategories = categories.filter((category) => {
                     return category?._id !== id;
@@ -85,7 +92,9 @@ export default function VehicleCategoriesPage() {
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">Vehicle CATEGORIES</h1>
+                <h1 className="font-[600] text-[15px] uppercase">
+                    Vehicle CATEGORIES
+                </h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
@@ -119,7 +128,9 @@ export default function VehicleCategoriesPage() {
                 <div className="p-6">
                     <div className="bg-white rounded shadow-sm">
                         <div className="flex items-center justify-between border-b border-dashed p-4">
-                            <h1 className="font-medium">All Vehicle Categories</h1>
+                            <h1 className="font-medium">
+                                All Vehicle Categories
+                            </h1>
                             <button
                                 className="px-3"
                                 onClick={() =>
@@ -143,11 +154,15 @@ export default function VehicleCategoriesPage() {
                                 <table className="w-full">
                                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                         <tr>
-                                            <th className="font-[500] p-3">Category Name</th>
+                                            <th className="font-[500] p-3">
+                                                Category Name
+                                            </th>
                                             <th className="font-[500] p-3 text-center">
                                                 Sub Categories
                                             </th>
-                                            <th className="font-[500] p-3">Action</th>
+                                            <th className="font-[500] p-3">
+                                                Action
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="text-sm">
@@ -162,7 +177,7 @@ export default function VehicleCategoriesPage() {
                                                     </td>
                                                     <td className="p-3 text-center">
                                                         <Link
-                                                            to={`${category?._id}/sub-categories`}
+                                                            to={`${category?._id}/vehicle-type`}
                                                         >
                                                             <button className="bg-transparent text-[#222] text-lg h-auto">
                                                                 <AiFillEye />
@@ -174,7 +189,9 @@ export default function VehicleCategoriesPage() {
                                                             <button
                                                                 className="h-auto bg-transparent text-red-500 text-xl"
                                                                 onClick={() =>
-                                                                    deleteCategory(category?._id)
+                                                                    deleteCategory(
+                                                                        category?._id
+                                                                    )
                                                                 }
                                                             >
                                                                 <MdDelete />
@@ -182,11 +199,15 @@ export default function VehicleCategoriesPage() {
                                                             <button
                                                                 className="h-auto bg-transparent text-green-500 text-xl"
                                                                 onClick={() => {
-                                                                    setSelectedCategory(category);
-                                                                    setCategoryModal({
-                                                                        isOpen: true,
-                                                                        isEdit: true,
-                                                                    });
+                                                                    setSelectedCategory(
+                                                                        category
+                                                                    );
+                                                                    setCategoryModal(
+                                                                        {
+                                                                            isOpen: true,
+                                                                            isEdit: true,
+                                                                        }
+                                                                    );
                                                                 }}
                                                             >
                                                                 <BiEditAlt />

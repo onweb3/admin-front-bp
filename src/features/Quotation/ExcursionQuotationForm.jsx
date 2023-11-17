@@ -10,7 +10,7 @@ import SingleExcursion from "./SingleExcursion";
 import { useHandleClickOutside } from "../../hooks";
 import axios from "../../axios";
 
-export default function ExcursionQuotationForm() {
+export default function ExcursionQuotationForm({ isEdit }) {
     const [searchedExcursions, setSearchedExcursions] = useState([]);
     const [searchText, setSearchText] = useState("");
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -273,6 +273,7 @@ export default function ExcursionQuotationForm() {
                                                     excursionTransferType={
                                                         excursionTransferType
                                                     }
+                                                    isEdit={isEdit}
                                                 />
                                             );
                                         })

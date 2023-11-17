@@ -105,7 +105,7 @@ export default function EditTransferPage() {
 
     const fetchVehicles = async () => {
         try {
-            const response = await axios.get(`/transfer/vehicle/list/all`, {
+            const response = await axios.get(`/transfer/veh/all`, {
                 headers: { authorization: `Bearer ${jwtToken}` },
             });
             setVehicles(

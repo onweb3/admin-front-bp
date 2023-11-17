@@ -413,12 +413,6 @@ const AmendmentTable = ({
                                                                         </span>{" "}
                                                                         <span className="block mt-1">
                                                                             {
-                                                                                item?.state
-                                                                            }
-                                                                            ,
-                                                                        </span>{" "}
-                                                                        <span className="block mt-1">
-                                                                            {
                                                                                 item?.country
                                                                             }
                                                                         </span>

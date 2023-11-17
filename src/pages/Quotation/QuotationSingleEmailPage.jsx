@@ -573,7 +573,7 @@ function QuotationSingleEmailPage() {
                                                                                         <br />
                                                                                         {item?.roomOccupancyName && (
                                                                                             <>
-                                                                                                <span className="">
+                                                                                                <span className="cust-border">
                                                                                                     *{" "}
                                                                                                     {
                                                                                                         item?.roomOccupancyName
@@ -594,7 +594,7 @@ function QuotationSingleEmailPage() {
                                                                     ? "Refundable"
                                                                     : "Non Refundable"}
                                                             </span> */}
-                                                                                        <span className="block mt-1">
+                                                                                        <span className="block mt-1 cust-border">
                                                                                             *{" "}
                                                                                             Room
                                                                                             Type
@@ -603,7 +603,7 @@ function QuotationSingleEmailPage() {
                                                                                                 item?.roomTypeName
                                                                                             }
                                                                                         </span>
-                                                                                        <span className="block mt-1">
+                                                                                        <span className="block mt-1 cust-border">
                                                                                             *{" "}
                                                                                             Board
                                                                                             Type
@@ -636,13 +636,6 @@ function QuotationSingleEmailPage() {
                                                                                             <span className="block mt-1">
                                                                                                 {
                                                                                                     item?.city
-                                                                                                }
-
-                                                                                                ,
-                                                                                            </span>{" "}
-                                                                                            <span className="block mt-1">
-                                                                                                {
-                                                                                                    item?.state
                                                                                                 }
 
                                                                                                 ,
@@ -1258,6 +1251,7 @@ function QuotationSingleEmailPage() {
                                 <li className="cust-border">
                                     All the above package cost is quoted in
                                     <span className="cust-border px-1">
+                                        {" "}
                                         {quotationList.quotationCurrency}
                                     </span>{" "}
                                     per person and is valid till{" "}

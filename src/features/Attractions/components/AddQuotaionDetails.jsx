@@ -5,7 +5,6 @@ import axios from "../../../axios";
 import { BtnLoader } from "../../../components";
 import QuotationPricingTransferTable from "./QuotationPricingTransferTable";
 
-
 import QuotationTransferTable from "./QuotationTransferTable";
 import QuotationVehiclePricingTable from "./QuotationVehiclePricngTable";
 import QuotationPricingTable from "./QuotatoinPricingTable";
@@ -83,7 +82,7 @@ export default function AddQuotationDetails({}) {
 
     const fetchVehicles = async () => {
         try {
-            const response = await axios.get(`/transfer/vehicle/list/all`, {
+            const response = await axios.get(`/transfer/veh/all`, {
                 headers: { authorization: `Bearer ${jwtToken}` },
             });
 

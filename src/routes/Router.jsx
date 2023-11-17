@@ -228,12 +228,11 @@ import AttractionDashboardPage from "../pages/Dashboard/AttractionDashboardPage"
 // import VehiclesListPage from "../pages/Vehicle/VehiclesListPage";
 import VehicleMakesPage from "../pages/Vehicle/VehicleMakesPage";
 import VehicleCategoriesPage from "../pages/Vehicle/VehicleCategoriesPage";
-import VehicleSubCategoriesPage from "../pages/Vehicle/VehicleSubCategoriesPage";
 import VehicleBodyTypesListPage from "../pages/Vehicle/VehicleBodyTypesListPage";
 import VehicleModelsListPage from "../pages/Vehicle/VehicleModelsListPage";
 import VehicleTrimListPage from "../pages/Vehicle/VehicleTrimListPage";
-// import AddVehiclePage from "../pages/Vehicle/AddVehiclePage";
-// import EditVehiclePage from "../pages/Vehicle/EditVehiclePage";
+import AddVehiclePage from "../pages/Vehicle/AddVehiclePage";
+import EditVehiclePage from "../pages/Vehicle/EditVehiclePage";
 import LicenseTypesPage from "../pages/Driver/LicenseTypesPage";
 import EditDriverPage from "../pages/Driver/EditDriverPage";
 import AddDriverPage from "../pages/Driver/AddDriverPage";
@@ -244,9 +243,8 @@ import VouchersV2ListPage from "../pages/Voucher/VouchersV2ListPage";
 import SingleVoucherV2Page from "../pages/Voucher/SingleVoucherV2Page";
 import EditVoucherV2Page from "../pages/Voucher/EditVoucherV2Page";
 import VouchersV2DailyReportPage from "../pages/Voucher/VouchersV2DailyReportPage";
-import AddVehiclePage from "../pages/Transfers/AddVehiclePage";
-import EditVehiclePage from "../pages/Transfers/EditVehiclePage";
-import VehicleListPage from "../pages/Transfers/VehicleList";
+import VehicleTypePage from "../pages/Vehicle/VehicleTypePage";
+import VehiclesListPage from "../pages/Vehicle/VehiclesListPage";
 
 const ThemeRoutes = [
     {
@@ -1058,8 +1056,8 @@ const ThemeRoutes = [
                 element: <VehicleCategoriesPage />,
             },
             {
-                path: "/transfers/vehicles/categories/:categoryId/sub-categories",
-                element: <VehicleSubCategoriesPage />,
+                path: "/transfers/vehicles/categories/:categoryId/vehicle-type",
+                element: <VehicleTypePage />,
             },
             {
                 path: "/transfers/vehicles/body-types",
@@ -1071,7 +1069,7 @@ const ThemeRoutes = [
             { path: "/license-types", element: <LicenseTypesPage /> },
             {
                 path: "/transfers/vehicles",
-                element: <VehicleListPage />,
+                element: <VehiclesListPage />,
             },
             {
                 path: "/transfers/vehicles/add",
