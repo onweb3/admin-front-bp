@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
+import VoucherTourTransferModal from "./VoucherTourTransferModal";
+import { FaCar } from "react-icons/fa";
+import { RiSteering2Line } from "react-icons/ri";
 
 export default function AddVoucherV2TourTableRow({
     tourItem,
@@ -6,7 +9,10 @@ export default function AddVoucherV2TourTableRow({
     tourDayIndex,
     tourItemIndex,
     deleteExtraRow,
+    initialData,
 }) {
+    const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
+
     return (
         <React.Fragment>
             <td className="p-2 border w-[35px] min-w-[35px]">
@@ -108,6 +114,29 @@ export default function AddVoucherV2TourTableRow({
                     </button>
                 </div>
             </td>
+            <td className="px-2">
+                <div
+                    className="flex items-center gap-2"
+                    onClick={() => {
+                        setIsTransferModalOpen(true);
+                    }}
+                >
+                    <span
+                        className={
+                            " " + (tourItem.pickupVehicle ? "text-green-500" : "text-[#444]")
+                        }
+                    >
+                        <FaCar />
+                    </span>
+                    <span
+                        className={
+                            " " + (tourItem.pickupDriver ? "text-green-500" : "text-[#444]")
+                        }
+                    >
+                        <RiSteering2Line />
+                    </span>
+                </div>
+            </td>
             <td className="border min-w-[100px]">
                 <div className="flex items-center px-2">
                     <input
@@ -133,6 +162,39 @@ export default function AddVoucherV2TourTableRow({
                         x
                     </button>
                 </div>
+            </td>
+            <td className="px-2">
+                <div
+                    className="flex items-center gap-2"
+                    onClick={() => {
+                        setIsTransferModalOpen(true);
+                    }}
+                >
+                    <span
+                        className={
+                            " " + (tourItem.returnVehicle ? "text-green-500" : "text-[#444]")
+                        }
+                    >
+                        <FaCar />
+                    </span>
+                    <span
+                        className={
+                            " " + (tourItem.returnDriver ? "text-green-500" : "text-[#444]")
+                        }
+                    >
+                        <RiSteering2Line />
+                    </span>
+                </div>
+                {isTransferModalOpen && (
+                    <VoucherTourTransferModal
+                        setIsTransferModalOpen={setIsTransferModalOpen}
+                        tourItem={tourItem}
+                        handleChange={handleChange}
+                        initialData={initialData}
+                        tourDayIndex={tourDayIndex}
+                        tourItemIndex={tourItemIndex}
+                    />
+                )}
             </td>
         </React.Fragment>
     );

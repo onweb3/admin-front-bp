@@ -179,7 +179,7 @@ function HotelReservation() {
                             </select>
                         </div>
                         <div className="">
-                            <label htmlFor="">Check-in Date</label>
+                            <label htmlFor="">Check-in Date From</label>
                             <input
                                 type="date"
                                 name="checkInDate"
@@ -188,7 +188,26 @@ function HotelReservation() {
                             />
                         </div>
                         <div className="">
-                            <label htmlFor="">Check-out Date</label>
+                            <label htmlFor="">Check-in Date To</label>
+                            <input
+                                type="date"
+                                name="checkInDate"
+                                value={filters.checkInDate || ""}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div className="">
+                            <label htmlFor="">Check-out Date From</label>
+                            <input
+                                type="date"
+                                className=""
+                                name="checkOutDate"
+                                value={filters.checkOutDate || ""}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div className="">
+                            <label htmlFor="">Check-out Date To</label>
                             <input
                                 type="date"
                                 className=""

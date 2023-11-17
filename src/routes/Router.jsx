@@ -1167,8 +1167,6 @@ const ThemeRoutes = [
                         path: "point-history",
                         element: <SingleUserPointHistoryPage />,
                     },
-
-                    ,
                 ],
             },
 

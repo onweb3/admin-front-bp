@@ -82,7 +82,7 @@ export default function VouchersTableV2({ vouchers, setVouchers, filters, setFil
                                     <td className="p-3">
                                         {filters.skip * filters.limit + (index + 1)}
                                     </td>
-                                    <td className="p-3">{voucher?.voucherV2Id}</td>
+                                    <td className="p-3">{voucher?.voucherId}</td>
                                     <td className="p-3 whitespace-nowrap">
                                         {formatDate(voucher?.createdAt)}
                                     </td>

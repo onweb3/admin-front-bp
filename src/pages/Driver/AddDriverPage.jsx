@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
 import { BtnLoader, MultipleSelectDropdown, SelectDropdown } from "../../components";
 import axios from "../../axios";
-import { addDriver } from "../../redux/slices/generalSlice";
 
 export default function AddDriverPage() {
     const [data, setData] = useState({
@@ -26,7 +25,6 @@ export default function AddDriverPage() {
     const { jwtToken } = useSelector((state) => state.admin);
     const { countries } = useSelector((state) => state.general);
 
-    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -41,10 +39,9 @@ export default function AddDriverPage() {
             setIsLoading(true);
             setError("");
 
-            const response = await axios.post("/drivers/add", data, {
+            await axios.post("/drivers/add", data, {
                 headers: { Authorization: `Bearer ${jwtToken}` },
             });
-            dispatch(addDriver(response.data));
             navigate("/drivers");
         } catch (err) {
             console.log(err);

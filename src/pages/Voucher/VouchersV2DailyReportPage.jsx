@@ -258,7 +258,7 @@ export default function VouchersV2DailyReportPage() {
                                 onChange={handleChange}
                             />
                         </div>
-                        <div className="">
+                        {/* <div className="">
                             <label htmlFor="">Pickup From Time</label>
                             <input
                                 type="time"
@@ -277,7 +277,7 @@ export default function VouchersV2DailyReportPage() {
                                 value={filters.pickupTimeTo || ""}
                                 onChange={handleChange}
                             />
-                        </div>
+                        </div> */}
                         <div>
                             <label htmlFor="">Limit</label>
                             <select

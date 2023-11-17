@@ -112,7 +112,7 @@ export default function SingleVoucherV2Page() {
                     <div className="bg-white rounded shadow-sm">
                         <div className="flex items-center justify-between border-b border-dashed p-4">
                             <h1 className="font-medium">
-                                Voucher Details {!isLoading && `- (#${voucher?.voucherV2Id})`}
+                                Voucher Details {!isLoading && `- (#${voucher?.voucherId})`}
                             </h1>
                             <div className="flex items-center gap-[10px]">
                                 <div className="mr-3">

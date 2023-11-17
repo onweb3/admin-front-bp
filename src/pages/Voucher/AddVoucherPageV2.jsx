@@ -6,6 +6,7 @@ import { AddVoucherV2HotelSection, AddVoucherV2TourTable } from "../../features/
 import { BtnLoader, PageLoader, RichTextEditor } from "../../components";
 import axios from "../../axios";
 import { getDates } from "../../utils";
+import moment from "moment";
 
 export default function AddVoucherPageV2() {
     const [isLoading, setIsLoading] = useState(false);
@@ -14,6 +15,8 @@ export default function AddVoucherPageV2() {
         airports: [],
         hotels: [],
         activities: [],
+        vehicles: [],
+        drivers: [],
     });
     const [data, setData] = useState({
         passengerName: "",
@@ -166,50 +169,68 @@ export default function AddVoucherPageV2() {
                                         return item?.stayNo === selectedStayIndex + 1;
                                     }
                                 );
-                                if (
-                                    index === 0 &&
-                                    isArrivalAirportDisabled === false &&
-                                    stayTransfer?.transfers?.length > 0
-                                ) {
-                                    const airportToCityTransfer = stayTransfer?.transfers?.find(
-                                        (item) => {
-                                            return item?.transferType === "airport-city";
-                                        }
-                                    );
-                                    if (airportToCityTransfer) {
+                                for (let transfer of stayTransfer?.transfers) {
+                                    if (
+                                        transfer?.transferType === "airport-city" &&
+                                        index === 0 &&
+                                        isArrivalAirportDisabled === false
+                                    ) {
                                         tourItems.push({
                                             randId: getRandId(),
-                                            tourName: `Arrival from ${airportToCityTransfer?.transferFromHubName} Drop to ${airportToCityTransfer?.transferToHubName}`,
+                                            tourName: `Arrival from ${transfer?.transferFromHubName} Drop to ${transfer?.transferToHubName}`,
                                             tourType: "arrival",
                                             date,
                                             pickupFrom: "",
                                             pickupTimeFrom: "",
                                             pickupTimeTo: "",
                                             returnTimeFrom: "",
+                                            pickupVehicle: "",
+                                            pickupDriver: "",
+                                            returnVehicle: "",
+                                            returnDriver: "",
                                         });
-                                    }
-                                } else if (
-                                    index === allDates?.length - 1 &&
-                                    isDepartureAirportDisabled === false &&
-                                    stayTransfer?.transfers?.length > 0
-                                ) {
-                                    const cityToAirportTransfer = stayTransfer?.transfers?.find(
-                                        (item) => {
-                                            return item?.transferType === "city-airport";
-                                        }
-                                    );
-                                    if (cityToAirportTransfer) {
+                                    } else if (
+                                        transfer?.transferType === "city-airport" &&
+                                        index === allDates?.length - 1 &&
+                                        isDepartureAirportDisabled === false
+                                    ) {
                                         tourItems.push({
                                             randId: getRandId(),
                                             tourName: `Departure`,
                                             tourType: "departure",
                                             date,
-                                            pickupFrom:
-                                                cityToAirportTransfer?.transferFromHubName || "",
+                                            pickupFrom: transfer?.transferFromHubName || "",
                                             pickupTimeFrom: "",
                                             pickupTimeTo: "",
                                             returnTimeFrom: "",
+                                            pickupVehicle: "",
+                                            pickupDriver: "",
+                                            returnVehicle: "",
+                                            returnDriver: "",
                                         });
+                                    } else if (transfer?.transferType === "city-city") {
+                                        const hotelData = selectedStay?.hotels?.find(
+                                            (item) => item?.hotelId === transfer?.transferToId
+                                        );
+                                        if (
+                                            hotelData &&
+                                            hotelData?.checkInDate?.substring(0, 10) === date
+                                        ) {
+                                            tourItems.push({
+                                                randId: getRandId(),
+                                                tourName: `Transfer from ${transfer?.transferFromHubName} to ${transfer?.transferToHubName}`,
+                                                tourType: "regular",
+                                                date,
+                                                pickupFrom: transfer?.transferFromHubName || "",
+                                                pickupTimeFrom: "",
+                                                pickupTimeTo: "",
+                                                returnTimeFrom: "",
+                                                pickupVehicle: "",
+                                                pickupDriver: "",
+                                                returnVehicle: "",
+                                                returnDriver: "",
+                                            });
+                                        }
                                     }
                                 }
                             }
@@ -312,6 +333,8 @@ export default function AddVoucherPageV2() {
                     hotels: response?.data?.hotels,
                     airports: response?.data?.airports,
                     activities: response?.data?.activities,
+                    vehicles: response?.data?.vehicles,
+                    drivers: response?.data?.drivers,
                 };
             });
         } catch (err) {
@@ -335,6 +358,22 @@ export default function AddVoucherPageV2() {
         };
         fetchData();
     }, []);
+
+    useEffect(() => {
+        if (data.arrivalDate && data.departureDate) {
+            const tempTours = [];
+            const allDates = getDates(data.arrivalDate, data.departureDate);
+            allDates.forEach((date) => {
+                const tourObjIndex = tourData.findIndex((tour) => moment(tour.date).isSame(date));
+                if (tourObjIndex !== -1) {
+                    tempTours.push(tourData[tourObjIndex]);
+                } else {
+                    tempTours.push({ date, tourItems: [] });
+                }
+            });
+            setTourData(JSON.parse(JSON.stringify(tempTours)));
+        }
+    }, [data.arrivalDate, data.departureDate]);
 
     return (
         <div>
@@ -586,7 +625,11 @@ export default function AddVoucherPageV2() {
                             />
                         </div>
 
-                        <AddVoucherV2TourTable tourData={tourData} setTourData={setTourData} />
+                        <AddVoucherV2TourTable
+                            tourData={tourData}
+                            setTourData={setTourData}
+                            initialData={initialData}
+                        />
 
                         <div className="mt-8">
                             <h1 className="text-[14px]">Terms And Conditions *</h1>

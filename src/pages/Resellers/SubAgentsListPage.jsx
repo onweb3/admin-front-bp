@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { FiDownload } from "react-icons/fi";
+import { BiFilter } from "react-icons/bi";
 
 import axios from "../../axios";
 import { PageLoader, Pagination } from "../../components";
@@ -15,18 +17,11 @@ export default function SubAgentsListPage() {
         totalResellers: 0,
         searchQuery: "",
         status: "",
+        country: "",
     });
 
-    const [searchParams, setSearchParams] = useSearchParams();
     const { jwtToken } = useSelector((state) => state.admin);
-
-    const prevSearchParams = (e) => {
-        let params = {};
-        for (let [key, value] of searchParams.entries()) {
-            params[key] = value;
-        }
-        return params;
-    };
+    const { countries } = useSelector((state) => state.general);
 
     const handleChange = (e) => {
         setFilters((prev) => {
@@ -34,21 +29,59 @@ export default function SubAgentsListPage() {
         });
     };
 
-    const handleStatusChange = (e) => {
-        let params = prevSearchParams();
-        setSearchParams({
-            ...params,
-            [e.target.name]: e.target.value,
+    const clearFilters = () => {
+        setFilters((prev) => {
+            return {
+                ...prev,
+                skip: 0,
+                limit: 10,
+                totalResellers: 0,
+                searchQuery: "",
+                status: "",
+                country: "",
+            };
+        });
+
+        fetchSubAgents({
             skip: 0,
+            limit: 10,
+            searchQuery: "",
+            status: "",
+            country: "",
         });
     };
 
-    const fetchSubAgents = async ({ skip, limit, status, searchQuery }) => {
+    const getExcelSheet = async ({ ...filters }) => {
+        try {
+            const response = await axios.get(
+                `/resellers/all-excelSheet?role=sub-agent&skip=${filters.skip}&limit=${filters.limit}&status=${filters.status}&searchQuery=${filters.searchQuery}&country=${filters.country}`,
+                {
+                    responseType: "blob",
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                }
+            );
+
+            const href = URL.createObjectURL(response.data);
+
+            const link = document.createElement("a");
+            link.href = href;
+            link.setAttribute("download", "sub-agents-list.xlsx");
+            document.body.appendChild(link);
+            link.click();
+
+            document.body.removeChild(link);
+            URL.revokeObjectURL(href);
+        } catch (error) {
+            console.log(error, "fentch error");
+        }
+    };
+
+    const fetchSubAgents = async ({ ...filters }) => {
         try {
             setIsLoading(true);
 
             const response = await axios.get(
-                `/resellers/all?role=sub-agent&skip=${skip}&limit=${limit}&status=${status}&searchQuery=${searchQuery}`,
+                `/resellers/all?role=sub-agent&skip=${filters.skip}&limit=${filters.limit}&status=${filters.status}&searchQuery=${filters.searchQuery}&country=${filters.country}`,
                 {
                     headers: { authorization: `Bearer ${jwtToken}` },
                 }
@@ -68,40 +101,90 @@ export default function SubAgentsListPage() {
     };
 
     useEffect(() => {
-        let skip = Number(searchParams.get("skip")) > 0 ? Number(searchParams.get("skip")) - 1 : 0;
-        let limit = Number(searchParams.get("limit")) > 0 ? Number(searchParams.get("limit")) : 10;
-        let searchQuery = searchParams.get("searchQuery") || "";
-        let status = searchParams.get("status") || "";
-
-        setFilters((prev) => {
-            return { ...prev, skip, limit, searchQuery, status };
-        });
-        fetchSubAgents({ skip, limit, searchQuery, status });
-    }, [searchParams]);
+        fetchSubAgents({ ...filters });
+    }, [filters.skip]);
 
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">B2B</h1>
+                <h1 className="font-[600] text-[15px] uppercase">Sub Agents</h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
                     </Link>
                     <span>{">"} </span>
-                    <span>b2b </span>
+                    <span>Sub Agents </span>
                 </div>
             </div>
 
             <div className="p-6">
                 <div className="bg-white rounded shadow-sm">
                     <div className="flex items-center justify-between border-b border-dashed p-4">
-                        <h1 className="font-medium">All B2B</h1>
+                        <h1 className="font-medium">All Sub Agents</h1>
                         <div className="flex items-center gap-[10px]">
+                            <div>
+                                <button
+                                    className="px-3 bg-orange-500 flex items-center gap-2"
+                                    onClick={() => getExcelSheet({ ...filters })}
+                                >
+                                    <FiDownload />
+                                    Download Excel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            if (filters.skip !== 0) {
+                                setFilters({ ...filters, skip: 0 });
+                            } else {
+                                fetchSubAgents({ ...filters });
+                            }
+                        }}
+                        className="grid grid-cols-7 items-end gap-4 border-b border-dashed p-4"
+                    >
+                        <div>
+                            <label htmlFor="">Search</label>
+                            <input
+                                type="text"
+                                placeholder="Search here..."
+                                name="searchQuery"
+                                value={filters.searchQuery || ""}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="">Country</label>
+                            <select
+                                name="country"
+                                id=""
+                                value={filters.country || ""}
+                                onChange={handleChange}
+                                className="capitalize"
+                            >
+                                <option value="">All</option>
+                                {countries?.map((country, index) => {
+                                    return (
+                                        <option
+                                            value={country?._id}
+                                            key={index}
+                                            className="capitalize"
+                                        >
+                                            {country?.countryName}
+                                        </option>
+                                    );
+                                })}
+                            </select>
+                        </div>
+                        <div>
+                            <label htmlFor="">Status</label>
                             <select
                                 name="status"
-                                value={filters.status || ""}
-                                onChange={handleStatusChange}
                                 id=""
+                                value={filters.status || ""}
+                                onChange={handleChange}
                             >
                                 <option value="">All</option>
                                 <option value="pending">Pending</option>
@@ -109,29 +192,34 @@ export default function SubAgentsListPage() {
                                 <option value="cancelled">Cancelled</option>
                                 <option value="disabled">Disabled</option>
                             </select>
-                            <form
-                                action=""
-                                onSubmit={(e) => {
-                                    e.preventDefault();
-                                    let params = prevSearchParams();
-                                    setSearchParams({
-                                        ...params,
-                                        searchQuery: filters.searchQuery,
-                                        skip: 0,
-                                    });
-                                }}
-                            >
-                                <input
-                                    type="text"
-                                    placeholder="Search here..."
-                                    className="min-w-[200px]"
-                                    name="searchQuery"
-                                    onChange={handleChange}
-                                    value={filters.searchQuery || ""}
-                                />
-                            </form>
                         </div>
-                    </div>
+                        <div>
+                            <label htmlFor="">Limit</label>
+                            <select
+                                id=""
+                                name="limit"
+                                value={filters.limit}
+                                onChange={handleChange}
+                            >
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="10000">All</option>
+                            </select>
+                        </div>
+                        <button className="flex items-center justify-center gap-[10px]">
+                            <BiFilter /> Filter
+                        </button>
+                        <button
+                            className="bg-slate-200 text-textColor"
+                            onClick={clearFilters}
+                            type="button"
+                        >
+                            Clear
+                        </button>
+                    </form>
+
                     {isLoading ? (
                         <PageLoader />
                     ) : resellers?.length < 1 ? (
@@ -173,20 +261,19 @@ export default function SubAgentsListPage() {
                                     limit={filters?.limit}
                                     skip={filters?.skip}
                                     total={filters?.totalResellers}
-                                    incOrDecSkip={(number) => {
-                                        let params = prevSearchParams();
-                                        setSearchParams({
-                                            ...params,
-                                            skip: filters.skip + number + 1,
-                                        });
-                                    }}
-                                    updateSkip={(skip) => {
-                                        let params = prevSearchParams();
-                                        setSearchParams({
-                                            ...params,
-                                            skip: skip + 1,
-                                        });
-                                    }}
+                                    incOrDecSkip={(number) =>
+                                        setFilters((prev) => {
+                                            return {
+                                                ...prev,
+                                                skip: prev.skip + number,
+                                            };
+                                        })
+                                    }
+                                    updateSkip={(skip) =>
+                                        setFilters((prev) => {
+                                            return { ...prev, skip };
+                                        })
+                                    }
                                 />
                             </div>
                         </div>

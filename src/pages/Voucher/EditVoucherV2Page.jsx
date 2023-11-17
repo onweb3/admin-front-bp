@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import moment from "moment";
 
 import { AddVoucherV2HotelSection, AddVoucherV2TourTable } from "../../features/Voucher";
 import { BtnLoader, PageLoader, RichTextEditor } from "../../components";
@@ -13,6 +14,8 @@ export default function EditVoucherV2Page() {
         airports: [],
         hotels: [],
         activities: [],
+        vehicles: [],
+        drivers: [],
     });
     const [data, setData] = useState({
         passengerName: "",
@@ -76,9 +79,23 @@ export default function EditVoucherV2Page() {
             setIsLoading(true);
             setError("");
 
+            const filteredTours = tourData.map((tour) => {
+                return {
+                    ...tour,
+                    tourItems: tour.tourItems?.map((tourItem) => {
+                        delete tourItem?.utcOffset;
+                        delete tourItem?.pickupISODateTime;
+                        delete tourItem?.pickupISOToDateTime;
+                        delete tourItem?.returnISODateTime;
+
+                        return tourItem;
+                    }),
+                };
+            });
+
             const response = await axios.patch(
                 `/v2/vouchers/update/${id}`,
-                { ...data, tours: tourData, hotels },
+                { ...data, tours: filteredTours, hotels },
                 {
                     headers: { authorization: `Bearer ${jwtToken}` },
                 }
@@ -152,18 +169,28 @@ export default function EditVoucherV2Page() {
             });
             setHotels(tempHotels);
 
-            const updatedTours = tours?.map((item) => {
-                delete item._id;
-                if (!isNaN(item.pickupTimeFrom) && item.pickupTimeFrom !== null) {
-                    item.pickupTimeFrom = convertMinutesTo24HourTime(item?.pickupTimeFrom);
-                }
-                if (!isNaN(item.pickupTimeTo) && item.pickupTimeTo !== null) {
-                    item.pickupTimeTo = convertMinutesTo24HourTime(item?.pickupTimeTo);
-                }
-                if (!isNaN(item.returnTimeFrom) && item.returnTimeFrom !== null) {
-                    item.returnTimeFrom = convertMinutesTo24HourTime(item?.returnTimeFrom);
-                }
-                return item;
+            const updatedTours = tours?.map((tour) => {
+                return {
+                    ...tour,
+                    tourItems: tour?.tourItems?.map((tourItem) => {
+                        if (tourItem.pickupISODateTime) {
+                            tourItem.pickupTimeFrom = moment(tourItem.pickupISODateTime)
+                                .utcOffset(tourItem.utcOffset)
+                                .format("HH:mm");
+                        }
+                        if (tourItem.pickupISOToDateTime) {
+                            tourItem.pickupTimeTo = moment(tourItem.pickupISOToDateTime)
+                                .utcOffset(tourItem.utcOffset)
+                                .format("HH:mm");
+                        }
+                        if (tourItem.returnISODateTime) {
+                            tourItem.returnTimeFrom = moment(tourItem.returnISODateTime)
+                                .utcOffset(tourItem.utcOffset)
+                                .format("HH:mm");
+                        }
+                        return tourItem;
+                    }),
+                };
             });
             setTourData(updatedTours || []);
             setIsPageLoading(false);
@@ -184,6 +211,8 @@ export default function EditVoucherV2Page() {
                     hotels: response?.data?.hotels,
                     airports: response?.data?.airports,
                     activities: response?.data?.activities,
+                    vehicles: response?.data?.vehicles,
+                    drivers: response?.data?.drivers,
                 };
             });
         } catch (err) {
@@ -462,7 +491,11 @@ export default function EditVoucherV2Page() {
                             />
                         </div>
 
-                        <AddVoucherV2TourTable tourData={tourData} setTourData={setTourData} />
+                        <AddVoucherV2TourTable
+                            tourData={tourData}
+                            setTourData={setTourData}
+                            initialData={initialData}
+                        />
 
                         <div className="mt-8">
                             <h1 className="text-[14px]">Terms And Conditions *</h1>

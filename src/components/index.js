@@ -7,6 +7,7 @@ import Pagination from "./Pagination";
 import Toggle from "./Toggle";
 import MultipleSelectDropdown from "./MultipleSelectDropdown";
 import SelectDropdown from "./SelectDropdown";
+import GlobalSearchInp from "./GlobalSearch/GlobalSearchInp";
 
 export {
     Header,
@@ -18,4 +19,5 @@ export {
     Toggle,
     MultipleSelectDropdown,
     SelectDropdown,
+    GlobalSearchInp,
 };

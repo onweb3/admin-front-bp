@@ -1,5 +1,4 @@
 import React from "react";
-import { AiOutlineShoppingCart } from "react-icons/ai";
 import { FiDownload } from "react-icons/fi";
 import { useSelector } from "react-redux";
 import axios from "../../../axios";

@@ -4,7 +4,7 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { formatDate } from "../../../utils";
 import AddVoucherV2TourTableRow from "./AddVoucherV2TourTableRow";
 
-export default function AddVoucherV2TourTable({ tourData, setTourData }) {
+export default function AddVoucherV2TourTable({ tourData, setTourData, initialData }) {
     const handleDragEnd = ({ destination, source }) => {
         if (!destination) {
             return;
@@ -47,6 +47,10 @@ export default function AddVoucherV2TourTable({ tourData, setTourData }) {
             pickupTimeFrom: "",
             pickupTimeTo: "",
             returnTimeFrom: "",
+            pickupVehicle: "",
+            pickupDriver: "",
+            returnVehicle: "",
+            returnDriver: "",
         });
         setTourData(JSON.parse(JSON.stringify(tempTourData)));
     };
@@ -93,7 +97,9 @@ export default function AddVoucherV2TourTable({ tourData, setTourData }) {
                                             <th className="font-[500] p-2 border">
                                                 Pickup Time To
                                             </th>
+                                            <th className="font-[500] p-2 border">Transfer</th>
                                             <th className="font-[500] p-2 border">Return Time</th>
+                                            <th className="font-[500] p-2 border">Transfer</th>
                                         </tr>
                                     </thead>
                                     <Droppable droppableId={tour?.date}>
@@ -108,8 +114,10 @@ export default function AddVoucherV2TourTable({ tourData, setTourData }) {
                                                         (tourItem, tourItemIndex) => {
                                                             return (
                                                                 <Draggable
-                                                                    key={tourItem?._id ||
-                                                                        tourItem?.randId}
+                                                                    key={
+                                                                        tourItem?._id ||
+                                                                        tourItem?.randId
+                                                                    }
                                                                     index={tourItemIndex}
                                                                     draggableId={
                                                                         tourItem?._id ||
@@ -141,6 +149,9 @@ export default function AddVoucherV2TourTable({ tourData, setTourData }) {
                                                                                     }
                                                                                     deleteExtraRow={
                                                                                         deleteExtraRow
+                                                                                    }
+                                                                                    initialData={
+                                                                                        initialData
                                                                                     }
                                                                                 />
                                                                             </tr>

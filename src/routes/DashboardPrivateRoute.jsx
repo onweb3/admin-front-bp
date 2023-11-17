@@ -7,6 +7,7 @@ function DashboardPrivateRoute({ children, ...rest }) {
 
     const names = [
         "recent-hotel-reservations",
+        "unconfirmed-hotel-reservations",
         "hotel-expiring-paylater-report",
         "next-day-arrival-hotel-reservations",
         "next-day-departure-hotel-reservations",

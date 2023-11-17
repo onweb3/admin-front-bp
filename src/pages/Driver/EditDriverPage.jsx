@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-import { MultipleSelectDropdown, SelectDropdown } from "../../components";
+import { BtnLoader, MultipleSelectDropdown, PageLoader, SelectDropdown } from "../../components";
 import axios from "../../axios";
 
 export default function EditDriverPage() {
@@ -21,12 +21,12 @@ export default function EditDriverPage() {
     const [initialData, setInitialData] = useState({
         licenseTypes: [],
     });
+    const [isPageLoading, setIsPageLoading] = useState(true);
 
     const { jwtToken } = useSelector((state) => state.admin);
     const { countries } = useSelector((state) => state.general);
     const { driverId } = useParams();
 
-    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -41,16 +41,49 @@ export default function EditDriverPage() {
             setIsLoading(true);
             setError("");
 
-            const response = await axios.post("/drivers/add", data, {
+            await axios.patch(`/drivers/update/${driverId}`, data, {
                 headers: { Authorization: `Bearer ${jwtToken}` },
             });
-            dispatch(addDriver(response.data));
             navigate("/drivers");
         } catch (err) {
             setError(err?.response?.data?.error || "Something went wrong, Try again");
             setIsLoading(false);
         }
     };
+
+    const fetchDriverDetails = async () => {
+        try {
+            setIsPageLoading(true);
+
+            const response = await axios.get(`/drivers/single/${driverId}`, {
+                headers: { Authorization: `Bearer ${jwtToken}` },
+            });
+
+            setData((prev) => {
+                return {
+                    ...prev,
+                    driverName: response?.data?.driverName,
+                    nationality: response?.data?.nationality,
+                    email: response?.data?.email,
+                    phoneNumber: response?.data?.phoneNumber,
+                    whatsappNumber: response?.data?.whatsappNumber,
+                    licenseNumber: response?.data?.licenseNumber,
+                    licenseExpDate: response?.data?.licenseExpDate
+                        ? new Date(response?.data?.licenseExpDate).toISOString().substring(0, 10)
+                        : "",
+                    availLicenseTypes: response?.data?.availLicenseTypes || [],
+                };
+            });
+
+            setIsPageLoading(false);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    useEffect(() => {
+        fetchDriverDetails();
+    }, []);
 
     useEffect(() => {
         const fetchInitialData = async () => {
@@ -90,133 +123,139 @@ export default function EditDriverPage() {
                 </div>
             </div>
 
-            <div className="p-6">
-                <div className="bg-white rounded p-6 shadow-sm">
-                    <form action="" onSubmit={handleSubmit}>
-                        <div className="grid grid-cols-3 gap-4">
-                            <div>
-                                <label htmlFor="">Driver Name</label>
-                                <input
-                                    type="text"
-                                    placeholder="Ex: John Deo"
-                                    name="driverName"
-                                    value={data.driverName || ""}
-                                    onChange={handleChange}
-                                    required
-                                />
+            {isPageLoading ? (
+                <PageLoader />
+            ) : (
+                <div className="p-6">
+                    <div className="bg-white rounded p-6 shadow-sm">
+                        <form action="" onSubmit={handleSubmit}>
+                            <div className="grid grid-cols-3 gap-4">
+                                <div>
+                                    <label htmlFor="">Driver Name</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Ex: John Deo"
+                                        name="driverName"
+                                        value={data.driverName || ""}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="">Nationality</label>
+                                    <SelectDropdown
+                                        data={countries}
+                                        valueName={"isocode"}
+                                        displayName={"countryName"}
+                                        placeholder={"Select Nationality"}
+                                        selectedData={data.nationality}
+                                        setSelectedData={(val) => {
+                                            setData((prev) => {
+                                                return { ...prev, nationality: val };
+                                            });
+                                        }}
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="">Email</label>
+                                    <input
+                                        type="email"
+                                        placeholder="Ex: example@example.com"
+                                        name="email"
+                                        value={data.email || ""}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="">Phone Number</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Enter Phone Number"
+                                        name="phoneNumber"
+                                        value={data.phoneNumber || ""}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                    <span className="block text-sm mt-2 text-grayColor">
+                                        Include country code with mobile number
+                                    </span>
+                                </div>
+                                <div>
+                                    <label htmlFor="">Whatsapp Number</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Enter Whatsapp Number"
+                                        name="whatsappNumber"
+                                        value={data.whatsappNumber || ""}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                    <span className="block text-sm mt-2 text-grayColor">
+                                        Include country code with mobile number
+                                    </span>
+                                </div>
+                                <div>
+                                    <label htmlFor="">License Number</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Enter License Number"
+                                        name="licenseNumber"
+                                        value={data.licenseNumber || ""}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="">License Expiry Date</label>
+                                    <input
+                                        type="date"
+                                        name="licenseExpDate"
+                                        value={data.licenseExpDate || ""}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="">License Types</label>
+                                    <MultipleSelectDropdown
+                                        data={initialData.licenseTypes || []}
+                                        displayName={"licenseType"}
+                                        valueName={"_id"}
+                                        selectedData={data.availLicenseTypes}
+                                        setSelectedData={(val) => {
+                                            setData((prev) => {
+                                                return { ...prev, availLicenseTypes: val };
+                                            });
+                                        }}
+                                    />
+                                </div>
                             </div>
-                            <div>
-                                <label htmlFor="">Nationality</label>
-                                <SelectDropdown
-                                    data={countries}
-                                    valueName={"isocode"}
-                                    displayName={"countryName"}
-                                    placeholder={"Select Nationality"}
-                                    selectedData={data.nationality}
-                                    setSelectedData={(val) => {
-                                        setData((prev) => {
-                                            return { ...prev, nationality: val };
-                                        });
-                                    }}
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="">Email</label>
-                                <input
-                                    type="email"
-                                    placeholder="Ex: example@example.com"
-                                    name="email"
-                                    value={data.email || ""}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="">Phone Number</label>
-                                <input
-                                    type="text"
-                                    placeholder="Enter Phone Number"
-                                    name="phoneNumber"
-                                    value={data.phoneNumber || ""}
-                                    onChange={handleChange}
-                                    required
-                                />
-                                <span className="block text-sm mt-2 text-grayColor">
-                                    Include country code with mobile number
-                                </span>
-                            </div>
-                            <div>
-                                <label htmlFor="">Whatsapp Number</label>
-                                <input
-                                    type="text"
-                                    placeholder="Enter Whatsapp Number"
-                                    name="whatsappNumber"
-                                    value={data.whatsappNumber || ""}
-                                    onChange={handleChange}
-                                    required
-                                />
-                                <span className="block text-sm mt-2 text-grayColor">
-                                    Include country code with mobile number
-                                </span>
-                            </div>
-                            <div>
-                                <label htmlFor="">License Number</label>
-                                <input
-                                    type="text"
-                                    placeholder="Enter License Number"
-                                    name="licenseNumber"
-                                    value={data.licenseNumber || ""}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="">License Expiry Date</label>
-                                <input
-                                    type="date"
-                                    name="licenseExpDate"
-                                    value={data.licenseExpDate || ""}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="">License Types</label>
-                                <MultipleSelectDropdown
-                                    data={initialData.licenseTypes || []}
-                                    displayName={"licenseType"}
-                                    valueName={"_id"}
-                                    selectedData={data.availLicenseTypes}
-                                    setSelectedData={(val) => {
-                                        setData((prev) => {
-                                            return { ...prev, availLicenseTypes: val };
-                                        });
-                                    }}
-                                />
-                            </div>
-                        </div>
 
-                        {error && <span className="text-sm block text-red-500 mt-2">{error}</span>}
-                        <div className="mt-4 flex items-center justify-end gap-[12px]">
-                            <button
-                                className="bg-slate-300 text-textColor px-[15px]"
-                                type="button"
-                                onClick={() =>
-                                    setDriverModal({
-                                        isOpen: false,
-                                        isEdit: false,
-                                    })
-                                }
-                            >
-                                Cancel
-                            </button>
-                            <button className="w-[150px]">
-                                {isLoading ? <BtnLoader /> : "Add Driver"}
-                            </button>
-                        </div>
-                    </form>
+                            {error && (
+                                <span className="text-sm block text-red-500 mt-2">{error}</span>
+                            )}
+                            <div className="mt-4 flex items-center justify-end gap-[12px]">
+                                <button
+                                    className="bg-slate-300 text-textColor px-[15px]"
+                                    type="button"
+                                    onClick={() =>
+                                        setDriverModal({
+                                            isOpen: false,
+                                            isEdit: false,
+                                        })
+                                    }
+                                >
+                                    Cancel
+                                </button>
+                                <button className="w-[150px]">
+                                    {isLoading ? <BtnLoader /> : "Update Driver"}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 }
