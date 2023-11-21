@@ -844,8 +844,8 @@ const AmendmentTable = ({
                                                                       ? `${transfer.transferFromHubName} (${transfer.transferFromName}) - ${transfer.transferToHubName} (${transfer.transferToName})`
                                                                       : transfer?.transferType ===
                                                                         "airport-city"
-                                                                      ? `${transfer.transferFromName} (airport) - ${transfer.transferToHubName} (${transfer.transferToName})`
-                                                                      : `${transfer.transferFromHubName} (${transfer.transferFromName}) - ${transfer.transferToName} (airport)`}
+                                                                      ? `${transfer.transferFromHubName} (airport) - ${transfer.transferToHubName} (${transfer.transferToName})`
+                                                                      : `${transfer.transferFromHubName} (${transfer.transferFromName}) - ${transfer.transferToHubName} (airport)`}
                                                               </div>
                                                           );
                                                       }
