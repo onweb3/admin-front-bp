@@ -1,18 +1,66 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { MdClose } from "react-icons/md";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 import { useHandleClickOutside } from "../../../hooks";
+import axios from "../../../axios";
+import { BtnLoader } from "../../../components";
 
 export default function VoucherTourTransferModal({
     setIsTransferModalOpen,
-    tourItem,
-    handleChange,
     initialData,
-    tourDayIndex,
-    tourItemIndex,
+    setSchedules,
 }) {
+    const [data, setData] = useState({
+        pickupVehicle: "",
+        pickupDriver: "",
+        transferType: "pickup-drop",
+        vehicleSource: "in-house",
+    });
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState("");
+
+    const { jwtToken } = useSelector((state) => state.admin);
     const wrapperRef = useRef();
     useHandleClickOutside(wrapperRef, () => setIsTransferModalOpen(false));
+    const { voucherId, tourId } = useParams();
+
+    const handleChange = (e) => {
+        setData((prev) => {
+            return { ...prev, [e.target.name]: e.target.value };
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        try {
+            e.preventDefault();
+            setIsLoading(true);
+            setError("");
+
+            const response = await axios.post(
+                `/v2/vouchers/tours/transfers/add`,
+                {
+                    ...data,
+                    voucherId,
+                    tourId,
+                },
+                {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                }
+            );
+
+            setSchedules((prev) => {
+                return [...response.data, ...prev];
+            });
+            setIsTransferModalOpen(false);
+
+            setIsLoading(false);
+        } catch (err) {
+            setError(err?.response?.data?.error || "something went wrong, try again");
+            setIsLoading(false);
+        }
+    };
 
     return (
         <div className="fixed inset-0 w-full h-full bg-[#fff5] flex items-center justify-center z-20 ">
@@ -30,14 +78,29 @@ export default function VoucherTourTransferModal({
                     </button>
                 </div>
                 <div className="p-4">
-                    <div>
+                    <form onSubmit={handleSubmit}>
                         <div>
+                            <label htmlFor="">Transfer Type</label>
+                            <select
+                                id=""
+                                name="transferType"
+                                value={data?.transferType || ""}
+                                onChange={handleChange}
+                            >
+                                <option value="" hidden>
+                                    Select Transfer Type
+                                </option>
+                                <option value="pickup-drop">Pickup & Drop</option>
+                                <option value="disposal">Disposal</option>
+                            </select>
+                        </div>
+                        <div className="mt-4">
                             <label htmlFor="">Pickup Vehicle</label>
                             <select
                                 id=""
                                 name="pickupVehicle"
-                                value={tourItem?.pickupVehicle || ""}
-                                onChange={(e) => handleChange(e, tourDayIndex, tourItemIndex)}
+                                value={data?.pickupVehicle || ""}
+                                onChange={handleChange}
                             >
                                 <option value="" hidden>
                                     Select Pickup Vehicle
@@ -57,8 +120,8 @@ export default function VoucherTourTransferModal({
                             <select
                                 id=""
                                 name="pickupDriver"
-                                value={tourItem?.pickupDriver || ""}
-                                onChange={(e) => handleChange(e, tourDayIndex, tourItemIndex)}
+                                value={data?.pickupDriver || ""}
+                                onChange={handleChange}
                             >
                                 <option value="" hidden>
                                     Select Pickup Driver
@@ -72,51 +135,58 @@ export default function VoucherTourTransferModal({
                                 })}
                             </select>
                         </div>
-                        <div className="mt-4">
-                            <label htmlFor="">Return Vehicle</label>
-                            <select
-                                id=""
-                                name="returnVehicle"
-                                value={tourItem?.returnVehicle || ""}
-                                onChange={(e) => handleChange(e, tourDayIndex, tourItemIndex)}
-                            >
-                                <option value="" hidden>
-                                    Select Return Vehicle
-                                </option>
-                                {initialData?.vehicles?.map((item, index) => {
-                                    return (
-                                        <option value={item?._id} key={index}>
-                                            {item?.vehicleModel?.modelName} (
-                                            {item?.vehicleTrim?.trimName})
+                        {data.transferType === "pickup-drop" && (
+                            <>
+                                <div className="mt-4">
+                                    <label htmlFor="">Return Vehicle</label>
+                                    <select
+                                        id=""
+                                        name="returnVehicle"
+                                        value={data?.returnVehicle || ""}
+                                        onChange={handleChange}
+                                    >
+                                        <option value="" hidden>
+                                            Select Return Vehicle
                                         </option>
-                                    );
-                                })}
-                            </select>
-                        </div>
-                        <div className="mt-4">
-                            <label htmlFor="">Return Driver</label>
-                            <select
-                                id=""
-                                name="returnDriver"
-                                value={tourItem?.returnDriver || ""}
-                                onChange={(e) => handleChange(e, tourDayIndex, tourItemIndex)}
-                            >
-                                <option value="" hidden>
-                                    Select Return Driver
-                                </option>
-                                {initialData?.drivers?.map((item, index) => {
-                                    return (
-                                        <option value={item?._id} key={index}>
-                                            {item?.driverName}
+                                        {initialData?.vehicles?.map((item, index) => {
+                                            return (
+                                                <option value={item?._id} key={index}>
+                                                    {item?.vehicleModel?.modelName} (
+                                                    {item?.vehicleTrim?.trimName})
+                                                </option>
+                                            );
+                                        })}
+                                    </select>
+                                </div>
+                                <div className="mt-4">
+                                    <label htmlFor="">Return Driver</label>
+                                    <select
+                                        id=""
+                                        name="returnDriver"
+                                        value={data?.returnDriver || ""}
+                                        onChange={handleChange}
+                                    >
+                                        <option value="" hidden>
+                                            Select Return Driver
                                         </option>
-                                    );
-                                })}
-                            </select>
-                        </div>
+                                        {initialData?.drivers?.map((item, index) => {
+                                            return (
+                                                <option value={item?._id} key={index}>
+                                                    {item?.driverName}
+                                                </option>
+                                            );
+                                        })}
+                                    </select>
+                                </div>
+                            </>
+                        )}
+                        {error && <span className="block mt-2 text-sm text-red-500">{error}</span>}
                         <div className="mt-4 flex items-center justify-end gap-[12px]">
-                            <button className="w-[150px]">{"Close Modal"}</button>
+                            <button className="w-[150px]" disabled={isLoading}>
+                                {isLoading ? <BtnLoader /> : "Submit"}
+                            </button>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>

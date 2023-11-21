@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import moment from "moment";
 
-import { convertMinutesTo12HourTime, formatDate } from "../../../utils";
+import { formatDate } from "../../../utils";
 import axios from "../../../axios";
 
-export default function SingleVoucherTourRow({ tour, index, voucherAmendId }) {
+export default function SingleV2VoucherTourRow({ tour, index, voucherAmendId }) {
     const [tourStatus, setTourStatus] = useState(tour?.status || "");
     const [isLoading, setIsLoading] = useState(false);
 
@@ -16,7 +17,7 @@ export default function SingleVoucherTourRow({ tour, index, voucherAmendId }) {
             if (isConfirm) {
                 setIsLoading(true);
                 await axios.patch(
-                    `/vouchers/tour-status/update`,
+                    `/v2/vouchers/tour-status/update`,
                     {
                         voucherAmendId,
                         status: status,
@@ -43,18 +44,18 @@ export default function SingleVoucherTourRow({ tour, index, voucherAmendId }) {
             <td className="p-3">{formatDate(tour?.date)}</td>
             <td className="p-3">{tour?.pickupFrom || "N/A"}</td>
             <td className="p-3">
-                {!isNaN(tour?.pickupTimeFrom) && tour?.pickupTimeFrom !== null
-                    ? convertMinutesTo12HourTime(tour?.pickupTimeFrom)
+                {tour?.pickupISODateTime
+                    ? moment(tour?.pickupISODateTime).utcOffset(tour?.utcOffset).format("HH:mm")
                     : "N/A"}
             </td>
             <td className="p-3">
-                {!isNaN(tour?.pickupTimeTo) && tour?.pickupTimeTo !== null
-                    ? convertMinutesTo12HourTime(tour?.pickupTimeTo)
+                {tour?.pickupISOToDateTime
+                    ? moment(tour?.pickupISOToDateTime).utcOffset(tour?.utcOffset).format("HH:mm")
                     : "N/A"}
             </td>
             <td className="p-3">
-                {!isNaN(tour?.returnTimeFrom) && tour?.returnTimeFrom !== null
-                    ? convertMinutesTo12HourTime(tour?.returnTimeFrom)
+                {tour?.returnISODateTime
+                    ? moment(tour?.returnISODateTime).utcOffset(tour?.utcOffset).format("HH:mm")
                     : "N/A"}
             </td>
             <td>

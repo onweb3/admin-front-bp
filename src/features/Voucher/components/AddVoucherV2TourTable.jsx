@@ -42,15 +42,11 @@ export default function AddVoucherV2TourTable({ tourData, setTourData, initialDa
             randId: "RANDID" + (Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000) + Date.now(),
             tourName: "",
             tourType: "regular",
-            date: "",
+            date: tempTourData[tourDayIndex].date,
             pickupFrom: "",
             pickupTimeFrom: "",
             pickupTimeTo: "",
             returnTimeFrom: "",
-            pickupVehicle: "",
-            pickupDriver: "",
-            returnVehicle: "",
-            returnDriver: "",
         });
         setTourData(JSON.parse(JSON.stringify(tempTourData)));
     };
@@ -63,6 +59,12 @@ export default function AddVoucherV2TourTable({ tourData, setTourData, initialDa
         });
     };
 
+    const handleChangeByName = ({ name, value, tourDayIndex, tourItemIndex }) => {
+        const tempTourData = tourData;
+        tempTourData[tourDayIndex].tourItems[tourItemIndex][name] = value;
+        setTourData(JSON.parse(JSON.stringify(tempTourData)));
+    };
+
     return (
         <div className="mt-8">
             <h2 className="font-medium mb-2">Tours Itinerary</h2>
@@ -73,7 +75,7 @@ export default function AddVoucherV2TourTable({ tourData, setTourData, initialDa
                             <h4 className="font-medium text-sm mb-2">
                                 Day {tourDayIndex + 1} ({formatDate(tour?.date)})
                             </h4>
-                            <div className="overflow-x-auto">
+                            <div className="">
                                 <table className="w-full">
                                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px]">
                                         <tr>
@@ -97,9 +99,7 @@ export default function AddVoucherV2TourTable({ tourData, setTourData, initialDa
                                             <th className="font-[500] p-2 border">
                                                 Pickup Time To
                                             </th>
-                                            <th className="font-[500] p-2 border">Transfer</th>
                                             <th className="font-[500] p-2 border">Return Time</th>
-                                            <th className="font-[500] p-2 border">Transfer</th>
                                         </tr>
                                     </thead>
                                     <Droppable droppableId={tour?.date}>
@@ -149,6 +149,9 @@ export default function AddVoucherV2TourTable({ tourData, setTourData, initialDa
                                                                                     }
                                                                                     deleteExtraRow={
                                                                                         deleteExtraRow
+                                                                                    }
+                                                                                    handleChangeByName={
+                                                                                        handleChangeByName
                                                                                     }
                                                                                     initialData={
                                                                                         initialData

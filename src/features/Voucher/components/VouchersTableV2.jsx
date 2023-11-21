@@ -15,7 +15,7 @@ export default function VouchersTableV2({ vouchers, setVouchers, filters, setFil
     const downloadVoucherPdf = async (id) => {
         try {
             const response = await axios.get(
-                `/vouchers/${id}/pdf/download?dateTime=${formatDate(new Date(), true)}`,
+                `/v2/vouchers/${id}/pdf/download?dateTime=${formatDate(new Date(), true)}`,
                 {
                     headers: { authorization: `Bearer ${jwtToken}` },
                     responseType: "arraybuffer",
@@ -35,7 +35,7 @@ export default function VouchersTableV2({ vouchers, setVouchers, filters, setFil
         try {
             const isConfirm = window.confirm("Are you sure to delete?");
             if (isConfirm) {
-                await axios.delete(`/vouchers/delete/${id}`, {
+                await axios.delete(`/v2/vouchers/delete/${id}`, {
                     headers: { authorization: `Bearer ${jwtToken}` },
                 });
 

@@ -6,6 +6,7 @@ import AddVoucherV2TourTable from "./components/AddVoucherV2TourTable";
 import AddVoucherV2HotelSection from "./components/AddVoucherV2HotelSection";
 import VouchersTableV2 from "./components/VouchersTableV2";
 import VoucherV2DailyReportsTable from "./components/VoucherV2DailyReportsTable";
+import SingleV2VoucherTourRow from "./components/SingleV2VoucherTourRow";
 
 export {
     VoucherDailyReportTable,
@@ -16,4 +17,5 @@ export {
     AddVoucherV2HotelSection,
     VouchersTableV2,
     VoucherV2DailyReportsTable,
+    SingleV2VoucherTourRow,
 };

@@ -184,10 +184,13 @@ export default function AddVoucherPageV2() {
                                             pickupTimeFrom: "",
                                             pickupTimeTo: "",
                                             returnTimeFrom: "",
-                                            pickupVehicle: "",
-                                            pickupDriver: "",
-                                            returnVehicle: "",
-                                            returnDriver: "",
+                                            qtnTransfers:
+                                                transfer?.vehicleTypes?.map((item) => {
+                                                    return {
+                                                        vehicleType: item?.vehicle,
+                                                        count: item?.count,
+                                                    };
+                                                }) || [],
                                         });
                                     } else if (
                                         transfer?.transferType === "city-airport" &&
@@ -203,10 +206,13 @@ export default function AddVoucherPageV2() {
                                             pickupTimeFrom: "",
                                             pickupTimeTo: "",
                                             returnTimeFrom: "",
-                                            pickupVehicle: "",
-                                            pickupDriver: "",
-                                            returnVehicle: "",
-                                            returnDriver: "",
+                                            qtnTransfers:
+                                                transfer?.vehicleTypes?.map((item) => {
+                                                    return {
+                                                        vehicleType: item?.vehicle,
+                                                        count: item?.count,
+                                                    };
+                                                }) || [],
                                         });
                                     } else if (transfer?.transferType === "city-city") {
                                         const hotelData = selectedStay?.hotels?.find(
@@ -225,10 +231,13 @@ export default function AddVoucherPageV2() {
                                                 pickupTimeFrom: "",
                                                 pickupTimeTo: "",
                                                 returnTimeFrom: "",
-                                                pickupVehicle: "",
-                                                pickupDriver: "",
-                                                returnVehicle: "",
-                                                returnDriver: "",
+                                                qtnTransfers:
+                                                    transfer?.vehicleTypes?.map((item) => {
+                                                        return {
+                                                            vehicleType: item?.vehicle,
+                                                            count: item?.count,
+                                                        };
+                                                    }) || [],
                                             });
                                         }
                                     }
@@ -273,6 +282,13 @@ export default function AddVoucherPageV2() {
                                         pickupTimeFrom: "",
                                         pickupTimeTo: "",
                                         returnTimeFrom: "",
+                                        qtnTransfers:
+                                            excursion?.vehicleTypes?.map((item) => {
+                                                return {
+                                                    vehicleType: item?.vehicle,
+                                                    count: item?.count,
+                                                };
+                                            }) || [],
                                     });
                                 }
 

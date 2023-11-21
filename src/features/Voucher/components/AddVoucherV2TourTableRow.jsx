@@ -1,7 +1,6 @@
-import React, { useState } from "react";
-import VoucherTourTransferModal from "./VoucherTourTransferModal";
-import { FaCar } from "react-icons/fa";
-import { RiSteering2Line } from "react-icons/ri";
+import React, { useRef, useState } from "react";
+
+import { useHandleClickOutside } from "../../../hooks";
 
 export default function AddVoucherV2TourTableRow({
     tourItem,
@@ -9,9 +8,21 @@ export default function AddVoucherV2TourTableRow({
     tourDayIndex,
     tourItemIndex,
     deleteExtraRow,
+    handleChangeByName,
     initialData,
 }) {
-    const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
+    const [isActivitiesDropdownOpen, setIsActivitiesDropdownOpen] = useState(false);
+
+    const hotelDropdownRef = useRef(null);
+    useHandleClickOutside(hotelDropdownRef, () => setIsActivitiesDropdownOpen(false));
+
+    const filteredActivities = tourItem?.tourName
+        ? initialData?.activities?.filter((item) => {
+              return item?.activity?.name
+                  ?.toLowerCase()
+                  ?.includes(tourItem?.tourName?.toLowerCase());
+          })
+        : initialData?.activities;
 
     return (
         <React.Fragment>
@@ -29,12 +40,42 @@ export default function AddVoucherV2TourTableRow({
                 </div>
             </td>
             <td className="border w-[400px] min-w-[400px]">
-                <input
-                    type="text"
-                    name="tourName"
-                    value={tourItem?.tourName || ""}
-                    onChange={(e) => handleChange(e, tourDayIndex, tourItemIndex)}
-                />
+                <div className="relative" ref={hotelDropdownRef}>
+                    <input
+                        type="text"
+                        name="tourName"
+                        value={tourItem?.tourName || ""}
+                        onChange={(e) => {
+                            if (isActivitiesDropdownOpen === false)
+                                setIsActivitiesDropdownOpen(true);
+                            handleChange(e, tourDayIndex, tourItemIndex);
+                        }}
+                        onFocus={() => setIsActivitiesDropdownOpen(true)}
+                    />
+                    {isActivitiesDropdownOpen && (
+                        <div className="absolute top-[100%] left-0 w-full bg-white shadow rounded overflow-y-auto max-h-[250px] z-10">
+                            {filteredActivities?.map((activity, ind) => {
+                                return (
+                                    <div
+                                        key={ind}
+                                        className="py-[6px] px-4 text-[15px] cursor-pointer hover:bg-[#f3f6f9]"
+                                        onClick={() => {
+                                            handleChangeByName({
+                                                tourDayIndex,
+                                                tourItemIndex,
+                                                name: "tourName",
+                                                value: activity?.activity?.name,
+                                            });
+                                            setIsActivitiesDropdownOpen(false);
+                                        }}
+                                    >
+                                        <span>{activity?.activity?.name}</span>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    )}
+                </div>
             </td>
             <td>
                 <select
@@ -74,15 +115,14 @@ export default function AddVoucherV2TourTableRow({
                     <button
                         className="w-[15px] min-w-[15px] h-[15px] min-h-[15px] ml-2 bg-gray-500 p-0 flex items-center justify-center"
                         type="button"
-                        // onClick={() => {
-                        //     handleExtraDataChange(
-                        //         {
-                        //             index,
-                        //             name: "pickupTimeFrom",
-                        //             value: "",
-                        //         }
-                        //     );
-                        // }}
+                        onClick={() => {
+                            handleChangeByName({
+                                tourDayIndex,
+                                tourItemIndex,
+                                name: "pickupTimeFrom",
+                                value: "",
+                            });
+                        }}
                     >
                         x
                     </button>
@@ -100,41 +140,17 @@ export default function AddVoucherV2TourTableRow({
                     <button
                         className="w-[15px] min-w-[15px] h-[15px] min-h-[15px] ml-2 bg-gray-500 p-0 flex items-center justify-center"
                         type="button"
-                        // onClick={() => {
-                        //     handleExtraDataChange(
-                        //         {
-                        //             index,
-                        //             name: "pickupTimeTo",
-                        //             value: "",
-                        //         }
-                        //     );
-                        // }}
+                        onClick={() => {
+                            handleChangeByName({
+                                tourDayIndex,
+                                tourItemIndex,
+                                name: "pickupTimeTo",
+                                value: "",
+                            });
+                        }}
                     >
                         x
                     </button>
-                </div>
-            </td>
-            <td className="px-2">
-                <div
-                    className="flex items-center gap-2"
-                    onClick={() => {
-                        setIsTransferModalOpen(true);
-                    }}
-                >
-                    <span
-                        className={
-                            " " + (tourItem.pickupVehicle ? "text-green-500" : "text-[#444]")
-                        }
-                    >
-                        <FaCar />
-                    </span>
-                    <span
-                        className={
-                            " " + (tourItem.pickupDriver ? "text-green-500" : "text-[#444]")
-                        }
-                    >
-                        <RiSteering2Line />
-                    </span>
                 </div>
             </td>
             <td className="border min-w-[100px]">
@@ -149,52 +165,18 @@ export default function AddVoucherV2TourTableRow({
                     <button
                         className="w-[15px] min-w-[15px] h-[15px] min-h-[15px] ml-2 bg-gray-500 p-0 flex items-center justify-center"
                         type="button"
-                        // onClick={() => {
-                        //     handleExtraDataChange(
-                        //         {
-                        //             index,
-                        //             name: "returnTimeFrom",
-                        //             value: "",
-                        //         }
-                        //     );
-                        // }}
+                        onClick={() => {
+                            handleChangeByName({
+                                tourDayIndex,
+                                tourItemIndex,
+                                name: "returnTimeFrom",
+                                value: "",
+                            });
+                        }}
                     >
                         x
                     </button>
                 </div>
-            </td>
-            <td className="px-2">
-                <div
-                    className="flex items-center gap-2"
-                    onClick={() => {
-                        setIsTransferModalOpen(true);
-                    }}
-                >
-                    <span
-                        className={
-                            " " + (tourItem.returnVehicle ? "text-green-500" : "text-[#444]")
-                        }
-                    >
-                        <FaCar />
-                    </span>
-                    <span
-                        className={
-                            " " + (tourItem.returnDriver ? "text-green-500" : "text-[#444]")
-                        }
-                    >
-                        <RiSteering2Line />
-                    </span>
-                </div>
-                {isTransferModalOpen && (
-                    <VoucherTourTransferModal
-                        setIsTransferModalOpen={setIsTransferModalOpen}
-                        tourItem={tourItem}
-                        handleChange={handleChange}
-                        initialData={initialData}
-                        tourDayIndex={tourDayIndex}
-                        tourItemIndex={tourItemIndex}
-                    />
-                )}
             </td>
         </React.Fragment>
     );
