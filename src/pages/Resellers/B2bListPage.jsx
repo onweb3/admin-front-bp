@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { BiFilter } from "react-icons/bi";
+import { FiDownload } from "react-icons/fi";
 
 import axios from "../../axios";
 import { PageLoader, Pagination } from "../../components";
 import { ResellersTableRow } from "../../features/Resellers";
-import moment from "moment";
-import BtnLoader from "../../components/BtnLoader";
 
 export default function B2bListPage() {
     const [resellers, setResellers] = useState([]);
@@ -17,19 +17,11 @@ export default function B2bListPage() {
         totalResellers: 0,
         searchQuery: "",
         status: "",
+        country: "",
     });
-    const [isSheetLoading, setIsSheetLoading] = useState(false)
 
-    const [searchParams, setSearchParams] = useSearchParams();
     const { jwtToken } = useSelector((state) => state.admin);
-
-    const prevSearchParams = (e) => {
-        let params = {};
-        for (let [key, value] of searchParams.entries()) {
-            params[key] = value;
-        }
-        return params;
-    };
+    const { countries } = useSelector((state) => state.general);
 
     const handleChange = (e) => {
         setFilters((prev) => {
@@ -37,21 +29,34 @@ export default function B2bListPage() {
         });
     };
 
-    const handleStatusChange = (e) => {
-        let params = prevSearchParams();
-        setSearchParams({
-            ...params,
-            [e.target.name]: e.target.value,
+    const clearFilters = () => {
+        setFilters((prev) => {
+            return {
+                ...prev,
+                skip: 0,
+                limit: 10,
+                totalResellers: 0,
+                searchQuery: "",
+                status: "",
+                country: "",
+            };
+        });
+
+        fetchResellers({
             skip: 0,
+            limit: 10,
+            searchQuery: "",
+            status: "",
+            country: "",
         });
     };
 
-    const fetchResellers = async ({ skip, limit, status, searchQuery }) => {
+    const fetchResellers = async ({ ...filters }) => {
         try {
             setIsLoading(true);
 
             const response = await axios.get(
-                `/resellers/all?role=reseller&skip=${skip}&limit=${limit}&status=${status}&searchQuery=${searchQuery}`,
+                `/resellers/all?role=reseller&skip=${filters.skip}&limit=${filters.limit}&status=${filters.status}&searchQuery=${filters.searchQuery}&country=${filters.country}`,
                 {
                     headers: { authorization: `Bearer ${jwtToken}` },
                 }
@@ -71,50 +76,33 @@ export default function B2bListPage() {
     };
 
     useEffect(() => {
-        let skip = Number(searchParams.get("skip")) > 0 ? Number(searchParams.get("skip")) - 1 : 0;
-        let limit = Number(searchParams.get("limit")) > 0 ? Number(searchParams.get("limit")) : 10;
-        let searchQuery = searchParams.get("searchQuery") || "";
-        let status = searchParams.get("status") || "";
+        fetchResellers({ ...filters });
+    }, [filters.skip]);
 
-        setFilters((prev) => {
-            return { ...prev, skip, limit, searchQuery, status };
-        });
-        fetchResellers({ skip, limit, searchQuery, status });
-    }, [searchParams]);
-
-    const getExcelSheet = async () => {
+    const getExcelSheet = async ({ ...filters }) => {
         try {
-            let skip = Number(searchParams.get("skip")) > 0 ? Number(searchParams.get("skip")) - 1 : 0;
-            let limit = Number(searchParams.get("limit")) > 0 ? Number(searchParams.get("limit")) : 10;
-            let searchQuery = searchParams.get("searchQuery") || "";
-            let status = searchParams.get("status") || "";
+            const response = await axios.get(
+                `/resellers/all-excelSheet?role=reseller&skip=${filters.skip}&limit=${filters.limit}&status=${filters.status}&searchQuery=${filters.searchQuery}&country=${filters.country}`,
+                {
+                    responseType: "blob",
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                }
+            );
 
-            setIsSheetLoading(true)
-            const res = await axios.get(`/resellers/all-excelSheet?role=reseller&skip=${skip}&limit=${limit}&status=${status}&searchQuery=${searchQuery}`, {
-                headers: { authorization: `Bearer ${jwtToken}` }, 
-            })
-           
-            let currentDate = new Date()
-            let formatedDate = moment(currentDate).format('YYYY-MM-DD')
+            const href = URL.createObjectURL(response.data);
 
-            const url = window.URL.createObjectURL(
-                new Blob([res.data], { type: "application/xlsx" })
-              );
-        
-              const link = document.createElement("a");
-              link.href = url;
-              link.setAttribute("download", `B2BList${formatedDate}.xlsx`);
-              document.body.appendChild(link);
-              link.click();
+            const link = document.createElement("a");
+            link.href = href;
+            link.setAttribute("download", "b2b-list.xlsx");
+            document.body.appendChild(link);
+            link.click();
 
-              setIsSheetLoading(false)
-
+            document.body.removeChild(link);
+            URL.revokeObjectURL(href);
         } catch (error) {
-            setIsSheetLoading(false)
-           console.log(error,"fentch error"); 
+            console.log(error, "fentch error");
         }
-    }
-
+    };
 
     return (
         <div>
@@ -134,11 +122,74 @@ export default function B2bListPage() {
                     <div className="flex items-center justify-between border-b border-dashed p-4">
                         <h1 className="font-medium">All B2B</h1>
                         <div className="flex items-center gap-[10px]">
+                            <div>
+                                <Link to={`add`}>
+                                    <button className="w-[150px]">+ Add New</button>
+                                </Link>
+                            </div>
+                            <div>
+                                <button
+                                    className="px-3 bg-orange-500 flex items-center gap-2"
+                                    onClick={() => getExcelSheet({ ...filters })}
+                                >
+                                    <FiDownload />
+                                    Download Excel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            if (filters.skip !== 0) {
+                                setFilters({ ...filters, skip: 0 });
+                            } else {
+                                fetchResellers({ ...filters });
+                            }
+                        }}
+                        className="grid grid-cols-7 items-end gap-4 border-b border-dashed p-4"
+                    >
+                        <div>
+                            <label htmlFor="">Search</label>
+                            <input
+                                type="text"
+                                placeholder="Search here..."
+                                name="searchQuery"
+                                value={filters.searchQuery || ""}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="">Country</label>
+                            <select
+                                name="country"
+                                id=""
+                                value={filters.country || ""}
+                                onChange={handleChange}
+                                className="capitalize"
+                            >
+                                <option value="">All</option>
+                                {countries?.map((country, index) => {
+                                    return (
+                                        <option
+                                            value={country?._id}
+                                            key={index}
+                                            className="capitalize"
+                                        >
+                                            {country?.countryName}
+                                        </option>
+                                    );
+                                })}
+                            </select>
+                        </div>
+                        <div>
+                            <label htmlFor="">Status</label>
                             <select
                                 name="status"
-                                value={filters.status || ""}
-                                onChange={handleStatusChange}
                                 id=""
+                                value={filters.status || ""}
+                                onChange={handleChange}
                             >
                                 <option value="">All</option>
                                 <option value="pending">Pending</option>
@@ -146,48 +197,34 @@ export default function B2bListPage() {
                                 <option value="cancelled">Cancelled</option>
                                 <option value="disabled">Disabled</option>
                             </select>
-                            <form
-                                action=""
-                                onSubmit={(e) => {
-                                    e.preventDefault();
-                                    let params = prevSearchParams();
-                                    setSearchParams({
-                                        ...params,
-                                        searchQuery: filters.searchQuery,
-                                        skip: 0,
-                                    });
-                                }}
-                            >
-                                <input
-                                    type="text"
-                                    placeholder="Search here..."
-                                    className="min-w-[200px]"
-                                    name="searchQuery"
-                                    onChange={handleChange}
-                                    value={filters.searchQuery || ""}
-                                />
-                            </form>
-                            <div>
-                                <Link to={`add`}>
-                                    <button className="w-[150px]">+ Add New</button>
-                                </Link>
-                            </div>
+                        </div>
                         <div>
-                            {
-                                !isSheetLoading ? (
-                                    <button 
-                                    className="w-[150px]"
-                                    onClick={()=>getExcelSheet()}
-                                    >Excel sheet</button>
-                                ) : (
-                                    <button 
-                                    className="w-[150px]"
-                                    > <BtnLoader/> </button>
-                                )
-                            }
+                            <label htmlFor="">Limit</label>
+                            <select
+                                id=""
+                                name="limit"
+                                value={filters.limit}
+                                onChange={handleChange}
+                            >
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="10000">All</option>
+                            </select>
                         </div>
-                        </div>
-                    </div>
+                        <button className="flex items-center justify-center gap-[10px]">
+                            <BiFilter /> Filter
+                        </button>
+                        <button
+                            className="bg-slate-200 text-textColor"
+                            onClick={clearFilters}
+                            type="button"
+                        >
+                            Clear
+                        </button>
+                    </form>
+
                     {isLoading ? (
                         <PageLoader />
                     ) : resellers?.length < 1 ? (
@@ -228,20 +265,19 @@ export default function B2bListPage() {
                                     limit={filters?.limit}
                                     skip={filters?.skip}
                                     total={filters?.totalResellers}
-                                    incOrDecSkip={(number) => {
-                                        let params = prevSearchParams();
-                                        setSearchParams({
-                                            ...params,
-                                            skip: filters.skip + number + 1,
-                                        });
-                                    }}
-                                    updateSkip={(skip) => {
-                                        let params = prevSearchParams();
-                                        setSearchParams({
-                                            ...params,
-                                            skip: skip + 1,
-                                        });
-                                    }}
+                                    incOrDecSkip={(number) =>
+                                        setFilters((prev) => {
+                                            return {
+                                                ...prev,
+                                                skip: prev.skip + number,
+                                            };
+                                        })
+                                    }
+                                    updateSkip={(skip) =>
+                                        setFilters((prev) => {
+                                            return { ...prev, skip };
+                                        })
+                                    }
                                 />
                             </div>
                         </div>

@@ -1,24 +1,24 @@
 {
-    "_id": "654f1764a608f00c26695416",
-    "quotationNumber": 100811,
+    "_id": "6551e5bddb9c6ffbb2840a11",
+    "quotationNumber": 100818,
     "isResellerDisabled": true,
-    "amendment": "654f1764a608f00c26695414",
-    "totalAmendments": 1,
-    "createdBy": "63c23d964a612da2c073330a",
+    "amendment": "6551e6bcf784945206612bd6",
+    "totalAmendments": 3,
+    "createdBy": "64dcb20c22eeb1e2b56b34ee",
     "status": "confirmed",
-    "createdAt": "2023-11-11T05:55:48.243Z",
-    "updatedAt": "2023-11-11T05:56:08.685Z",
+    "createdAt": "2023-11-13T09:00:45.642Z",
+    "updatedAt": "2023-11-13T09:05:14.200Z",
     "__v": 0,
-    "comments": "sample comment",
+    "comments": "confirmed",
     "confirmedAmendment": {
-        "_id": "654f1764a608f00c26695414",
+        "_id": "6551e6bcf784945206612bd6",
         "clientName": "Sir / Madam",
         "noOfAdults": 1,
         "noOfChildren": 0,
         "childrenAges": [],
-        "checkInDate": "2023-11-18T00:00:00.000Z",
-        "checkOutDate": "2023-11-21T00:00:00.000Z",
-        "noOfNights": 3,
+        "checkInDate": "2023-11-15T00:00:00.000Z",
+        "checkOutDate": "2023-11-19T00:00:00.000Z",
+        "noOfNights": 4,
         "paxType": "solo",
         "isArrivalAirportDisabled": false,
         "arrivalTerminalId": "649a95fc63fbd1bef59a6c92",
@@ -30,19 +30,19 @@
         "departureAirport": "6418702657610167234768a1",
         "departureIataCode": "DXB",
         "departureAirportName": "Dubai International Airport ",
-        "departureTerminalId": "649a95fc63fbd1bef59a6c92",
-        "departureTerminalCode": "T1",
+        "departureTerminalId": "649a960b63fbd1bef59a6d83",
+        "departureTerminalCode": "T2",
         "isHotelQuotationDisabled": false,
         "hotelQuotation": {
-            "_id": "654f1763a608f00c266953f3",
+            "_id": "6551e6bcf784945206612baf",
             "isAlreadyBooked": false,
             "stays": [
                 {
                     "hotels": [
                         {
                             "hotelId": "6447d5506ac157f340030b42",
-                            "checkInDate": "2023-11-18T00:00:00.000Z",
-                            "checkOutDate": "2023-11-19T00:00:00.000Z",
+                            "checkInDate": "2023-11-15T00:00:00.000Z",
+                            "checkOutDate": "2023-11-17T00:00:00.000Z",
                             "hotelName": "Citymax Hotel Business Bay",
                             "state": "Dubai",
                             "city": "Dubai",
@@ -52,203 +52,254 @@
                             "starCategory": "4",
                             "roomTypeId": "6448da6e6ac157f340053222",
                             "roomTypeName": "Standard Room",
+                            "boardTypeCode": "FB",
+                            "isCustomHotelMarkup": false,
+                            "roomOccupancies": [
+                                {
+                                    "occupancyShortName": "SGL",
+                                    "price": 1455,
+                                    "profileMarkup": 0,
+                                    "marketMarkup": 0,
+                                    "cost": 1455,
+                                    "_id": "6551e6bcf784945206612bb2"
+                                },
+                                {
+                                    "occupancyShortName": "DBL",
+                                    "price": null,
+                                    "cost": null,
+                                    "_id": "6551e6bcf784945206612bb3"
+                                },
+                                {
+                                    "occupancyShortName": "TPL",
+                                    "price": null,
+                                    "cost": null,
+                                    "_id": "6551e6bcf784945206612bb4"
+                                },
+                                {
+                                    "occupancyShortName": "CWB",
+                                    "price": null,
+                                    "cost": null,
+                                    "_id": "6551e6bcf784945206612bb5"
+                                },
+                                {
+                                    "occupancyShortName": "CNB",
+                                    "price": null,
+                                    "cost": null,
+                                    "_id": "6551e6bcf784945206612bb6"
+                                }
+                            ],
+                            "_id": "6551e5bddb9c6ffbb28409fc"
+                        },
+                        {
+                            "hotelId": "644cce55ebecaa0acb9a7208",
+                            "checkInDate": "2023-11-17T00:00:00.000Z",
+                            "checkOutDate": "2023-11-19T00:00:00.000Z",
+                            "hotelName": "City Avenue Al Reqqa Hotel",
+                            "state": "Dubai",
+                            "city": "Dubai",
+                            "cityId": "64cb62341e2b74a2319af523",
+                            "areaId": "64cb65b61e2b74a2319b377f",
+                            "country": "united arab emirates",
+                            "starCategory": "3",
+                            "roomTypeId": "64969dd9c4da06a829b985f6",
+                            "roomTypeName": "Standard Room",
                             "boardTypeCode": "HB",
                             "isCustomHotelMarkup": false,
                             "roomOccupancies": [
                                 {
                                     "occupancyShortName": "SGL",
-                                    "price": 495,
+                                    "price": 722,
                                     "profileMarkup": 0,
-                                    "marketMarkup": 0,
-                                    "cost": 495,
-                                    "_id": "654f1763a608f00c266953f6"
+                                    "marketMarkup": 12,
+                                    "cost": 710,
+                                    "_id": "6551e6bcf784945206612bb8"
                                 },
                                 {
                                     "occupancyShortName": "DBL",
                                     "price": null,
                                     "cost": null,
-                                    "_id": "654f1763a608f00c266953f7"
+                                    "_id": "6551e6bcf784945206612bb9"
                                 },
                                 {
                                     "occupancyShortName": "TPL",
                                     "price": null,
                                     "cost": null,
-                                    "_id": "654f1763a608f00c266953f8"
+                                    "_id": "6551e6bcf784945206612bba"
                                 },
                                 {
                                     "occupancyShortName": "CWB",
                                     "price": null,
                                     "cost": null,
-                                    "_id": "654f1763a608f00c266953f9"
+                                    "_id": "6551e6bcf784945206612bbb"
                                 },
                                 {
                                     "occupancyShortName": "CNB",
                                     "price": null,
                                     "cost": null,
-                                    "_id": "654f1763a608f00c266953fa"
+                                    "_id": "6551e6bcf784945206612bbc"
                                 }
                             ],
-                            "_id": "654f1763a608f00c266953f5"
-                        },
-                        {
-                            "hotelId": "644790146ac157f34002a6d0",
-                            "checkInDate": "2023-11-19T00:00:00.000Z",
-                            "checkOutDate": "2023-11-21T00:00:00.000Z",
-                            "hotelName": "TRYP by Wyndham Abu Dhabi City Center",
-                            "state": "Abu Dhabi",
-                            "city": "Abu Dhabi",
-                            "cityId": "64cb6af01e2b74a2319b7ec3",
-                            "areaId": "64d09f94c06243c2febe9821",
-                            "country": "united arab emirates",
-                            "starCategory": "4",
-                            "roomTypeId": "64b7dbfed0c5770266e156be",
-                            "roomTypeName": "Executive Room",
-                            "boardTypeCode": "BB",
-                            "isCustomHotelMarkup": true,
-                            "roomOccupancies": [
-                                {
-                                    "occupancyShortName": "SGL",
-                                    "price": 200,
-                                    "profileMarkup": 0,
-                                    "marketMarkup": 0,
-                                    "cost": 200,
-                                    "_id": "654f1763a608f00c266953fc"
-                                },
-                                {
-                                    "occupancyShortName": "DBL",
-                                    "price": null,
-                                    "cost": 0,
-                                    "_id": "654f1763a608f00c266953fd"
-                                },
-                                {
-                                    "occupancyShortName": "TPL",
-                                    "price": null,
-                                    "cost": 0,
-                                    "_id": "654f1763a608f00c266953fe"
-                                },
-                                {
-                                    "occupancyShortName": "CWB",
-                                    "price": null,
-                                    "cost": 0,
-                                    "_id": "654f1763a608f00c266953ff"
-                                },
-                                {
-                                    "occupancyShortName": "CNB",
-                                    "price": null,
-                                    "cost": 0,
-                                    "_id": "654f1763a608f00c26695400"
-                                }
-                            ],
-                            "_id": "654f1763a608f00c266953fb"
+                            "_id": "6551e5bddb9c6ffbb2840a02"
                         }
                     ],
                     "roomOccupancyList": [
                         {
                             "occupancyShortName": "SGL",
-                            "price": 695,
-                            "priceWithTransfer": 1505,
+                            "price": 2177,
+                            "priceWithTransfer": 2527,
                             "perPersonProfileMarkup": 0,
-                            "perPersonMarketMarkup": 0,
-                            "_id": "654f1763a608f00c26695401"
+                            "perPersonMarketMarkup": 22,
+                            "_id": "6551e6bcf784945206612bbd"
                         },
                         {
                             "occupancyShortName": "DBL",
                             "price": null,
                             "priceWithTransfer": null,
                             "perPersonProfileMarkup": null,
-                            "perPersonMarketMarkup": 0,
-                            "_id": "654f1763a608f00c26695402"
+                            "perPersonMarketMarkup": 10,
+                            "_id": "6551e6bcf784945206612bbe"
                         },
                         {
                             "occupancyShortName": "TPL",
                             "price": null,
                             "priceWithTransfer": null,
                             "perPersonProfileMarkup": null,
-                            "perPersonMarketMarkup": 0,
-                            "_id": "654f1763a608f00c26695403"
+                            "perPersonMarketMarkup": 10,
+                            "_id": "6551e6bcf784945206612bbf"
                         },
                         {
                             "occupancyShortName": "CWB",
                             "price": null,
                             "priceWithTransfer": null,
                             "perPersonProfileMarkup": null,
-                            "perPersonMarketMarkup": 0,
-                            "_id": "654f1763a608f00c26695404"
+                            "perPersonMarketMarkup": 10,
+                            "_id": "6551e6bcf784945206612bc0"
                         },
                         {
                             "occupancyShortName": "CNB",
                             "price": null,
                             "priceWithTransfer": null,
                             "perPersonProfileMarkup": null,
-                            "perPersonMarketMarkup": 0,
-                            "_id": "654f1763a608f00c26695405"
+                            "perPersonMarketMarkup": 10,
+                            "_id": "6551e6bcf784945206612bc1"
                         }
                     ],
                     "selected": true,
-                    "_id": "654f1763a608f00c266953f4"
+                    "_id": "6551e6bcf784945206612bb0"
                 },
                 {
                     "hotels": [
                         {
-                            "hotelId": "644790146ac157f34002a6d0",
-                            "checkInDate": "2023-11-18T00:00:00.000Z",
-                            "checkOutDate": "2023-11-21T00:00:00.000Z",
-                            "hotelName": "TRYP by Wyndham Abu Dhabi City Center",
-                            "state": "Abu Dhabi",
-                            "city": "Abu Dhabi",
-                            "cityId": "64cb6af01e2b74a2319b7ec3",
-                            "areaId": "64d09f94c06243c2febe9821",
+                            "hotelId": "6447d5506ac157f340030b42",
+                            "checkInDate": "2023-11-15T00:00:00.000Z",
+                            "checkOutDate": "2023-11-17T00:00:00.000Z",
+                            "hotelName": "Citymax Hotel Business Bay",
+                            "state": "Dubai",
+                            "city": "Dubai",
+                            "cityId": "64cb62341e2b74a2319af523",
+                            "areaId": "64cb633a1e2b74a2319b10bd",
                             "country": "united arab emirates",
                             "starCategory": "4",
-                            "roomTypeId": "6447cf836ac157f340030028",
-                            "roomTypeName": "Classic Room",
-                            "boardTypeCode": "RO",
-                            "isCustomHotelMarkup": true,
+                            "roomTypeId": "6448da6e6ac157f340053222",
+                            "roomTypeName": "Standard Room",
+                            "boardTypeCode": "FB",
+                            "isCustomHotelMarkup": false,
                             "roomOccupancies": [
                                 {
                                     "occupancyShortName": "SGL",
-                                    "price": 498,
+                                    "price": 1455,
                                     "profileMarkup": 0,
                                     "marketMarkup": 0,
-                                    "cost": 498,
-                                    "_id": "654f1763a608f00c26695408"
+                                    "cost": 1455,
+                                    "_id": "6551e6bcf784945206612bc4"
                                 },
                                 {
                                     "occupancyShortName": "DBL",
                                     "price": null,
-                                    "cost": 0,
-                                    "_id": "654f1763a608f00c26695409"
+                                    "cost": null,
+                                    "_id": "6551e6bcf784945206612bc5"
                                 },
                                 {
                                     "occupancyShortName": "TPL",
                                     "price": null,
-                                    "cost": 0,
-                                    "_id": "654f1763a608f00c2669540a"
+                                    "cost": null,
+                                    "_id": "6551e6bcf784945206612bc6"
                                 },
                                 {
                                     "occupancyShortName": "CWB",
                                     "price": null,
-                                    "cost": 0,
-                                    "_id": "654f1763a608f00c2669540b"
+                                    "cost": null,
+                                    "_id": "6551e6bcf784945206612bc7"
                                 },
                                 {
                                     "occupancyShortName": "CNB",
                                     "price": null,
-                                    "cost": 0,
-                                    "_id": "654f1763a608f00c2669540c"
+                                    "cost": null,
+                                    "_id": "6551e6bcf784945206612bc8"
                                 }
                             ],
-                            "_id": "654f1763a608f00c26695407"
+                            "_id": "6551e6bcf784945206612bc3"
+                        },
+                        {
+                            "hotelId": "644109433cb4e66ea97c9e08",
+                            "checkInDate": "2023-11-17T00:00:00.000Z",
+                            "checkOutDate": "2023-11-19T00:00:00.000Z",
+                            "hotelName": "City Premiere Hotel Apartment",
+                            "state": "Dubai",
+                            "city": "Dubai",
+                            "cityId": "64cb62341e2b74a2319af523",
+                            "areaId": "64cb65e41e2b74a2319b3885",
+                            "country": "united arab emirates",
+                            "starCategory": "apartment",
+                            "roomTypeId": "64410a7f3cb4e66ea97ca0a1",
+                            "roomTypeName": "One Bedroom Standard",
+                            "boardTypeCode": "HB",
+                            "isCustomHotelMarkup": false,
+                            "roomOccupancies": [
+                                {
+                                    "occupancyShortName": "SGL",
+                                    "price": 1370,
+                                    "profileMarkup": 0,
+                                    "marketMarkup": 0,
+                                    "cost": 1370,
+                                    "_id": "6551e6bcf784945206612bca"
+                                },
+                                {
+                                    "occupancyShortName": "DBL",
+                                    "price": null,
+                                    "cost": null,
+                                    "_id": "6551e6bcf784945206612bcb"
+                                },
+                                {
+                                    "occupancyShortName": "TPL",
+                                    "price": null,
+                                    "cost": null,
+                                    "_id": "6551e6bcf784945206612bcc"
+                                },
+                                {
+                                    "occupancyShortName": "CWB",
+                                    "price": null,
+                                    "cost": null,
+                                    "_id": "6551e6bcf784945206612bcd"
+                                },
+                                {
+                                    "occupancyShortName": "CNB",
+                                    "price": null,
+                                    "cost": null,
+                                    "_id": "6551e6bcf784945206612bce"
+                                }
+                            ],
+                            "_id": "6551e6bcf784945206612bc9"
                         }
                     ],
                     "roomOccupancyList": [
                         {
                             "occupancyShortName": "SGL",
-                            "price": 498,
-                            "priceWithTransfer": 1198,
+                            "price": 2825,
+                            "priceWithTransfer": 3165,
                             "perPersonProfileMarkup": 0,
                             "perPersonMarketMarkup": 0,
-                            "_id": "654f1763a608f00c2669540d"
+                            "_id": "6551e6bcf784945206612bcf"
                         },
                         {
                             "occupancyShortName": "DBL",
@@ -256,7 +307,7 @@
                             "priceWithTransfer": null,
                             "perPersonProfileMarkup": null,
                             "perPersonMarketMarkup": 0,
-                            "_id": "654f1763a608f00c2669540e"
+                            "_id": "6551e6bcf784945206612bd0"
                         },
                         {
                             "occupancyShortName": "TPL",
@@ -264,7 +315,7 @@
                             "priceWithTransfer": null,
                             "perPersonProfileMarkup": null,
                             "perPersonMarketMarkup": 0,
-                            "_id": "654f1763a608f00c2669540f"
+                            "_id": "6551e6bcf784945206612bd1"
                         },
                         {
                             "occupancyShortName": "CWB",
@@ -272,7 +323,7 @@
                             "priceWithTransfer": null,
                             "perPersonProfileMarkup": null,
                             "perPersonMarketMarkup": 0,
-                            "_id": "654f1763a608f00c26695410"
+                            "_id": "6551e6bcf784945206612bd2"
                         },
                         {
                             "occupancyShortName": "CNB",
@@ -280,15 +331,15 @@
                             "priceWithTransfer": null,
                             "perPersonProfileMarkup": null,
                             "perPersonMarketMarkup": 0,
-                            "_id": "654f1763a608f00c26695411"
+                            "_id": "6551e6bcf784945206612bd3"
                         }
                     ],
                     "selected": false,
-                    "_id": "654f1763a608f00c26695406"
+                    "_id": "6551e6bcf784945206612bc2"
                 }
             ],
-            "createdAt": "2023-11-11T05:55:47.623Z",
-            "updatedAt": "2023-11-11T05:56:08.286Z",
+            "createdAt": "2023-11-13T09:05:00.358Z",
+            "updatedAt": "2023-11-13T09:05:14.060Z",
             "__v": 0
         },
         "isExcursionQuotationDisabled": true,
@@ -297,7 +348,7 @@
         "isGuideQuotationDisabled": true,
         "isAlreadyBooked": false,
         "transferQuotation": {
-            "_id": "654f175fa608f00c266953bf",
+            "_id": "6551e6b9f784945206612b23",
             "stayTransfers": [
                 {
                     "transfers": [
@@ -307,139 +358,174 @@
                             "transferFromName": "Dubai International Airport ",
                             "transferFrom": "6418702657610167234768a1",
                             "transferFromHubName": "Dubai International Airport ",
+                            "transferFromId": "6418702657610167234768a1",
                             "transferToName": "Business Bay",
                             "transferTo": "64cb633a1e2b74a2319b10bd",
                             "transferToHubName": "Citymax Hotel Business Bay",
+                            "transferToId": "6447d5506ac157f340030b42",
                             "vehicleTypes": [
                                 {
                                     "vehicle": "64796e3f8d626b787621bcf5",
                                     "name": "7 seater",
                                     "count": 1,
                                     "occupancy": 4,
-                                    "_id": "654f175fa608f00c266953c2"
+                                    "_id": "6551e6b9f784945206612b26"
                                 }
                             ],
                             "ppTotalPricePerTransfer": 110,
                             "ppMarketMarkup": 0,
                             "transferCapacity": 4,
-                            "_id": "654f175fa608f00c266953c1"
+                            "_id": "6551e6b9f784945206612b25"
                         },
                         {
-                            "transferId": "64dcf588f4e5a2efbb2d9c50",
+                            "transferId": "64d6455d0da29a00872e8623",
                             "transferType": "city-city",
                             "transferFromName": "Business Bay",
                             "transferFrom": "64cb633a1e2b74a2319b10bd",
                             "transferFromHubName": "Citymax Hotel Business Bay",
-                            "transferToName": "Khalifah Bin Zayed The First Street ",
-                            "transferTo": "64d09f94c06243c2febe9821",
-                            "transferToHubName": "TRYP by Wyndham Abu Dhabi City Center",
+                            "transferFromId": "644cce55ebecaa0acb9a7208",
+                            "transferToName": "Deira",
+                            "transferTo": "64cb65b61e2b74a2319b377f",
+                            "transferToHubName": "City Avenue Al Reqqa Hotel",
+                            "transferToId": "6447d5506ac157f340030b42",
                             "vehicleTypes": [
                                 {
                                     "vehicle": "64796e3f8d626b787621bcf5",
                                     "name": "7 seater",
                                     "count": 1,
                                     "occupancy": 4,
-                                    "_id": "654f175fa608f00c266953c4"
+                                    "_id": "6551e6b9f784945206612b28"
                                 }
                             ],
-                            "ppTotalPricePerTransfer": 350,
-                            "ppMarketMarkup": 0,
+                            "ppTotalPricePerTransfer": 140,
+                            "ppMarketMarkup": 10,
                             "transferCapacity": 4,
-                            "_id": "654f175fa608f00c266953c3"
+                            "_id": "6551e6b9f784945206612b27"
                         },
                         {
-                            "transferId": "64f487421b4b41d55372ec24",
+                            "transferId": "6540e88370c709999d52ddf4",
                             "transferType": "city-airport",
-                            "transferFromName": "Khalifah Bin Zayed The First Street ",
-                            "transferFrom": "64d09f94c06243c2febe9821",
-                            "transferFromHubName": "TRYP by Wyndham Abu Dhabi City Center",
+                            "transferFromName": "Deira",
+                            "transferFrom": "64cb65b61e2b74a2319b377f",
+                            "transferFromHubName": "City Avenue Al Reqqa Hotel",
+                            "transferFromId": "644cce55ebecaa0acb9a7208",
                             "transferToName": "Dubai International Airport ",
                             "transferTo": "6418702657610167234768a1",
                             "transferToHubName": "Dubai International Airport ",
+                            "transferToId": "6418702657610167234768a1",
                             "vehicleTypes": [
                                 {
                                     "vehicle": "64796e3f8d626b787621bcf5",
                                     "name": "7 seater",
                                     "count": 1,
                                     "occupancy": 4,
-                                    "_id": "654f175fa608f00c266953c6"
+                                    "_id": "6551e6b9f784945206612b2a"
                                 }
                             ],
-                            "ppTotalPricePerTransfer": 350,
+                            "ppTotalPricePerTransfer": 100,
                             "ppMarketMarkup": 0,
                             "transferCapacity": 4,
-                            "_id": "654f175fa608f00c266953c5"
+                            "_id": "6551e6b9f784945206612b29"
                         }
                     ],
-                    "ppTotalPricePerStayTransfer": 810,
-                    "ppTotalMarketMarkupPerStayTransfer": 0,
+                    "ppTotalPricePerStayTransfer": 350,
+                    "ppTotalMarketMarkupPerStayTransfer": 10,
                     "ppTotalProfileMarkupPerStayTransfer": 0,
                     "stayNo": 1,
-                    "_id": "654f175fa608f00c266953c0"
+                    "_id": "6551e6b9f784945206612b24"
                 },
                 {
                     "transfers": [
                         {
-                            "transferId": "64f480781b4b41d553726c9a",
+                            "transferId": "6540e4ff70c709999d529527",
                             "transferType": "airport-city",
                             "transferFromName": "Dubai International Airport ",
                             "transferFrom": "6418702657610167234768a1",
                             "transferFromHubName": "Dubai International Airport ",
-                            "transferToName": "Khalifah Bin Zayed The First Street ",
-                            "transferTo": "64d09f94c06243c2febe9821",
-                            "transferToHubName": "TRYP by Wyndham Abu Dhabi City Center",
+                            "transferFromId": "6418702657610167234768a1",
+                            "transferToName": "Business Bay",
+                            "transferTo": "64cb633a1e2b74a2319b10bd",
+                            "transferToHubName": "Citymax Hotel Business Bay",
+                            "transferToId": "6447d5506ac157f340030b42",
                             "vehicleTypes": [
                                 {
                                     "vehicle": "64796e3f8d626b787621bcf5",
                                     "name": "7 seater",
                                     "count": 1,
                                     "occupancy": 4,
-                                    "_id": "654f175fa608f00c266953c9"
+                                    "_id": "6551e6b9f784945206612b2d"
                                 }
                             ],
-                            "ppTotalPricePerTransfer": 350,
+                            "ppTotalPricePerTransfer": 110,
                             "ppMarketMarkup": 0,
                             "transferCapacity": 4,
-                            "_id": "654f175fa608f00c266953c8"
+                            "_id": "6551e6b9f784945206612b2c"
                         },
                         {
-                            "transferId": "64f487421b4b41d55372ec24",
+                            "transferId": "64ddc959f4e5a2efbb3dbaa6",
+                            "transferType": "city-city",
+                            "transferFromName": "Business Bay",
+                            "transferFrom": "64cb633a1e2b74a2319b10bd",
+                            "transferFromHubName": "Citymax Hotel Business Bay",
+                            "transferFromId": "644109433cb4e66ea97c9e08",
+                            "transferToName": "Sheikh Zayed Road",
+                            "transferTo": "64cb65e41e2b74a2319b3885",
+                            "transferToHubName": "City Premiere Hotel Apartment",
+                            "transferToId": "6447d5506ac157f340030b42",
+                            "vehicleTypes": [
+                                {
+                                    "vehicle": "64796e3f8d626b787621bcf5",
+                                    "name": "7 seater",
+                                    "count": 1,
+                                    "occupancy": 4,
+                                    "_id": "6551e6b9f784945206612b2f"
+                                }
+                            ],
+                            "ppTotalPricePerTransfer": 130,
+                            "ppMarketMarkup": 0,
+                            "transferCapacity": 4,
+                            "_id": "6551e6b9f784945206612b2e"
+                        },
+                        {
+                            "transferId": "6540e88470c709999d52de2a",
                             "transferType": "city-airport",
-                            "transferFromName": "Khalifah Bin Zayed The First Street ",
-                            "transferFrom": "64d09f94c06243c2febe9821",
-                            "transferFromHubName": "TRYP by Wyndham Abu Dhabi City Center",
+                            "transferFromName": "Sheikh Zayed Road",
+                            "transferFrom": "64cb65e41e2b74a2319b3885",
+                            "transferFromHubName": "City Premiere Hotel Apartment",
+                            "transferFromId": "644109433cb4e66ea97c9e08",
                             "transferToName": "Dubai International Airport ",
                             "transferTo": "6418702657610167234768a1",
                             "transferToHubName": "Dubai International Airport ",
+                            "transferToId": "6418702657610167234768a1",
                             "vehicleTypes": [
                                 {
                                     "vehicle": "64796e3f8d626b787621bcf5",
                                     "name": "7 seater",
                                     "count": 1,
                                     "occupancy": 4,
-                                    "_id": "654f175fa608f00c266953cb"
+                                    "_id": "6551e6b9f784945206612b31"
                                 }
                             ],
-                            "ppTotalPricePerTransfer": 350,
+                            "ppTotalPricePerTransfer": 100,
                             "ppMarketMarkup": 0,
                             "transferCapacity": 4,
-                            "_id": "654f175fa608f00c266953ca"
+                            "_id": "6551e6b9f784945206612b30"
                         }
                     ],
-                    "ppTotalPricePerStayTransfer": 700,
+                    "ppTotalPricePerStayTransfer": 340,
                     "ppTotalMarketMarkupPerStayTransfer": 0,
                     "ppTotalProfileMarkupPerStayTransfer": 0,
                     "stayNo": 2,
-                    "_id": "654f175fa608f00c266953c7"
+                    "_id": "6551e6b9f784945206612b2b"
                 }
             ],
-            "createdAt": "2023-11-11T05:55:43.995Z",
-            "updatedAt": "2023-11-11T05:55:43.995Z",
+            "createdAt": "2023-11-13T09:04:57.540Z",
+            "updatedAt": "2023-11-13T09:04:57.540Z",
             "__v": 0
         },
         "createdBy": "admin",
         "isResellerDisabled": true,
-        "quotationNumber": 100811,
+        "quotationNumber": 100818,
         "quotationCurrency": "AED",
         "isVisaQuotationDisabled": true,
         "isVisaNeeded": false,
@@ -454,11 +540,9 @@
         "customMarkupType": "flat",
         "status": "not-confirmed",
         "isTourismFeeIncluded": false,
-        "createdAt": "2023-11-11T05:55:48.035Z",
-        "updatedAt": "2023-11-11T05:55:49.124Z",
-        "__v": 0,
-        "pdf": "/public/pdf/quotation1699682148456-331309398.pdf",
-        "sheet": "/public/quotations/100811-1.xlsx"
+        "createdAt": "2023-11-13T09:05:00.508Z",
+        "updatedAt": "2023-11-13T09:05:00.508Z",
+        "__v": 0
     },
     "confirmedBy": "admin"
 }

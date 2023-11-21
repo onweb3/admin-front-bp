@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { FiDownload } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import moment from "moment";
+import { FaCar } from "react-icons/fa";
 
-import { convertMinutesTo12HourTime, formatDate } from "../../../utils";
+import { formatDate } from "../../../utils";
 import axios from "../../../axios";
 
 export default function VoucherV2DailyReportsTableRow({ voucher, index, filters }) {
@@ -99,26 +101,23 @@ export default function VoucherV2DailyReportsTableRow({ voucher, index, filters 
                 )}
             </td>
             <td className="p-3 whitespace-nowrap">
-                {!isNaN(voucher?.voucherAmendment?.tours?.tourItems?.pickupTimeFrom) &&
-                voucher?.voucherAmendment?.tours?.tourItems?.pickupTimeFrom !== null
-                    ? convertMinutesTo12HourTime(
-                          voucher?.voucherAmendment?.tours?.tourItems?.pickupTimeFrom
-                      )
+                {voucher?.voucherAmendment?.tours?.tourItems?.pickupISODateTime
+                    ? moment(voucher?.voucherAmendment?.tours?.tourItems?.pickupISODateTime)
+                          .utcOffset(voucher?.voucherAmendment?.tours?.tourItems?.utcOffset)
+                          .format("HH:mm")
                     : "N/A"}{" "}
                 - <br />
-                {!isNaN(voucher?.voucherAmendment?.tours?.tourItems?.pickupTimeTo) &&
-                voucher?.voucherAmendment?.tours?.tourItems?.pickupTimeTo !== null
-                    ? convertMinutesTo12HourTime(
-                          voucher?.voucherAmendment?.tours?.tourItems?.pickupTimeTo
-                      )
+                {voucher?.voucherAmendment?.tours?.tourItems?.pickupISOToDateTime
+                    ? moment(voucher?.voucherAmendment?.tours?.tourItems?.pickupISOToDateTime)
+                          .utcOffset(voucher?.voucherAmendment?.tours?.tourItems?.utcOffset)
+                          .format("HH:mm")
                     : "N/A"}
             </td>
             <td className="p-3">
-                {!isNaN(voucher?.voucherAmendment?.tours?.tourItems?.returnTimeFrom) &&
-                voucher?.voucherAmendment?.tours?.tourItems?.returnTimeFrom !== null
-                    ? convertMinutesTo12HourTime(
-                          voucher?.voucherAmendment?.tours?.tourItems?.returnTimeFrom
-                      )
+                {voucher?.voucherAmendment?.tours?.tourItems?.returnISODateTime
+                    ? moment(voucher?.voucherAmendment?.tours?.tourItems?.returnISODateTime)
+                          .utcOffset(voucher?.voucherAmendment?.tours?.tourItems?.utcOffset)
+                          .format("HH:mm")
                     : "N/A"}
             </td>
             <td className="p-3 min-w-[150px]">
@@ -162,7 +161,14 @@ export default function VoucherV2DailyReportsTableRow({ voucher, index, filters 
                 )}
             </td>
             <td className="p-3">
-                <div className="flex justify-center gap-[10px]">
+                <div className="flex justify-center gap-[15px]">
+                    <Link
+                        to={`/vouchers/v2/${voucher?._id}/tours/${voucher?.voucherAmendment?.tours?.tourItems?._id}/transfer`}
+                    >
+                        <button className="h-auto bg-transparent text-[#444] text-lg">
+                            <FaCar />
+                        </button>
+                    </Link>
                     <button
                         className="h-auto bg-transparent text-blue-500 text-lg"
                         onClick={() => downloadVoucherPdf(voucher?.voucherAmendment?._id)}

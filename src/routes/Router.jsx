@@ -1,8 +1,4 @@
-import {
-    AdminLayout,
-    EditProfileLayout,
-    SingleResellerLayout,
-} from "../layouts";
+import { AdminLayout, EditProfileLayout, SingleResellerLayout } from "../layouts";
 import A2aAddTicketPage from "../pages/A2A/A2aAddTicketPage";
 import A2AEditTicketPage from "../pages/A2A/A2aEditTicketPage";
 import A2AEnquiryPage from "../pages/A2A/A2AEnquiryPage";
@@ -244,6 +240,7 @@ import SingleVoucherV2Page from "../pages/Voucher/SingleVoucherV2Page";
 import EditVoucherV2Page from "../pages/Voucher/EditVoucherV2Page";
 import VouchersV2DailyReportPage from "../pages/Voucher/VouchersV2DailyReportPage";
 import VehicleTypePage from "../pages/Vehicle/VehicleTypePage";
+import SingleTourTransferPage from "../pages/Voucher/SingleTourTransferPage";
 import VehiclesListPage from "../pages/Vehicle/VehiclesListPage";
 
 const ThemeRoutes = [
@@ -610,6 +607,10 @@ const ThemeRoutes = [
             {
                 path: "/vouchers/v2",
                 element: <VouchersV2ListPage />,
+            },
+            {
+                path: "/vouchers/v2/:voucherId/tours/:tourId/transfer",
+                element: <SingleTourTransferPage />,
             },
             {
                 path: "/vouchers/daily-reports",
@@ -1172,8 +1173,6 @@ const ThemeRoutes = [
                         path: "point-history",
                         element: <SingleUserPointHistoryPage />,
                     },
-
-                    ,
                 ],
             },
 

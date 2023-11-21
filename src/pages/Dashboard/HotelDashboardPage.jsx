@@ -28,6 +28,7 @@ export default function HotelDashboardPage() {
         nextDayHotelArrivalsList: [],
         nextDayHotelDeparturesList: [],
         recentCancellationRequests: [],
+        unConfirmedBookings: [],
     });
 
     const { admin, jwtToken } = useSelector((state) => state.admin);
@@ -51,6 +52,7 @@ export default function HotelDashboardPage() {
                     nextDayHotelArrivalsList: response.data?.nextDayHotelArrivalsList || [],
                     nextDayHotelDeparturesList: response.data?.nextDayHotelDeparturesList || [],
                     recentCancellationRequests: response.data?.recentCancellationRequests || [],
+                    unConfirmedBookings: response.data?.unConfirmedBookings || [],
                 };
             });
             setIsPageLoading(false);
@@ -194,6 +196,127 @@ export default function HotelDashboardPage() {
                                 </thead>
                                 <tbody className="text-sm">
                                     {data?.recentHotelOrders?.map((item, index) => {
+                                        return (
+                                            <tr
+                                                key={index}
+                                                className="border-b border-tableBorderColor transition-all cursor-pointer hover:bg-[#f3f6f9]"
+                                                onClick={() =>
+                                                    navigate(`/hotels/reservation/${item?._id}`)
+                                                }
+                                            >
+                                                <td className="p-3">
+                                                    <span>{item?.referenceNumber}</span>
+                                                    <span className="block text-[13px] text-grayColor">
+                                                        {formatDate(item?.createdAt, true)}
+                                                    </span>
+                                                </td>
+                                                <td className="p-3">
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-[40px] min-w-[40px] h-[40px] min-h-[40px] overflow-hidden rounded">
+                                                            <img
+                                                                src={
+                                                                    item?.hotel?.image?.isRelative
+                                                                        ? config.SERVER_URL +
+                                                                          item?.hotel?.image?.path
+                                                                        : item?.hotel?.image?.path
+                                                                }
+                                                                className="w-full h-full object-cover"
+                                                            />
+                                                        </div>
+                                                        <div>
+                                                            <span>{item?.hotel?.hotelName}</span>
+                                                            <span className="block text-[13px] text-grayColor">
+                                                                {item?.hotel?.address}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td className="p-3">
+                                                    <span>{item?.reseller?.companyName}</span>{" "}
+                                                    <span className=" text-[13px]">
+                                                        ({item?.reseller?.agentCode})
+                                                    </span>
+                                                </td>
+                                                <td className="p-3">
+                                                    {formatDate(item?.fromDate)} -{" "}
+                                                    {formatDate(item?.toDate)}
+                                                </td>
+                                                <td className="p-3 whitespace-nowrap">
+                                                    {item?.roomsCount || "N/A"} ROOM
+                                                </td>
+                                                <td className="p-3 whitespace-nowrap">
+                                                    {item?.totalAdults} ADT, {item?.totalChildren}{" "}
+                                                    CHD
+                                                </td>
+                                                <td className={"p-3 whitespace-nowrap "}>
+                                                    {item?.netPrice?.toFixed(2)} AED
+                                                </td>
+                                                <td className="p-3">
+                                                    <span
+                                                        className={
+                                                            "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
+                                                            (item?.status === "cancelled"
+                                                                ? "bg-[#f065481A] text-[#f06548]"
+                                                                : item?.status === "confirmed"
+                                                                ? "text-[#0ab39c] bg-[#0ab39c1A]"
+                                                                : item?.status === "booked"
+                                                                ? "text-[#0a83b3] bg-[#0a83b31a]"
+                                                                : "bg-[#f7b84b1A] text-[#f7b84b]")
+                                                        }
+                                                    >
+                                                        {item?.status}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+                </div>
+            )}
+
+            {hasPermission({
+                roles: admin?.roles || [],
+                name: "unconfirmed-hotel-reservations",
+                permission: "view",
+            }) && (
+                <div className="bg-white rounded shadow-sm mt-6">
+                    <div className="flex items-center justify-between border-b border-dashed p-4">
+                        <h1 className="font-medium">Orders Not Confirmed</h1>
+                        <div>
+                            <Link
+                                to="/hotels/reservation"
+                                className="text-sm text-blue-500 underline"
+                            >
+                                View All
+                            </Link>
+                        </div>
+                    </div>
+                    {data?.unConfirmedBookings?.length < 1 ? (
+                        <div className="p-6">
+                            <span className="block text-sm text-center font-medium text-grayColor">
+                                No Data Found!
+                            </span>
+                        </div>
+                    ) : (
+                        <div className="overflow-x-auto">
+                            <table className="w-full">
+                                <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
+                                    <tr>
+                                        <th className="font-[500] p-3">Ref.No</th>
+                                        <th className="font-[500] p-3">Hotel</th>
+                                        <th className="font-[500] p-3">Reseller</th>
+                                        <th className="font-[500] p-3">Date</th>
+                                        <th className="font-[500] p-3">Room</th>
+                                        <th className="font-[500] p-3">Pax</th>
+                                        <th className="font-[500] p-3">Price</th>
+                                        <th className="font-[500] p-3">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="text-sm">
+                                    {data?.unConfirmedBookings?.map((item, index) => {
                                         return (
                                             <tr
                                                 key={index}
@@ -616,7 +739,9 @@ export default function HotelDashboardPage() {
                                                     key={index}
                                                     className="border-b border-tableBorderColor transition-all cursor-pointer hover:bg-[#f3f6f9]"
                                                     onClick={() =>
-                                                        navigate(`/hotels/reservation/${item?.orderId?._id}`)
+                                                        navigate(
+                                                            `/hotels/reservation/${item?.orderId?._id}`
+                                                        )
                                                     }
                                                 >
                                                     <td className="p-3">

@@ -4,7 +4,7 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { formatDate } from "../../../utils";
 import AddVoucherV2TourTableRow from "./AddVoucherV2TourTableRow";
 
-export default function AddVoucherV2TourTable({ tourData, setTourData }) {
+export default function AddVoucherV2TourTable({ tourData, setTourData, initialData }) {
     const handleDragEnd = ({ destination, source }) => {
         if (!destination) {
             return;
@@ -42,7 +42,7 @@ export default function AddVoucherV2TourTable({ tourData, setTourData }) {
             randId: "RANDID" + (Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000) + Date.now(),
             tourName: "",
             tourType: "regular",
-            date: "",
+            date: tempTourData[tourDayIndex].date,
             pickupFrom: "",
             pickupTimeFrom: "",
             pickupTimeTo: "",
@@ -59,6 +59,12 @@ export default function AddVoucherV2TourTable({ tourData, setTourData }) {
         });
     };
 
+    const handleChangeByName = ({ name, value, tourDayIndex, tourItemIndex }) => {
+        const tempTourData = tourData;
+        tempTourData[tourDayIndex].tourItems[tourItemIndex][name] = value;
+        setTourData(JSON.parse(JSON.stringify(tempTourData)));
+    };
+
     return (
         <div className="mt-8">
             <h2 className="font-medium mb-2">Tours Itinerary</h2>
@@ -69,7 +75,7 @@ export default function AddVoucherV2TourTable({ tourData, setTourData }) {
                             <h4 className="font-medium text-sm mb-2">
                                 Day {tourDayIndex + 1} ({formatDate(tour?.date)})
                             </h4>
-                            <div className="overflow-x-auto">
+                            <div className="">
                                 <table className="w-full">
                                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px]">
                                         <tr>
@@ -108,8 +114,10 @@ export default function AddVoucherV2TourTable({ tourData, setTourData }) {
                                                         (tourItem, tourItemIndex) => {
                                                             return (
                                                                 <Draggable
-                                                                    key={tourItem?._id ||
-                                                                        tourItem?.randId}
+                                                                    key={
+                                                                        tourItem?._id ||
+                                                                        tourItem?.randId
+                                                                    }
                                                                     index={tourItemIndex}
                                                                     draggableId={
                                                                         tourItem?._id ||
@@ -141,6 +149,12 @@ export default function AddVoucherV2TourTable({ tourData, setTourData }) {
                                                                                     }
                                                                                     deleteExtraRow={
                                                                                         deleteExtraRow
+                                                                                    }
+                                                                                    handleChangeByName={
+                                                                                        handleChangeByName
+                                                                                    }
+                                                                                    initialData={
+                                                                                        initialData
                                                                                     }
                                                                                 />
                                                                             </tr>

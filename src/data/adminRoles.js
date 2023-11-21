@@ -508,6 +508,12 @@ const adminRoles = [
         permissions: [],
     },
     {
+        name: "unconfirmed-hotel-reservations",
+        displayName: "Unconfirmed Hotel Reservations",
+        category: "reportings",
+        permissions: [],
+    },
+    {
         name: "hotel-expiring-paylater-report",
         displayName: "Hotel Expiring Paylater Report",
         category: "reportings",

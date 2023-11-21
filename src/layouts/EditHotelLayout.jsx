@@ -9,7 +9,7 @@ const sections = {
     "room-types": "Room Types",
     "hb-room-types": "Hotel Bed Room Types",
     "contract-groups": "Contract Groups",
-    contracts: "Contracts",
+    // contracts: "Contracts",
     promotions: "Promotions",
     // "rate-promotions": "Rate Promotions",
     "add-ons": "Add Ons",

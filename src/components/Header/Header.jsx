@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import AdminDropdown from "./AdminDropdown";
 import { FiChevronDown } from "react-icons/fi";
 
+import AdminDropdown from "./AdminDropdown";
 import { avatarImg } from "../../assets/images";
 import CurrenciesDropdown from "./CurrenciesDropdown";
 import { config } from "../../constants";
+import GlobalSearchInp from "../GlobalSearch/GlobalSearchInp";
 
 export default function Header() {
     const [isAdminDropdownOpen, setIsAdminDropdownOpen] = useState(false);
-    const [isCurrenciesDropdownOpen, setIsCurrenciesDropdownOpen] =
-        useState(false);
+    const [isCurrenciesDropdownOpen, setIsCurrenciesDropdownOpen] = useState(false);
 
     const { admin } = useSelector((state) => state.admin);
     const { selectedCurrency } = useSelector((state) => state.general);
@@ -19,24 +19,19 @@ export default function Header() {
         <div className="w-full bg-white h-[70px] px-5">
             <div className="h-full flex items-center justify-between">
                 <div></div>
+                <div>{import.meta.env.VITE_NODE_ENV === "TEST_LOCAL" && <GlobalSearchInp />}</div>
                 <div className="flex items-center gap-[2em] h-full">
                     <div className="relative h-full">
                         <div
                             className="h-full flex items-center gap-[10px] text-sm font-medium cursor-pointer"
                             onClick={() => setIsCurrenciesDropdownOpen(true)}
                         >
-                            <img
-                                src={selectedCurrency?.flag}
-                                alt=""
-                                className="w-[25px]"
-                            />
+                            <img src={selectedCurrency?.flag} alt="" className="w-[25px]" />
                             {selectedCurrency?.isocode} <FiChevronDown />
                         </div>
                         {isCurrenciesDropdownOpen && (
                             <CurrenciesDropdown
-                                setIsCurrenciesDropdownOpen={
-                                    setIsCurrenciesDropdownOpen
-                                }
+                                setIsCurrenciesDropdownOpen={setIsCurrenciesDropdownOpen}
                             />
                         )}
                     </div>
@@ -49,8 +44,7 @@ export default function Header() {
                                 <img
                                     src={
                                         admin?.avatar
-                                            ? config.SERVER_URL +
-                                              admin?.avatar
+                                            ? config.SERVER_URL + admin?.avatar
                                             : avatarImg
                                     }
                                     alt=""
@@ -58,9 +52,7 @@ export default function Header() {
                                 />
                             </div>
                             <div className="">
-                                <span className="block text-sm font-medium">
-                                    {admin?.name}
-                                </span>
+                                <span className="block text-sm font-medium">{admin?.name}</span>
                                 <span className="block text-[12px] text-grayColor">
                                     {admin?.email}
                                 </span>
@@ -68,9 +60,7 @@ export default function Header() {
                         </div>
 
                         {isAdminDropdownOpen && (
-                            <AdminDropdown
-                                setIsAdminDropdownOpen={setIsAdminDropdownOpen}
-                            />
+                            <AdminDropdown setIsAdminDropdownOpen={setIsAdminDropdownOpen} />
                         )}
                     </div>
                 </div>

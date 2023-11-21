@@ -15,7 +15,7 @@ export default function VouchersTableV2({ vouchers, setVouchers, filters, setFil
     const downloadVoucherPdf = async (id) => {
         try {
             const response = await axios.get(
-                `/vouchers/${id}/pdf/download?dateTime=${formatDate(new Date(), true)}`,
+                `/v2/vouchers/${id}/pdf/download?dateTime=${formatDate(new Date(), true)}`,
                 {
                     headers: { authorization: `Bearer ${jwtToken}` },
                     responseType: "arraybuffer",
@@ -35,7 +35,7 @@ export default function VouchersTableV2({ vouchers, setVouchers, filters, setFil
         try {
             const isConfirm = window.confirm("Are you sure to delete?");
             if (isConfirm) {
-                await axios.delete(`/vouchers/delete/${id}`, {
+                await axios.delete(`/v2/vouchers/delete/${id}`, {
                     headers: { authorization: `Bearer ${jwtToken}` },
                 });
 
@@ -82,7 +82,7 @@ export default function VouchersTableV2({ vouchers, setVouchers, filters, setFil
                                     <td className="p-3">
                                         {filters.skip * filters.limit + (index + 1)}
                                     </td>
-                                    <td className="p-3">{voucher?.voucherV2Id}</td>
+                                    <td className="p-3">{voucher?.voucherId}</td>
                                     <td className="p-3 whitespace-nowrap">
                                         {formatDate(voucher?.createdAt)}
                                     </td>

@@ -6,7 +6,7 @@ import { FiDownload, FiEdit } from "react-icons/fi";
 import axios from "../../axios";
 import { PageLoader } from "../../components";
 import { formatDate } from "../../utils";
-import { SingleVoucherTourRow } from "../../features/Voucher";
+import { SingleV2VoucherTourRow } from "../../features/Voucher";
 
 export default function SingleVoucherV2Page() {
     const [voucher, setVoucher] = useState({});
@@ -112,7 +112,7 @@ export default function SingleVoucherV2Page() {
                     <div className="bg-white rounded shadow-sm">
                         <div className="flex items-center justify-between border-b border-dashed p-4">
                             <h1 className="font-medium">
-                                Voucher Details {!isLoading && `- (#${voucher?.voucherV2Id})`}
+                                Voucher Details {!isLoading && `- (#${voucher?.voucherId})`}
                             </h1>
                             <div className="flex items-center gap-[10px]">
                                 <div className="mr-3">
@@ -407,7 +407,7 @@ export default function SingleVoucherV2Page() {
                                     <tbody className="text-[14px]">
                                         {voucher?.voucherAmendment?.tours?.map((tour, index) => {
                                             return (
-                                                <SingleVoucherTourRow
+                                                <SingleV2VoucherTourRow
                                                     key={index}
                                                     tour={tour}
                                                     index={index}

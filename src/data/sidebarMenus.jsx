@@ -573,16 +573,16 @@ const sidebarMenus = {
             permission: ["tour-schedules", "view"],
         },
         {
-            name: "Tour Schedules v2",
-            icon: <AiOutlineSchedule />,
-            link: "/vouchers/v2",
-            permission: ["tour-schedules", "view"],
-        },
-        {
             name: "Daily Reports",
             icon: <HiOutlineDocumentReport />,
             link: "/vouchers/daily-reports",
             permission: ["daily-reports", "view"],
+        },
+        {
+            name: "Tour Schedules v2",
+            icon: <AiOutlineSchedule />,
+            link: "/vouchers/v2",
+            permission: ["tour-schedules", "view"],
         },
         {
             name: "Daily Reports V2",
