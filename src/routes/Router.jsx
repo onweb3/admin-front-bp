@@ -221,7 +221,7 @@ import HotelCancellationRequestsPage from "../pages/Hotels/HotelCancellationRequ
 import TopSellingHotelsPage from "../pages/Hotels/TopSellingHotelsPage";
 import TopHotelSellingResllersPage from "../pages/Hotels/TopHotelSellingResllersPage";
 import AttractionDashboardPage from "../pages/Dashboard/AttractionDashboardPage";
-import VehiclesListPage from "../pages/Vehicle/VehiclesListPage";
+// import VehiclesListPage from "../pages/Vehicle/VehiclesListPage";
 import VehicleMakesPage from "../pages/Vehicle/VehicleMakesPage";
 import VehicleCategoriesPage from "../pages/Vehicle/VehicleCategoriesPage";
 import VehicleBodyTypesListPage from "../pages/Vehicle/VehicleBodyTypesListPage";
@@ -241,6 +241,7 @@ import EditVoucherV2Page from "../pages/Voucher/EditVoucherV2Page";
 import VouchersV2DailyReportPage from "../pages/Voucher/VouchersV2DailyReportPage";
 import VehicleTypePage from "../pages/Vehicle/VehicleTypePage";
 import SingleTourTransferPage from "../pages/Voucher/SingleTourTransferPage";
+import VehiclesListPage from "../pages/Vehicle/VehiclesListPage";
 
 const ThemeRoutes = [
     {

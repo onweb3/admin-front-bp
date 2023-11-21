@@ -213,7 +213,6 @@ export default function QuotationSubmissionForm({ isEdit = false }) {
                 err?.response?.data?.error || "Something went wrong, Try again"
             );
             setIsLoading(false);
-            console.log(err);
         }
     };
 

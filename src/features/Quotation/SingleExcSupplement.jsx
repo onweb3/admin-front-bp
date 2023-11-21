@@ -16,9 +16,9 @@ import {
 export default function SingleExcSupplement({
     excursion,
     excSupplementTransferType,
+    isEdit,
 }) {
     const [globalExcursion, setGlobalExcursion] = useState({});
-
     const {
         selectedExcSupplementIds,
         excursions,
@@ -31,6 +31,7 @@ export default function SingleExcSupplement({
     const [isLoading, setIsLoading] = useState(false);
     const { jwtToken } = useSelector((state) => state.admin);
     const [vehicles, setVehicles] = useState([]);
+    const [edit, setEdit] = useState(isEdit || false);
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -42,14 +43,14 @@ export default function SingleExcSupplement({
 
     const onTransferChange = async (type) => {
         try {
-            console.log("type ", type);
-            if (type === "private" || excSupplementTransferType === "private") {
-                console.log("type ", type);
-
+            if (
+                (type.toLowerCase() === "private" ||
+                    excSupplementTransferType.toLowerCase() === "private") &&
+                edit === false
+            ) {
                 setIsLoading(true);
                 setError("");
 
-                console.log("Fetching vehicles");
                 const response = await axios.post(
                     "/quotations/inital/transfer/excursion",
                     {
@@ -69,6 +70,7 @@ export default function SingleExcSupplement({
                         vehicleType: response.data,
                     })
                 );
+                setEdit(false);
 
                 setIsLoading(false);
             }
@@ -86,8 +88,6 @@ export default function SingleExcSupplement({
         onTransferChange(excursion?.value);
     }, [excSupplementTransferType, excursion?.value]);
 
-    console.log(excursion, "excursion");
-
     useEffect(() => {
         if (
             excursion &&
@@ -102,8 +102,8 @@ export default function SingleExcSupplement({
             let calculatedAdultPrice = 0;
             let calculatedChildPrice = 0;
 
-            if (excursion?.excursionType === "transfer") {
-                if (excursion?.value === "private") {
+            if (excursion?.excursionType.toLowerCase() === "transfer") {
+                if (excursion?.value.toLowerCase() === "private") {
                     let totalPvtTransferPrice = 0;
 
                     for (let i = 0; i < excursion?.vehicleType?.length; i++) {
@@ -117,28 +117,33 @@ export default function SingleExcSupplement({
 
                     calculatedAdultPrice = totalPvtTransferPrice / divVal;
                     calculatedChildPrice = totalPvtTransferPrice / divVal;
-                } else if (excursion?.value === "shared") {
+                } else if (excursion?.value.toLowerCase() === "shared") {
                     calculatedAdultPrice = globalExcursion?.sicPrice?.price;
                     calculatedChildPrice = globalExcursion?.sicPrice?.price;
                 }
-            } else if (excursion?.excursionType === "ticket") {
-                if (excursion?.value === "ticket") {
+            } else if (excursion?.excursionType.toLowerCase() === "ticket") {
+                if (excursion?.value.toLowerCase() === "ticket") {
                     calculatedAdultPrice =
                         globalExcursion?.ticketPrice?.adultPrice;
                     calculatedChildPrice =
                         globalExcursion?.ticketPrice?.childPrice;
-                } else if (excursion?.value === "shared") {
+                } else if (excursion?.value.toLowerCase() === "shared") {
                     calculatedAdultPrice =
                         globalExcursion?.sicWithTicket?.adultPrice;
                     calculatedChildPrice =
                         globalExcursion?.sicWithTicket?.childPrice;
-                } else if (excursion?.value === "private") {
+                } else if (excursion?.value.toLowerCase() === "private") {
                     let totalPvtTransferPrice = 0;
 
                     for (let i = 0; i < excursion?.vehicleType?.length; i++) {
                         let vehicleType = excursion?.vehicleType[i];
                         totalPvtTransferPrice +=
                             vehicleType?.price * vehicleType?.count;
+
+                        console.log(
+                            excursion?.vehicleType[i],
+                            "excursion?.vehicleType[i]  suppp"
+                        );
                     }
                     let divVal = 1;
 
@@ -224,6 +229,7 @@ export default function SingleExcSupplement({
                                         _id: excursion?.excursionId,
                                     })
                                 );
+                                setEdit(false);
 
                                 onTransferChange(
                                     excursion?.excursionId,
@@ -382,6 +388,7 @@ export default function SingleExcSupplement({
                                             value: e.target.value,
                                         })
                                     );
+                                    setEdit(false);
 
                                     onTransferChange(
                                         excursion?.excursionId,

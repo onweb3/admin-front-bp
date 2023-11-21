@@ -51,7 +51,7 @@ export default function TerminalModal({
     );
     const { id } = useParams();
 
-    console.log(terminalModal, data, selectedTerminal, "terminalModal");
+    
     const handleSubmit = async (e, terminalId) => {
         try {
             e.preventDefault();

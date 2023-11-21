@@ -10,7 +10,7 @@ import SingleExcursion from "./SingleExcursion";
 import { useHandleClickOutside } from "../../hooks";
 import axios from "../../axios";
 
-export default function ExcursionQuotationForm() {
+export default function ExcursionQuotationForm({ isEdit }) {
     const [searchedExcursions, setSearchedExcursions] = useState([]);
     const [searchText, setSearchText] = useState("");
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -49,13 +49,11 @@ export default function ExcursionQuotationForm() {
     };
 
     useEffect(() => {
-        console.log("call");
         if (searchText) {
             fetchExcursion(searchText);
         }
     }, [searchText, excursions, excursionTransferType]);
 
-    console.log(selectedExcursions, "selected excursions");
 
     useEffect(() => {
         let adultTotal = 0;
@@ -275,6 +273,7 @@ export default function ExcursionQuotationForm() {
                                                     excursionTransferType={
                                                         excursionTransferType
                                                     }
+                                                    isEdit={isEdit}
                                                 />
                                             );
                                         })

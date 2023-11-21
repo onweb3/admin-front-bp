@@ -6,6 +6,7 @@ import { BtnLoader, PageLoader, RichTextEditor } from "../../components";
 import axios from "../../axios";
 import { ActivityPrivateTransfersSection } from "../../features/Attractions";
 import AddQuotationDetails from "../../features/Attractions/components/AddQuotaionDetails";
+import ActivityMarkupRow from "../../features/Attractions/components/ActivityMarkupRow";
 
 export default function EditActivityPage() {
     const [data, setData] = useState({
@@ -52,12 +53,14 @@ export default function EditActivityPage() {
     });
 
     const [section, setSection] = useState("activity");
+    const [markupUpdate, setMarkupUpdate] = useState([]);
 
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [isPageLoading, setIsPageLoading] = useState(true);
     const [attraction, setAttraction] = useState({});
     const [privateTransfers, setPrivateTransfers] = useState([]);
+    const [profiles, setProfiles] = useState([]);
 
     const { id, activityId } = useParams();
     const navigate = useNavigate();
@@ -67,6 +70,77 @@ export default function EditActivityPage() {
         setData((prev) => {
             return { ...prev, [e.target.name]: e.target.value };
         });
+    };
+
+    const fetchProfiles = async () => {
+        try {
+            setIsLoading(true);
+
+            const response = await axios.get(
+                `/profile/get-all-profiles/${activityId}`,
+                {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                }
+            );
+
+            setProfiles((prevProfile) => [
+                ...prevProfile,
+
+                ...response.data?.map((data) => {
+                    return {
+                        ...data,
+                        markupType: data.markupType || "flat",
+                        markup: data.markup || 0,
+                    };
+                }),
+            ]);
+
+            setMarkupUpdate(
+                () =>
+                    response.data?.map((data) => {
+                        return {
+                            profileId: data._id,
+                            markupType: data.markupType || "flat",
+                            markup: data.markup || 0,
+                        };
+                    }) || []
+            );
+
+            setIsLoading(false);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    useEffect(() => {
+        fetchProfiles();
+    }, []);
+
+    const handleMarkupSubmit = async (e) => {
+        try {
+            e.preventDefault();
+            setIsLoading(true);
+            setError("");
+
+            await axios.patch(
+                `/attractions/activities/profiles/update/${activityId}`,
+                {
+                    markupUpdate,
+                },
+                {
+                    headers: { Authorization: `Bearer ${jwtToken}` },
+                }
+            );
+
+            setIsLoading(false);
+            navigate(-1);
+        } catch (err) {
+            console.log(err);
+            setError(
+                err?.response?.data?.error || "Something went wrong, Try again"
+            );
+            setIsLoading(false);
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -91,7 +165,9 @@ export default function EditActivityPage() {
             setIsLoading(false);
             navigate(-1);
         } catch (err) {
-            setError(err?.response?.data?.error || "Something went wrong, Try again");
+            setError(
+                err?.response?.data?.error || "Something went wrong, Try again"
+            );
             setIsLoading(false);
         }
     };
@@ -100,9 +176,12 @@ export default function EditActivityPage() {
         try {
             setIsPageLoading(true);
 
-            const response = await axios.get(`/attractions/activities/${activityId}`, {
-                headers: { Authorization: `Bearer ${jwtToken}` },
-            });
+            const response = await axios.get(
+                `/attractions/activities/${activityId}`,
+                {
+                    headers: { Authorization: `Bearer ${jwtToken}` },
+                }
+            );
 
             const {
                 name,
@@ -194,7 +273,9 @@ export default function EditActivityPage() {
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">Edit Activity</h1>
+                <h1 className="font-[600] text-[15px] uppercase">
+                    Edit Activity
+                </h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
@@ -208,7 +289,10 @@ export default function EditActivityPage() {
                         {id?.slice(0, 3)}...{id?.slice(-3)}{" "}
                     </span>
                     <span>{">"} </span>
-                    <Link to={`/attractions/${id}/edit`} className="text-textColor">
+                    <Link
+                        to={`/attractions/${id}/edit`}
+                        className="text-textColor"
+                    >
                         Edit{" "}
                     </Link>
                     <span>{">"} </span>
@@ -232,7 +316,9 @@ export default function EditActivityPage() {
                             <button
                                 className={
                                     "px-2 py-4 h-auto bg-transparent text-primaryColor font-medium rounded-none " +
-                                    (section === "activity" ? "border-b border-b-orange-500" : "")
+                                    (section === "activity"
+                                        ? "border-b border-b-orange-500"
+                                        : "")
                                 }
                                 onClick={(e) => {
                                     handleSectionChange(e, "activity");
@@ -240,11 +326,25 @@ export default function EditActivityPage() {
                             >
                                 Activity
                             </button>
-
                             <button
                                 className={
                                     "px-2 py-4 h-auto bg-transparent text-primaryColor font-medium rounded-none " +
-                                    (section === "quotation" ? "border-b border-b-orange-500" : "")
+                                    (section === "markup"
+                                        ? "border-b border-b-orange-500"
+                                        : "")
+                                }
+                                onClick={(e) => {
+                                    handleSectionChange(e, "markup");
+                                }}
+                            >
+                                Markup
+                            </button>
+                            <button
+                                className={
+                                    "px-2 py-4 h-auto bg-transparent text-primaryColor font-medium rounded-none " +
+                                    (section === "quotation"
+                                        ? "border-b border-b-orange-500"
+                                        : "")
                                 }
                                 onClick={(e) => {
                                     handleSectionChange(e, "quotation");
@@ -254,7 +354,11 @@ export default function EditActivityPage() {
                             </button>
                         </div>
                         <form className="p-6" action="" onSubmit={handleSubmit}>
-                            <div className={` ${section === "activity" ? "" : "hidden"}`}>
+                            <div
+                                className={` ${
+                                    section === "activity" ? "" : "hidden"
+                                }`}
+                            >
                                 <div className="grid grid-cols-3 items-end gap-5">
                                     <div>
                                         <label htmlFor="">Name</label>
@@ -279,9 +383,14 @@ export default function EditActivityPage() {
                                             <option value="" hidden>
                                                 Select Activity Type
                                             </option>
-                                            <option value="normal">Normal Activity</option>
-                                            {attraction?.bookingType === "booking" && (
-                                                <option value="transfer">Transfer Activity</option>
+                                            <option value="normal">
+                                                Normal Activity
+                                            </option>
+                                            {attraction?.bookingType ===
+                                                "booking" && (
+                                                <option value="transfer">
+                                                    Transfer Activity
+                                                </option>
                                             )}
                                         </select>
                                     </div>
@@ -294,15 +403,22 @@ export default function EditActivityPage() {
                                             required
                                             id=""
                                         >
-                                            <option value="person">Person</option>
+                                            <option value="person">
+                                                Person
+                                            </option>
                                             {/* <option value="private">Private</option> */}
-                                            {attraction?.bookingType === "booking" && (
-                                                <option value="hourly">Hourly</option>
+                                            {attraction?.bookingType ===
+                                                "booking" && (
+                                                <option value="hourly">
+                                                    Hourly
+                                                </option>
                                             )}
                                         </select>
                                     </div>
                                     <div className="">
-                                        <label htmlFor="">Adult Age Limit</label>
+                                        <label htmlFor="">
+                                            Adult Age Limit
+                                        </label>
                                         <input
                                             type="number"
                                             placeholder="Ex: 60"
@@ -313,7 +429,9 @@ export default function EditActivityPage() {
                                         />
                                     </div>
                                     <div>
-                                        <label htmlFor="">Child Age Limit</label>
+                                        <label htmlFor="">
+                                            Child Age Limit
+                                        </label>
                                         <input
                                             type="number"
                                             name="childAgeLimit"
@@ -324,7 +442,9 @@ export default function EditActivityPage() {
                                         />
                                     </div>
                                     <div>
-                                        <label htmlFor="">Infant Age Limit</label>
+                                        <label htmlFor="">
+                                            Infant Age Limit
+                                        </label>
                                         <input
                                             type="number"
                                             required
@@ -337,12 +457,16 @@ export default function EditActivityPage() {
                                     {data.base === "hourly" ? (
                                         <>
                                             <div className="">
-                                                <label htmlFor="">Purchase Cost (Hourly)</label>
+                                                <label htmlFor="">
+                                                    Purchase Cost (Hourly)
+                                                </label>
                                                 <input
                                                     type="number"
                                                     placeholder="Enter hours count"
                                                     name="hourlyCost"
-                                                    value={data.hourlyCost || ""}
+                                                    value={
+                                                        data.hourlyCost || ""
+                                                    }
                                                     onChange={handleChange}
                                                     required
                                                 />
@@ -351,7 +475,9 @@ export default function EditActivityPage() {
                                     ) : (
                                         <>
                                             <div className="">
-                                                <label htmlFor="">Purchase Cost (Adult)</label>
+                                                <label htmlFor="">
+                                                    Purchase Cost (Adult)
+                                                </label>
                                                 <input
                                                     type="number"
                                                     placeholder="Enter adult cost"
@@ -362,7 +488,9 @@ export default function EditActivityPage() {
                                                 />
                                             </div>
                                             <div>
-                                                <label htmlFor="">Purchase Cost (Child)</label>
+                                                <label htmlFor="">
+                                                    Purchase Cost (Child)
+                                                </label>
                                                 <input
                                                     type="number"
                                                     name="childCost"
@@ -373,12 +501,16 @@ export default function EditActivityPage() {
                                                 />
                                             </div>
                                             <div>
-                                                <label htmlFor="">Purchase Cost (Infant)</label>
+                                                <label htmlFor="">
+                                                    Purchase Cost (Infant)
+                                                </label>
                                                 <input
                                                     type="text"
                                                     placeholder="Enter infant cost"
                                                     name="infantCost"
-                                                    value={data.infantCost || ""}
+                                                    value={
+                                                        data.infantCost || ""
+                                                    }
                                                     onChange={handleChange}
                                                 />
                                             </div>
@@ -396,7 +528,9 @@ export default function EditActivityPage() {
                                                     setData((prev) => {
                                                         return {
                                                             ...prev,
-                                                            isPromoCode: e.target.checked,
+                                                            isPromoCode:
+                                                                e.target
+                                                                    .checked,
                                                         };
                                                     })
                                                 }
@@ -407,7 +541,9 @@ export default function EditActivityPage() {
                                         </div>
                                         {data.isPromoCode && (
                                             <div className="mt-2">
-                                                <label htmlFor="">PromoCode</label>
+                                                <label htmlFor="">
+                                                    PromoCode
+                                                </label>
                                                 <input
                                                     type="text"
                                                     name="promoCode"
@@ -422,11 +558,15 @@ export default function EditActivityPage() {
                                     </div>
                                     {data.isPromoCode && (
                                         <div>
-                                            <label htmlFor="">PromoCode Amount Adult</label>
+                                            <label htmlFor="">
+                                                PromoCode Amount Adult
+                                            </label>
                                             <input
                                                 type="number"
                                                 name="promoAmountAdult"
-                                                value={data.promoAmountAdult || ""}
+                                                value={
+                                                    data.promoAmountAdult || ""
+                                                }
                                                 onChange={handleChange}
                                                 placeholder="Enter promo amount"
                                                 required
@@ -435,11 +575,15 @@ export default function EditActivityPage() {
                                     )}
                                     {data.isPromoCode && (
                                         <div>
-                                            <label htmlFor="">PromoCode Amount Child</label>
+                                            <label htmlFor="">
+                                                PromoCode Amount Child
+                                            </label>
                                             <input
                                                 type="number"
                                                 name="promoAmountChild"
-                                                value={data.promoAmountChild || ""}
+                                                value={
+                                                    data.promoAmountChild || ""
+                                                }
                                                 onChange={handleChange}
                                                 placeholder="Enter promo amount"
                                                 required
@@ -458,7 +602,9 @@ export default function EditActivityPage() {
                                                     setData((prev) => {
                                                         return {
                                                             ...prev,
-                                                            isB2bPromoCode: e.target.checked,
+                                                            isB2bPromoCode:
+                                                                e.target
+                                                                    .checked,
                                                         };
                                                     })
                                                 }
@@ -469,11 +615,15 @@ export default function EditActivityPage() {
                                         </div>
                                         {data.isB2bPromoCode && (
                                             <div className="mt-2">
-                                                <label htmlFor="">PromoCode</label>
+                                                <label htmlFor="">
+                                                    PromoCode
+                                                </label>
                                                 <input
                                                     type="text"
                                                     name="b2bPromoCode"
-                                                    value={data.b2bPromoCode || ""}
+                                                    value={
+                                                        data.b2bPromoCode || ""
+                                                    }
                                                     onChange={handleChange}
                                                     className="uppercase"
                                                     placeholder="Enter  promo code"
@@ -484,11 +634,16 @@ export default function EditActivityPage() {
                                     </div>
                                     {data.isB2bPromoCode && (
                                         <div>
-                                            <label htmlFor="">PromoCode Amount Adult</label>
+                                            <label htmlFor="">
+                                                PromoCode Amount Adult
+                                            </label>
                                             <input
                                                 type="number"
                                                 name="b2bPromoAmountAdult"
-                                                value={data.b2bPromoAmountAdult || ""}
+                                                value={
+                                                    data.b2bPromoAmountAdult ||
+                                                    ""
+                                                }
                                                 onChange={handleChange}
                                                 placeholder="Enter promo amount"
                                                 required
@@ -497,11 +652,16 @@ export default function EditActivityPage() {
                                     )}
                                     {data.isB2bPromoCode && (
                                         <div>
-                                            <label htmlFor="">PromoCode Amount Child</label>
+                                            <label htmlFor="">
+                                                PromoCode Amount Child
+                                            </label>
                                             <input
                                                 type="number"
                                                 name="b2bPromoAmountChild"
-                                                value={data.b2bPromoAmountChild || ""}
+                                                value={
+                                                    data.b2bPromoAmountChild ||
+                                                    ""
+                                                }
                                                 onChange={handleChange}
                                                 placeholder="Enter promo amount"
                                                 required
@@ -516,13 +676,16 @@ export default function EditActivityPage() {
                                             <input
                                                 type="checkbox"
                                                 className="w-[16px] h-[16px]"
-                                                checked={data.isSharedTransferAvailable}
+                                                checked={
+                                                    data.isSharedTransferAvailable
+                                                }
                                                 onChange={(e) =>
                                                     setData((prev) => {
                                                         return {
                                                             ...prev,
                                                             isSharedTransferAvailable:
-                                                                e.target.checked,
+                                                                e.target
+                                                                    .checked,
                                                         };
                                                     })
                                                 }
@@ -533,11 +696,16 @@ export default function EditActivityPage() {
                                         </div>
                                         {data.isSharedTransferAvailable && (
                                             <div className="mt-2">
-                                                <label htmlFor="">Shared Transfer Price</label>
+                                                <label htmlFor="">
+                                                    Shared Transfer Price
+                                                </label>
                                                 <input
                                                     type="number"
                                                     name="sharedTransferPrice"
-                                                    value={data.sharedTransferPrice || ""}
+                                                    value={
+                                                        data.sharedTransferPrice ||
+                                                        ""
+                                                    }
                                                     onChange={handleChange}
                                                     placeholder="Enter shared transfer price"
                                                     required
@@ -547,11 +715,16 @@ export default function EditActivityPage() {
                                     </div>
                                     {data.isSharedTransferAvailable && (
                                         <div>
-                                            <label htmlFor="">Shared Transfer Cost</label>
+                                            <label htmlFor="">
+                                                Shared Transfer Cost
+                                            </label>
                                             <input
                                                 type="number"
                                                 name="sharedTransferCost"
-                                                value={data.sharedTransferCost || ""}
+                                                value={
+                                                    data.sharedTransferCost ||
+                                                    ""
+                                                }
                                                 onChange={handleChange}
                                                 placeholder="Enter shared transfer cost"
                                                 required
@@ -565,7 +738,9 @@ export default function EditActivityPage() {
                                         <input
                                             type="checkbox"
                                             className="w-[16px] h-[16px]"
-                                            checked={data.isPrivateTransferAvailable}
+                                            checked={
+                                                data.isPrivateTransferAvailable
+                                            }
                                             onChange={(e) =>
                                                 setData((prev) => {
                                                     return {
@@ -583,7 +758,9 @@ export default function EditActivityPage() {
                                     {data.isPrivateTransferAvailable && (
                                         <ActivityPrivateTransfersSection
                                             privateTransfers={privateTransfers}
-                                            setPrivateTransfers={setPrivateTransfers}
+                                            setPrivateTransfers={
+                                                setPrivateTransfers
+                                            }
                                         />
                                     )}
                                 </div>
@@ -633,7 +810,9 @@ export default function EditActivityPage() {
                                                     };
                                                 });
                                             }}
-                                            initialValue={data?.description || ""}
+                                            initialValue={
+                                                data?.description || ""
+                                            }
                                         />
                                     </div>
                                 </div>
@@ -659,11 +838,93 @@ export default function EditActivityPage() {
                                     </button>
                                 </div>
                             </div>
-                            <div className={` ${section === "quotation" ? "" : "hidden"}`}>
+                            <div
+                                className={` ${
+                                    section === "markup" ? "w-full " : "hidden"
+                                }`}
+                            >
+                                <div className="overflow-x-auto">
+                                    <table className="w-full">
+                                        <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
+                                            <tr>
+                                                <th className="font-[500] p-3">
+                                                    Index
+                                                </th>
+                                                <th className="font-[500] p-3">
+                                                    Name
+                                                </th>
+                                                <th className="font-[500] p-3">
+                                                    Markup
+                                                </th>
+                                                <th className="font-[500] p-3">
+                                                    Markup Type
+                                                </th>
+
+                                                <th className="font-[500] p-3">
+                                                    Action
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="text-sm ">
+                                            {profiles?.map((profile, index) => {
+                                                return (
+                                                    <ActivityMarkupRow
+                                                        index={index}
+                                                        profile={profile}
+                                                        markupUpdate={
+                                                            markupUpdate
+                                                        }
+                                                        setMarkupUpdate={
+                                                            setMarkupUpdate
+                                                        }
+                                                        // section={section}
+                                                    />
+                                                );
+                                            })}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {error && (
+                                    <span className="text-sm block text-red-500 mt-2">
+                                        {error}
+                                    </span>
+                                )}
+                                <div className="mt-4 flex items-center justify-end gap-[12px]">
+                                    <button
+                                        className="bg-slate-300 text-textColor px-[15px]"
+                                        type="button"
+                                        onClick={() => navigate(-1)}
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        className="w-[150px]"
+                                        onClick={handleMarkupSubmit}
+                                    >
+                                        {isLoading ? (
+                                            <BtnLoader />
+                                        ) : (
+                                            "Update Markup"
+                                        )}
+                                    </button>
+                                </div>
+                            </div>
+                            <div
+                                className={` ${
+                                    section === "quotation" ? "" : "hidden"
+                                }`}
+                            >
                                 <div
-                                    className={` ${section === "quotation" ? "w-full" : "hidden"}`}
+                                    className={` ${
+                                        section === "quotation"
+                                            ? "w-full"
+                                            : "hidden"
+                                    }`}
                                 >
-                                    <AddQuotationDetails data={data} setData={setData} />
+                                    <AddQuotationDetails
+                                        data={data}
+                                        setData={setData}
+                                    />
                                 </div>
                             </div>
                         </form>

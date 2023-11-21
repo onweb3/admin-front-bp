@@ -386,9 +386,37 @@ const AmendmentTable = ({
                                                                         }
                                                                     </span>
                                                                 </td>
-                                                                <td className="border px-[10px]">
-                                                                    {item?.city ||
-                                                                        "N/A"}
+                                                                <td
+                                                                    className="border px-[10px] "
+                                                                    style={{
+                                                                        width: "50px",
+                                                                        overflow:
+                                                                            "hidden",
+                                                                        whiteSpace:
+                                                                            "nowrap",
+                                                                        textOverflow:
+                                                                            "ellipsis",
+                                                                    }}
+                                                                >
+                                                                    <div className="flex items-center gap-2">
+                                                                        <span className="block mt-1">
+                                                                            {
+                                                                                item?.area
+                                                                            }
+                                                                            ,
+                                                                        </span>{" "}
+                                                                        <span className="block mt-1">
+                                                                            {
+                                                                                item?.city
+                                                                            }
+                                                                            ,
+                                                                        </span>{" "}
+                                                                        <span className="block mt-1">
+                                                                            {
+                                                                                item?.country
+                                                                            }
+                                                                        </span>
+                                                                    </div>
                                                                 </td>
                                                                 {multiHotelIndex <
                                                                     1 &&
@@ -665,24 +693,24 @@ const AmendmentTable = ({
                                     <li key={index} className="mb-1">
                                         {excursion?.excursionName} -{" "}
                                         <span className="capitalize">
-                                            {excursion?.excursionType ===
+                                            {excursion?.excursionType.toLowerCase() ===
                                             "ticket"
-                                                ? excursion?.transferType ===
+                                                ? excursion?.transferType.toLowerCase() ===
                                                   "without"
                                                     ? "Only Ticket"
-                                                    : excursion?.transferType ===
+                                                    : excursion?.transferType.toLowerCase() ===
                                                       "shared"
                                                     ? "Tickets With SIC Transfer"
-                                                    : excursion?.transferType ===
+                                                    : excursion?.transferType.toLowerCase() ===
                                                       "private"
                                                     ? "Tickets With PVT Transfer"
                                                     : ""
-                                                : excursion?.excursionType ===
+                                                : excursion?.excursionType.toLowerCase() ===
                                                   "transfer"
-                                                ? excursion?.transferType ===
+                                                ? excursion?.transferType.toLowerCase() ===
                                                   "private"
                                                     ? "Only Transfer (Private)"
-                                                    : excursion?.transferType ===
+                                                    : excursion?.transferType.toLowerCase() ===
                                                       "shared"
                                                     ? "Only Transfer (SIC)"
                                                     : ""
@@ -734,22 +762,24 @@ const AmendmentTable = ({
                                     >
                                         {excursion?.excursionName} -{" "}
                                         <span className="capitalize">
-                                            {excursion?.excursionType ===
+                                            {excursion?.excursionType.toLowerCase() ===
                                             "ticket"
-                                                ? excursion?.value === "ticket"
+                                                ? excursion?.value.toLowerCase() ===
+                                                  "ticket"
                                                     ? "Only Ticket"
-                                                    : excursion?.value ===
+                                                    : excursion?.value.toLowerCase() ===
                                                       "shared"
                                                     ? "Tickets With SIC Transfer"
-                                                    : excursion?.value ===
+                                                    : excursion?.value.toLowerCase() ===
                                                       "private"
                                                     ? "Tickets With PVT Transfer"
                                                     : ""
-                                                : excursion?.excursionType ===
+                                                : excursion?.excursionType.toLowerCase() ===
                                                   "transfer"
-                                                ? excursion?.value === "private"
+                                                ? excursion?.value.toLowerCase() ===
+                                                  "private"
                                                     ? "Only Transfer (Private)"
-                                                    : excursion?.value ===
+                                                    : excursion?.value.toLowerCase() ===
                                                       "shared"
                                                     ? "Only Transfer (SIC)"
                                                     : ""

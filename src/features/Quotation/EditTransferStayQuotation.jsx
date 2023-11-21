@@ -74,7 +74,6 @@ export default function EditTransferStayQuotation({
             setIsLoading(true);
             setError("");
 
-            console.log("Fetching vehicles");
             const response = await axios.post(
                 "/quotations/inital/transfer",
                 {
@@ -89,11 +88,9 @@ export default function EditTransferStayQuotation({
             );
 
             setVehicles(response?.data);
-            console.log(response?.data, "vehicles");
             // console.log("isReload ", isReload);
 
             if (isReload === true) {
-                console.log("Reloading ");
                 dispatch(
                     handleTransferInitalCount({
                         transferIndex,
