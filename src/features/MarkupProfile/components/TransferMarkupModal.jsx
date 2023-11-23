@@ -10,13 +10,15 @@ import { BtnLoader } from "../../../components";
 import { useHandleClickOutside } from "../../../hooks";
 
 export default function TransferMarkupModal({
-    setTransfers,
+    setVehicles,
+    transferId,
     setIsModal,
     type,
 }) {
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
+        transferId: transferId,
         markupType: "",
         markup: "",
     });
@@ -50,16 +52,16 @@ export default function TransferMarkupModal({
                 );
             }
         }
-        setTransfers((pre) => {
-            return pre.map((transfer) => {
-                return {
-                    ...transfer,
-                    markupType: formData?.markupType,
-                    markup: formData?.markup,
-                    isEdit: true,
-                };
-            });
-        });
+        // setVehicles((pre) => {
+        //     return pre.map((vehicle) => {
+        //         return {
+        //             ...vehicle,
+        //             markupType: formData?.markupType,
+        //             markup: formData?.markup,
+        //             isEdit: true,
+        //         };
+        //     });
+        // });
 
         setIsLoading(false);
 

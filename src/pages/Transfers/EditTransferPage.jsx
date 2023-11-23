@@ -33,6 +33,7 @@ export default function EditTransferPage() {
                     ...prev,
                     transferFrom: "",
                     transferTo: "",
+                    vehicles: [],
                     [e.target.name]: e.target.value,
                 };
             });
