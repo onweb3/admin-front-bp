@@ -11,7 +11,7 @@ export default function AddVehiclePage() {
         vehicleModel: "",
         vehicleTrim: "",
         vehicleCategory: "",
-        vehicleSubCategory: "",
+        vehicleType: "",
         year: "",
         airportSeatingCapacity: "",
         normalSeatingCapacity: "",
@@ -30,7 +30,7 @@ export default function AddVehiclePage() {
         vehicleModels: [],
         vehicleTrims: [],
         vehicleCategories: [],
-        vehicleSubCategories: [],
+        vehicleTypes: [],
     });
 
     const { jwtToken } = useSelector((state) => state.admin);
@@ -70,8 +70,8 @@ export default function AddVehiclePage() {
               return item?.vehicleModel === data.vehicleModel;
           })
         : [];
-    const filteredSubCategories = data.vehicleCategory
-        ? initialData.vehicleSubCategories?.filter((item) => {
+    const filteredVehicleTypes = data.vehicleCategory
+        ? initialData.vehicleTypes?.filter((item) => {
               return item?.vehicleCategoryId === data.vehicleCategory;
           })
         : [];
@@ -90,7 +90,7 @@ export default function AddVehiclePage() {
                         vehicleModels: response?.data?.vehicleModels,
                         vehicleTrims: response?.data?.vehicleTrims,
                         vehicleCategories: response?.data?.vehicleCategories,
-                        vehicleSubCategories: response?.data?.vehicleSubCategories,
+                        vehicleTypes: response?.data?.vehicleTypes,
                     };
                 });
             } catch (err) {
@@ -121,7 +121,7 @@ export default function AddVehiclePage() {
                     <span>Add</span>
                 </div>
             </div>
-            
+
             <div className="p-6">
                 <div className="bg-white rounded p-6 shadow-sm">
                     <form action="" onSubmit={handleSubmit}>
@@ -217,7 +217,7 @@ export default function AddVehiclePage() {
                                             return {
                                                 ...prev,
                                                 vehicleCategory: e.target.value,
-                                                vehicleSubCategory: "",
+                                                vehicleType: "",
                                             };
                                         });
                                     }}
@@ -236,21 +236,21 @@ export default function AddVehiclePage() {
                                 </select>
                             </div>
                             <div>
-                                <label htmlFor="">Vehcile Sub Category *</label>
+                                <label htmlFor="">Vehcile Type *</label>
                                 <select
-                                    name="vehicleSubCategory"
+                                    name="vehicleType"
                                     id=""
-                                    value={data.vehicleSubCategory || ""}
+                                    value={data.vehicleType || ""}
                                     onChange={handleChange}
                                     required
                                 >
                                     <option value="" hidden>
-                                        Select Vehicle Sub Category
+                                        Select Vehicle Type
                                     </option>
-                                    {filteredSubCategories?.map((item, index) => {
+                                    {filteredVehicleTypes?.map((item, index) => {
                                         return (
                                             <option value={item?._id} key={index}>
-                                                {item?.subCategoryName}
+                                                {item?.name}
                                             </option>
                                         );
                                     })}

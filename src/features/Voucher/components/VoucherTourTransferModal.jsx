@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { MdClose } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -11,12 +11,19 @@ export default function VoucherTourTransferModal({
     setIsTransferModalOpen,
     initialData,
     setSchedules,
+    selectedVehicleType,
 }) {
     const [data, setData] = useState({
+        pickupVehicleType: selectedVehicleType || "",
         pickupVehicle: "",
         pickupDriver: "",
+        pickupBufferTime: 60,
         transferType: "pickup-drop",
         vehicleSource: "in-house",
+        returnVehicleType: selectedVehicleType || "",
+        returnVehicle: "",
+        returnDriver: "",
+        returnBufferTime: 60,
     });
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
@@ -62,11 +69,22 @@ export default function VoucherTourTransferModal({
         }
     };
 
+    const filteredPickupVehicles = data.pickupVehicleType
+        ? initialData?.vehicles?.filter((item) => {
+              return item?.vehicleType === data.pickupVehicleType;
+          })
+        : initialData?.vehicles;
+    const filteredReturnVehicles = data.returnVehicleType
+        ? initialData?.vehicles?.filter((item) => {
+              return item?.vehicleType === data.returnVehicleType;
+          })
+        : initialData?.vehicles;
+
     return (
         <div className="fixed inset-0 w-full h-full bg-[#fff5] flex items-center justify-center z-20 ">
             <div
                 ref={wrapperRef}
-                className="bg-[#fff] w-full max-h-[90vh] max-w-[500px]  shadow-[0_1rem_3rem_rgb(0_0_0_/_18%)] overflow-y-auto"
+                className="bg-[#fff] w-full max-h-[90vh] max-w-[800px]  shadow-[0_1rem_3rem_rgb(0_0_0_/_18%)] overflow-y-auto"
             >
                 <div className="flex items-center justify-between border-b p-4">
                     <h2 className="font-medium">Vehicle & Driver</h2>
@@ -79,107 +97,167 @@ export default function VoucherTourTransferModal({
                 </div>
                 <div className="p-4">
                     <form onSubmit={handleSubmit}>
-                        <div>
-                            <label htmlFor="">Transfer Type</label>
-                            <select
-                                id=""
-                                name="transferType"
-                                value={data?.transferType || ""}
-                                onChange={handleChange}
-                            >
-                                <option value="" hidden>
-                                    Select Transfer Type
-                                </option>
-                                <option value="pickup-drop">Pickup & Drop</option>
-                                <option value="disposal">Disposal</option>
-                            </select>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                <label htmlFor="">Transfer Type</label>
+                                <select
+                                    id=""
+                                    name="transferType"
+                                    value={data?.transferType || ""}
+                                    onChange={handleChange}
+                                >
+                                    <option value="" hidden>
+                                        Select Transfer Type
+                                    </option>
+                                    <option value="pickup-drop">Pickup & Drop</option>
+                                    <option value="disposal">Disposal</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label htmlFor="">Pickup Vehicle Type</label>
+                                <select
+                                    id=""
+                                    name="pickupVehicleType"
+                                    value={data?.pickupVehicleType || ""}
+                                    onChange={handleChange}
+                                >
+                                    <option value="" hidden>
+                                        Select Pickup Vehicle Type
+                                    </option>
+                                    {initialData?.vehicleTypes?.map((item, index) => {
+                                        return (
+                                            <option value={item?._id} key={index}>
+                                                {item?.name}
+                                            </option>
+                                        );
+                                    })}
+                                </select>
+                            </div>
+                            <div>
+                                <label htmlFor="">Pickup Vehicle</label>
+                                <select
+                                    id=""
+                                    name="pickupVehicle"
+                                    value={data?.pickupVehicle || ""}
+                                    onChange={handleChange}
+                                >
+                                    <option value="" hidden>
+                                        Select Pickup Vehicle
+                                    </option>
+                                    {filteredPickupVehicles?.map((item, index) => {
+                                        return (
+                                            <option value={item?._id} key={index}>
+                                                {item?.vehicleModel?.modelName} (
+                                                {item?.vehicleTrim?.trimName})
+                                            </option>
+                                        );
+                                    })}
+                                </select>
+                            </div>
+                            <div>
+                                <label htmlFor="">Pickup Driver</label>
+                                <select
+                                    id=""
+                                    name="pickupDriver"
+                                    value={data?.pickupDriver || ""}
+                                    onChange={handleChange}
+                                >
+                                    <option value="" hidden>
+                                        Select Pickup Driver
+                                    </option>
+                                    {initialData?.drivers?.map((item, index) => {
+                                        return (
+                                            <option value={item?._id} key={index}>
+                                                {item?.driverName}
+                                            </option>
+                                        );
+                                    })}
+                                </select>
+                            </div>
+                            <div>
+                                <label htmlFor="">Pickup Buffer Time (Minutes)</label>
+                                <input
+                                    type="number"
+                                    name="pickupBufferTime"
+                                    value={data.pickupBufferTime || ""}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            {data.transferType === "pickup-drop" && (
+                                <>
+                                    <div>
+                                        <label htmlFor="">Return Vehicle Type</label>
+                                        <select
+                                            id=""
+                                            name="returnVehicleType"
+                                            value={data?.returnVehicleType || ""}
+                                            onChange={handleChange}
+                                        >
+                                            <option value="" hidden>
+                                                Select Return Vehicle Type
+                                            </option>
+                                            {initialData?.vehicleTypes?.map((item, index) => {
+                                                return (
+                                                    <option value={item?._id} key={index}>
+                                                        {item?.name}
+                                                    </option>
+                                                );
+                                            })}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label htmlFor="">Return Vehicle</label>
+                                        <select
+                                            id=""
+                                            name="returnVehicle"
+                                            value={data?.returnVehicle || ""}
+                                            onChange={handleChange}
+                                        >
+                                            <option value="" hidden>
+                                                Select Return Vehicle
+                                            </option>
+                                            {initialData?.vehicles?.map((item, index) => {
+                                                return (
+                                                    <option value={item?._id} key={index}>
+                                                        {item?.vehicleModel?.modelName} (
+                                                        {item?.vehicleTrim?.trimName})
+                                                    </option>
+                                                );
+                                            })}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label htmlFor="">Return Driver</label>
+                                        <select
+                                            id=""
+                                            name="returnDriver"
+                                            value={data?.returnDriver || ""}
+                                            onChange={handleChange}
+                                        >
+                                            <option value="" hidden>
+                                                Select Return Driver
+                                            </option>
+                                            {filteredReturnVehicles?.map((item, index) => {
+                                                return (
+                                                    <option value={item?._id} key={index}>
+                                                        {item?.driverName}
+                                                    </option>
+                                                );
+                                            })}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label htmlFor="">Return Buffer Time (Minutes)</label>
+                                        <input
+                                            type="number"
+                                            name="returnBufferTime"
+                                            value={data.returnBufferTime || ""}
+                                            onChange={handleChange}
+                                        />
+                                    </div>
+                                </>
+                            )}
                         </div>
-                        <div className="mt-4">
-                            <label htmlFor="">Pickup Vehicle</label>
-                            <select
-                                id=""
-                                name="pickupVehicle"
-                                value={data?.pickupVehicle || ""}
-                                onChange={handleChange}
-                            >
-                                <option value="" hidden>
-                                    Select Pickup Vehicle
-                                </option>
-                                {initialData?.vehicles?.map((item, index) => {
-                                    return (
-                                        <option value={item?._id} key={index}>
-                                            {item?.vehicleModel?.modelName} (
-                                            {item?.vehicleTrim?.trimName})
-                                        </option>
-                                    );
-                                })}
-                            </select>
-                        </div>
-                        <div className="mt-4">
-                            <label htmlFor="">Pickup Driver</label>
-                            <select
-                                id=""
-                                name="pickupDriver"
-                                value={data?.pickupDriver || ""}
-                                onChange={handleChange}
-                            >
-                                <option value="" hidden>
-                                    Select Pickup Driver
-                                </option>
-                                {initialData?.drivers?.map((item, index) => {
-                                    return (
-                                        <option value={item?._id} key={index}>
-                                            {item?.driverName}
-                                        </option>
-                                    );
-                                })}
-                            </select>
-                        </div>
-                        {data.transferType === "pickup-drop" && (
-                            <>
-                                <div className="mt-4">
-                                    <label htmlFor="">Return Vehicle</label>
-                                    <select
-                                        id=""
-                                        name="returnVehicle"
-                                        value={data?.returnVehicle || ""}
-                                        onChange={handleChange}
-                                    >
-                                        <option value="" hidden>
-                                            Select Return Vehicle
-                                        </option>
-                                        {initialData?.vehicles?.map((item, index) => {
-                                            return (
-                                                <option value={item?._id} key={index}>
-                                                    {item?.vehicleModel?.modelName} (
-                                                    {item?.vehicleTrim?.trimName})
-                                                </option>
-                                            );
-                                        })}
-                                    </select>
-                                </div>
-                                <div className="mt-4">
-                                    <label htmlFor="">Return Driver</label>
-                                    <select
-                                        id=""
-                                        name="returnDriver"
-                                        value={data?.returnDriver || ""}
-                                        onChange={handleChange}
-                                    >
-                                        <option value="" hidden>
-                                            Select Return Driver
-                                        </option>
-                                        {initialData?.drivers?.map((item, index) => {
-                                            return (
-                                                <option value={item?._id} key={index}>
-                                                    {item?.driverName}
-                                                </option>
-                                            );
-                                        })}
-                                    </select>
-                                </div>
-                            </>
-                        )}
                         {error && <span className="block mt-2 text-sm text-red-500">{error}</span>}
                         <div className="mt-4 flex items-center justify-end gap-[12px]">
                             <button className="w-[150px]" disabled={isLoading}>

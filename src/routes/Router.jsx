@@ -242,6 +242,8 @@ import VouchersV2DailyReportPage from "../pages/Voucher/VouchersV2DailyReportPag
 import VehicleTypePage from "../pages/Vehicle/VehicleTypePage";
 import SingleTourTransferPage from "../pages/Voucher/SingleTourTransferPage";
 import VehiclesListPage from "../pages/Vehicle/VehiclesListPage";
+import AddTourPackagePage from "../pages/TourPackage/AddTourPackagePage";
+import TourPackagesListPage from "../pages/TourPackage/TourPackagesListPage";
 
 const ThemeRoutes = [
     {
@@ -1236,6 +1238,14 @@ const ThemeRoutes = [
             {
                 path: "/order/flight/:tbId/:resellerId",
                 element: <CompleteFlightOrderPage />,
+            },
+            {
+                path: "/tour-packages",
+                element: <TourPackagesListPage />,
+            },
+            {
+                path: "/tour-packages/add",
+                element: <AddTourPackagePage />,
             },
         ],
     },

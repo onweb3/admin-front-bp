@@ -158,7 +158,7 @@ export default function VehicleCategoriesPage() {
                                                 Category Name
                                             </th>
                                             <th className="font-[500] p-3 text-center">
-                                                Sub Categories
+                                                Vehicle Type
                                             </th>
                                             <th className="font-[500] p-3">
                                                 Action
