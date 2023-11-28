@@ -287,6 +287,11 @@ function QuotationSingleEmailPage() {
                                             {quotationList?.noOfChildren > 0
                                                 ? `${quotationList.noOfChildren} Children`
                                                 : ""}
+                                            {quotationList?.noOfChildren > 0
+                                                ? ` ( ${quotationList.childrenAges
+                                                      .map((age) => age)
+                                                      .join(",")} ) Age`
+                                                : ""}
                                         </td>
                                     </tr>
 
@@ -930,7 +935,7 @@ function QuotationSingleEmailPage() {
                                                                         To
                                                                     </span>{" "}
                                                                     {
-                                                                        transfer?.transferToName
+                                                                        transfer?.transferToHubName
                                                                     }{" "}
                                                                     - Private
                                                                     Transfer

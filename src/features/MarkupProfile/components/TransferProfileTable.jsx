@@ -388,8 +388,7 @@ export default function TransferProfileTable({ type }) {
                                 </th>
                                 <th className="font-[500] p-3">Transfer To </th>
 
-                                <th className="font-[500] p-3">Markup Type</th>
-                                <th className="font-[500] p-3">Markup </th>
+                                
 
                                 <th className="font-[500] p-3">Edit</th>
                             </tr>
