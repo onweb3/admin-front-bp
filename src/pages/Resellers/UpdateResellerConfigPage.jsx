@@ -79,7 +79,7 @@ export default function UpdateResellerConfigPage() {
                 headers: { authorization: `Bearer ${jwtToken}` },
             });
 
-            console.log(response.data);
+          
             setData((prev) => {
                 return {
                     ...prev,
