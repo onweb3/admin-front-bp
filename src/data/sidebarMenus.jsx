@@ -420,6 +420,11 @@ const sidebarMenus = {
                     link: "/transfers/area-group",
                     permission: ["transfers", "view"],
                 },
+                {
+                    name: "Transfer Order",
+                    link: "/transfers/orders",
+                    permission: ["transfers", "view"],
+                },
             ],
         },
         {

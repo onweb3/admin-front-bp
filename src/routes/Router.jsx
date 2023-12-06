@@ -1,4 +1,8 @@
-import { AdminLayout, EditProfileLayout, SingleResellerLayout } from "../layouts";
+import {
+    AdminLayout,
+    EditProfileLayout,
+    SingleResellerLayout,
+} from "../layouts";
 import A2aAddTicketPage from "../pages/A2A/A2aAddTicketPage";
 import A2AEditTicketPage from "../pages/A2A/A2aEditTicketPage";
 import A2AEnquiryPage from "../pages/A2A/A2AEnquiryPage";
@@ -242,6 +246,7 @@ import VouchersV2DailyReportPage from "../pages/Voucher/VouchersV2DailyReportPag
 import VehicleTypePage from "../pages/Vehicle/VehicleTypePage";
 import SingleTourTransferPage from "../pages/Voucher/SingleTourTransferPage";
 import VehiclesListPage from "../pages/Vehicle/VehiclesListPage";
+import TransferOrderPage from "../pages/Transfers/TransferOrderPage";
 
 const ThemeRoutes = [
     {
@@ -1039,6 +1044,10 @@ const ThemeRoutes = [
             {
                 path: "/transfers/:id/edit",
                 element: <EditTransferPage />,
+            },
+            {
+                path: "/transfers/orders",
+                element: <TransferOrderPage />,
             },
             {
                 path: "/transfers/vehicles/makes",

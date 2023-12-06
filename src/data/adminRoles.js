@@ -385,6 +385,12 @@ const adminRoles = [
         permissions: [],
     },
     {
+        name: "transfers-orders",
+        displayName: "Transfer Orders",
+        category: "transfer",
+        permissions: [],
+    },
+    {
         name: "vehicles",
         displayName: "Vehicles",
         category: "transfer",

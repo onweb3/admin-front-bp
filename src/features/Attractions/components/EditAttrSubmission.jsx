@@ -57,7 +57,13 @@ export default function EditAttrSubmission({
             formData.append("offDates", JSON.stringify(offDates));
             formData.append("isCombo", data?.isCombo);
             formData.append("availability", JSON.stringify(availability));
-
+            formData.append("country", data?.country);
+            formData.append("city", data?.city);
+            formData.append("area", data?.area);
+            formData.append("state", data?.state);
+            formData.append("longitude", data?.longitude);
+            formData.append("latitude", data?.latitude);
+            
             for (let i = 0; i < newImages?.length; i++) {
                 formData.append("images", newImages[i]);
             }

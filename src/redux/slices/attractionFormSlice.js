@@ -172,6 +172,11 @@ export const attractionFormSlice = createSlice({
                 availability,
                 offDates,
                 bookingPriorDays,
+                country,
+                city,
+                area,
+                longitude,
+                latitude,
             } = action.payload;
 
             state.data.bookingType = bookingType || "ticket";
@@ -204,6 +209,12 @@ export const attractionFormSlice = createSlice({
             state.activities = action.payload?.activities || [];
             state.images = action.payload?.images || [];
             state.logo = action.payload?.logo || [];
+            state.data.country = country || "";
+            state.data.city = city || "";
+            state.data.area = area || "";
+            state.data.state = action.payload?.state || "";
+            state.data.longitude = longitude || "";
+            state.data.latitude = latitude || "";
         },
         deleteAttractionActivity: (state, action) => {
             const filteredActivities = state.activities?.filter((activity) => {

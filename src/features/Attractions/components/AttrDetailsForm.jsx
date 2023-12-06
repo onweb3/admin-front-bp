@@ -3,16 +3,34 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { setData } from "../../../redux/slices/attractionFormSlice";
 import axios from "../../../axios";
+import { SelectDropdown } from "../../../components";
 
 export default function AttrDetailsForm({ section, isEdit = false }) {
     const { data, categories } = useSelector((state) => state.attractionForm);
     const { destinations } = useSelector((state) => state.general);
+    const { states, cities, countries, areas } = useSelector(
+        (state) => state.general
+    );
+    const { details } = useSelector((state) => state.hotelForm);
 
+    const availableStates = states?.filter((item) => {
+        return item?.country === data.country;
+    });
+    const availableCities = cities?.filter((item) => {
+        return item?.country === data.country;
+    });
+    const availableAreas = areas?.filter((item) => {
+        return item?.country === data.country;
+    });
     const dispatch = useDispatch();
     const [apis, setApis] = useState([]);
 
     const handleChange = (e) => {
         dispatch(setData({ name: e.target.name, value: e.target.value }));
+    };
+
+    const handleDetailsChange = ({ name, value }) => {
+        dispatch(setData({ name: name, value: value }));
     };
 
     const { jwtToken } = useSelector((state) => state.admin);
@@ -154,6 +172,90 @@ export default function AttrDetailsForm({ section, isEdit = false }) {
                         />
                     </div>
                 )}
+                <div>
+                    <label htmlFor="">County *</label>
+                    <SelectDropdown
+                        data={countries}
+                        valueName={"_id"}
+                        displayName={"countryName"}
+                        placeholder="Select Country"
+                        selectedData={data?.country || ""}
+                        setSelectedData={(val) => {
+                            handleDetailsChange({
+                                name: "country",
+                                value: val,
+                            });
+                        }}
+                    />
+                </div>
+                <div>
+                    <label htmlFor="">Emirate *</label>
+                    <SelectDropdown
+                        data={availableStates}
+                        valueName={"_id"}
+                        displayName={"stateName"}
+                        placeholder="Select Emirate"
+                        selectedData={data?.state || ""}
+                        setSelectedData={(val) => {
+                            handleDetailsChange({
+                                name: "state",
+                                value: val,
+                            });
+                        }}
+                    />
+                </div>
+                <div>
+                    <label htmlFor="">City *</label>
+                    <SelectDropdown
+                        data={availableCities}
+                        valueName={"_id"}
+                        displayName={"cityName"}
+                        placeholder="Select City"
+                        selectedData={data?.city || ""}
+                        setSelectedData={(val) => {
+                            handleDetailsChange({
+                                name: "city",
+                                value: val,
+                            });
+                        }}
+                    />
+                </div>
+                <div>
+                    <label htmlFor="">Area *</label>
+                    <SelectDropdown
+                        data={availableAreas}
+                        valueName={"_id"}
+                        displayName={"areaName"}
+                        placeholder="Select Area"
+                        selectedData={data?.area || ""}
+                        setSelectedData={(val) => {
+                            handleDetailsChange({
+                                name: "area",
+                                value: val,
+                            });
+                        }}
+                    />
+                </div>{" "}
+                <div>
+                    <label htmlFor="">Latitude *</label>
+                    <input
+                        type="text"
+                        name="latitude"
+                        value={data?.latitude || ""}
+                        onChange={handleChange}
+                        placeholder="Ex: 25.276987"
+                    />
+                </div>
+                <div>
+                    <label htmlFor="">Longitude *</label>
+                    <input
+                        type="text"
+                        name="longitude"
+                        value={data?.longitude || ""}
+                        onChange={handleChange}
+                        placeholder="Ex: 55.296249"
+                    />
+                </div>
                 <div className="h-full ">
                     <label htmlFor="">Google Map Link</label>
                     <input
