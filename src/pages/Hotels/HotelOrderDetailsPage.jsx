@@ -175,7 +175,7 @@ export default function HotelOrderDetailsPage() {
                                             Net Price
                                         </span>
                                         <span className="font-[600] text-lg text-green-600">
-                                            {hotelOrder?.netPrice} AED
+                                            {hotelOrder?.netPrice?.toFixed(2)} AED
                                         </span>
                                     </div>
                                     <div className="text-center">
@@ -543,7 +543,7 @@ export default function HotelOrderDetailsPage() {
                                                             <span className="">Gross Price</span>
                                                             <div className="border-b border-dashed flex-1"></div>
                                                             <span className="text-right font-[600]">
-                                                                {hotelOrder?.grossPrice}
+                                                                {hotelOrder?.grossPrice?.toFixed(2)}
                                                             </span>
                                                         </div>
                                                     </td>
@@ -718,7 +718,7 @@ export default function HotelOrderDetailsPage() {
                                                             <span className="">Net Price</span>
                                                             <div className="border-b border-dashed flex-1"></div>
                                                             <span className="text-right font-[600] text-lg text-green-500 whitespace-nowrap">
-                                                                AED {hotelOrder?.netPrice}
+                                                                AED {hotelOrder?.netPrice?.toFixed(2)}
                                                             </span>
                                                         </div>
                                                     </td>
@@ -961,77 +961,99 @@ export default function HotelOrderDetailsPage() {
 
                                 {selectedSection === "contracts" && (
                                     <div className="overflow-x-auto mt-2">
-                                        <table className="w-full text-[14px]">
-                                            <tbody>
-                                                <tr className="odd:bg-[#f3f6f9]">
-                                                    <td className="p-2 text-sm text-grayColor font-medium">
-                                                        Date
-                                                    </td>
-                                                    <td className="p-2 text-sm text-grayColor font-medium">
-                                                        Contract
-                                                    </td>
-                                                    <td className="p-2 text-sm text-grayColor font-medium">
-                                                        Special Rate
-                                                    </td>
-                                                    <td className="p-2 text-sm text-grayColor font-medium">
-                                                        Room Price
-                                                    </td>
-                                                    <td className="p-2 text-sm text-grayColor font-medium">
-                                                        Meal Supp Price
-                                                    </td>
-                                                    <td className="p-2 text-sm text-grayColor font-medium">
-                                                        Ex.Bed Price
-                                                    </td>
-                                                    <td className="p-2 text-sm text-grayColor font-medium">
-                                                        Chd suppl Price
-                                                    </td>
-                                                    <td className="p-2 text-sm text-grayColor font-medium">
-                                                        Net Price
-                                                    </td>
-                                                </tr>
-                                                {hotelOrder?.contracts?.map((contract, index) => {
-                                                    return (
-                                                        <tr
-                                                            key={index}
-                                                            className="odd:bg-[#f3f6f9]"
-                                                        >
-                                                            <td className="p-2">
-                                                                {formatDate(contract?.date)}
-                                                            </td>
-                                                            <td className="p-2">
-                                                                {contract?.contract?.rateCode}
-                                                            </td>
-                                                            <td className="p-2">
-                                                                {contract?.isSpecialRate === true
-                                                                    ? "Yes"
-                                                                    : "No"}{" "}
-                                                                {(contract?.isSpecialRate ===
-                                                                    true) ===
-                                                                true
-                                                                    ? `(${contract?.appliedRateCode})`
-                                                                    : ""}
-                                                            </td>
-                                                            <td className="p-2 whitespace-nowrap">
-                                                                {contract?.roomPrice} AED
-                                                            </td>
-                                                            <td className="p-2 whitespace-nowrap">
-                                                                {contract?.mealSupplementPrice} AED
-                                                            </td>
-                                                            <td className="p-2 whitespace-nowrap">
-                                                                {contract?.extraBedSupplementPrice}{" "}
-                                                                AED
-                                                            </td>
-                                                            <td className="p-2 whitespace-nowrap">
-                                                                {contract?.childSupplementPrice} AED
-                                                            </td>
-                                                            <td className="p-2 whitespace-nowrap">
-                                                                {contract?.netPrice} AED
-                                                            </td>
-                                                        </tr>
-                                                    );
-                                                })}
-                                            </tbody>
-                                        </table>
+                                        {hotelOrder?.contracts?.length < 1 ? (
+                                            <div className="p-4 flex flex-col items-center">
+                                                <span className="text-sm text-grayColor block mt-[6px]">
+                                                    Oops.. No Contracts Found
+                                                </span>
+                                            </div>
+                                        ) : (
+                                            <table className="w-full text-[14px]">
+                                                <tbody>
+                                                    <tr className="odd:bg-[#f3f6f9]">
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Date
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Contract
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Special Rate
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Room Price
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Meal Supp Price
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Ex.Bed Price
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Chd suppl Price
+                                                        </td>
+                                                        <td className="p-2 text-sm text-grayColor font-medium">
+                                                            Net Price
+                                                        </td>
+                                                    </tr>
+                                                    {hotelOrder?.contracts?.map(
+                                                        (contract, index) => {
+                                                            return (
+                                                                <tr
+                                                                    key={index}
+                                                                    className="odd:bg-[#f3f6f9]"
+                                                                >
+                                                                    <td className="p-2">
+                                                                        {formatDate(contract?.date)}
+                                                                    </td>
+                                                                    <td className="p-2">
+                                                                        {
+                                                                            contract?.contract
+                                                                                ?.rateCode
+                                                                        }
+                                                                    </td>
+                                                                    <td className="p-2">
+                                                                        {contract?.isSpecialRate ===
+                                                                        true
+                                                                            ? "Yes"
+                                                                            : "No"}{" "}
+                                                                        {(contract?.isSpecialRate ===
+                                                                            true) ===
+                                                                        true
+                                                                            ? `(${contract?.appliedRateCode})`
+                                                                            : ""}
+                                                                    </td>
+                                                                    <td className="p-2 whitespace-nowrap">
+                                                                        {contract?.roomPrice} AED
+                                                                    </td>
+                                                                    <td className="p-2 whitespace-nowrap">
+                                                                        {
+                                                                            contract?.mealSupplementPrice
+                                                                        }{" "}
+                                                                        AED
+                                                                    </td>
+                                                                    <td className="p-2 whitespace-nowrap">
+                                                                        {
+                                                                            contract?.extraBedSupplementPrice
+                                                                        }{" "}
+                                                                        AED
+                                                                    </td>
+                                                                    <td className="p-2 whitespace-nowrap">
+                                                                        {
+                                                                            contract?.childSupplementPrice
+                                                                        }{" "}
+                                                                        AED
+                                                                    </td>
+                                                                    <td className="p-2 whitespace-nowrap">
+                                                                        {contract?.netPrice} AED
+                                                                    </td>
+                                                                </tr>
+                                                            );
+                                                        }
+                                                    )}
+                                                </tbody>
+                                            </table>
+                                        )}
                                     </div>
                                 )}
                                 {selectedSection === "discounts" && (

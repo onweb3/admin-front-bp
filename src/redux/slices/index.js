@@ -9,6 +9,8 @@ import markupProfileFormSlice from "./markupProfileFormSlice";
 import quotationListSliceReducer from "./quotationListSlice";
 import quotationsReducer from "./quotationSlice";
 import flightOrderReducer from "./FlightOrderSlice";
+import tourPackageFormReducer from "./tourPackageFormSlice";
+
 export {
     adminReducer,
     attractionFormReducer,
@@ -21,4 +23,5 @@ export {
     quotationListSliceReducer,
     quotationsReducer,
     flightOrderReducer,
+    tourPackageFormReducer,
 };

@@ -108,7 +108,7 @@ export default function VehiclesListPage() {
                                             <th className="font-[500] p-3">Model</th>
                                             <th className="font-[500] p-3">Trim</th>
                                             <th className="font-[500] p-3">Category</th>
-                                            <th className="font-[500] p-3">Sub Cateogry</th>
+                                            <th className="font-[500] p-3">Type</th>
                                             <th className="font-[500] p-3">Year</th>
                                             <th className="font-[500] p-3">Seating Capacity</th>
                                             <th className="font-[500] p-3">Insurance</th>
@@ -141,10 +141,7 @@ export default function VehiclesListPage() {
                                                         {vehicle?.vehicleCategory?.categoryName}
                                                     </td>
                                                     <td className="p-3">
-                                                        {
-                                                            vehicle?.vehicleSubCategory
-                                                                ?.subCategoryName
-                                                        }
+                                                        {vehicle?.vehicleType?.name}
                                                     </td>
                                                     <td className="p-3">{vehicle?.year}</td>
                                                     <td className="p-3">

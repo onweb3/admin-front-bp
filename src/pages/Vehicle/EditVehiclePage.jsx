@@ -11,7 +11,7 @@ export default function EditVehiclePage() {
         vehicleModel: "",
         vehicleTrim: "",
         vehicleCategory: "",
-        vehicleSubCategory: "",
+        vehicleType: "",
         year: "",
         airportSeatingCapacity: "",
         normalSeatingCapacity: "",
@@ -30,7 +30,7 @@ export default function EditVehiclePage() {
         vehicleModels: [],
         vehicleTrims: [],
         vehicleCategories: [],
-        vehicleSubCategories: [],
+        vehicleTypes: [],
     });
     const [isPageLoading, setIsPageLoading] = useState(true);
 
@@ -72,8 +72,8 @@ export default function EditVehiclePage() {
               return item?.vehicleModel === data.vehicleModel;
           })
         : [];
-    const filteredSubCategories = data.vehicleCategory
-        ? initialData.vehicleSubCategories?.filter((item) => {
+    const filteredVehicleTypes = data.vehicleCategory
+        ? initialData.vehicleTypes?.filter((item) => {
               return item?.vehicleCategoryId === data.vehicleCategory;
           })
         : [];
@@ -93,7 +93,7 @@ export default function EditVehiclePage() {
                     vehicleModel: response?.data?.vehicleModel,
                     vehicleTrim: response?.data?.vehicleTrim || "",
                     vehicleCategory: response?.data?.vehicleCategory || "",
-                    vehicleSubCategory: response?.data?.vehicleSubCategory || "",
+                    vehicleType: response?.data?.vehicleType || "",
                     insuranceNumber: response?.data?.insuranceNumber || "",
                     insuranceExpDate: response?.data?.insuranceExpDate || "",
                     normalSeatingCapacity: response?.data?.normalSeatingCapacity || "",
@@ -130,7 +130,7 @@ export default function EditVehiclePage() {
                         vehicleModels: response?.data?.vehicleModels,
                         vehicleTrims: response?.data?.vehicleTrims,
                         vehicleCategories: response?.data?.vehicleCategories,
-                        vehicleSubCategories: response?.data?.vehicleSubCategories,
+                        vehicleTypes: response?.data?.vehicleTypes,
                     };
                 });
             } catch (err) {
@@ -263,7 +263,7 @@ export default function EditVehiclePage() {
                                                 return {
                                                     ...prev,
                                                     vehicleCategory: e.target.value,
-                                                    vehicleSubCategory: "",
+                                                    vehicleType: "",
                                                 };
                                             });
                                         }}
@@ -282,21 +282,21 @@ export default function EditVehiclePage() {
                                     </select>
                                 </div>
                                 <div>
-                                    <label htmlFor="">Vehcile Sub Category *</label>
+                                    <label htmlFor="">Vehcile Type *</label>
                                     <select
-                                        name="vehicleSubCategory"
+                                        name="vehicleType"
                                         id=""
-                                        value={data.vehicleSubCategory || ""}
+                                        value={data.vehicleType || ""}
                                         onChange={handleChange}
                                         required
                                     >
                                         <option value="" hidden>
-                                            Select Vehicle Sub Category
+                                            Select Vehicle Type
                                         </option>
-                                        {filteredSubCategories?.map((item, index) => {
+                                        {filteredVehicleTypes?.map((item, index) => {
                                             return (
                                                 <option value={item?._id} key={index}>
-                                                    {item?.subCategoryName}
+                                                    {item?.name}
                                                 </option>
                                             );
                                         })}

@@ -105,8 +105,8 @@ export default function AddVehicleTypeModal({
                                 onChange={handleChange}
                                 required
                             />
-                        </div>{" "}
-                        <div>
+                        </div>
+                        <div className="mt-4">
                             <label htmlFor=""> Airport Seating Capacity</label>
                             <input
                                 type="number"
@@ -116,8 +116,8 @@ export default function AddVehicleTypeModal({
                                 onChange={handleChange}
                                 required
                             />
-                        </div>{" "}
-                        <div>
+                        </div>
+                        <div className="mt-4">
                             <label htmlFor=""> Normal Seating Capacity</label>
                             <input
                                 type="number"

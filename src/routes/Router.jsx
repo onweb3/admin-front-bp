@@ -247,6 +247,12 @@ import VehicleTypePage from "../pages/Vehicle/VehicleTypePage";
 import SingleTourTransferPage from "../pages/Voucher/SingleTourTransferPage";
 import VehiclesListPage from "../pages/Vehicle/VehiclesListPage";
 import TransferOrderPage from "../pages/Transfers/TransferOrderPage";
+import AddTourPackagePage from "../pages/TourPackage/AddTourPackagePage";
+import TourPackagesListPage from "../pages/TourPackage/TourPackagesListPage";
+import EditTourPackagePage from "../pages/TourPackage/EditTourPackagePage";
+import SingleTourPackagePage from "../pages/TourPackage/SingleTourPackagePage";
+import TourPackageThemesPage from "../pages/TourPackage/TourPackageThemesPage";
+import TourPackageEnquiriesPage from "../pages/TourPackage/TourPackageEnquiriesPage";
 
 const ThemeRoutes = [
     {
@@ -1245,6 +1251,30 @@ const ThemeRoutes = [
             {
                 path: "/order/flight/:tbId/:resellerId",
                 element: <CompleteFlightOrderPage />,
+            },
+            {
+                path: "/tour-packages",
+                element: <TourPackagesListPage />,
+            },
+            {
+                path: "/tour-packages/add",
+                element: <AddTourPackagePage />,
+            },
+            {
+                path: "/tour-packages/themes",
+                element: <TourPackageThemesPage />,
+            },
+            {
+                path: "/tour-packages/:tPackageId/edit",
+                element: <EditTourPackagePage />,
+            },
+            {
+                path: "/tour-packages/enquiries",
+                element: <TourPackageEnquiriesPage />,
+            },
+            {
+                path: "/tour-packages/:tPackageId",
+                element: <SingleTourPackagePage />,
             },
         ],
     },

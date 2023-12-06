@@ -124,7 +124,7 @@ export default function FlightAddMealModal({ setIsModal, mealSsr }) {
                                                 {mealSsr.to}
                                             </div>{" "}
                                         </div>
-                                        <div className="flex rounded rounded-full bg-white  flex-end p-1">
+                                        <div className="flex rounded-full bg-white  flex-end p-1">
                                             <div className="text-sm font-semibold">
                                                 {mealSsr?.totalCount || 0}{" "}
                                             </div>

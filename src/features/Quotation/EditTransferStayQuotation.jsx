@@ -166,7 +166,7 @@ export default function EditTransferStayQuotation({
                         </p>
                         {stay.isAddTransfer ? (
                             <>
-                                <div className="  items-center gap-[5px] w-1/4 flex justify-center items-center">
+                                <div className="gap-[5px] w-1/4 flex justify-center items-center">
                                     <button
                                         className="w-[120px] text-white p-2 "
                                         onClick={(e) => {
@@ -191,7 +191,7 @@ export default function EditTransferStayQuotation({
                         ) : (
                             <>
                                 {" "}
-                                <div className="  items-center gap-[10px] w-1/4  flex justify-center items-center">
+                                <div className="gap-[10px] w-1/4  flex justify-center items-center">
                                     <button
                                         className="w-[150px] text-white p-2 "
                                         onClick={(e) => {

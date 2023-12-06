@@ -11,6 +11,7 @@ import {
     quotationListSliceReducer,
     quotationsReducer,
     flightOrderReducer,
+    tourPackageFormReducer,
 } from "./slices";
 
 export const store = configureStore({
@@ -26,5 +27,6 @@ export const store = configureStore({
         quotationsList: quotationListSliceReducer,
         quotations: quotationsReducer,
         flightOrder: flightOrderReducer,
+        tourPackageForm: tourPackageFormReducer,
     },
 });

@@ -7,9 +7,11 @@ import {
     MdEmojiPeople,
     MdEventAvailable,
     MdLocalAirport,
+    MdOutlineCategory,
     MdOutlineFastfood,
     MdOutlineHotelClass,
     MdOutlineSummarize,
+    MdOutlineTour,
     MdSegment,
 } from "react-icons/md";
 import { RxDashboard } from "react-icons/rx";
@@ -48,7 +50,7 @@ import { GiWavyItinerary } from "react-icons/gi";
 import { FaGlobe, FaThList } from "react-icons/fa";
 import { BsFillChatLeftQuoteFill } from "react-icons/bs";
 import { IoBusiness, IoWalletOutline } from "react-icons/io5";
-import { GrDocumentUser } from "react-icons/gr";
+import { GrAttraction, GrDocumentUser } from "react-icons/gr";
 import { TbLicense } from "react-icons/tb";
 
 const sidebarMenus = {
@@ -465,6 +467,26 @@ const sidebarMenus = {
             link: "/license-types",
             icon: <TbLicense />,
             permission: ["license-types", "view"],
+        },
+    ],
+    "Tour Packages": [
+        {
+            name: "Tour Packages",
+            link: "/tour-packages",
+            icon: <MdOutlineTour />,
+            permission: ["tour-packages", "view"],
+        },
+        {
+            name: "Package Themes",
+            link: "/tour-packages/themes",
+            icon: <MdOutlineCategory />,
+            permission: ["tour-packages", "view"],
+        },
+        {
+            name: "Package Enquiries",
+            link: "/tour-packages/enquiries",
+            icon: <HiOutlineShoppingCart />,
+            permission: ["tour-packages", "view"],
         },
     ],
     core: [

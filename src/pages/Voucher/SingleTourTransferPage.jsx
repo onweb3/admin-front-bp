@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { PageLoader } from "../../components";
-import VoucherTourTransferModal from "../../features/Voucher/components/VoucherTourTransferModal";
-import axios from "../../axios";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { MdDelete } from "react-icons/md";
+
+import { PageLoader } from "../../components";
+import VoucherTourTransferModal from "../../features/Voucher/components/VoucherTourTransferModal";
+import axios from "../../axios";
 
 export default function SingleTourTransferPage() {
     const [isPageLoading, setIsPageLoading] = useState(true);
@@ -15,7 +16,9 @@ export default function SingleTourTransferPage() {
     const [initialData, setInitialData] = useState({
         vehicles: [],
         drivers: [],
+        vehicleTypes: [],
     });
+    const [selectedVehicleType, setSelectedVehicleType] = useState("");
 
     const { voucherId, tourId } = useParams();
     const { jwtToken } = useSelector((state) => state.admin);
@@ -57,7 +60,7 @@ export default function SingleTourTransferPage() {
 
     const fetchVehiclesAndDrivers = async () => {
         try {
-            const response = await axios.get("/v2/vouchers/vehicles-drivers", {
+            const response = await axios.get("/v2/vouchers/tours/transfers/initial-data", {
                 headers: { authorization: `Bearer ${jwtToken}` },
             });
 
@@ -65,6 +68,7 @@ export default function SingleTourTransferPage() {
                 return {
                     ...prev,
                     vehicles: response?.data?.vehicles,
+                    vehicleTypes: response?.data?.vehicleTypes,
                     drivers: response?.data?.drivers,
                 };
             });
@@ -110,6 +114,7 @@ export default function SingleTourTransferPage() {
                     setIsTransferModalOpen={setIsTransferModalOpen}
                     initialData={initialData}
                     setSchedules={setSchedules}
+                    selectedVehicleType={selectedVehicleType}
                 />
             )}
 
@@ -145,20 +150,27 @@ export default function SingleTourTransferPage() {
                                     : "N/A"}
                             </span>
 
-                            <div className="mt-2 flex items-center gap-2">
-                                <span className="text-sm">Selected Qtn Transfers</span>
-                                {tour?.qtnTransfers?.map((transfer, index) => {
-                                    return (
-                                        <div
-                                            key={index}
-                                            className="bg-gray-300 rounded-full text-sm px-2 py-1 cursor-pointer"
-                                            onClick={() => setIsTransferModalOpen(true)}
-                                        >
-                                            + {transfer?.vehicleType?.name} ({transfer?.count})
-                                        </div>
-                                    );
-                                })}
-                            </div>
+                            {tour?.qtnTransfers?.length > 0 && (
+                                <div className="mt-2 flex items-center gap-2">
+                                    <span className="text-sm">Selected Qtn Transfers</span>
+                                    {tour?.qtnTransfers?.map((transfer, index) => {
+                                        return (
+                                            <div
+                                                key={index}
+                                                className="bg-gray-300 rounded-full text-sm px-2 py-1 cursor-pointer"
+                                                onClick={() => {
+                                                    setSelectedVehicleType(
+                                                        transfer?.vehicleType?._id
+                                                    );
+                                                    setIsTransferModalOpen(true);
+                                                }}
+                                            >
+                                                + {transfer?.vehicleType?.name} ({transfer?.count})
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )}
                         </div>
                         {schedules?.length < 1 ? (
                             <div className="p-6 flex flex-col items-center">
