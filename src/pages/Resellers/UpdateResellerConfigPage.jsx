@@ -19,6 +19,15 @@ export default function UpdateResellerConfigPage() {
         showQuotaion: false,
         reseller: {},
         allowedPaymentMethods: [],
+
+        // add new api integrations 
+        showAttractionApi: false,
+        showHotelApi:  false,
+        showFlightApi:  false,
+        showVisaApi:  false,
+        showA2aApi: false,
+        showQuotaionApi:  false,
+        showInsuranceApi: false,
     });
 
     const { id } = useParams();
@@ -41,6 +50,13 @@ export default function UpdateResellerConfigPage() {
                     showA2a: data.showA2a,
                     showQuotaion: data.showQuotaion,
                     allowedPaymentMethods: data.allowedPaymentMethods,
+                    showAttractionApi:data.showAttractionApi,
+                    showHotelApi: data.showHotelApi,
+                    showA2aApi: data.showA2aApi,
+                    showFlightApi: data.showFlightApi,
+                    showInsuranceApi: data.showInsuranceApi,
+                    showQuotaionApi: data.showQuotaionApi,
+                    showVisaApi: data.showVisaApi
                 },
                 {
                     headers: { authorization: `Bearer ${jwtToken}` },
@@ -63,6 +79,7 @@ export default function UpdateResellerConfigPage() {
                 headers: { authorization: `Bearer ${jwtToken}` },
             });
 
+          
             setData((prev) => {
                 return {
                     ...prev,
@@ -74,6 +91,15 @@ export default function UpdateResellerConfigPage() {
                     showVisa: response.data?.configuration?.showVisa || false,
                     showA2a: response.data?.configuration?.showA2a || false,
                     showQuotaion: response.data?.configuration?.showQuotaion || false,
+
+                    //add api integration configurations for new
+                    showAttractionApi: response?.data?.configuration?.showAttractionApi || false,
+                    showHotelApi: response?.data?.configuration?.showHotelApi || false,
+                    showFlightApi: response?.data?.configuration?.showFlightApi || false,
+                    showVisaApi: response?.data?.configuration?.showVisaApi || false,
+                    showA2aApi: response?.data?.configuration?.showA2aApi || false,
+                    showQuotaionApi: response?.data?.configuration?.showQuotaionApi || false,
+                    showInsuranceApi: response?.data?.configuration?.showInsuranceApi || false,
                     allowedPaymentMethods:
                         response?.data?.configuration?.allowedPaymentMethods || [],
                 };
@@ -198,6 +224,77 @@ export default function UpdateResellerConfigPage() {
                                     value={data.showInsurance || false}
                                 />
                             </div>
+                        </div>
+
+                        <div className="pt-10">
+                            <div>
+                                <h1 className="text-lg font-semibold uppercase">Api Integration Access</h1>
+                            </div>
+                            <div className="grid grid-cols-5 gap-4">
+                            <div>
+                                <label htmlFor="">Attraction API</label>
+                                <Toggle
+                                    onChange={(e) =>
+                                        handleToggleChange("showAttractionApi", e.target.checked)
+                                    }
+                                    value={data.showAttractionApi || false}
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="">Hotel API</label>
+                                <Toggle
+                                    onChange={(e) =>
+                                        handleToggleChange("showHotelApi", e.target.checked)
+                                    }
+                                    value={data.showHotelApi || false}
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="">Flight API</label>
+                                <Toggle
+                                    onChange={(e) =>
+                                        handleToggleChange("showFlightApi", e.target.checked)
+                                    }
+                                    value={data.showFlightApi || false}
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="">Visa API</label>
+                                <Toggle
+                                    onChange={(e) =>
+                                        handleToggleChange("showVisaApi", e.target.checked)
+                                    }
+                                    value={data.showVisaApi || false}
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="">A2A API</label>
+                                <Toggle
+                                    onChange={(e) =>
+                                        handleToggleChange("showA2aApi", e.target.checked)
+                                    }
+                                    value={data.showA2aApi || false}
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="">Quotaion API</label>
+                                <Toggle
+                                    onChange={(e) =>
+                                        handleToggleChange("showQuotaionApi", e.target.checked)
+                                    }
+                                    value={data.showQuotaionApi || false}
+                                />
+                            </div>
+                            <div className="">
+                                <label htmlFor="">Insurance API</label>
+                                <Toggle
+                                    onChange={(e) =>
+                                        handleToggleChange("showInsuranceApi", e.target.checked)
+                                    }
+                                    value={data.showInsuranceApi || false}
+                                />
+                            </div>
+                        </div>
                         </div>
                         <div className="mt-8 grid grid-cols-4 gap-4">
                             <div>
