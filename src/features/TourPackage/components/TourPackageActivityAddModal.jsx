@@ -10,8 +10,11 @@ export default function TourPackageActivityAddModal({ setIsItineraryModalOpen, i
     const [activityData, setActivityData] = useState({
         activityId: "",
         activity: {},
+        transferType: "",
+        vehicleType: {},
         itineraryName: "",
         description: "",
+        price: "",
     });
 
     const { activities } = useSelector((state) => state.tourPackageForm);
@@ -42,7 +45,7 @@ export default function TourPackageActivityAddModal({ setIsItineraryModalOpen, i
                 </div>
                 <div className="p-4">
                     <div>
-                        <label htmlFor="">Activity</label>
+                        <label htmlFor="">Activity *</label>
                         <SelectDropdown
                             data={activities || []}
                             displayName="name"
@@ -58,6 +61,9 @@ export default function TourPackageActivityAddModal({ setIsItineraryModalOpen, i
                                         activityId: val,
                                         itineraryName: activity?.name,
                                         activity,
+                                        transferType: "",
+                                        vehicleType: {},
+                                        price: "",
                                     };
                                 });
                             }}
@@ -65,7 +71,71 @@ export default function TourPackageActivityAddModal({ setIsItineraryModalOpen, i
                         />
                     </div>
                     <div className="mt-4">
-                        <label htmlFor="">Display Name</label>
+                        <label htmlFor="">Transfer Type *</label>
+                        <select
+                            name="transferType"
+                            id=""
+                            value={activityData.transferType}
+                            onChange={handleChange}
+                            disabled={!activityData.activity}
+                        >
+                            <option value="" hidden>
+                                Select Transfer Type
+                            </option>
+                            {activityData.activity?.activityType === "normal" && (
+                                <option value="ticket-only">Ticket Only</option>
+                            )}
+                            {activityData.activity?.isSharedTransferAvailable === true && (
+                                <option value="shared">Shared</option>
+                            )}
+                            {activityData?.activity?.isPrivateTransferAvailable === true &&
+                                activityData.activity?.privateTransfers?.length > 0 && (
+                                    <option value="private">Private</option>
+                                )}
+                        </select>
+                    </div>
+                    {/* {activityData?.transferType === "private" && activityData?.activity && (
+                        <div className="mt-4">
+                            <label htmlFor="">Vehicle Type</label>
+                            <div className="flex items-center flex-wrap gap-4">
+                                {activityData?.activity?.privateTransfers?.map(
+                                    (pvtTransfer, pvtTransferIndex) => {
+                                        return (
+                                            <div
+                                                className="flex items-center gap-2"
+                                                key={pvtTransferIndex}
+                                            >
+                                                <input
+                                                    type="radio"
+                                                    name="vehicleType"
+                                                    id={"vehicleType" + pvtTransferIndex}
+                                                    onChange={(e) => {
+                                                        if (e.target.checked) {
+                                                            setActivityData((prev) => {
+                                                                return {
+                                                                    ...prev,
+                                                                    vehicleTypeId: pvtTransfer?._id,
+                                                                    vehicleType: pvtTransfer,
+                                                                };
+                                                            });
+                                                        }
+                                                    }}
+                                                />
+                                                <label
+                                                    htmlFor={"vehicleType" + pvtTransferIndex}
+                                                    className="mb-0 whitespace-nowrap"
+                                                >
+                                                    {pvtTransfer?.name}
+                                                </label>
+                                            </div>
+                                        );
+                                    }
+                                )}
+                            </div>
+                        </div>
+                    )} */}
+                    <div className="mt-4">
+                        <label htmlFor="">Display Name *</label>
                         <input
                             type="text"
                             placeholder="Enter Display Name"
@@ -75,19 +145,31 @@ export default function TourPackageActivityAddModal({ setIsItineraryModalOpen, i
                         />
                     </div>
                     <div className="mt-4">
-                        <label htmlFor="">Display Name</label>
+                        <label htmlFor="">Description *</label>
                         <textarea
                             name="description"
                             id=""
                             placeholder="Enter description"
                             value={activityData.description || ""}
                             onChange={handleChange}
+                            className="h-[130px]"
                         ></textarea>
+                    </div>
+                    <div className="mt-4">
+                        <label htmlFor="">Price *</label>
+                        <input
+                            type="number"
+                            placeholder="Enter price"
+                            name="price"
+                            value={activityData.price || ""}
+                            onChange={handleChange}
+                        />
                     </div>
                     <div className="flex items-center justify-end mt-5">
                         <button
                             className="w-[140px]"
                             onClick={() => {
+                                console.log(activityData);
                                 dispatch(
                                     addTPackageItineraryItems({
                                         itineraryIndex,
@@ -98,6 +180,8 @@ export default function TourPackageActivityAddModal({ setIsItineraryModalOpen, i
                             }}
                             disabled={
                                 !activityData.activityId ||
+                                !activityData.transferType ||
+                                !activityData.price ||
                                 !activityData.itineraryName ||
                                 !activityData.description
                             }

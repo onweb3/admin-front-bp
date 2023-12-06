@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "../../axios";
 import { useSelector } from "react-redux";
-import { PageLoader, Pagination } from "../../components";
 import { MdDelete } from "react-icons/md";
 import { BiEditAlt } from "react-icons/bi";
+import { AiFillEye } from "react-icons/ai";
+
+import axios from "../../axios";
+import { PageLoader, Pagination } from "../../components";
+import { config } from "../../constants";
 
 export default function TourPackagesListPage() {
     const [tourPackages, setTourPackages] = useState([]);
@@ -95,8 +98,10 @@ export default function TourPackagesListPage() {
                                 <table className="w-full">
                                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                         <tr>
-                                            <th className="font-[500] p-3">Package Name</th>
+                                            <th className="font-[500] p-3">Package</th>
                                             <th className="font-[500] p-3">No Of Days</th>
+                                            <th className="font-[500] p-3">View</th>
+                                            <th className="font-[500] p-3">Price</th>
                                             <th className="font-[500] p-3">Action</th>
                                         </tr>
                                     </thead>
@@ -107,22 +112,35 @@ export default function TourPackagesListPage() {
                                                     key={tPackageIndex}
                                                     className="border-b border-tableBorderColor"
                                                 >
-                                                    {/* <td className="p-3">
+                                                    <td className="p-3">
                                                         <div className="flex items-center gap-[10px]">
-                                                            <img
-                                                                src={
-                                                                    config.SERVER_URL +
-                                                                    blog?.thumbnail
-                                                                }
-                                                                alt=""
-                                                                className="w-[40px] rounded max-h-[40px]"
-                                                            />
-                                                            <span>{blog?.title}</span>
+                                                            <div className="bg-slate-300 w-[40px] rounded h-[30px] overflow-hidden">
+                                                                {tPackage?.thumbnail && (
+                                                                    <img
+                                                                        src={
+                                                                            config.SERVER_URL +
+                                                                            tPackage?.thumbnail
+                                                                        }
+                                                                        alt=""
+                                                                        className="w-full h-full object-cover"
+                                                                    />
+                                                                )}
+                                                            </div>
+                                                            <span>{tPackage?.packageName}</span>
                                                         </div>
-                                                    </td> */}
-                                                    <td className="p-3">{tPackage?.packageName}</td>
+                                                    </td>
                                                     <td className="p-3 capitalize">
-                                                        {tPackage?.noOfDays}
+                                                        {tPackage?.noOfDays - 1}N / {tPackage?.noOfDays}D
+                                                    </td>
+                                                    <td className="p-3">
+                                                        <Link to={`${tPackage?._id}`}>
+                                                            <button className="bg-transparent h-auto text-[#444] text-lg">
+                                                                <AiFillEye />
+                                                            </button>
+                                                        </Link>
+                                                    </td>
+                                                    <td className="p-3">
+                                                        {tPackage?.totalPrice || 0} AED
                                                     </td>
                                                     <td className="p-3">
                                                         <div className="flex gap-[10px]">
@@ -134,11 +152,11 @@ export default function TourPackagesListPage() {
                                                             >
                                                                 <MdDelete />
                                                             </button>
-                                                            {/* <Link to={`${blog?._id}/edit`}> */}
-                                                            <button className="h-auto bg-transparent text-green-500 text-xl">
-                                                                <BiEditAlt />
-                                                            </button>
-                                                            {/* </Link> */}
+                                                            <Link to={`${tPackage?._id}/edit`}>
+                                                                <button className="h-auto bg-transparent text-green-500 text-xl">
+                                                                    <BiEditAlt />
+                                                                </button>
+                                                            </Link>
                                                         </div>
                                                     </td>
                                                 </tr>

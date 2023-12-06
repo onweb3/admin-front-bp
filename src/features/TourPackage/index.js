@@ -4,6 +4,9 @@ import TourPackageActivitiesForm from "./components/TourPackageActivitiesForm";
 import TourPackageTransferForm from "./components/TourPackageTransferForm";
 import TourPackageSummaryForm from "./components/TourPackageSummaryForm";
 import TourPackageAddFormButtons from "./components/TourPackageAddFormButtons";
+import TourPackageEditFormButtons from "./components/TourPackageEditFormButtons";
+import TourPackageTermsAndPolicyForm from "./components/TourPackageTermsAndPolicyForm";
+import AddTpackageThemeModal from "./components/AddTpackageThemeModal";
 
 export {
     TourPackageDetailsForm,
@@ -12,4 +15,7 @@ export {
     TourPackageTransferForm,
     TourPackageSummaryForm,
     TourPackageAddFormButtons,
+    TourPackageEditFormButtons,
+    TourPackageTermsAndPolicyForm,
+    AddTpackageThemeModal,
 };

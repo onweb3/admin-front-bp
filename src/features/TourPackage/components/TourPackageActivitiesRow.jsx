@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import { MdOutlineAccessTime, MdOutlineLocationOn } from "react-icons/md";
+import { MdOutlineAccessTime } from "react-icons/md";
 import { CiGlobe } from "react-icons/ci";
 import { useDispatch } from "react-redux";
+import { FaCar } from "react-icons/fa";
 
 import TourPackageActivityAddModal from "./TourPackageActivityAddModal";
 import {
     handleTPackageItinerariesDataChange,
     removeTPackageItineraryItems,
 } from "../../../redux/slices/tourPackageFormSlice";
+import { config } from "../../../constants";
 
 export default function TourPackageActivitiesRow({ itinerary, itineraryIndex }) {
     const [isAddItineraryModalOpen, setIsItineraryModalOpen] = useState(false);
@@ -32,6 +34,7 @@ export default function TourPackageActivitiesRow({ itinerary, itineraryIndex }) 
                     type="text"
                     placeholder="Enter Title"
                     name="title"
+                    value={itinerary?.title || ""}
                     onChange={(e) => {
                         dispatch(
                             handleTPackageItinerariesDataChange({
@@ -57,21 +60,26 @@ export default function TourPackageActivitiesRow({ itinerary, itineraryIndex }) 
                 itinerary?.itineraryItems?.map((itineraryItem, itineraryItemIndex) => {
                     return (
                         <div key={itineraryItemIndex} className="flex items-start mt-10 gap-4">
-                            <div className="w-[100px] h-[60px] rounded overflow-hidden">
+                            <div className="w-[100px] h-[60px] rounded overflow-hidden bg-grayColor">
                                 <img
-                                    src="https://cdn5.travelconline.com/unsafe/fit-in/450x0/filters:quality(75):format(webp)/https%3A%2F%2Fmedia.activitiesbank.com%2F46421%2FENG%2FXL%2FDune%2520Bashing%2520%252812%2529.jpg"
+                                    src={
+                                        config.SERVER_URL +
+                                        itineraryItem?.activity?.attraction?.image
+                                    }
                                     alt=""
                                     className="w-full h-full object-cover"
                                 />
                             </div>
                             <div className="border p-3 w-full relative">
                                 <h4 className="font-[500] text-sm mb-1">
-                                    {itineraryItem?.activity?.name}
+                                    {itineraryItem?.itineraryName}
                                 </h4>
                                 <div className="flex items-center flex-wrap gap-3 text-[13px]">
                                     <span className="flex items-center gap-1">
-                                        <MdOutlineLocationOn />
-                                        Dubai
+                                        <FaCar />
+                                        {itineraryItem?.transferType}{" "}
+                                        {itineraryItem?.transferType === "private" &&
+                                            `(${itineraryItem?.vehicleType?.name})`}
                                     </span>
                                     <span className="flex items-center gap-1">
                                         <MdOutlineAccessTime />
@@ -82,6 +90,9 @@ export default function TourPackageActivitiesRow({ itinerary, itineraryIndex }) 
                                         English
                                     </span>
                                 </div>
+                                <span className="block mt-1 text-[13px] font-medium text-green-600">
+                                    {itineraryItem?.price} AED
+                                </span>
 
                                 <div className="absolute bottom-[100%] right-0">
                                     <button

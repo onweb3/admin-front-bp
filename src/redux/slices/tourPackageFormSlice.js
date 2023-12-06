@@ -3,21 +3,37 @@ import axios from "../../axios";
 
 const initialState = {
     data: {
+        packageType: "static",
         packageName: "",
-        isCustomDate: false,
+        overveiw: "",
+        packageThemes: [],
         noOfDays: "",
+        isCustomDate: false,
+        isAirportTransfer: false,
+        airportTransferPrice: "",
+        isInterHotelTransfer: false,
+        interHotelPrice: "",
+        inclusions: "",
+        exclusions: "",
+        visaPolicy: "",
+        termsAndConditions: "",
+        thumbnail: "",
     },
     availableDates: [],
+    excludedDates: [],
     tPackageHotels: [
         {
             country: "",
             city: "",
-            noOfNights: 1,
+            noOfNights: "",
+            title: "",
+            price: "",
             hotelOptions: [],
         },
     ],
     itineraries: [],
     activities: [],
+    tPackageThemes: [],
 };
 
 export const fetchTPackageInitialData = createAsyncThunk(
@@ -45,19 +61,24 @@ export const tourPackageFormSlice = createSlice({
             if (action.payload?.name === "noOfDays") {
                 if (isNaN(state.data.noOfDays) || Number(state.data.noOfDays) < 1) {
                     state.itineraries = [];
-                }
-                let tempItineraries = [];
-                for (let i = 0; i < Number(state.data.noOfDays); i++) {
-                    if (state.itineraries[i]) {
-                        tempItineraries?.push(state.itineraries[i]);
-                    } else {
-                        tempItineraries?.push({
-                            title: "",
-                            itineraryItems: [],
-                        });
+                } else {
+                    let tempItineraries = [];
+                    for (let i = 0; i < Number(state.data.noOfDays); i++) {
+                        if (state.itineraries[i]) {
+                            tempItineraries?.push(state.itineraries[i]);
+                        } else {
+                            tempItineraries?.push({
+                                title: "",
+                                itineraryItems: [],
+                            });
+                        }
+                    }
+                    state.itineraries = tempItineraries;
+
+                    if (state.tPackageHotels?.length === 1 && !state.tPackageHotels[0].noOfNights) {
+                        state.tPackageHotels[0].noOfNights = Number(state.data.noOfDays) - 1;
                     }
                 }
-                state.itineraries = tempItineraries;
             }
         },
         addTPackageAvailableDateRow: (state, action) => {
@@ -73,11 +94,26 @@ export const tourPackageFormSlice = createSlice({
             state.availableDates[action.payload?.index][action.payload?.name] =
                 action.payload?.value;
         },
+        addTPackageExcludedDateRow: (state, action) => {
+            state.excludedDates?.push({
+                startDate: "",
+                endDate: "",
+            });
+        },
+        removeTPackageExcludedDateRow: (state, action) => {
+            state.excludedDates?.splice(action.payload, 1);
+        },
+        handleChangeTPackageExcludedDateData: (state, action) => {
+            state.excludedDates[action.payload?.index][action.payload?.name] =
+                action.payload?.value;
+        },
         addTPackageHotelRow: (state, action) => {
             state.tPackageHotels?.push({
                 country: "",
                 city: "",
-                noOfNights: 1,
+                noOfNights: "",
+                title: "",
+                price: "",
                 hotelOptions: [],
             });
         },
@@ -114,10 +150,32 @@ export const tourPackageFormSlice = createSlice({
                 1
             );
         },
+        updateTourPackageFormAllData: (state, action) => {
+            state.data = {
+                isCustomDate: action.payload?.isCustomDate,
+                noOfDays: action.payload?.noOfDays,
+                packageType: action.payload?.packageType,
+                packageName: action.payload?.packageName,
+                overveiw: action.payload?.overveiw,
+                packageThemes: action.payload?.packageThemes || [],
+                isAirportTransfer: action.payload?.isAirportTransfer || false,
+                airportTransferPrice: action.payload?.airportTransferPrice || "",
+                isInterHotelTransfer: action.payload?.isInterHotelTransfer || false,
+                interHotelPrice: action.payload?.interHotelPrice || "",
+                inclusions: action.payload?.inclusions,
+                exclusions: action.payload?.exclusions,
+                visaPolicy: action.payload?.visaPolicy,
+                termsAndConditions: action.payload?.termsAndConditions,
+                thumbnail: action.payload?.thumbnail,
+            };
+            state.itineraries = action.payload?.itineraries;
+            state.tPackageHotels = action.payload?.hotels;
+        },
     },
     extraReducers: {
         [fetchTPackageInitialData.fulfilled]: (state, action) => {
             state.activities = action.payload?.activities;
+            state.tPackageThemes = action.payload?.tourPackageThemes;
         },
     },
 });
@@ -136,6 +194,10 @@ export const {
     addTPackageItineraryItems,
     removeTPackageItineraryItems,
     handleTPackageItinerariesDataChange,
+    updateTourPackageFormAllData,
+    addTPackageExcludedDateRow,
+    handleChangeTPackageExcludedDateData,
+    removeTPackageExcludedDateRow,
 } = tourPackageFormSlice.actions;
 
 export default tourPackageFormSlice.reducer;

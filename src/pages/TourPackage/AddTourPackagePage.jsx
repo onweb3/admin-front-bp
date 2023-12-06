@@ -8,12 +8,15 @@ import {
     TourPackageSummaryForm,
     TourPackageTransferForm,
     TourPackageAddFormButtons,
+    TourPackageTermsAndPolicyForm,
 } from "../../features/TourPackage";
 import { useDispatch } from "react-redux";
 import { fetchTPackageInitialData } from "../../redux/slices/tourPackageFormSlice";
+import { useImageChange } from "../../hooks";
 
 const sections = {
     details: "Details",
+    "terms-policy": "Validity and Policy",
     hotel: "Hotel",
     activities: "Activities",
     transfer: "Transfer",
@@ -24,6 +27,11 @@ export default function AddTourPackagePage() {
     const [selectedSection, setSelectedSection] = useState("details");
 
     const dispatch = useDispatch();
+    const {
+        image: thumImg,
+        handleImageChange: handleThumImgChange,
+        error: thumImgError,
+    } = useImageChange();
 
     const goForward = () => {
         if (Object.keys(sections).indexOf(selectedSection) < Object.keys(sections).length - 1) {
@@ -83,11 +91,20 @@ export default function AddTourPackagePage() {
                     </div>
 
                     <div className="p-4">
-                        <TourPackageDetailsForm selectedSection={selectedSection} />
+                        <TourPackageDetailsForm
+                            selectedSection={selectedSection}
+                            thumImg={thumImg}
+                            handleThumImgChange={handleThumImgChange}
+                            thumImgError={thumImgError}
+                        />
+                        <TourPackageTermsAndPolicyForm selectedSection={selectedSection} />
                         <TourPackageHotelForm selectedSection={selectedSection} />
                         <TourPackageActivitiesForm selectedSection={selectedSection} />
                         <TourPackageTransferForm selectedSection={selectedSection} />
-                        <TourPackageSummaryForm selectedSection={selectedSection} />
+                        <TourPackageSummaryForm
+                            selectedSection={selectedSection}
+                            thumImg={thumImg}
+                        />
                         <TourPackageAddFormButtons
                             next={
                                 Object.keys(sections).indexOf(selectedSection) <
@@ -96,6 +113,7 @@ export default function AddTourPackagePage() {
                             goForward={goForward}
                             goBack={goBack}
                             prev={Object.keys(sections).indexOf(selectedSection) !== 0}
+                            thumImg={thumImg}
                         />
                     </div>
                 </div>

@@ -1,9 +1,9 @@
 import React, { useRef, useState } from "react";
 import { MdClose } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
 
 import { useHandleClickOutside } from "../../../hooks";
 import { SelectDropdown } from "../../../components";
-import { useDispatch } from "react-redux";
 import { addTourPackageHotelOption } from "../../../redux/slices/tourPackageFormSlice";
 
 export default function TourPackageHotelAddModal({
@@ -16,10 +16,12 @@ export default function TourPackageHotelAddModal({
         hotelId: "",
         hotel: {},
         roomTypeId: "",
-        roomName: "",
+        roomType: {},
         boardCode: "",
+        price: "",
     });
 
+    const { data } = useSelector((state) => state.tourPackageForm);
     const wrapperRef = useRef();
     useHandleClickOutside(wrapperRef, () => setIsHotelSelectModalOpen(false));
     const dispatch = useDispatch();
@@ -41,7 +43,7 @@ export default function TourPackageHotelAddModal({
                 </div>
                 <div className="p-4">
                     <div>
-                        <label htmlFor="">Hotel</label>
+                        <label htmlFor="">Hotel *</label>
                         <SelectDropdown
                             data={hotels || []}
                             valueName={"_id"}
@@ -58,7 +60,7 @@ export default function TourPackageHotelAddModal({
                                             hotelId: val,
                                             hotel,
                                             roomTypeId: "",
-                                            roomName: "",
+                                            roomType: {},
                                             boardCode: "",
                                         };
                                     });
@@ -66,9 +68,12 @@ export default function TourPackageHotelAddModal({
                             }}
                             placeholder="Select Hotel"
                         />
+                        {isHotelLoading && (
+                            <span className="text-sm text-grayColor">Hotel Loading...</span>
+                        )}
                     </div>
                     <div className="mt-4">
-                        <label htmlFor="">Room Type</label>
+                        <label htmlFor="">Room Type *</label>
                         <SelectDropdown
                             data={hotelData.hotel?.roomTypes || []}
                             valueName={"_id"}
@@ -83,7 +88,7 @@ export default function TourPackageHotelAddModal({
                                         return {
                                             ...prev,
                                             roomTypeId: val,
-                                            roomName: rmType?.roomName,
+                                            roomType: rmType,
                                         };
                                     });
                                 }
@@ -93,7 +98,7 @@ export default function TourPackageHotelAddModal({
                         />
                     </div>
                     <div className="mt-4">
-                        <label htmlFor="">Board Type</label>
+                        <label htmlFor="">Board Type *</label>
                         <SelectDropdown
                             data={hotelData.hotel?.boardTypes || []}
                             valueName={"boardShortName"}
@@ -108,6 +113,21 @@ export default function TourPackageHotelAddModal({
                             disabled={!hotelData.hotelId || !hotelData.hotel}
                         />
                     </div>
+                    {data?.packageType === "dynamic" && (
+                        <div className="mt-4">
+                            <label htmlFor="">Price *</label>
+                            <input
+                                type="number"
+                                placeholder="Enter Price"
+                                value={hotelData.price || ""}
+                                onChange={(e) => {
+                                    setHotelData((prev) => {
+                                        return { ...prev, price: e.target.value };
+                                    });
+                                }}
+                            />
+                        </div>
+                    )}
                     <div className="flex items-center justify-end mt-5">
                         <button
                             className="w-[140px]"

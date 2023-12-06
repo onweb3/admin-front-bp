@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import axios from "../../../axios";
 import { BtnLoader } from "../../../components";
 
-export default function TourPackageAddFormButtons({ next, prev, goForward, goBack, thumImg }) {
+export default function TourPackageEditFormButtons({ next, prev, goForward, goBack, thumImg }) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
 
+    const { tPackageId } = useParams();
     const { jwtToken } = useSelector((state) => state.admin);
     const { data, itineraries, tPackageHotels, availableDates, excludedDates } = useSelector(
         (state) => state.tourPackageForm
@@ -23,6 +24,7 @@ export default function TourPackageAddFormButtons({ next, prev, goForward, goBac
             const filteredItineraries = itineraries?.map((itin) => {
                 return {
                     ...itin,
+                    _id: undefined,
                     itineraryItems: itin?.itineraryItems?.map((itinItem) => {
                         return {
                             attractionId: itinItem.activity?.attraction?._id,
@@ -31,7 +33,6 @@ export default function TourPackageAddFormButtons({ next, prev, goForward, goBac
                             vehicleTypeId: itinItem.vehicleTypeId || undefined,
                             itineraryName: itinItem.itineraryName,
                             description: itinItem.description,
-                            price: itinItem.price,
                         };
                     }),
                 };
@@ -75,7 +76,7 @@ export default function TourPackageAddFormButtons({ next, prev, goForward, goBac
                 formData.append("thumbnailImg", thumImg);
             }
 
-            const response = await axios.post(`/tour-packages/add`, formData, {
+            const response = await axios.patch(`/tour-packages/update/${tPackageId}`, formData, {
                 headers: { authorization: `Bearer ${jwtToken}` },
             });
 
@@ -119,7 +120,7 @@ export default function TourPackageAddFormButtons({ next, prev, goForward, goBac
                         onClick={handleSubmit}
                         disabled={isLoading}
                     >
-                        {isLoading ? <BtnLoader /> : "Submit"}
+                        {isLoading ? <BtnLoader /> : "Update"}
                     </button>
                 )}
             </div>

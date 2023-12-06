@@ -549,6 +549,14 @@ const adminRoles = [
         category: "reportings",
         permissions: [],
     },
+
+    // TOUR PACKAGES
+    {
+        name: "tour-packages",
+        displayName: "Tour Packages",
+        category: "tour-packages",
+        permissions: [],
+    },
 ];
 
 export default adminRoles;

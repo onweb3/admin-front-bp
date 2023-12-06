@@ -8,6 +8,8 @@ export default function TourPackageHotelForm({ selectedSection }) {
     const { tPackageHotels } = useSelector((state) => state.tourPackageForm);
     const dispatch = useDispatch();
 
+    console.log(tPackageHotels);
+
     return (
         <div className={selectedSection === "hotel" ? "block" : "hidden"}>
             {tPackageHotels?.map((tpHotel, tpHotelIndex) => {

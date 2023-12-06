@@ -21,16 +21,10 @@ export default function TourPackageHotelFormHotelsRow({ tpHotel, tpHotelIndex })
 
     const { jwtToken } = useSelector((state) => state.admin);
     const { countries } = useSelector((state) => state.general);
+    const { data } = useSelector((state) => state.tourPackageForm);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(
-            handleTourPackageHotelDataChange({
-                index: tpHotelIndex,
-                name: "city",
-                value: "",
-            })
-        );
         setCities([]);
         if (tpHotel?.country) {
             const fetchAllCitiesByCountry = async () => {
@@ -71,7 +65,7 @@ export default function TourPackageHotelFormHotelsRow({ tpHotel, tpHotelIndex })
     }, [tpHotel?.country, tpHotel?.city]);
 
     return (
-        <div className="mt-8 first:mt-0">
+        <div className="mt-14 first:mt-0">
             <div className="grid grid-cols-4 gap-4">
                 <div>
                     <label htmlFor="">Country</label>
@@ -87,6 +81,13 @@ export default function TourPackageHotelFormHotelsRow({ tpHotel, tpHotelIndex })
                                     index: tpHotelIndex,
                                     name: "country",
                                     value: val,
+                                })
+                            );
+                            dispatch(
+                                handleTourPackageHotelDataChange({
+                                    index: tpHotelIndex,
+                                    name: "city",
+                                    value: "",
                                 })
                             );
                         }}
@@ -113,16 +114,71 @@ export default function TourPackageHotelFormHotelsRow({ tpHotel, tpHotelIndex })
                 </div>
                 <div>
                     <label htmlFor="">No Of Nights</label>
-                    <input type="number" />
+                    <input
+                        type="number"
+                        name="noOfNights"
+                        value={tpHotel?.noOfNights || ""}
+                        onChange={(e) => {
+                            dispatch(
+                                handleTourPackageHotelDataChange({
+                                    index: tpHotelIndex,
+                                    name: "noOfNights",
+                                    value: e.target.value,
+                                })
+                            );
+                        }}
+                        placeholder="Enter Number of Nights"
+                    />
                 </div>
+                <div>
+                    <label htmlFor="">Display Title</label>
+                    <input
+                        type="text"
+                        name="title"
+                        value={tpHotel?.title || ""}
+                        onChange={(e) => {
+                            dispatch(
+                                handleTourPackageHotelDataChange({
+                                    index: tpHotelIndex,
+                                    name: "title",
+                                    value: e.target.value,
+                                })
+                            );
+                        }}
+                        placeholder="Enter Display Title"
+                    />
+                </div>
+                {data?.packageType === "static" && (
+                    <div>
+                        <label htmlFor="">Price</label>
+                        <input
+                            type="number"
+                            name="price"
+                            value={tpHotel?.price || ""}
+                            onChange={(e) => {
+                                dispatch(
+                                    handleTourPackageHotelDataChange({
+                                        index: tpHotelIndex,
+                                        name: "price",
+                                        value: e.target.value,
+                                    })
+                                );
+                            }}
+                            placeholder="Enter Price"
+                        />
+                        <span className="text-sm block mt-1 text-grayColor">
+                            Price should be for per person and per night.
+                        </span>
+                    </div>
+                )}
             </div>
 
-            <div className="mt-6 relative">
-                <div className="grid grid-cols-7 gap-4 ">
+            <div className="mt-8 relative">
+                <div className="grid grid-cols-7 gap-5 ">
                     {tpHotel?.hotelOptions?.map((hOption, hOptIndex) => {
                         return (
                             <div key={hOptIndex}>
-                                <div className="w-full rounded overflow-hidden relative aspect-[5/3]">
+                                <div className="w-full rounded group/card overflow-hidden relative aspect-[5/3]">
                                     <img
                                         src={
                                             hOption?.hotel?.image?.isRelative === true
@@ -132,31 +188,37 @@ export default function TourPackageHotelFormHotelsRow({ tpHotel, tpHotelIndex })
                                         alt=""
                                         className="w-full h-full object-cover"
                                     />
-                                    <span
-                                        className="absolute top-0 right-0 bg-red-100 text-red-500 cursor-pointer"
-                                        onClick={() => {
-                                            dispatch(
-                                                removeTourPackageHotelOption({
-                                                    index: tpHotelIndex,
-                                                    hOptIndex,
-                                                })
-                                            );
-                                        }}
-                                    >
-                                        <MdDelete />
-                                    </span>
+                                    <div className="absolute inset-0 bg-black opacity-30 transition-all hidden group-hover/card:block"></div>
+                                    <div className="absolute inset-0 items-center justify-center transition-all hidden group-hover/card:flex">
+                                        <span
+                                            className="w-[30px] h-[30px] rounded-full flex items-center justify-center bg-red-100 text-red-500 cursor-pointer"
+                                            onClick={() => {
+                                                dispatch(
+                                                    removeTourPackageHotelOption({
+                                                        index: tpHotelIndex,
+                                                        hOptIndex,
+                                                    })
+                                                );
+                                            }}
+                                        >
+                                            <MdDelete />
+                                        </span>
+                                    </div>
                                 </div>
                                 <span className="block font-medium text-sm mt-2">
                                     {hOption?.hotel?.hotelName}
                                 </span>
-                                <span className="block text-sm text-grayColor capitalize">
-                                    {hOption?.hotel?.city?.cityName},{" "}
-                                    {hOption?.hotel?.state?.stateName},{" "}
-                                    {hOption?.hotel?.country?.countryName}
+                                <span className="block text-[13px] text-grayColor capitalize">
+                                    {hOption?.hotel?.address}
                                 </span>
                                 <span className="text-sm capitalize">
-                                    {hOption?.roomName} | {hOption?.boardCode}
+                                    {hOption?.roomType?.roomName} | {hOption?.boardCode}
                                 </span>
+                                {data?.packageType === "dynamic" && (
+                                    <span className="block mt-1 text-[13px] font-medium text-green-600">
+                                        {hOption?.price} AED
+                                    </span>
+                                )}
                             </div>
                         );
                     })}
@@ -189,7 +251,7 @@ export default function TourPackageHotelFormHotelsRow({ tpHotel, tpHotelIndex })
                         />
                     )}
                 </div>
-                <div className="border-t border-dashed border-gray-300 mt-5 relative">
+                <div className="border-t border-dashed border-gray-300 mt-8 relative">
                     <div className="absolute bottom-[100%] right-0">
                         <button
                             className="h-auto py-1 px-2 bg-transparent text-[#444] border rounded-tr-none font-[500] text-[13px]"
