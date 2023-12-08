@@ -1,28 +1,19 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { MdClose } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useHandleClickOutside, useImageChange } from "../../../hooks";
 import axios from "../../../axios";
 import { BtnLoader } from "../../../components";
-import {
-    addDestination,
-    updateDestination,
-} from "../../../redux/slices/generalSlice";
+import { addDestination, updateDestination } from "../../../redux/slices/generalSlice";
 import { config } from "../../../constants";
 
-export default function AddDestinationModal({
-    destinationModal,
-    setDestinationModal,
-    selectedDestination,
-}) {
+export default function AddDestinationModal({ destinationModal, setDestinationModal, selectedDestination }) {
     const [data, setData] = useState({
         name: (destinationModal?.isEdit && selectedDestination?.name) || "",
-        country:
-            (destinationModal?.isEdit && selectedDestination?.country?._id) ||
-            "",
-        imageUrl:
-            (destinationModal?.isEdit && selectedDestination?.image) || "",
+        country: (destinationModal?.isEdit && selectedDestination?.country?._id) || "",
+        imageUrl: (destinationModal?.isEdit && selectedDestination?.image) || "",
+        code: (destinationModal?.isEdit && selectedDestination?.code) || "",
     });
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
@@ -37,9 +28,7 @@ export default function AddDestinationModal({
     const { jwtToken } = useSelector((state) => state.admin);
     const wrapperRef = useRef();
     const dispatch = useDispatch();
-    useHandleClickOutside(wrapperRef, () =>
-        setDestinationModal({ isEdit: false, isOpen: false })
-    );
+    useHandleClickOutside(wrapperRef, () => setDestinationModal({ isEdit: false, isOpen: false }));
     const { image, handleImageChange, error: imageError } = useImageChange();
 
     const handleSubmit = async (e) => {
@@ -52,6 +41,7 @@ export default function AddDestinationModal({
             formData.append("image", image);
             formData.append("name", data.name);
             formData.append("country", data.country);
+            formData.append("code", data.code);
 
             if (destinationModal?.isEdit) {
                 const response = await axios.patch(
@@ -63,21 +53,15 @@ export default function AddDestinationModal({
                 );
                 dispatch(updateDestination(response?.data));
             } else {
-                const response = await axios.post(
-                    "/destinations/add",
-                    formData,
-                    {
-                        headers: { Authorization: `Bearer ${jwtToken}` },
-                    }
-                );
+                const response = await axios.post("/destinations/add", formData, {
+                    headers: { Authorization: `Bearer ${jwtToken}` },
+                });
                 dispatch(addDestination(response?.data));
             }
             setIsLoading(false);
             setDestinationModal({ isOpen: false, isEdit: false });
         } catch (err) {
-            setError(
-                err?.response?.data?.error || "Something went wrong, Try again"
-            );
+            setError(err?.response?.data?.error || "Something went wrong, Try again");
             setIsLoading(false);
         }
     };
@@ -90,9 +74,7 @@ export default function AddDestinationModal({
             >
                 <div className="flex items-center justify-between border-b p-4">
                     <h2 className="font-medium mb-2">
-                        {destinationModal?.isEdit
-                            ? "Update Destination"
-                            : "Add Destination"}
+                        {destinationModal?.isEdit ? "Update Destination" : "Add Destination"}
                     </h2>
                     <button
                         className="h-auto bg-transparent text-textColor text-xl"
@@ -108,6 +90,17 @@ export default function AddDestinationModal({
                 </div>
                 <form className="p-4" onSubmit={handleSubmit}>
                     <div>
+                        <label htmlFor="">Code</label>
+                        <input
+                            type="text"
+                            name="code"
+                            value={data.code || ""}
+                            onChange={handleChange}
+                            placeholder="Ex: DXB"
+                            required
+                        />
+                    </div>
+                    <div className="mt-4">
                         <label htmlFor="">Name</label>
                         <input
                             type="text"
@@ -115,6 +108,7 @@ export default function AddDestinationModal({
                             value={data.name || ""}
                             onChange={handleChange}
                             required
+                            placeholder="Ex: Dubai"
                         />
                     </div>
                     <div className="mt-4">
@@ -124,19 +118,14 @@ export default function AddDestinationModal({
                             onChange={handleImageChange}
                             required={destinationModal?.isEdit === false}
                         />
-                        {imageError && (
-                            <span className="text-sm block text-red-500 mt-2">
-                                {imageError}
-                            </span>
-                        )}
+                        {imageError && <span className="text-sm block text-red-500 mt-2">{imageError}</span>}
                         {(image || destinationModal?.isEdit) && (
                             <div className="w-[130px] max-h-[80px] rounded overflow-hidden mt-2">
                                 <img
                                     src={
                                         image
                                             ? URL.createObjectURL(image)
-                                            : config.SERVER_URL +
-                                              data?.imageUrl
+                                            : config.SERVER_URL + data?.imageUrl
                                     }
                                     alt=""
                                     className="w-full h-full object-cover"
@@ -158,22 +147,14 @@ export default function AddDestinationModal({
                             </option>
                             {countries?.map((country, index) => {
                                 return (
-                                    <option
-                                        value={country?._id}
-                                        key={index}
-                                        className="capitalize"
-                                    >
+                                    <option value={country?._id} key={index} className="capitalize">
                                         {country?.countryName}
                                     </option>
                                 );
                             })}
                         </select>
                     </div>
-                    {error && (
-                        <span className="block mt-2 text-sm text-red-500">
-                            {error}
-                        </span>
-                    )}
+                    {error && <span className="block mt-2 text-sm text-red-500">{error}</span>}
                     <div className="flex items-center justify-end mt-5">
                         <button className="w-[160px]" disabled={isLoading}>
                             {isLoading ? (
