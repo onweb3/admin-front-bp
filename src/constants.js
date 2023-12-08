@@ -7,7 +7,7 @@ const testLocal = {
 };
 
 const testLive = {
-    SERVER_URL: "https://test.mytravellerschoice.com",
+    SERVER_URL: "https://dev.mytravellerschoice.com",
     COMPANY_NAME: "Travellers Choice",
     COMPANY_LOGO:
         "https://login.mytravellerschoice.com/assets/logo-2c140806.png",
