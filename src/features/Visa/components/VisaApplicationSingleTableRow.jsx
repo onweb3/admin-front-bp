@@ -184,20 +184,30 @@ function VisaApplicationSingleTableRow({
                                     </div>
 
                                     <div className="mt-4">
-                                        <div className="w-[130px] h-[130px] overflow-hidden rounded-md relative">
-                                            <div className="absolute w-full h-full flex  justify-center items-center text-[25px] hover:bg-[#fff5] text-green-600">
-                                                <BsDownload />
+                                        {" "}
+                                        <a
+                                            href={
+                                                config.SERVER_URL +
+                                                item?.documents
+                                                    ?.passportFistPagePhoto
+                                            }
+                                            download
+                                        >
+                                            <div className="w-[130px] h-[130px] overflow-hidden rounded-md relative">
+                                                <div className="absolute w-full h-full flex  justify-center items-center text-[25px] hover:bg-[#fff5] text-green-600">
+                                                    <BsDownload />
+                                                </div>
+                                                <img
+                                                    src={
+                                                        config.SERVER_URL +
+                                                        item?.documents
+                                                            ?.passportFistPagePhoto
+                                                    }
+                                                    alt=""
+                                                    className="w-full h-full object-cover"
+                                                />
                                             </div>
-                                            <img
-                                                src={
-                                                    config.SERVER_URL +
-                                                    item?.documents
-                                                        ?.passportFistPagePhoto
-                                                }
-                                                alt=""
-                                                className="w-full h-full object-cover"
-                                            />
-                                        </div>
+                                        </a>
                                     </div>
                                     <div className="mt-4">
                                         <a
@@ -225,52 +235,78 @@ function VisaApplicationSingleTableRow({
                                         </a>
                                     </div>
                                     <div className="mt-4">
-                                        <div className="w-[130px] h-[130px] overflow-hidden rounded-md relative">
-                                            <div className="absolute w-full h-full flex  justify-center items-center text-[25px] hover:bg-[#fff5] text-green-600">
-                                                <BsDownload />
+                                        <a
+                                            href={
+                                                config.SERVER_URL +
+                                                item?.documents
+                                                    ?.passportSizePhoto
+                                            }
+                                            download
+                                        >
+                                            <div className="w-[130px] h-[130px] overflow-hidden rounded-md relative">
+                                                <div className="absolute w-full h-full flex  justify-center items-center text-[25px] hover:bg-[#fff5] text-green-600">
+                                                    <BsDownload />
+                                                </div>
+                                                <img
+                                                    src={
+                                                        config.SERVER_URL +
+                                                        item?.documents
+                                                            ?.passportSizePhoto
+                                                    }
+                                                    alt=""
+                                                    className="w-full h-full object-cover"
+                                                />
                                             </div>
-                                            <img
-                                                src={
-                                                    config.SERVER_URL +
-                                                    item?.documents
-                                                        ?.passportSizePhoto
-                                                }
-                                                alt=""
-                                                className="w-full h-full object-cover"
-                                            />
-                                        </div>
+                                        </a>
                                     </div>
                                     <div className="mt-4">
-                                        <div className="w-[130px] h-[130px] overflow-hidden rounded-md relative">
-                                            <div className="absolute w-full h-full flex  justify-center items-center text-[25px] hover:bg-[#fff5] text-green-600">
-                                                <BsDownload />
+                                        <a
+                                            href={
+                                                config.SERVER_URL +
+                                                item?.documents?.supportiveDoc1
+                                            }
+                                            download
+                                        >
+                                            <div className="w-[130px] h-[130px] overflow-hidden rounded-md relative">
+                                                <div className="absolute w-full h-full flex  justify-center items-center text-[25px] hover:bg-[#fff5] text-green-600">
+                                                    <BsDownload />
+                                                </div>
+                                                <img
+                                                    src={
+                                                        config.SERVER_URL +
+                                                        item?.documents
+                                                            ?.supportiveDoc1
+                                                    }
+                                                    alt=""
+                                                    className="w-full h-full object-cover"
+                                                />
                                             </div>
-                                            <img
-                                                src={
-                                                    config.SERVER_URL +
-                                                    item?.documents
-                                                        ?.supportiveDoc1
-                                                }
-                                                alt=""
-                                                className="w-full h-full object-cover"
-                                            />
-                                        </div>
+                                        </a>
                                     </div>
                                     <div className="mt-4">
-                                        <div className="w-[130px] h-[130px] overflow-hidden rounded-md relative">
-                                            <div className="absolute w-full h-full flex  justify-center items-center text-[25px] hover:bg-[#fff5] text-green-600">
-                                                <BsDownload />
+                                        <a 
+                                        
+                                            href={
+                                                config.SERVER_URL +
+                                                item?.documents?.supportiveDoc2
+                                            }
+                                            download
+                                        >
+                                            <div className="w-[130px] h-[130px] overflow-hidden rounded-md relative">
+                                                <div className="absolute w-full h-full flex  justify-center items-center text-[25px] hover:bg-[#fff5] text-green-600">
+                                                    <BsDownload />
+                                                </div>
+                                                <img
+                                                    src={
+                                                        config.SERVER_URL +
+                                                        item?.documents
+                                                            ?.supportiveDoc2
+                                                    }
+                                                    alt=""
+                                                    className="w-full h-full object-cover"
+                                                />
                                             </div>
-                                            <img
-                                                src={
-                                                    config.SERVER_URL +
-                                                    item?.documents
-                                                        ?.supportiveDoc2
-                                                }
-                                                alt=""
-                                                className="w-full h-full object-cover"
-                                            />
-                                        </div>
+                                        </a>
                                     </div>
                                 </div>
 
