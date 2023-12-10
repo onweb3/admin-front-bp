@@ -5,19 +5,11 @@ import { useNavigate } from "react-router-dom";
 import axios from "../../../axios";
 import { BtnLoader } from "../../../components";
 
-export default function AddAttrSubmission({
-    setSection,
-    newImages,
-    prev,
-    next,
-    logoImg,
-}) {
+export default function AddAttrSubmission({ setSection, newImages, prev, next, logoImg }) {
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
-    const { data, availability, faqs, offDates } = useSelector(
-        (state) => state.attractionForm
-    );
+    const { data, availability, faqs, offDates } = useSelector((state) => state.attractionForm);
     const { jwtToken } = useSelector((state) => state.admin);
     const navigate = useNavigate();
 
@@ -54,7 +46,7 @@ export default function AddAttrSubmission({
             formData.append("bookingPriorDays", data?.bookingPriorDays);
             formData.append("offDates", JSON.stringify(offDates));
             formData.append("isCombo", data?.isCombo);
-            formData.append("country", data?.country);
+            formData.append("countryCode", data?.countryCode);
             formData.append("city", data?.city);
             formData.append("area", data?.area);
             formData.append("state", data?.state);
@@ -73,18 +65,14 @@ export default function AddAttrSubmission({
             setIsLoading(false);
             navigate("/attractions");
         } catch (err) {
-            setError(
-                err?.response?.data?.error || "Something went wrong, Try again"
-            );
+            setError(err?.response?.data?.error || "Something went wrong, Try again");
             setIsLoading(false);
         }
     };
 
     return (
         <div>
-            {error && (
-                <span className="text-sm text-red-500 block mt-4">{error}</span>
-            )}
+            {error && <span className="text-sm text-red-500 block mt-4">{error}</span>}
 
             <div className="mt-4 flex items-center justify-end gap-[12px]">
                 {prev ? (
@@ -113,11 +101,7 @@ export default function AddAttrSubmission({
                         next
                     </button>
                 ) : (
-                    <button
-                        className="w-[100px] bg-primaryColor"
-                        onClick={handleSubmit}
-                        disabled={isLoading}
-                    >
+                    <button className="w-[100px] bg-primaryColor" onClick={handleSubmit} disabled={isLoading}>
                         {isLoading ? <BtnLoader /> : "Submit"}
                     </button>
                 )}

@@ -51,6 +51,10 @@ const initialState = {
         sections: [],
         isCombo: false,
         bookingPriorDays: "",
+        countryCode: "",
+        state: "",
+        city: "",
+        area: "",
     },
     logo: "",
     images: [],
@@ -99,6 +103,10 @@ export const attractionFormSlice = createSlice({
                 sections: [],
                 isCombo: false,
                 bookingPriorDays: "",
+                countryCode: "",
+                state: "",
+                city: "",
+                area: "",
             };
             state.images = [];
             state.availability = availabilityData;
@@ -172,7 +180,7 @@ export const attractionFormSlice = createSlice({
                 availability,
                 offDates,
                 bookingPriorDays,
-                country,
+                countryCode,
                 city,
                 area,
                 longitude,
@@ -209,7 +217,7 @@ export const attractionFormSlice = createSlice({
             state.activities = action.payload?.activities || [];
             state.images = action.payload?.images || [];
             state.logo = action.payload?.logo || [];
-            state.data.country = country || "";
+            state.data.countryCode = countryCode || "";
             state.data.city = city || "";
             state.data.area = area || "";
             state.data.state = action.payload?.state || "";
@@ -225,9 +233,7 @@ export const attractionFormSlice = createSlice({
         isActiveActivity: (state, action) => {
             const activityId = action.payload;
 
-            const activity = state.activities.find(
-                (activity) => activity._id === activityId
-            );
+            const activity = state.activities.find((activity) => activity._id === activityId);
             if (!activity) {
                 return;
             }
@@ -240,9 +246,7 @@ export const attractionFormSlice = createSlice({
         updateAttractionActivity: (state, action) => {
             const { activities, newActivities } = action.payload;
             const updatedActivities = activities.map((activity) => {
-                const newActivity = newActivities.find(
-                    (newActivity) => newActivity._id === activity._id
-                );
+                const newActivity = newActivities.find((newActivity) => newActivity._id === activity._id);
                 if (newActivity) {
                     return { ...activity, ...newActivity };
                 } else {
@@ -250,10 +254,7 @@ export const attractionFormSlice = createSlice({
                 }
             });
             const addedActivities = newActivities.filter(
-                (newActivity) =>
-                    !updatedActivities.find(
-                        (activity) => activity._id === newActivity._id
-                    )
+                (newActivity) => !updatedActivities.find((activity) => activity._id === newActivity._id)
             );
             state.activities = [...updatedActivities, ...addedActivities];
         },
@@ -271,12 +272,10 @@ export const attractionFormSlice = createSlice({
             state.offDates = filteredOffDates;
         },
         changeOffDateData: (state, action) => {
-            state.offDates[action.payload?.index][action.payload?.name] =
-                action.payload.value;
+            state.offDates[action.payload?.index][action.payload?.name] = action.payload.value;
         },
         changeAvailabilityData: (state, action) => {
-            state.availability[action.payload?.index][action.payload?.name] =
-                action.payload?.value;
+            state.availability[action.payload?.index][action.payload?.name] = action.payload?.value;
         },
     },
     extraReducers: {

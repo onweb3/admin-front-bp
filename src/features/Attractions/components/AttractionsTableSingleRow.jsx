@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import { BiCloudLightRain, BiEditAlt } from "react-icons/bi";
+import { BiEditAlt } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import axios from "../../../axios";
-import B2cAttractionMarkupEditModal from "./B2cAttractionMarkupEditModal";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 export default function AttractionsTableSingleRow({
     setAttractions,
     attractions,
+    code,
     title,
     bookingType,
     isOffer,
@@ -23,11 +23,6 @@ export default function AttractionsTableSingleRow({
     _id,
     isActive,
 }) {
-    const [isMarkupModalOpen, setIsMarkupModalOpen] = useState(false);
-    const [b2cmarkup, setB2cMarkup] = useState({
-        markup: markup?.markup,
-        markupType: markup?.markupType,
-    });
     const [isActiveStatus, setIsActiveStatus] = useState(isActive);
 
     const { jwtToken } = useSelector((state) => state.admin);
@@ -67,21 +62,15 @@ export default function AttractionsTableSingleRow({
 
     return (
         <tr className="border-b border-tableBorderColor">
+            <td className="p-3">{code}</td>
             <td className="p-3">{title}</td>
             <td className="p-3 capitalize">{bookingType}</td>
             <td className="p-3 capitalize">
-                {isOffer
-                    ? `${offerAmount} ${
-                          offerAmountType === "flat" ? "AED" : "%"
-                      }`
-                    : "N/A"}
+                {isOffer ? `${offerAmount} ${offerAmountType === "flat" ? "AED" : "%"}` : "N/A"}
             </td>
             <td className="p-3 capitalize">{destination?.name}</td>
             <td className="p-3">
-                <Link
-                    to={`/attractions/${_id}/reviews`}
-                    className="text-blue-500 underline"
-                >
+                <Link to={`/attractions/${_id}/reviews`} className="text-blue-500 underline">
                     {totalReviews}
                 </Link>{" "}
                 ({averageRating?.toFixed(1)}) &#9734;
@@ -118,11 +107,7 @@ export default function AttractionsTableSingleRow({
                         className="h-auto bg-transparent text-grayColor text-xl"
                         onClick={changeActiveStatus}
                     >
-                        {isActiveStatus === true ? (
-                            <AiFillEye />
-                        ) : (
-                            <AiFillEyeInvisible />
-                        )}
+                        {isActiveStatus === true ? <AiFillEye /> : <AiFillEyeInvisible />}
                     </button>
                     <button
                         className="h-auto bg-transparent text-red-500 text-xl"

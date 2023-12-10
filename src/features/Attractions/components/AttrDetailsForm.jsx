@@ -8,10 +8,7 @@ import { SelectDropdown } from "../../../components";
 export default function AttrDetailsForm({ section, isEdit = false }) {
     const { data, categories } = useSelector((state) => state.attractionForm);
     const { destinations } = useSelector((state) => state.general);
-    const { states, cities, countries, areas } = useSelector(
-        (state) => state.general
-    );
-    const { details } = useSelector((state) => state.hotelForm);
+    const { states, cities, countries, areas } = useSelector((state) => state.general);
 
     const availableStates = states?.filter((item) => {
         return item?.country === data.country;
@@ -52,35 +49,15 @@ export default function AttrDetailsForm({ section, isEdit = false }) {
     }, []);
 
     return (
-        <div
-            className={
-                isEdit
-                    ? section === 1
-                        ? "block"
-                        : "hidden"
-                    : section === 2
-                    ? "block"
-                    : "hidden"
-            }
-        >
+        <div className={isEdit ? (section === 1 ? "block" : "hidden") : section === 2 ? "block" : "hidden"}>
             <div className="grid grid-cols-3 gap-[20px]">
                 <div>
                     <label htmlFor="">Attraction Title</label>
-                    <input
-                        type="text"
-                        name="title"
-                        value={data.title || ""}
-                        onChange={handleChange}
-                    />
+                    <input type="text" name="title" value={data.title || ""} onChange={handleChange} />
                 </div>
                 <div>
                     <label htmlFor="">Bookin Type</label>
-                    <select
-                        name="bookingType"
-                        onChange={handleChange}
-                        value={data.bookingType || ""}
-                        id=""
-                    >
+                    <select name="bookingType" onChange={handleChange} value={data.bookingType || ""} id="">
                         <option value="ticket">Ticket</option>
                         <option value="booking">Booking</option>
                     </select>
@@ -99,11 +76,7 @@ export default function AttrDetailsForm({ section, isEdit = false }) {
                         </option>
                         {destinations?.map((destination, index) => {
                             return (
-                                <option
-                                    value={destination?._id}
-                                    key={index}
-                                    className="capitalize"
-                                >
+                                <option value={destination?._id} key={index} className="capitalize">
                                     {destination?.name}
                                 </option>
                             );
@@ -126,11 +99,7 @@ export default function AttrDetailsForm({ section, isEdit = false }) {
                         </option>
                         {categories?.map((category, index) => {
                             return (
-                                <option
-                                    value={category?._id}
-                                    key={index}
-                                    className="capitalize"
-                                >
+                                <option value={category?._id} key={index} className="capitalize">
                                     {category?.categoryName}
                                 </option>
                             );
@@ -139,12 +108,7 @@ export default function AttrDetailsForm({ section, isEdit = false }) {
                 </div>
                 <div>
                     <label htmlFor="">Duration Type</label>
-                    <select
-                        name="durationType"
-                        id=""
-                        value={data.durationType || ""}
-                        onChange={handleChange}
-                    >
+                    <select name="durationType" id="" value={data.durationType || ""} onChange={handleChange}>
                         <option value="hours">Hours</option>
                         <option value="days">Days</option>
                         <option value="months">Months</option>
@@ -176,13 +140,13 @@ export default function AttrDetailsForm({ section, isEdit = false }) {
                     <label htmlFor="">County *</label>
                     <SelectDropdown
                         data={countries}
-                        valueName={"_id"}
+                        valueName={"isocode"}
                         displayName={"countryName"}
                         placeholder="Select Country"
-                        selectedData={data?.country || ""}
+                        selectedData={data?.countryCode || ""}
                         setSelectedData={(val) => {
                             handleDetailsChange({
-                                name: "country",
+                                name: "countryCode",
                                 value: val,
                             });
                         }}
@@ -386,9 +350,7 @@ export default function AttrDetailsForm({ section, isEdit = false }) {
                         onChange={handleChange}
                     >
                         <option value="nonRefundable">No Refundable</option>
-                        <option value="freeCancellation">
-                            Free Cancellation
-                        </option>
+                        <option value="freeCancellation">Free Cancellation</option>
                         <option value="cancelWithFee">Cancel with fee</option>
                     </select>
                 </div>
