@@ -50,7 +50,6 @@ import { GiWavyItinerary } from "react-icons/gi";
 import { FaGlobe, FaThList } from "react-icons/fa";
 import { BsFillChatLeftQuoteFill } from "react-icons/bs";
 import { IoBusiness, IoWalletOutline } from "react-icons/io5";
-import { GrAttraction, GrDocumentUser } from "react-icons/gr";
 import { TbLicense } from "react-icons/tb";
 
 const sidebarMenus = {
@@ -573,7 +572,7 @@ const sidebarMenus = {
                     permission: ["countries", "view"],
                 },
                 {
-                    name: "Destination",
+                    name: "Destinations",
                     link: "/destinations",
                     permission: ["destinations", "view"],
                 },
