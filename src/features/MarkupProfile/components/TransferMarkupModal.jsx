@@ -14,6 +14,8 @@ export default function TransferMarkupModal({
     transferId,
     setIsModal,
     type,
+    single,
+    setDropdownVisible,
 }) {
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -41,10 +43,21 @@ export default function TransferMarkupModal({
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-        if (type === "market") {
+        if (type === "market" && !single) {
             if (marketId) {
                 const response = await axios.post(
                     `/market/update-all-transfer-profile/${marketId}`,
+                    formData,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+            }
+        } else if (type === "market" && single) {
+            if (marketId) {
+                setDropdownVisible(false);
+                const response = await axios.post(
+                    `/market/update-single-transfer-profile/${marketId}`,
                     formData,
                     {
                         headers: { authorization: `Bearer ${jwtToken}` },

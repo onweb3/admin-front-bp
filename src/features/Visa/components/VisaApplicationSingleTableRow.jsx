@@ -8,7 +8,7 @@ import { MdOutlineEmail } from "react-icons/md";
 import ApproveVisaModal from "./ApproveVisaModal";
 import StatusModal from "./StatusModal";
 import { config } from "../../../constants";
-
+import samplevisa from "../../../../public/samplevisa.jpg";
 function VisaApplicationSingleTableRow({
     singleVisaApplication,
     item,
@@ -203,7 +203,9 @@ function VisaApplicationSingleTableRow({
                                     </div>
 
                                     <div className="mt-4">
-                                        {" "}
+                                        <div className="block text-[12px] text-grayColor">
+                                            Passport First Page
+                                        </div>{" "}
                                         <div
                                             onClick={(e) =>
                                                 handleDownload(
@@ -213,23 +215,36 @@ function VisaApplicationSingleTableRow({
                                                 )
                                             }
                                         >
-                                            <div className="w-[130px] h-[130px] overflow-hidden rounded-md relative">
+                                            <div className="w-[130px] h-[130px] overflow-hidden rounded-md relative hover:cursor-pointer">
                                                 <div className="absolute w-full h-full flex  justify-center items-center text-[25px] hover:bg-[#fff5] text-green-600">
                                                     <BsDownload />
                                                 </div>
-                                                <img
-                                                    src={
-                                                        config.SERVER_URL +
-                                                        item?.documents
-                                                            ?.passportFistPagePhoto
-                                                    }
-                                                    alt=""
-                                                    className="w-full h-full object-cover"
-                                                />
+                                                {item?.documents?.passportFistPagePhoto
+                                                    .toLowerCase()
+                                                    .endsWith(".pdf") ? (
+                                                    <img
+                                                        src={samplevisa}
+                                                        alt="Sample Visa"
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                ) : (
+                                                    <img
+                                                        src={
+                                                            config.SERVER_URL +
+                                                            item?.documents
+                                                                ?.passportFistPagePhoto
+                                                        }
+                                                        alt=""
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                )}
                                             </div>
                                         </div>
                                     </div>
                                     <div className="mt-4">
+                                        <div className="block text-[12px] text-grayColor">
+                                            Passport Last Page
+                                        </div>{" "}
                                         <div
                                             onClick={(e) =>
                                                 handleDownload(
@@ -239,23 +254,36 @@ function VisaApplicationSingleTableRow({
                                                 )
                                             }
                                         >
-                                            <div className="w-[130px] h-[130px] overflow-hidden rounded-md relative">
+                                            <div className="w-[130px] h-[130px] overflow-hidden rounded-md relative hover:cursor-pointer">
                                                 <div className="absolute w-full h-full flex  justify-center items-center text-[25px] hover:bg-[#fff5] text-green-600">
                                                     <BsDownload />
-                                                </div>
-                                                <img
-                                                    src={
-                                                        config.SERVER_URL +
-                                                        item?.documents
-                                                            ?.passportLastPagePhoto
-                                                    }
-                                                    alt=""
-                                                    className="w-full h-full object-cover"
-                                                />
+                                                </div>{" "}
+                                                {item?.documents?.passportLastPagePhoto
+                                                    .toLowerCase()
+                                                    .endsWith(".pdf") ? (
+                                                    <img
+                                                        src={samplevisa}
+                                                        alt="Sample Visa"
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                ) : (
+                                                    <img
+                                                        src={
+                                                            config.SERVER_URL +
+                                                            item?.documents
+                                                                ?.passportLastPagePhoto
+                                                        }
+                                                        alt=""
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                )}
                                             </div>
                                         </div>
                                     </div>
                                     <div className="mt-4">
+                                        <div className="block text-[12px] text-grayColor">
+                                            Passport Size Photo
+                                        </div>{" "}
                                         <div
                                             onClick={(e) =>
                                                 handleDownload(
@@ -265,23 +293,36 @@ function VisaApplicationSingleTableRow({
                                                 )
                                             }
                                         >
-                                            <div className="w-[130px] h-[130px] overflow-hidden rounded-md relative">
+                                            <div className="w-[130px] h-[130px] overflow-hidden rounded-md relative hover:cursor-pointer">
                                                 <div className="absolute w-full h-full flex  justify-center items-center text-[25px] hover:bg-[#fff5] text-green-600">
                                                     <BsDownload />
-                                                </div>
-                                                <img
-                                                    src={
-                                                        config.SERVER_URL +
-                                                        item?.documents
-                                                            ?.passportSizePhoto
-                                                    }
-                                                    alt=""
-                                                    className="w-full h-full object-cover"
-                                                />
+                                                </div>{" "}
+                                                {item?.documents?.passportSizePhoto
+                                                    .toLowerCase()
+                                                    .endsWith(".pdf") ? (
+                                                    <img
+                                                        src={samplevisa}
+                                                        alt="Sample Visa"
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                ) : (
+                                                    <img
+                                                        src={
+                                                            config.SERVER_URL +
+                                                            item?.documents
+                                                                ?.passportSizePhoto
+                                                        }
+                                                        alt=""
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                )}
                                             </div>
                                         </div>
                                     </div>
                                     <div className="mt-4">
+                                        <div className="block text-[12px] text-grayColor">
+                                            Supportive Doc 1
+                                        </div>{" "}
                                         <div
                                             onClick={(e) =>
                                                 handleDownload(
@@ -291,23 +332,36 @@ function VisaApplicationSingleTableRow({
                                                 )
                                             }
                                         >
-                                            <div className="w-[130px] h-[130px] overflow-hidden rounded-md relative">
+                                            <div className="w-[130px] h-[130px] overflow-hidden rounded-md relative hover:cursor-pointer">
                                                 <div className="absolute w-full h-full flex  justify-center items-center text-[25px] hover:bg-[#fff5] text-green-600">
                                                     <BsDownload />
                                                 </div>
-                                                <img
-                                                    src={
-                                                        config.SERVER_URL +
-                                                        item?.documents
-                                                            ?.supportiveDoc1
-                                                    }
-                                                    alt=""
-                                                    className="w-full h-full object-cover"
-                                                />
+                                                {item?.documents?.supportiveDoc1
+                                                    .toLowerCase()
+                                                    .endsWith(".pdf") ? (
+                                                    <img
+                                                        src={samplevisa}
+                                                        alt="Sample Visa"
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                ) : (
+                                                    <img
+                                                        src={
+                                                            config.SERVER_URL +
+                                                            item?.documents
+                                                                ?.supportiveDoc1
+                                                        }
+                                                        alt=""
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                )}
                                             </div>
                                         </div>
                                     </div>
                                     <div className="mt-4">
+                                        <div className="block text-[12px] text-grayColor">
+                                            Supportive Doc 2
+                                        </div>{" "}
                                         <div
                                             onClick={(e) =>
                                                 handleDownload(
@@ -317,19 +371,29 @@ function VisaApplicationSingleTableRow({
                                                 )
                                             }
                                         >
-                                            <div className="w-[130px] h-[130px] overflow-hidden rounded-md relative">
+                                            <div className="w-[130px] h-[130px] overflow-hidden rounded-md relative hover:cursor-pointer">
                                                 <div className="absolute w-full h-full flex  justify-center items-center text-[25px] hover:bg-[#fff5] text-green-600">
                                                     <BsDownload />
                                                 </div>
-                                                <img
-                                                    src={
-                                                        config.SERVER_URL +
-                                                        item?.documents
-                                                            ?.supportiveDoc2
-                                                    }
-                                                    alt=""
-                                                    className="w-full h-full object-cover"
-                                                />
+                                                {item?.documents?.supportiveDoc2
+                                                    .toLowerCase()
+                                                    .endsWith(".pdf") ? (
+                                                    <img
+                                                        src={samplevisa}
+                                                        alt="Sample Visa"
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                ) : (
+                                                    <img
+                                                        src={
+                                                            config.SERVER_URL +
+                                                            item?.documents
+                                                                ?.supportiveDoc2
+                                                        }
+                                                        alt=""
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                )}
                                             </div>
                                         </div>
                                     </div>

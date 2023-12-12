@@ -6,6 +6,7 @@ import { Link, useParams } from "react-router-dom";
 
 import axios from "../../axios";
 import { PageLoader } from "../../components";
+import { config } from "../../constants";
 import { AddVehicleTypeModal } from "../../features/Vehicle";
 
 export default function VehicleTypePage() {
@@ -168,6 +169,9 @@ export default function VehicleTypePage() {
                                             </th>{" "}
                                             <th className="font-[500] p-3">
                                                 Airport Seating Capacity
+                                            </th>{" "}
+                                            <th className="font-[500] p-3">
+                                                Image
                                             </th>
                                             <th className="font-[500] p-3">
                                                 Action
@@ -196,6 +200,16 @@ export default function VehicleTypePage() {
                                                         {
                                                             category?.airportOccupancy
                                                         }
+                                                    </td>{" "}
+                                                    <td className="p-3">
+                                                        <img
+                                                            src={
+                                                                config?.SERVER_URL +
+                                                                category?.image
+                                                            }
+                                                            alt=""
+                                                            className="w-[40px] max-h-[40px] mt-3"
+                                                        />
                                                     </td>
                                                     <td className="p-3">
                                                         <div className="flex gap-[10px]">

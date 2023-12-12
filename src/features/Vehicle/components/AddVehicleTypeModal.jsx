@@ -2,10 +2,11 @@ import React, { useRef, useState } from "react";
 import { MdClose } from "react-icons/md";
 import { useSelector } from "react-redux";
 
-import { useHandleClickOutside } from "../../../hooks";
+import { useHandleClickOutside, useImageChange } from "../../../hooks";
 import { BtnLoader } from "../../../components";
 import axios from "../../../axios";
 import { useParams } from "react-router-dom";
+import { config } from "../../../constants";
 
 export default function AddVehicleTypeModal({
     categoryModal,
@@ -20,6 +21,7 @@ export default function AddVehicleTypeModal({
             (categoryModal?.isEdit && selectedCategory?.normalOccupancy) || "",
         airportOccupancy:
             (categoryModal?.isEdit && selectedCategory?.airportOccupancy) || "",
+        imageUrl: (categoryModal?.isEdit && selectedCategory?.image) || "",
     });
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -37,16 +39,29 @@ export default function AddVehicleTypeModal({
         });
     };
 
+    const {
+        image: image,
+        handleImageChange: handleIconImgChange,
+        error: imageError,
+    } = useImageChange();
+
     const handleSubmit = async (e) => {
         try {
             e.preventDefault();
             setIsLoading(true);
             setError("");
 
+            const formData = new FormData();
+            formData.append("name", data.name);
+            formData.append("normalOccupancy", data.normalOccupancy);
+            formData.append("airportOccupancy", data.airportOccupancy);
+            formData.append("vehicleCategoryId", categoryId);
+            formData.append("image", image);
+
             if (categoryModal?.isEdit) {
                 const response = await axios.patch(
                     `/transfers/vehicles/vehicle-type/update/${selectedCategory?._id}`,
-                    { ...data, vehicleCategoryId: categoryId },
+                    formData,
                     {
                         headers: { Authorization: `Bearer ${jwtToken}` },
                     }
@@ -56,7 +71,7 @@ export default function AddVehicleTypeModal({
             } else {
                 const response = await axios.post(
                     "/transfers/vehicles/vehicle-type/add",
-                    { ...data, vehicleCategoryId: categoryId },
+                    formData,
                     {
                         headers: { Authorization: `Bearer ${jwtToken}` },
                     }
@@ -127,6 +142,31 @@ export default function AddVehicleTypeModal({
                                 onChange={handleChange}
                                 required
                             />
+                        </div>{" "}
+                        <div className="mt-4">
+                            <label htmlFor=""> *</label>
+                            <input
+                                type="file"
+                                onChange={handleIconImgChange}
+                                required={categoryModal?.isEdit === false}
+                            />
+                            {imageError && (
+                                <span className="text-sm text-red-500 block mt-2">
+                                    {imageError}
+                                </span>
+                            )}
+                            {(image || data.imageUrl) && (
+                                <img
+                                    src={
+                                        image
+                                            ? URL.createObjectURL(image)
+                                            : config?.SERVER_URL +
+                                              data?.imageUrl
+                                    }
+                                    alt=""
+                                    className="w-[40px] max-h-[40px] mt-3"
+                                />
+                            )}
                         </div>
                         {error && (
                             <span className="text-sm block text-red-500 mt-2">

@@ -253,6 +253,8 @@ import EditTourPackagePage from "../pages/TourPackage/EditTourPackagePage";
 import SingleTourPackagePage from "../pages/TourPackage/SingleTourPackagePage";
 import TourPackageThemesPage from "../pages/TourPackage/TourPackageThemesPage";
 import TourPackageEnquiriesPage from "../pages/TourPackage/TourPackageEnquiriesPage";
+import BannerListPage from "../pages/Banners/BannerListPage";
+import EditBannerPage from "../pages/Banners/EditBannerPage";
 
 const ThemeRoutes = [
     {
@@ -1275,6 +1277,14 @@ const ThemeRoutes = [
             {
                 path: "/tour-packages/:tPackageId",
                 element: <SingleTourPackagePage />,
+            },
+            {
+                path: "/banners",
+                element: <BannerListPage />,
+            },
+            {
+                path: "/banners/:id/edit",
+                element: <EditBannerPage />,
             },
         ],
     },

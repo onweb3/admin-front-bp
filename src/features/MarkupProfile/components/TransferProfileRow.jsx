@@ -187,6 +187,8 @@ export default function TransferProfileRow({
                     transferId={transfer?.transferId}
                     setVehicles={setVehicles}
                     type={type}
+                    single={true}
+                    setDropdownVisible={setDropdownVisible}
                 />
             )}
         </>

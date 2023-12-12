@@ -465,6 +465,12 @@ const adminRoles = [
         category: "settings",
         permissions: [],
     },
+    {
+        name: "Banners",
+        displayName: "Banners",
+        category: "settings",
+        permissions: [],
+    },
 
     // Invoice
     {
