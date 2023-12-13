@@ -18,7 +18,6 @@ export default function B2cVisaNationalityPage() {
         limit: 10,
         totalVisaNationalities: 0,
         searchQuery: "",
-        requestedBy: "b2c",
     });
     const [error, setError] = useState("");
 
@@ -149,17 +148,27 @@ export default function B2cVisaNationalityPage() {
                 />
             )}
 
-            {isLoading ? (
-                <div>
-                    <PageLoader />
-                </div>
-            ) : (
-                <div className="p-6">
-                    <div className="bg-white rounded shadow-sm">
-                        <div className="flex items-center justify-between border-b border-dashed p-4">
-                            <h1 className="font-medium capitalize">
-                                B2c Nationality
-                            </h1>
+            <div className="p-6">
+                <div className="bg-white rounded shadow-sm">
+                    <div className="flex items-center justify-between border-b border-dashed p-4">
+                        <h1 className="font-medium capitalize">
+                            B2c Nationality
+                        </h1>{" "}
+                        <div className="flex items-center gap-[15px]">
+                            <form
+                                action=""
+                                className="flex items-center gap-[10px]"
+                            >
+                                <input
+                                    type="text"
+                                    name="searchQuery"
+                                    value={filters.searchQuery || ""}
+                                    onChange={handleChange}
+                                    placeholder="Search here..."
+                                />
+
+                                <button className="px-5">Search</button>
+                            </form>
                             <button
                                 className="px-3"
                                 onClick={() => {
@@ -177,23 +186,27 @@ export default function B2cVisaNationalityPage() {
                                 + Add Nationality
                             </button>
                         </div>
-                        {!nationalities || nationalities?.length < 1 ? (
-                            <div className="p-6 flex flex-col items-center">
-                                <span className="text-sm text-grayColor block mt-[6px]">
-                                    Oops.. No Nationalities Found
-                                </span>
-                            </div>
-                        ) : (
-                            <table className="w-full">
-                                <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
-                                    <tr>
-                                        <th className="font-[500] p-3">
-                                            Index
-                                        </th>
-                                        <th className="font-[500] p-3">
-                                            Country Name
-                                        </th>
-                                        {/* <th className="font-[500] p-3">
+                    </div>
+
+                    {isLoading ? (
+                        <div>
+                            <PageLoader />
+                        </div>
+                    ) : !nationalities || nationalities?.length < 1 ? (
+                        <div className="p-6 flex flex-col items-center">
+                            <span className="text-sm text-grayColor block mt-[6px]">
+                                Oops.. No Nationalities Found
+                            </span>
+                        </div>
+                    ) : (
+                        <table className="w-full">
+                            <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
+                                <tr>
+                                    <th className="font-[500] p-3">Index</th>
+                                    <th className="font-[500] p-3">
+                                        Country Name
+                                    </th>
+                                    {/* <th className="font-[500] p-3">
                                             Adult Cost
                                         </th>
                                         <th className="font-[500] p-3">
@@ -202,89 +215,117 @@ export default function B2cVisaNationalityPage() {
                                         <th className="font-[500] p-3">
                                             Adult Markup
                                         </th> */}
-                                        <th className="font-[500] p-3">
-                                            No of Visa Types
-                                        </th>
-                                        <th className="font-[500] p-3">
-                                            Action
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody className="text-sm">
-                                    {nationalities?.map(
-                                        (nationality, index) => {
-                                            return (
-                                                <tr
-                                                    key={index}
-                                                    className="border-b border-tableBorderColor"
-                                                >
-                                                    <td className="p-3 capitalize">
-                                                        {index + 1}
-                                                    </td>
-                                                    <td className="p-3">
-                                                        {
-                                                            nationality
-                                                                ?.nationality
-                                                                .countryName
-                                                        }
-                                                    </td>
-                                                    <td className="p-3 capitalize">
-                                                        {nationality?.visas
-                                                            ?.length || 0}
-                                                    </td>
+                                    <th className="font-[500] p-3">B2C Visa</th>{" "}
+                                    <th className="font-[500] p-3">B2B Visa</th>{" "}
+                                    <th className="font-[500] p-3">
+                                        Quotation Visa
+                                    </th>
+                                    <th className="font-[500] p-3">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody className="text-sm">
+                                {nationalities?.map((nationality, index) => {
+                                    return (
+                                        <tr
+                                            key={index}
+                                            className="border-b border-tableBorderColor"
+                                        >
+                                            <td className="p-3 capitalize">
+                                                {index + 1}
+                                            </td>
+                                            <td className="p-3">
+                                                {
+                                                    nationality?.nationality
+                                                        .countryName
+                                                }
+                                            </td>
+                                            <td className="p-3 capitalize">
+                                                {nationality?.visas?.filter(
+                                                    (visa) => {
+                                                        return (
+                                                            visa.createdFor ===
+                                                                "b2c" &&
+                                                            visa.isDeleted ===
+                                                                false
+                                                        );
+                                                    }
+                                                ).length || 0}
+                                            </td>
+                                            <td className="p-3 capitalize">
+                                                {nationality?.visas?.filter(
+                                                    (visa) => {
+                                                        return (
+                                                            visa.createdFor ===
+                                                                "b2b" &&
+                                                            visa.isDeleted ===
+                                                                false
+                                                        );
+                                                    }
+                                                ).length || 0}
+                                            </td>
+                                            <td className="p-3 capitalize">
+                                                {nationality?.visas?.filter(
+                                                    (visa) => {
+                                                        return (
+                                                            visa.createdFor ===
+                                                                "quotation" &&
+                                                            visa.isDeleted ===
+                                                                false
+                                                        );
+                                                    }
+                                                ).length || 0}
+                                            </td>
 
-                                                    <td className="p-3">
-                                                        <div className="flex gap-[10px]">
-                                                            <button
-                                                                className="h-auto bg-transparent text-red-500 text-xl"
-                                                                onClick={() =>
-                                                                    deleteNationality(
-                                                                        nationality?._id
-                                                                    )
-                                                                }
-                                                            >
-                                                                <MdDelete />
-                                                            </button>
-                                                            <Link
-                                                                to={`/visa/nationalities/${nationality._id}/edit`}
-                                                            >
-                                                                <button className="h-auto bg-transparent text-green-500 text-xl">
-                                                                    <BiEditAlt />
-                                                                </button>
-                                                            </Link>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            );
-                                        }
-                                    )}
-                                </tbody>
-                            </table>
-                        )}
-                    </div>
-                    <div className="p-4">
-                        <Pagination
-                            limit={filters?.limit}
-                            skip={filters?.skip}
-                            total={filters?.totalVisaNationalities}
-                            incOrDecSkip={(number) => {
-                                let params = prevSearchParams();
-                                setSearchParams({
-                                    ...params,
-                                    skip: filters.skip + number + 1,
-                                });
-                            }}
-                            updateSkip={(skip) => {
-                                let params = prevSearchParams();
-                                setSearchParams({
-                                    ...params,
-                                    skip: skip + 1,
-                                });
-                            }}
-                        />
-                    </div>
+                                            <td className="p-3">
+                                                <div className="flex gap-[10px]">
+                                                    <button
+                                                        className="h-auto bg-transparent text-red-500 text-xl"
+                                                        onClick={() =>
+                                                            deleteNationality(
+                                                                nationality?._id
+                                                            )
+                                                        }
+                                                    >
+                                                        <MdDelete />
+                                                    </button>
+                                                    <Link
+                                                        to={`/visa/nationalities/${nationality._id}/edit`}
+                                                    >
+                                                        <button className="h-auto bg-transparent text-green-500 text-xl">
+                                                            <BiEditAlt />
+                                                        </button>
+                                                    </Link>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    )}
                 </div>
-            )}
+                <div className="p-4">
+                    <Pagination
+                        limit={filters?.limit}
+                        skip={filters?.skip}
+                        total={filters?.totalVisaNationalities}
+                        incOrDecSkip={(number) => {
+                            let params = prevSearchParams();
+                            setSearchParams({
+                                ...params,
+                                skip: filters.skip + number + 1,
+                            });
+                        }}
+                        updateSkip={(skip) => {
+                            let params = prevSearchParams();
+                            setSearchParams({
+                                ...params,
+                                skip: skip + 1,
+                            });
+                        }}
+                    />
+                </div>
+            </div>
         </div>
     );
 }
