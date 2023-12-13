@@ -283,9 +283,7 @@ const AmendmentTable = ({
                                                     <th className="font-[500] text-[15px] border px-[10px] py-[10px]">
                                                         Checkout Date
                                                     </th>
-                                                    <th className="font-[500] text-[15px] border px-[10px] py-[10px]">
-                                                        Star Category
-                                                    </th>
+
                                                     <th className="font-medium text-[15px] border px-[10px]">
                                                         Name of Hotel
                                                     </th>
@@ -294,22 +292,26 @@ const AmendmentTable = ({
                                                     </th>
                                                     {amendment?.hotelQuotation
                                                         ?.stays?.length > 0 &&
-                                                        amendment?.hotelQuotation?.stays[0]?.roomOccupancyList?.map(
+                                                        amendment?.hotelQuotation?.stays[
+                                                            index
+                                                        ]?.roomOccupancyList?.map(
                                                             (
                                                                 roomOccupancy,
                                                                 index
                                                             ) => {
                                                                 return (
-                                                                    <th
-                                                                        key={
-                                                                            index
-                                                                        }
-                                                                        className="font-medium text-[15px] border px-[10px]"
-                                                                    >
-                                                                        {
-                                                                            roomOccupancy?.occupancyShortName
-                                                                        }
-                                                                    </th>
+                                                                    roomOccupancy?.priceWithTransfer && (
+                                                                        <th
+                                                                            key={
+                                                                                index
+                                                                            }
+                                                                            className="font-medium text-[15px] border px-[10px]"
+                                                                        >
+                                                                            {
+                                                                                roomOccupancy?.occupancyShortName
+                                                                            }
+                                                                        </th>
+                                                                    )
                                                                 );
                                                             }
                                                         )}
@@ -325,28 +327,28 @@ const AmendmentTable = ({
                                                                 }
                                                                 className=""
                                                             >
-                                                                <td className="border px-[10px] py-[5px]">
+                                                                <td className="border px-[10px] py-[5px] w-[150px]">
                                                                     {item?.checkInDate
                                                                         ? new Date(
                                                                               item?.checkInDate
                                                                           ).toDateString()
                                                                         : "N/A"}
                                                                 </td>
-                                                                <td className="border px-[10px] py-[5px]">
+                                                                <td className="border px-[10px] py-[5px] w-[150px]">
                                                                     {item?.checkOutDate
                                                                         ? new Date(
                                                                               item?.checkOutDate
                                                                           ).toDateString()
                                                                         : "N/A"}
                                                                 </td>
-                                                                <td className="border px-[10px] py-[5px]">
+                                                                <td className="border px-[10px] w-[250px]">
+                                                                    {item?.hotelName ||
+                                                                        "N/A"}{" "}
+                                                                    (
                                                                     {item?.starCategory
                                                                         ? item?.starCategory
-                                                                        : "N/A"}
-                                                                </td>
-                                                                <td className="border px-[10px]">
-                                                                    {item?.hotelName ||
-                                                                        "N/A"}
+                                                                        : "N/A"}{" "}
+                                                                    * )
                                                                     <br />
                                                                     {item?.roomOccupancyName && (
                                                                         <>
@@ -371,51 +373,35 @@ const AmendmentTable = ({
                                                                             ? "Refundable"
                                                                             : "Non Refundable"}
                                                                     </span> */}
-                                                                    <span className="block mt-1">
-                                                                        * Room
-                                                                        Type :{" "}
+                                                                    <span className="block mt-1 capitalize">
                                                                         {
                                                                             item?.roomTypeName
-                                                                        }
-                                                                    </span>
-                                                                    <span className="block mt-1">
-                                                                        * Board
-                                                                        Type :{" "}
+                                                                        }{" "}
+                                                                        -{" "}
                                                                         {
                                                                             item?.boardTypeCode
                                                                         }
                                                                     </span>
                                                                 </td>
                                                                 <td
-                                                                    className="border px-[10px] "
-                                                                    style={{
-                                                                        width: "50px",
-                                                                        overflow:
-                                                                            "hidden",
-                                                                        whiteSpace:
-                                                                            "nowrap",
-                                                                        textOverflow:
-                                                                            "ellipsis",
-                                                                    }}
+                                                                    className="border px-[10px] 
+                                                                    w-[200px]"
                                                                 >
                                                                     <div className="flex items-center gap-2">
                                                                         <span className="block mt-1">
                                                                             {
                                                                                 item?.area
                                                                             }
-                                                                            ,
-                                                                        </span>{" "}
-                                                                        <span className="block mt-1">
+                                                                            ,{" "}
                                                                             {
                                                                                 item?.city
                                                                             }
-                                                                            ,
+                                                                            ,{" "}
+                                                                            {item?.country ===
+                                                                            "united arab emirates"
+                                                                                ? "UAE"
+                                                                                : item?.country}
                                                                         </span>{" "}
-                                                                        <span className="block mt-1">
-                                                                            {
-                                                                                item?.country
-                                                                            }
-                                                                        </span>
                                                                     </div>
                                                                 </td>
                                                                 {multiHotelIndex <
@@ -426,30 +412,32 @@ const AmendmentTable = ({
                                                                             index
                                                                         ) => {
                                                                             return (
-                                                                                <td
-                                                                                    rowSpan={
-                                                                                        stay
-                                                                                            ?.hotels
-                                                                                            ?.length >
-                                                                                        0
-                                                                                            ? stay
-                                                                                                  ?.hotels
-                                                                                                  ?.length
-                                                                                            : 0
-                                                                                    }
-                                                                                    key={
-                                                                                        index
-                                                                                    }
-                                                                                    className="border px-[10px]"
-                                                                                >
-                                                                                    {roomOccupancy?.priceWithTransfer
-                                                                                        ? Math.ceil(
-                                                                                              roomOccupancy?.priceWithTransfer
-                                                                                          ) +
-                                                                                          " " +
-                                                                                          amendment?.quotationCurrency
-                                                                                        : "N/A"}
-                                                                                </td>
+                                                                                roomOccupancy?.priceWithTransfer && (
+                                                                                    <td
+                                                                                        rowSpan={
+                                                                                            stay
+                                                                                                ?.hotels
+                                                                                                ?.length >
+                                                                                            0
+                                                                                                ? stay
+                                                                                                      ?.hotels
+                                                                                                      ?.length
+                                                                                                : 0
+                                                                                        }
+                                                                                        key={
+                                                                                            index
+                                                                                        }
+                                                                                        className="border px-[10px]"
+                                                                                    >
+                                                                                        {roomOccupancy?.priceWithTransfer
+                                                                                            ? Math.ceil(
+                                                                                                  roomOccupancy?.priceWithTransfer
+                                                                                              ) +
+                                                                                              " " +
+                                                                                              amendment?.quotationCurrency
+                                                                                            : "N/A"}
+                                                                                    </td>
+                                                                                )
                                                                             );
                                                                         }
                                                                     )}
