@@ -202,18 +202,20 @@ const AmendmentTable = ({
                             <td className="pr-[12px] py-1">Check In</td>
                             <td className="px-[10px]">:</td>
                             <td className="px-[10px]">
-                                {new Date(
-                                    amendment?.checkInDate
-                                ).toDateString()}
+                                {amendment?.checkOutDate &&
+                                    new Date(
+                                        amendment?.checkInDate
+                                    ).toDateString()}
                             </td>
                         </tr>
                         <tr>
                             <td className="pr-[12px] py-1">Check Out</td>
                             <td className="px-[10px]">:</td>
                             <td className="px-[10px]">
-                                {new Date(
-                                    amendment?.checkOutDate
-                                ).toDateString()}
+                                {amendment?.checkOutDate &&
+                                    new Date(
+                                        amendment?.checkOutDate
+                                    ).toDateString()}
                             </td>
                         </tr>
                     </tbody>
@@ -342,13 +344,13 @@ const AmendmentTable = ({
                                                                         : "N/A"}
                                                                 </td>
                                                                 <td className="border px-[10px] w-[250px]">
-                                                                    {item?.hotelName ||
-                                                                        "N/A"}{" "}
                                                                     (
                                                                     {item?.starCategory
                                                                         ? item?.starCategory
                                                                         : "N/A"}{" "}
-                                                                    * )
+                                                                    * ){" "}
+                                                                    {item?.hotelName ||
+                                                                        "N/A"}{" "}
                                                                     <br />
                                                                     {item?.roomOccupancyName && (
                                                                         <>

@@ -359,11 +359,10 @@ function QuotationSingleEmailPage() {
                                             }}
                                             className="cust-border"
                                         >
-                                            {quotationList?.checkInDate
-                                                ?.slice(0, 10)
-                                                ?.split("-")
-                                                ?.reverse()
-                                                ?.join("-")}
+                                            {quotationList.checkInDate &&
+                                                new Date(
+                                                    quotationList?.checkInDate
+                                                ).toDateString()}
                                         </td>
                                     </tr>
                                     <tr>
@@ -396,11 +395,10 @@ function QuotationSingleEmailPage() {
                                             }}
                                             className="cust-border"
                                         >
-                                            {quotationList.checkOutDate
-                                                .slice(0, 10)
-                                                .split("-")
-                                                .reverse()
-                                                .join("-")}
+                                            {quotationList.checkOutDate &&
+                                                new Date(
+                                                    quotationList?.checkOutDate
+                                                ).toDateString()}
                                         </td>
                                     </tr>
                                     <tr>
@@ -489,7 +487,7 @@ function QuotationSingleEmailPage() {
                                                                 Stay Option{" "}
                                                                 {index + 1}
                                                             </h2>
-                                                            <table className="w-full text-left border">
+                                                            <table className="w-full text-left border w-10/12">
                                                                 <thead>
                                                                     <tr>
                                                                         <th className=" text-[12px] font-bold border px-[8px] py-[8px]">
@@ -540,7 +538,7 @@ function QuotationSingleEmailPage() {
                                                                             )}
                                                                     </tr>
                                                                 </thead>
-                                                                <tbody className="text-[12px]">
+                                                                <tbody className="text-[12px] ">
                                                                     {stay?.hotels?.map(
                                                                         (
                                                                             item,
@@ -553,14 +551,14 @@ function QuotationSingleEmailPage() {
                                                                                     }
                                                                                     className=""
                                                                                 >
-                                                                                    <td className="border px-[8px] py-[5px] w-[150px]">
+                                                                                    <td className="border px-[8px] py-[5px] w-[120px]">
                                                                                         {item?.checkInDate
                                                                                             ? new Date(
                                                                                                   item?.checkInDate
                                                                                               ).toDateString()
                                                                                             : "N/A"}
                                                                                     </td>
-                                                                                    <td className="border px-[10px] py-[5px] w-[150px]">
+                                                                                    <td className="border px-[10px] py-[5px] w-[120px]">
                                                                                         {item?.checkOutDate
                                                                                             ? new Date(
                                                                                                   item?.checkOutDate
@@ -568,14 +566,14 @@ function QuotationSingleEmailPage() {
                                                                                             : "N/A"}
                                                                                     </td>
                                                                                     <td className="border px-[10px] w-[250px]">
-                                                                                        {item?.hotelName ||
-                                                                                            "N/A"}{" "}
                                                                                         (
                                                                                         {item?.starCategory
                                                                                             ? item?.starCategory
                                                                                             : "N/A"}{" "}
                                                                                         *
-                                                                                        )
+                                                                                        ){" "}
+                                                                                        {item?.hotelName ||
+                                                                                            "N/A"}{" "}
                                                                                         <br />
                                                                                         {item?.roomOccupancyName && (
                                                                                             <>
@@ -610,9 +608,9 @@ function QuotationSingleEmailPage() {
                                                                                             }
                                                                                         </span>
                                                                                     </td>
-                                                                                    <td className="border px-[10px] w-[200px]">
-                                                                                        <div className="flex items-center gap-2">
-                                                                                            <span className="block mt-1">
+                                                                                    <td className="border px-[10px] w-[180px]">
+                                                                                        <div className="flex items-center gap-2 cust-border">
+                                                                                            <span className="block mt-1 cust-border">
                                                                                                 {
                                                                                                     item?.area
                                                                                                 }
@@ -628,8 +626,6 @@ function QuotationSingleEmailPage() {
                                                                                                     ? "UAE"
                                                                                                     : item?.country}
                                                                                             </span>{" "}
-                                                                                            <span className="block mt-1"></span>{" "}
-                                                                                            <span className="block mt-1"></span>
                                                                                         </div>
                                                                                     </td>
 
