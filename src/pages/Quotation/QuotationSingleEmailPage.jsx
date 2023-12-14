@@ -285,12 +285,12 @@ function QuotationSingleEmailPage() {
                                         >
                                             {quotationList?.noOfAdults} Adult{" "}
                                             {quotationList?.noOfChildren > 0
-                                                ? `${quotationList.noOfChildren} Children`
+                                                ? `${quotationList.noOfChildren} Child`
                                                 : ""}
                                             {quotationList?.noOfChildren > 0
                                                 ? ` ( ${quotationList.childrenAges
                                                       .map((age) => age)
-                                                      .join(",")} ) Age`
+                                                      .join(",")}  Years )`
                                                 : ""}
                                         </td>
                                     </tr>
