@@ -185,7 +185,10 @@ function QuotationSingleEmailPage() {
             {isLoading ? (
                 <PageLoader />
             ) : (
-                <div className="p-10">
+                <div
+                    style={{ fontFamily: "Poppins" }}
+                    className="p-10 text-[12px] "
+                >
                     <div className="flex justify-end ">
                         <button
                             onClick={copyDocument}
@@ -207,18 +210,18 @@ function QuotationSingleEmailPage() {
                         <br />
                         <br />
                         <div className="cust-border">
-                            <span className="text-[13px] font-bold cust-border">
+                            <span className="text-[12px] font-bold cust-border">
                                 Greetings from {config.COMPANY_NAME}
                                 !!!!
                                 <span />
                             </span>
                             <br />
-                            <span className="text-[13px] cust-border">
+                            <span className="text-[12px] cust-border">
                                 Kindly find the below quote for your reference.
                             </span>
                         </div>
                         <br />
-                        <div className="mb-5 text-[13px] ">
+                        <div className="mb-5 text-[12px] list-disc ">
                             <table>
                                 <tbody>
                                     <tr>
@@ -487,7 +490,7 @@ function QuotationSingleEmailPage() {
                                                                 Stay Option{" "}
                                                                 {index + 1}
                                                             </h2>
-                                                            <table className="w-full text-left border w-10/12">
+                                                            <table className="w-full text-left border w-[990px]">
                                                                 <thead>
                                                                     <tr>
                                                                         <th className=" text-[12px] font-bold border px-[8px] py-[8px]">
@@ -565,7 +568,7 @@ function QuotationSingleEmailPage() {
                                                                                               ).toDateString()
                                                                                             : "N/A"}
                                                                                     </td>
-                                                                                    <td className="border px-[10px] w-[250px]">
+                                                                                    <td className="border px-[10px] w-[300px]">
                                                                                         (
                                                                                         {item?.starCategory
                                                                                             ? item?.starCategory
@@ -843,7 +846,7 @@ function QuotationSingleEmailPage() {
                                                                         ) => {
                                                                             return (
                                                                                 <>
-                                                                                    <span className="text-xs">
+                                                                                    <span className="cust-border">
                                                                                         {
                                                                                             to.transferToHubName
                                                                                         }
@@ -853,7 +856,7 @@ function QuotationSingleEmailPage() {
                                                                                             .transferTo
                                                                                             .length -
                                                                                             1 && (
-                                                                                        <span>
+                                                                                        <span className="cust-border">
                                                                                             /
                                                                                         </span>
                                                                                     )}
@@ -871,7 +874,7 @@ function QuotationSingleEmailPage() {
                                                                     {
                                                                         transfer?.transferFromHubName
                                                                     }{" "}
-                                                                    <span className="text-xs font-semibold">
+                                                                    <span className="font-semibold cust-border">
                                                                         To
                                                                     </span>{" "}
                                                                     {
@@ -891,7 +894,7 @@ function QuotationSingleEmailPage() {
                                                                         ) => {
                                                                             return (
                                                                                 <>
-                                                                                    <span className="text-xs">
+                                                                                    <span className="cust-border">
                                                                                         {
                                                                                             from?.transferFromHubName
                                                                                         }{" "}
@@ -901,7 +904,7 @@ function QuotationSingleEmailPage() {
                                                                                             .transferFrom
                                                                                             .length -
                                                                                             1 && (
-                                                                                        <span>
+                                                                                        <span className="cust-border">
                                                                                             /
                                                                                         </span>
                                                                                     )}
@@ -909,7 +912,7 @@ function QuotationSingleEmailPage() {
                                                                             );
                                                                         }
                                                                     )}
-                                                                    <span className="text-xs font-semibold">
+                                                                    <span className="cust-border font-semibold">
                                                                         To
                                                                     </span>{" "}
                                                                     {
