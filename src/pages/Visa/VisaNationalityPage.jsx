@@ -145,6 +145,7 @@ export default function B2cVisaNationalityPage() {
                     selectedNationality={selectedNationality}
                     nationalities={nationalities}
                     setNationalities={setNationalities}
+                    fetchNationality={fetchNationality}
                 />
             )}
 
