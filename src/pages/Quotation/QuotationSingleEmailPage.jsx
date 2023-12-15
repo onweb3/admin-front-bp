@@ -490,25 +490,25 @@ function QuotationSingleEmailPage() {
                                                                 Stay Option{" "}
                                                                 {index + 1}
                                                             </h2>
-                                                            <table className="w-full text-left border w-[990px]">
-                                                                <thead>
+                                                            <table className=" text-left border w-[1000px]">
+                                                                <thead className="">
                                                                     <tr>
-                                                                        <th className=" text-[12px] font-bold border px-[8px] py-[8px]">
+                                                                        <th className=" text-[12px] font-bold border px-[8px] py-[8px] w-[120px]">
                                                                             Check
                                                                             In
                                                                             Date
                                                                         </th>
-                                                                        <th className="text-[12px] font-bold border px-[8px] py-[8px]">
+                                                                        <th className="text-[12px] font-bold border px-[8px] py-[8px] w-[120px]">
                                                                             Check
                                                                             Out
                                                                             Date
                                                                         </th>
-                                                                        <th className="text-[12px] font-bold border px-[8px] py-[8px]">
+                                                                        <th className="text-[12px] font-bold border px-[8px] py-[8px] w-[300px]">
                                                                             Name
                                                                             of
                                                                             Hotel
                                                                         </th>
-                                                                        <th className="text-[12px] font-bold border px-[8px] py-[8px]">
+                                                                        <th className="text-[12px] font-bold border px-[8px] py-[8px] w-[180px]">
                                                                             Location
                                                                         </th>
                                                                         {quotationList
@@ -554,21 +554,21 @@ function QuotationSingleEmailPage() {
                                                                                     }
                                                                                     className=""
                                                                                 >
-                                                                                    <td className="border px-[8px] py-[5px] w-[120px]">
+                                                                                    <td className="border px-[8px] py-[5px] ">
                                                                                         {item?.checkInDate
                                                                                             ? new Date(
                                                                                                   item?.checkInDate
                                                                                               ).toDateString()
                                                                                             : "N/A"}
                                                                                     </td>
-                                                                                    <td className="border px-[10px] py-[5px] w-[120px]">
+                                                                                    <td className="border px-[10px] py-[5px] ">
                                                                                         {item?.checkOutDate
                                                                                             ? new Date(
                                                                                                   item?.checkOutDate
                                                                                               ).toDateString()
                                                                                             : "N/A"}
                                                                                     </td>
-                                                                                    <td className="border px-[10px] w-[300px]">
+                                                                                    <td className="border px-[10px] ">
                                                                                         (
                                                                                         {item?.starCategory
                                                                                             ? item?.starCategory
@@ -611,7 +611,7 @@ function QuotationSingleEmailPage() {
                                                                                             }
                                                                                         </span>
                                                                                     </td>
-                                                                                    <td className="border px-[10px] w-[180px]">
+                                                                                    <td className="border px-[10px] ">
                                                                                         <div className="flex items-center gap-2 cust-border">
                                                                                             <span className="block mt-1 cust-border">
                                                                                                 {
