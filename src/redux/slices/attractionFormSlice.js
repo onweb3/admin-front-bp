@@ -51,7 +51,7 @@ const initialState = {
         sections: [],
         isCombo: false,
         bookingPriorDays: "",
-        countryCode: "",
+        country: "",
         state: "",
         city: "",
         area: "",
@@ -103,7 +103,7 @@ export const attractionFormSlice = createSlice({
                 sections: [],
                 isCombo: false,
                 bookingPriorDays: "",
-                countryCode: "",
+                country: "",
                 state: "",
                 city: "",
                 area: "",
@@ -180,7 +180,7 @@ export const attractionFormSlice = createSlice({
                 availability,
                 offDates,
                 bookingPriorDays,
-                countryCode,
+                country,
                 city,
                 area,
                 longitude,
@@ -217,7 +217,7 @@ export const attractionFormSlice = createSlice({
             state.activities = action.payload?.activities || [];
             state.images = action.payload?.images || [];
             state.logo = action.payload?.logo || [];
-            state.data.countryCode = countryCode || "";
+            state.data.country = country || "";
             state.data.city = city || "";
             state.data.area = area || "";
             state.data.state = action.payload?.state || "";

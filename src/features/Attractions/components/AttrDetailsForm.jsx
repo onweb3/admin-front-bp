@@ -140,13 +140,13 @@ export default function AttrDetailsForm({ section, isEdit = false }) {
                     <label htmlFor="">County *</label>
                     <SelectDropdown
                         data={countries}
-                        valueName={"isocode"}
+                        valueName={"_id"}
                         displayName={"countryName"}
                         placeholder="Select Country"
-                        selectedData={data?.countryCode || ""}
+                        selectedData={data?.country || ""}
                         setSelectedData={(val) => {
                             handleDetailsChange({
-                                name: "countryCode",
+                                name: "country",
                                 value: val,
                             });
                         }}
