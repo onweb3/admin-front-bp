@@ -75,14 +75,14 @@ export default function AttractionsTicketsOrders() {
             let response;
             if (section === "b2c") {
                 response = await axios.get(
-                    `/attractions/orders/b2c/all?bookingType=ticket&${searchQuery}`,
+                    `/attractions/orders/orderItems/b2c/all?bookingType=ticket&${searchQuery}`,
                     {
                         headers: { authorization: `Bearer ${jwtToken}` },
                     }
                 );
             } else if (section === "reseller" || section === "sub-agent") {
                 response = await axios.get(
-                    `/attractions/orders/b2b/all?bookingType=ticket&orderedBy=${section}&${searchQuery}`,
+                    `/attractions/orders/orderItems/b2b/all?bookingType=ticket&orderedBy=${section}&${searchQuery}`,
                     {
                         headers: { authorization: `Bearer ${jwtToken}` },
                     }
@@ -110,7 +110,7 @@ export default function AttractionsTicketsOrders() {
             let response;
             if (section === "b2c") {
                 response = await axios({
-                    url: `/attractions/orders/b2c/all/sheet?bookingType=ticket&${searchQuery}`,
+                    url: `/attractions/orders/orderItems/b2c/all/sheet?bookingType=ticket&${searchQuery}`,
                     method: "GET",
                     responseType: "blob",
                     headers: {
@@ -119,7 +119,7 @@ export default function AttractionsTicketsOrders() {
                 });
             } else {
                 response = await axios({
-                    url: `/attractions/orders/b2b/all/sheet?bookingType=ticket&${searchQuery}`,
+                    url: `/attractions/orders/orderItems/b2b/all/sheet?bookingType=ticket&${searchQuery}`,
                     method: "GET",
                     responseType: "blob",
                     headers: {

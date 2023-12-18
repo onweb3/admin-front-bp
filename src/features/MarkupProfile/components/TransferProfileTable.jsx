@@ -63,7 +63,7 @@ export default function TransferProfileTable({ type }) {
                     });
                 } else {
                     const response = await axios.get(
-                        `/market/b2b/get-all-transfer/${id}`,
+                        `/profile/b2b/get-all-transfer/${id}`,
                         {
                             headers: { authorization: `Bearer ${jwtToken}` },
                         }

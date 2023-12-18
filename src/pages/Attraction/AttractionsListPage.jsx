@@ -53,14 +53,8 @@ export default function AttractionsListPage() {
     };
 
     useEffect(() => {
-        let skip =
-            Number(searchParams.get("skip")) > 0
-                ? Number(searchParams.get("skip")) - 1
-                : 0;
-        let limit =
-            Number(searchParams.get("limit")) > 0
-                ? Number(searchParams.get("limit"))
-                : 10;
+        let skip = Number(searchParams.get("skip")) > 0 ? Number(searchParams.get("skip")) - 1 : 0;
+        let limit = Number(searchParams.get("limit")) > 0 ? Number(searchParams.get("limit")) : 10;
         let searchInput = searchParams.get("search") || "";
 
         setFilters((prev) => {
@@ -72,9 +66,7 @@ export default function AttractionsListPage() {
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">
-                    Attractions
-                </h1>
+                <h1 className="font-[600] text-[15px] uppercase">Attractions</h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
@@ -118,9 +110,7 @@ export default function AttractionsListPage() {
                                 <button className="px-5">Search</button>
                             </form>
                             <Link to={`add?q=${searchParams}`}>
-                                <button className="w-[150px] bg-orange-500">
-                                    + Add Attraction
-                                </button>
+                                <button className="w-[150px] bg-orange-500">+ Add Attraction</button>
                             </Link>
                         </div>
                     </div>
@@ -137,27 +127,16 @@ export default function AttractionsListPage() {
                             <table className="w-full">
                                 <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                     <tr>
-                                        <th className="font-[500] p-3">
-                                            Title
-                                        </th>
-                                        <th className="font-[500] p-3">
-                                            Booking Type
-                                        </th>
-                                        <th className="font-[500] p-3">
-                                            Offer
-                                        </th>
-                                        <th className="font-[500] p-3">
-                                            Destination
-                                        </th>
-                                        <th className="font-[500] p-3">
-                                            Rating
-                                        </th>
+                                        <th className="font-[500] p-3">Code</th>
+                                        <th className="font-[500] p-3">Title</th>
+                                        <th className="font-[500] p-3">Booking Type</th>
+                                        <th className="font-[500] p-3">Offer</th>
+                                        <th className="font-[500] p-3">Destination</th>
+                                        <th className="font-[500] p-3">Rating</th>
                                         {/* <th className="font-[500] p-3">
                                             B2C Markup
                                         </th> */}
-                                        <th className="font-[500] p-3">
-                                            Action
-                                        </th>
+                                        <th className="font-[500] p-3">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody className="text-sm">

@@ -43,8 +43,8 @@ export default function TransferMarkupModal({
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-        if (type === "market" && !single) {
-            if (marketId) {
+        if (type === "market") {
+            if (marketId && !single) {
                 const response = await axios.post(
                     `/market/update-all-transfer-profile/${marketId}`,
                     formData,
@@ -52,9 +52,7 @@ export default function TransferMarkupModal({
                         headers: { authorization: `Bearer ${jwtToken}` },
                     }
                 );
-            }
-        } else if (type === "market" && single) {
-            if (marketId) {
+            } else if (marketId && single) {
                 setDropdownVisible(false);
                 const response = await axios.post(
                     `/market/update-single-transfer-profile/${marketId}`,
@@ -63,6 +61,46 @@ export default function TransferMarkupModal({
                         headers: { authorization: `Bearer ${jwtToken}` },
                     }
                 );
+            }
+        } else {
+            if (profileId) {
+                if (!single) {
+                    const response = await axios.post(
+                        `/profile/update-all-transfer-profile/${profileId}`,
+                        formData,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
+                } else {
+                    setDropdownVisible(false);
+                    const response = await axios.post(
+                        `/profile/update-single-transfer-profile/${profileId}`,
+                        formData,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
+                }
+            } else {
+                if (!single) {
+                    const response = await axios.post(
+                        `/profile/b2b/update-all-transfer-profile/${id}`,
+                        formData,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
+                } else {
+                    setDropdownVisible(false);
+                    const response = await axios.post(
+                        `/profile/b2b/update-single-transfer-profile/${id}`,
+                        formData,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
+                }
             }
         }
         // setVehicles((pre) => {

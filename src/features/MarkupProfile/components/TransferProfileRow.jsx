@@ -45,6 +45,26 @@ export default function TransferProfileRow({
 
                     setVehicles(response.data);
                 }
+            } else {
+                if (profileId) {
+                    const response = await axios.get(
+                        `/profile/get-all-vehicle/${profileId}/${transfer?.transferId}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
+
+                    setVehicles(response.data);
+                } else {
+                    const response = await axios.get(
+                        `/profile/b2b/get-all-vehicle/${id}/${transfer?.transferId}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
+
+                    setVehicles(response.data);
+                }
             }
 
             // const searchQuery = `skip=${filters?.skip}&limit=${filters.limit}`;

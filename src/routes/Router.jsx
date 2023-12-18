@@ -110,7 +110,6 @@ import HotelBoardTypesPage from "../pages/Hotels/HotelBoardTypesPage";
 import ProfileListPage from "../pages/Markup Profile/ProfileListPage";
 import AddMarkupProfilePage from "../pages/Markup Profile/AddMarkupProfilePage";
 import AddContractPage from "../pages/Hotels/AddContractPage";
-import ChangeAvailabilityPage from "../pages/Hotels/ChangeAvailabilityPage";
 import AccommodationTypesPage from "../pages/Hotels/AccommodationTypesPage";
 import CitiesPage from "../pages/Countries/CitiesPage";
 import EditMarkupProfilePage from "../pages/Markup Profile/EditMarkupProfilePage";
@@ -159,7 +158,6 @@ import AddRoomOccupanciesPage from "../pages/Hotels/AddRoomOccupanciesPage";
 import EditRoomOccupanciesPage from "../pages/Hotels/EditRoomOccupanciesPage";
 import SingleResellerAdminAccessPage from "../pages/Resellers/SingleResellerAdminAccessPage";
 import VisaEnquiryPage from "../pages/Visa/VisaEnquiryPage";
-import VisaNationalityPage from "../pages/Visa/VisaNationalityPage";
 import B2cVisaNationalityPage from "../pages/Visa/VisaNationalityPage";
 import AddVisaTypeNationality from "../pages/Visa/AddVisaTypeNationality";
 import AddSubAgentPage from "../pages/Resellers/AddSubAgentPage";
@@ -202,7 +200,6 @@ import HotelBannerAdsPage from "../pages/Hotels/HotelBannerAdsPage";
 import FeaturedHotelsPage from "../pages/Hotels/FeaturedHotelsPage";
 import CreateAttractionOrder from "../pages/Attraction/CreateAttractionOrder";
 import CreateA2aOrder from "../pages/A2A/CreateA2aOrderPage";
-import CreateVisaOrderPag from "../pages/Visa/CreateVisaOrderPage";
 import CreateVisaOrderPage from "../pages/Visa/CreateVisaOrderPage";
 import VisaDocumentUploadPage from "../pages/Visa/VisaDocumentUploadPage";
 import CreateFlightOrderPage from "../pages/Flight/CreateFlightOrderPage";
@@ -236,7 +233,6 @@ import EditVehiclePage from "../pages/Vehicle/EditVehiclePage";
 import LicenseTypesPage from "../pages/Driver/LicenseTypesPage";
 import EditDriverPage from "../pages/Driver/EditDriverPage";
 import AddDriverPage from "../pages/Driver/AddDriverPage";
-import GenerateVoucherPage from "../pages/Voucher/AddVoucherPageV2";
 import ConfirmedQuotationsListPage from "../pages/Voucher/ConfirmedQuotationsListPage";
 import AddVoucherPageV2 from "../pages/Voucher/AddVoucherPageV2";
 import VouchersV2ListPage from "../pages/Voucher/VouchersV2ListPage";
@@ -255,6 +251,11 @@ import TourPackageThemesPage from "../pages/TourPackage/TourPackageThemesPage";
 import TourPackageEnquiriesPage from "../pages/TourPackage/TourPackageEnquiriesPage";
 import BannerListPage from "../pages/Banners/BannerListPage";
 import EditBannerPage from "../pages/Banners/EditBannerPage";
+import AttractionOrdersPage from "../pages/Attraction/AttractionOrdersPage";
+import SingleAttractionB2bOrderDetailsPage from "../pages/Attraction/SingleAttractionB2bOrderDetailsPage";
+import SingleAttractionB2cOrderDetailsPage from "../pages/Attraction/SingleAttractionB2cOrderDetailsPage";
+import OrdersListingPage from "../pages/Orders/OrderListingPage";
+import SingleOrderDetailsPage from "../pages/Orders/SinlgeOrderDetailsPage";
 
 const ThemeRoutes = [
     {
@@ -314,12 +315,24 @@ const ThemeRoutes = [
                 element: <AttractionOrdersStatistics />,
             },
             {
+                path: "/attractions/orders",
+                element: <AttractionOrdersPage />,
+            },
+            {
                 path: "/attractions/orders/bookings",
                 element: <AttractionsBookingOrdersPage />,
             },
             {
                 path: "/attractions/orders/tickets",
                 element: <AttractionsTicketsOrders />,
+            },
+            {
+                path: "/attractions/orders/b2b/:orderId",
+                element: <SingleAttractionB2bOrderDetailsPage />,
+            },
+            {
+                path: "/attractions/orders/b2c/:orderId",
+                element: <SingleAttractionB2cOrderDetailsPage />,
             },
             { path: "/attractions/:id/edit", element: <EditAttractionPage /> },
             {
@@ -1285,6 +1298,18 @@ const ThemeRoutes = [
             {
                 path: "/banners/:id/edit",
                 element: <EditBannerPage />,
+            },
+
+            //orders
+
+            {
+                path: "/orders",
+                element: <OrdersListingPage />,
+            },
+
+            {
+                path: "/orders/single/:orderId",
+                element: <SingleOrderDetailsPage />,
             },
         ],
     },

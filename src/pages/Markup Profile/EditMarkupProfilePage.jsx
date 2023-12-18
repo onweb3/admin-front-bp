@@ -17,6 +17,7 @@ import QuotationProfileTable from "../../features/MarkupProfile/components/Quota
 import HotelRoomTypeTable from "../../features/MarkupProfile/components/HotelRoomTypeTable";
 import FlightProfileTable from "../../features/MarkupProfile/components/FlightProfileTable";
 import InsuranceProfileTable from "../../features/MarkupProfile/components/InsuranceProfileTable";
+import TransferProfileTable from "../../features/MarkupProfile/components/TransferProfileTable";
 
 export default function EditMarkupProfilePage() {
     const [error, setError] = useState("");
@@ -218,6 +219,19 @@ export default function EditMarkupProfilePage() {
                                 }}
                             >
                                 Insurance
+                            </button>{" "}
+                            <button
+                                className={
+                                    "px-2 py-4 h-auto bg-transparent text-primaryColor font-medium rounded-none " +
+                                    (section === "transfer"
+                                        ? "border-b border-b-orange-500"
+                                        : "")
+                                }
+                                onClick={(e) => {
+                                    handleSectionChange(e, "transfer");
+                                }}
+                            >
+                                Transfer
                             </button>
                         </div>
 
@@ -359,6 +373,18 @@ export default function EditMarkupProfilePage() {
                             >
                                 {" "}
                                 <InsuranceProfileTable />
+                            </div>
+                        )}
+                        {section === "transfer" && (
+                            <div
+                                className={
+                                    section === "transfer"
+                                        ? "block pt-10"
+                                        : "hidden"
+                                }
+                            >
+                                {" "}
+                                <TransferProfileTable type={"profile"} />
                             </div>
                         )}
 
