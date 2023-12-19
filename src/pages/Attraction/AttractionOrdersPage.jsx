@@ -292,7 +292,11 @@ export default function AttractionOrdersPage() {
                                             >
                                                 <td className="p-3">{order?.referenceNumber}</td>
                                                 <td className="p-3 capitalize">
-                                                    B2C portal
+                                                    {section === "b2c"
+                                                        ? "B2C portal"
+                                                        : order?.orderType === "b2b-api"
+                                                        ? "API Gateway"
+                                                        : "B2B Portal"}
                                                     <span className="block text-sm text-grayColor mt-1">
                                                         {moment(order?.createdAt).format("MMM D, YYYY HH:mm")}
                                                     </span>

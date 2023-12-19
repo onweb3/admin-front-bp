@@ -1,11 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BiSearch } from "react-icons/bi";
+import GlobalSearchModal from "./GlobalSearchModal";
 
 export default function GlobalSearchInp() {
     const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
 
+    const handleKeyDownEvent = (event) => {
+        if (event.ctrlKey && event.key === "k") {
+            event.preventDefault();
+            setIsSearchModalOpen(true);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("keydown", handleKeyDownEvent, false);
+
+        return () => {
+            document.removeEventListener("keydown", handleKeyDownEvent, false);
+        };
+    }, []);
+
     return (
-        <div>
+        <div className="">
             <div
                 className="relative cursor-text rounded-[0.25rem] w-[280px] h-[35px] border bg-[#f0f0f0] hover:transition-all hover:bg-transparent hover:border hover:border-[#ced4da]"
                 onClick={() => setIsSearchModalOpen(true)}
@@ -22,7 +38,7 @@ export default function GlobalSearchInp() {
                 </div>
             </div>
 
-            {/* {isSearchModalOpen && <div>Hello</div>} */}
+            {isSearchModalOpen && <GlobalSearchModal setIsSearchModalOpen={setIsSearchModalOpen} />}
         </div>
     );
 }
