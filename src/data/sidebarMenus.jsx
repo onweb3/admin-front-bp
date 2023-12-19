@@ -784,6 +784,12 @@ const sidebarMenus = {
 
     settings: [
         {
+            name: "Banners",
+            icon: <AiOutlineApi />,
+            link: "/banners",
+            permission: ["banners", "view"],
+        },
+        {
             name: "Markup Profile",
             icon: <RiProfileLine />,
             link: "#",

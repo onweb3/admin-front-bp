@@ -49,6 +49,24 @@ export default function TransferVehcileRow({
                     }
                 );
             }
+        } else {
+            if (profileId) {
+                const response = await axios.post(
+                    `/profile/update-transfer-profile/${profileId}`,
+                    formData,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+            } else {
+                const response = await axios.post(
+                    `/profile/b2b/update-transfer-profile/${id}`,
+                    formData,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+            }
         }
 
         setVehicles((previous) => {

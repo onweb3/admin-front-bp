@@ -185,7 +185,10 @@ function QuotationSingleEmailPage() {
             {isLoading ? (
                 <PageLoader />
             ) : (
-                <div className="p-10">
+                <div
+                    style={{ fontFamily: "Poppins" }}
+                    className="p-10 text-[12px] "
+                >
                     <div className="flex justify-end ">
                         <button
                             onClick={copyDocument}
@@ -207,18 +210,18 @@ function QuotationSingleEmailPage() {
                         <br />
                         <br />
                         <div className="cust-border">
-                            <span className="text-[13px] font-bold cust-border">
+                            <span className="text-[12px] font-bold cust-border">
                                 Greetings from {config.COMPANY_NAME}
                                 !!!!
                                 <span />
                             </span>
                             <br />
-                            <span className="text-[13px] cust-border">
+                            <span className="text-[12px] cust-border">
                                 Kindly find the below quote for your reference.
                             </span>
                         </div>
                         <br />
-                        <div className="mb-5 text-[13px] ">
+                        <div className="mb-5 text-[12px] list-disc ">
                             <table>
                                 <tbody>
                                     <tr>
@@ -285,12 +288,12 @@ function QuotationSingleEmailPage() {
                                         >
                                             {quotationList?.noOfAdults} Adult{" "}
                                             {quotationList?.noOfChildren > 0
-                                                ? `${quotationList.noOfChildren} Children`
+                                                ? `${quotationList.noOfChildren} Child`
                                                 : ""}
                                             {quotationList?.noOfChildren > 0
                                                 ? ` ( ${quotationList.childrenAges
                                                       .map((age) => age)
-                                                      .join(",")} ) Age`
+                                                      .join(",")}  Years )`
                                                 : ""}
                                         </td>
                                     </tr>
@@ -359,11 +362,10 @@ function QuotationSingleEmailPage() {
                                             }}
                                             className="cust-border"
                                         >
-                                            {quotationList?.checkInDate
-                                                ?.slice(0, 10)
-                                                ?.split("-")
-                                                ?.reverse()
-                                                ?.join("-")}
+                                            {quotationList.checkInDate &&
+                                                new Date(
+                                                    quotationList?.checkInDate
+                                                ).toDateString()}
                                         </td>
                                     </tr>
                                     <tr>
@@ -396,11 +398,10 @@ function QuotationSingleEmailPage() {
                                             }}
                                             className="cust-border"
                                         >
-                                            {quotationList.checkOutDate
-                                                .slice(0, 10)
-                                                .split("-")
-                                                .reverse()
-                                                .join("-")}
+                                            {quotationList.checkOutDate &&
+                                                new Date(
+                                                    quotationList?.checkOutDate
+                                                ).toDateString()}
                                         </td>
                                     </tr>
                                     <tr>
@@ -489,29 +490,25 @@ function QuotationSingleEmailPage() {
                                                                 Stay Option{" "}
                                                                 {index + 1}
                                                             </h2>
-                                                            <table className="w-full text-left border">
-                                                                <thead>
+                                                            <table className=" text-left border w-[1000px]">
+                                                                <thead className="">
                                                                     <tr>
-                                                                        <th className=" text-[12px] font-bold border px-[8px] py-[8px]">
+                                                                        <th className=" text-[12px] font-bold border px-[8px] py-[8px] w-[120px]">
                                                                             Check
                                                                             In
                                                                             Date
                                                                         </th>
-                                                                        <th className="text-[12px] font-bold border px-[8px] py-[8px]">
+                                                                        <th className="text-[12px] font-bold border px-[8px] py-[8px] w-[120px]">
                                                                             Check
                                                                             Out
                                                                             Date
                                                                         </th>
-                                                                        <th className="text-[12px] font-bold border px-[8px] py-[8px]">
-                                                                            Star
-                                                                            Category
-                                                                        </th>
-                                                                        <th className="text-[12px] font-bold border px-[8px] py-[8px]">
+                                                                        <th className="text-[12px] font-bold border px-[8px] py-[8px] w-[300px]">
                                                                             Name
                                                                             of
                                                                             Hotel
                                                                         </th>
-                                                                        <th className="text-[12px] font-bold border px-[8px] py-[8px]">
+                                                                        <th className="text-[12px] font-bold border px-[8px] py-[8px] w-[180px]">
                                                                             Location
                                                                         </th>
                                                                         {quotationList
@@ -519,28 +516,32 @@ function QuotationSingleEmailPage() {
                                                                             ?.stays
                                                                             ?.length >
                                                                             0 &&
-                                                                            quotationList?.hotelQuotation?.stays[0]?.roomOccupancyList?.map(
+                                                                            quotationList?.hotelQuotation?.stays[
+                                                                                index
+                                                                            ]?.roomOccupancyList?.map(
                                                                                 (
                                                                                     roomOccupancy,
                                                                                     index
                                                                                 ) => {
                                                                                     return (
-                                                                                        <th
-                                                                                            key={
-                                                                                                index
-                                                                                            }
-                                                                                            className="text-[12px] font-bold border px-[8px]"
-                                                                                        >
-                                                                                            {
-                                                                                                roomOccupancy?.occupancyShortName
-                                                                                            }
-                                                                                        </th>
+                                                                                        roomOccupancy?.priceWithTransfer && (
+                                                                                            <th
+                                                                                                key={
+                                                                                                    index
+                                                                                                }
+                                                                                                className="text-[12px] font-bold border px-[8px]"
+                                                                                            >
+                                                                                                {
+                                                                                                    roomOccupancy?.occupancyShortName
+                                                                                                }
+                                                                                            </th>
+                                                                                        )
                                                                                     );
                                                                                 }
                                                                             )}
                                                                     </tr>
                                                                 </thead>
-                                                                <tbody className="text-[12px]">
+                                                                <tbody className="text-[12px] ">
                                                                     {stay?.hotels?.map(
                                                                         (
                                                                             item,
@@ -553,28 +554,29 @@ function QuotationSingleEmailPage() {
                                                                                     }
                                                                                     className=""
                                                                                 >
-                                                                                    <td className="border px-[8px] py-[5px]">
+                                                                                    <td className="border px-[8px] py-[5px] ">
                                                                                         {item?.checkInDate
                                                                                             ? new Date(
                                                                                                   item?.checkInDate
                                                                                               ).toDateString()
                                                                                             : "N/A"}
                                                                                     </td>
-                                                                                    <td className="border px-[10px] py-[5px]">
+                                                                                    <td className="border px-[10px] py-[5px] ">
                                                                                         {item?.checkOutDate
                                                                                             ? new Date(
                                                                                                   item?.checkOutDate
                                                                                               ).toDateString()
                                                                                             : "N/A"}
                                                                                     </td>
-                                                                                    <td className="border px-[10px] py-[5px]">
+                                                                                    <td className="border px-[10px] ">
+                                                                                        (
                                                                                         {item?.starCategory
                                                                                             ? item?.starCategory
-                                                                                            : "N/A"}
-                                                                                    </td>
-                                                                                    <td className="border px-[10px]">
+                                                                                            : "N/A"}{" "}
+                                                                                        *
+                                                                                        ){" "}
                                                                                         {item?.hotelName ||
-                                                                                            "N/A"}
+                                                                                            "N/A"}{" "}
                                                                                         <br />
                                                                                         {item?.roomOccupancyName && (
                                                                                             <>
@@ -599,57 +601,34 @@ function QuotationSingleEmailPage() {
                                                                     ? "Refundable"
                                                                     : "Non Refundable"}
                                                             </span> */}
-                                                                                        <span className="block mt-1 cust-border">
-                                                                                            *{" "}
-                                                                                            Room
-                                                                                            Type
-                                                                                            :{" "}
+                                                                                        <span className="block mt-1 cust-border capitalize">
                                                                                             {
                                                                                                 item?.roomTypeName
-                                                                                            }
-                                                                                        </span>
-                                                                                        <span className="block mt-1 cust-border">
-                                                                                            *{" "}
-                                                                                            Board
-                                                                                            Type
-                                                                                            :{" "}
+                                                                                            }{" "}
+                                                                                            -{" "}
                                                                                             {
                                                                                                 item?.boardTypeCode
                                                                                             }
                                                                                         </span>
                                                                                     </td>
-                                                                                    <td
-                                                                                        className="border px-[10px] "
-                                                                                        style={{
-                                                                                            width: "50px",
-                                                                                            overflow:
-                                                                                                "hidden",
-                                                                                            whiteSpace:
-                                                                                                "nowrap",
-                                                                                            textOverflow:
-                                                                                                "ellipsis",
-                                                                                        }}
-                                                                                    >
-                                                                                        <div className="flex items-center gap-2">
-                                                                                            <span className="block mt-1">
+                                                                                    <td className="border px-[10px] ">
+                                                                                        <div className="flex items-center gap-2 cust-border">
+                                                                                            <span className="block mt-1 cust-border">
                                                                                                 {
                                                                                                     item?.area
                                                                                                 }
 
-                                                                                                ,
-                                                                                            </span>{" "}
-                                                                                            <span className="block mt-1">
+                                                                                                ,{" "}
                                                                                                 {
                                                                                                     item?.city
                                                                                                 }
 
-                                                                                                ,
+                                                                                                ,{" "}
+                                                                                                {item?.country ===
+                                                                                                "united arab emirates"
+                                                                                                    ? "UAE"
+                                                                                                    : item?.country}
                                                                                             </span>{" "}
-                                                                                            <span className="block mt-1">
-                                                                                                {
-                                                                                                    item?.country
-                                                                                                }
-                                                                                            </span>
                                                                                         </div>
                                                                                     </td>
 
@@ -661,30 +640,32 @@ function QuotationSingleEmailPage() {
                                                                                                 index
                                                                                             ) => {
                                                                                                 return (
-                                                                                                    <td
-                                                                                                        rowSpan={
-                                                                                                            stay
-                                                                                                                ?.hotels
-                                                                                                                ?.length >
-                                                                                                            0
-                                                                                                                ? stay
-                                                                                                                      ?.hotels
-                                                                                                                      ?.length
-                                                                                                                : 0
-                                                                                                        }
-                                                                                                        key={
-                                                                                                            index
-                                                                                                        }
-                                                                                                        className="border px-[10px]"
-                                                                                                    >
-                                                                                                        {roomOccupancy?.priceWithTransfer
-                                                                                                            ? Math.ceil(
-                                                                                                                  roomOccupancy?.priceWithTransfer
-                                                                                                              ) +
-                                                                                                              " " +
-                                                                                                              quotationList?.quotationCurrency
-                                                                                                            : "N/A"}
-                                                                                                    </td>
+                                                                                                    roomOccupancy?.priceWithTransfer && (
+                                                                                                        <td
+                                                                                                            rowSpan={
+                                                                                                                stay
+                                                                                                                    ?.hotels
+                                                                                                                    ?.length >
+                                                                                                                0
+                                                                                                                    ? stay
+                                                                                                                          ?.hotels
+                                                                                                                          ?.length
+                                                                                                                    : 0
+                                                                                                            }
+                                                                                                            key={
+                                                                                                                index
+                                                                                                            }
+                                                                                                            className="border px-[10px]"
+                                                                                                        >
+                                                                                                            {roomOccupancy?.priceWithTransfer
+                                                                                                                ? Math.ceil(
+                                                                                                                      roomOccupancy?.priceWithTransfer
+                                                                                                                  ) +
+                                                                                                                  " " +
+                                                                                                                  quotationList?.quotationCurrency
+                                                                                                                : "N/A"}
+                                                                                                        </td>
+                                                                                                    )
                                                                                                 );
                                                                                             }
                                                                                         )}
@@ -865,7 +846,7 @@ function QuotationSingleEmailPage() {
                                                                         ) => {
                                                                             return (
                                                                                 <>
-                                                                                    <span className="text-xs">
+                                                                                    <span className="cust-border">
                                                                                         {
                                                                                             to.transferToHubName
                                                                                         }
@@ -875,7 +856,7 @@ function QuotationSingleEmailPage() {
                                                                                             .transferTo
                                                                                             .length -
                                                                                             1 && (
-                                                                                        <span>
+                                                                                        <span className="cust-border">
                                                                                             /
                                                                                         </span>
                                                                                     )}
@@ -893,7 +874,7 @@ function QuotationSingleEmailPage() {
                                                                     {
                                                                         transfer?.transferFromHubName
                                                                     }{" "}
-                                                                    <span className="text-xs font-semibold">
+                                                                    <span className="font-semibold cust-border">
                                                                         To
                                                                     </span>{" "}
                                                                     {
@@ -913,7 +894,7 @@ function QuotationSingleEmailPage() {
                                                                         ) => {
                                                                             return (
                                                                                 <>
-                                                                                    <span className="text-xs">
+                                                                                    <span className="cust-border">
                                                                                         {
                                                                                             from?.transferFromHubName
                                                                                         }{" "}
@@ -923,7 +904,7 @@ function QuotationSingleEmailPage() {
                                                                                             .transferFrom
                                                                                             .length -
                                                                                             1 && (
-                                                                                        <span>
+                                                                                        <span className="cust-border">
                                                                                             /
                                                                                         </span>
                                                                                     )}
@@ -931,7 +912,7 @@ function QuotationSingleEmailPage() {
                                                                             );
                                                                         }
                                                                     )}
-                                                                    <span className="text-xs font-semibold">
+                                                                    <span className="cust-border font-semibold">
                                                                         To
                                                                     </span>{" "}
                                                                     {

@@ -1,4 +1,8 @@
-import { AdminLayout, EditProfileLayout, SingleResellerLayout } from "../layouts";
+import {
+    AdminLayout,
+    EditProfileLayout,
+    SingleResellerLayout,
+} from "../layouts";
 import A2aAddTicketPage from "../pages/A2A/A2aAddTicketPage";
 import A2AEditTicketPage from "../pages/A2A/A2aEditTicketPage";
 import A2AEnquiryPage from "../pages/A2A/A2AEnquiryPage";
@@ -245,9 +249,13 @@ import EditTourPackagePage from "../pages/TourPackage/EditTourPackagePage";
 import SingleTourPackagePage from "../pages/TourPackage/SingleTourPackagePage";
 import TourPackageThemesPage from "../pages/TourPackage/TourPackageThemesPage";
 import TourPackageEnquiriesPage from "../pages/TourPackage/TourPackageEnquiriesPage";
+import BannerListPage from "../pages/Banners/BannerListPage";
+import EditBannerPage from "../pages/Banners/EditBannerPage";
 import AttractionOrdersPage from "../pages/Attraction/AttractionOrdersPage";
 import SingleAttractionB2bOrderDetailsPage from "../pages/Attraction/SingleAttractionB2bOrderDetailsPage";
 import SingleAttractionB2cOrderDetailsPage from "../pages/Attraction/SingleAttractionB2cOrderDetailsPage";
+import OrdersListingPage from "../pages/Orders/OrderListingPage";
+import SingleOrderDetailsPage from "../pages/Orders/SinlgeOrderDetailsPage";
 
 const ThemeRoutes = [
     {
@@ -1282,6 +1290,26 @@ const ThemeRoutes = [
             {
                 path: "/tour-packages/:tPackageId",
                 element: <SingleTourPackagePage />,
+            },
+            {
+                path: "/banners",
+                element: <BannerListPage />,
+            },
+            {
+                path: "/banners/:id/edit",
+                element: <EditBannerPage />,
+            },
+
+            //orders
+
+            {
+                path: "/orders",
+                element: <OrdersListingPage />,
+            },
+
+            {
+                path: "/orders/single/:orderId",
+                element: <SingleOrderDetailsPage />,
             },
         ],
     },

@@ -63,7 +63,7 @@ export default function TransferProfileTable({ type }) {
                     });
                 } else {
                     const response = await axios.get(
-                        `/market/b2b/get-all-transfer/${id}`,
+                        `/profile/b2b/get-all-transfer/${id}`,
                         {
                             headers: { authorization: `Bearer ${jwtToken}` },
                         }
@@ -388,8 +388,6 @@ export default function TransferProfileTable({ type }) {
                                 </th>
                                 <th className="font-[500] p-3">Transfer To </th>
 
-                                
-
                                 <th className="font-[500] p-3">Edit</th>
                             </tr>
                         </thead>
@@ -416,6 +414,7 @@ export default function TransferProfileTable({ type }) {
                     setIsModal={setIsModal}
                     type={type}
                     setTransfers={setTransfers}
+                    single={false}
                 />
             )}
 

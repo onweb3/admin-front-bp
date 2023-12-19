@@ -13,6 +13,7 @@ export default function AddNationalityModal({
     selectedNationality,
     nationalities,
     setNationalities,
+    fetchNationality,
 }) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
@@ -59,6 +60,7 @@ export default function AddNationalityModal({
                 }
             );
 
+
             setNationalities((prev) => {
                 const updatedNationalities = [...prev]; // Create a copy of the previous state array
 
@@ -68,9 +70,9 @@ export default function AddNationalityModal({
                     );
                 });
 
-                console.log(selectedCountry, "selected country");
 
                 updatedNationalities.push({
+                    _id: response?.data?._id,
                     nationality: selectedCountry,
                 });
 
