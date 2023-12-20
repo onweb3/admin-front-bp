@@ -932,6 +932,9 @@ export default function SingleOrderDetailsPage() {
                                                         Type
                                                     </th>
                                                     <th className="font-[500] p-3">
+                                                        Vehicle
+                                                    </th>
+                                                    <th className="font-[500] p-3">
                                                         Date
                                                     </th>
                                                     <th className="font-[500] p-3">
@@ -987,6 +990,59 @@ export default function SingleOrderDetailsPage() {
                                                                         item.transferType
                                                                     }
                                                                 </td>
+                                                                <td className="p-3 capitalize">
+                                                                    <div>
+                                                                        Ow -{" "}
+                                                                        {item.trips[0]?.vehicleTypes.map(
+                                                                            (
+                                                                                type
+                                                                            ) => (
+                                                                                // Use + operator or template string to concatenate name and count
+                                                                                <span
+                                                                                    key={
+                                                                                        type.name
+                                                                                    }
+                                                                                >
+                                                                                    {
+                                                                                        type?.name
+                                                                                    }{" "}
+                                                                                    x{" "}
+                                                                                    (
+                                                                                    {
+                                                                                        type?.count
+                                                                                    }
+
+                                                                                    ){" "}
+                                                                                    ,
+                                                                                </span>
+                                                                            )
+                                                                        )}
+                                                                    </div>
+                                                                    <div>
+                                                                        Rtn -{" "}
+                                                                        {item?.trips[1]?.vehicleTypes.map(
+                                                                            (
+                                                                                type
+                                                                            ) => (
+                                                                                // Use + operator or template string to concatenate name and count
+                                                                                <span
+                                                                                    key={
+                                                                                        type.name
+                                                                                    }
+                                                                                >
+                                                                                    {
+                                                                                        type?.name
+                                                                                    }{" "}
+                                                                                    x
+                                                                                    {
+                                                                                        type?.count
+                                                                                    }{" "}
+                                                                                </span>
+                                                                            )
+                                                                        )}
+                                                                    </div>
+                                                                </td>
+
                                                                 <td className="p-3">
                                                                     {moment(
                                                                         item?.date
