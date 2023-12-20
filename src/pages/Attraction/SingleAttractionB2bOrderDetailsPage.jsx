@@ -3,13 +3,12 @@ import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { BsFillArrowRightCircleFill } from "react-icons/bs";
 import { AiOutlineMail, AiOutlinePhone } from "react-icons/ai";
-import { MdNoTransfer } from "react-icons/md";
-import { FaBus } from "react-icons/fa";
 import moment from "moment";
 
 import { PageLoader } from "../../components";
 import axios from "../../axios";
 import { config } from "../../constants";
+import { SingleAttrOrderActivitiesTable } from "../../features/Attractions";
 
 const sections = {
     payments: "Payments",
@@ -373,187 +372,7 @@ export default function SingleAttractionB2bOrderDetailsPage() {
                             </div>
 
                             <div className="mt-10">
-                                <table className="w-full">
-                                    <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
-                                        <tr>
-                                            <th className="font-[500] p-3">Activity</th>
-                                            <th className="font-[500] p-3">Date</th>
-                                            <th className="font-[500] p-3">Pax</th>
-                                            <th className="font-[500] p-3">Transfer</th>
-                                            <th className="font-[500] p-3">Tickets / Id</th>
-                                            <th className="font-[500] p-3">Amount</th>
-                                            <th className="font-[500] p-3">Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="text-sm">
-                                        {attractionOrder?.activities?.map((orderItem, orderItemIndex) => {
-                                            return (
-                                                <tr key={orderItemIndex}>
-                                                    <td className="p-3">
-                                                        <div className="flex gap-3">
-                                                            <div className="w-[80px] max-h-[50px] rounded overflow-hidden">
-                                                                <img
-                                                                    src={
-                                                                        config.SERVER_URL +
-                                                                        orderItem?.attraction?.images[0]
-                                                                    }
-                                                                    alt=""
-                                                                    className="w-full h-full object-cover"
-                                                                />
-                                                            </div>
-                                                            <div>
-                                                                <span className="font-[500] block mt-1">
-                                                                    {orderItem?.activity?.name}{" "}
-                                                                    <span className="capitalize">
-                                                                        ({orderItem?.bookingType})
-                                                                    </span>
-                                                                </span>
-                                                                <span className="block mt-1">
-                                                                    {orderItem?.attraction?.title}
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td className="p-3">
-                                                        {moment(orderItem?.date).format("MMM D, YYYY")}
-                                                    </td>
-                                                    <td className="p-3">
-                                                        {orderItem?.adultsCount} ADT,{" "}
-                                                        {orderItem?.childrenCount} CHD,{" "}
-                                                        {orderItem?.infantCount} INF
-                                                    </td>
-                                                    <td className="p-3">
-                                                        {orderItem?.transferType === "without" ? (
-                                                            <span className="flex items-center gap-[7px] mt-2 capitalize">
-                                                                <MdNoTransfer /> {orderItem?.transferType}{" "}
-                                                                Transfer
-                                                            </span>
-                                                        ) : (
-                                                            <div>
-                                                                <span className="flex items-center gap-[7px] mt-2 capitalize">
-                                                                    <FaBus /> {orderItem?.transferType}{" "}
-                                                                    Transfer
-                                                                </span>
-                                                                <div>
-                                                                    {orderItem?.transferType === "private" &&
-                                                                        orderItem?.privateTransfers?.map(
-                                                                            (transfer, index) => {
-                                                                                return (
-                                                                                    <span
-                                                                                        key={index}
-                                                                                        className="block mt-[6px]"
-                                                                                    >
-                                                                                        {transfer?.name} x{" "}
-                                                                                        {transfer?.count}
-                                                                                    </span>
-                                                                                );
-                                                                            }
-                                                                        )}
-                                                                </div>
-                                                            </div>
-                                                        )}
-                                                    </td>
-                                                    <td className="p-3">
-                                                        {orderItem?.bookingType === "booking" ? (
-                                                            <span className="bg-[#f3f6f9] py-1 px-2 text-sm rounded">
-                                                                {orderItem?.bookingConfirmationNumber}
-                                                            </span>
-                                                        ) : orderItem?.bookingType === "ticket" &&
-                                                          (orderItem?.adultTickets?.length > 0 ||
-                                                              orderItem?.childTickets?.length > 0 ||
-                                                              orderItem?.infantTickets?.length > 0) ? (
-                                                            <div className="flex flex-wrap items-center gap-[10px] mt-2">
-                                                                {orderItem?.adultTickets?.map(
-                                                                    (ticket, index) => {
-                                                                        return (
-                                                                            <span
-                                                                                key={index}
-                                                                                className="bg-[#f3f6f9] py-1 px-2 text-sm rounded"
-                                                                                onMouseDown={() =>
-                                                                                    handleMouseDownOnTicketNumber(
-                                                                                        {
-                                                                                            ticketNo:
-                                                                                                ticket?.ticketNo,
-                                                                                            loggedFrom:
-                                                                                                "orders-list",
-                                                                                        }
-                                                                                    )
-                                                                                }
-                                                                            >
-                                                                                {ticket?.ticketNo}
-                                                                            </span>
-                                                                        );
-                                                                    }
-                                                                )}
-                                                                {orderItem?.childTickets?.map(
-                                                                    (ticket, index) => {
-                                                                        return (
-                                                                            <span
-                                                                                key={index}
-                                                                                className="bg-[#f3f6f9] py-1 px-2 text-sm rounded"
-                                                                                onMouseDown={() =>
-                                                                                    handleMouseDownOnTicketNumber(
-                                                                                        {
-                                                                                            ticketNo:
-                                                                                                ticket?.ticketNo,
-                                                                                            loggedFrom:
-                                                                                                "orders-list",
-                                                                                        }
-                                                                                    )
-                                                                                }
-                                                                            >
-                                                                                {ticket?.ticketNo}
-                                                                            </span>
-                                                                        );
-                                                                    }
-                                                                )}
-                                                                {orderItem?.infantTickets?.map(
-                                                                    (ticket, index) => {
-                                                                        return (
-                                                                            <span
-                                                                                key={index}
-                                                                                className="bg-[#f3f6f9] py-1 px-2 text-sm rounded"
-                                                                                onMouseDown={() =>
-                                                                                    handleMouseDownOnTicketNumber(
-                                                                                        {
-                                                                                            ticketNo:
-                                                                                                ticket?.ticketNo,
-                                                                                            loggedFrom:
-                                                                                                "orders-list",
-                                                                                        }
-                                                                                    )
-                                                                                }
-                                                                            >
-                                                                                {ticket?.ticketNo}
-                                                                            </span>
-                                                                        );
-                                                                    }
-                                                                )}
-                                                            </div>
-                                                        ) : (
-                                                            "N/A"
-                                                        )}
-                                                    </td>
-                                                    <td className="p-3">{orderItem?.grandTotal} AED</td>
-                                                    <td className="p-3">
-                                                        <span
-                                                            className={
-                                                                "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
-                                                                (orderItem?.status === "cancelled"
-                                                                    ? "bg-[#f065481A] text-[#f06548]"
-                                                                    : orderItem?.status === "confirmed"
-                                                                    ? "text-[#0ab39c] bg-[#0ab39c1A]"
-                                                                    : "bg-[#f7b84b1A] text-[#f7b84b]")
-                                                            }
-                                                        >
-                                                            {orderItem?.status}
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })}
-                                    </tbody>
-                                </table>
+                                <SingleAttrOrderActivitiesTable attractionOrder={attractionOrder} />
                             </div>
 
                             <div className="mt-10">

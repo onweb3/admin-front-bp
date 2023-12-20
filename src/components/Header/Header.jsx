@@ -19,7 +19,9 @@ export default function Header() {
         <div className="w-full bg-white h-[70px] px-5">
             <div className="h-full flex items-center justify-between">
                 <div></div>
-                <div>{import.meta.env.VITE_NODE_ENV === "TEST_LOCAL" && <GlobalSearchInp />}</div>
+                <div>
+                    <GlobalSearchInp />
+                </div>
                 <div className="flex items-center gap-[2em] h-full">
                     <div className="relative h-full">
                         <div
@@ -30,9 +32,7 @@ export default function Header() {
                             {selectedCurrency?.isocode} <FiChevronDown />
                         </div>
                         {isCurrenciesDropdownOpen && (
-                            <CurrenciesDropdown
-                                setIsCurrenciesDropdownOpen={setIsCurrenciesDropdownOpen}
-                            />
+                            <CurrenciesDropdown setIsCurrenciesDropdownOpen={setIsCurrenciesDropdownOpen} />
                         )}
                     </div>
                     <div className="relative h-full">
@@ -42,20 +42,14 @@ export default function Header() {
                         >
                             <div className="w-[30px] h-[30px] rounded-full overflow-hidden">
                                 <img
-                                    src={
-                                        admin?.avatar
-                                            ? config.SERVER_URL + admin?.avatar
-                                            : avatarImg
-                                    }
+                                    src={admin?.avatar ? config.SERVER_URL + admin?.avatar : avatarImg}
                                     alt=""
                                     className="w-full h-full object-cover"
                                 />
                             </div>
                             <div className="">
                                 <span className="block text-sm font-medium">{admin?.name}</span>
-                                <span className="block text-[12px] text-grayColor">
-                                    {admin?.email}
-                                </span>
+                                <span className="block text-[12px] text-grayColor">{admin?.email}</span>
                             </div>
                         </div>
 
