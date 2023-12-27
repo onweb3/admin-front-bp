@@ -134,6 +134,12 @@ const sidebarMenus = {
             link: "/attractions/guide",
             permission: ["attr-itineraries", "view"],
         },
+        {
+            name: "Attraction Ticket Themes",
+            icon: <MdEmojiPeople />,
+            link: "attractions/ticket/theme",
+            permission: ["attr-itineraries", "view"],
+        },
     ],
     // Marketing: [
     //     {
@@ -531,6 +537,11 @@ const sidebarMenus = {
                     name: "Configurations",
                     link: "/b2b/configurations",
                     permission: ["b2b-configurations", "view"],
+                },
+                {
+                    name: "Home Sections",
+                    link: "/b2b/home/sections",
+                    permission: ["b2b-home-sections", "view"],
                 },
             ],
         },
