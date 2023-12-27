@@ -125,9 +125,7 @@ export default function HotelOrderDetailsPage() {
                                 .
                             </span>
                             {hotelOrder?.status === "cancelled" && (
-                                <span className="block text-sm mt-1">
-                                    {hotelOrder?.cancellationRemark}
-                                </span>
+                                <span className="block text-sm mt-1">{hotelOrder?.cancellationRemark}</span>
                             )}
                         </div>
                     </div>
@@ -139,8 +137,7 @@ export default function HotelOrderDetailsPage() {
                                         <img
                                             src={
                                                 hotelOrder?.hotel?.images[0]?.isRelative
-                                                    ? config.SERVER_URL +
-                                                      hotelOrder?.hotel?.images[0]?.path
+                                                    ? config.SERVER_URL + hotelOrder?.hotel?.images[0]?.path
                                                     : hotelOrder?.hotel?.images[0]?.path
                                             }
                                             alt=""
@@ -148,9 +145,7 @@ export default function HotelOrderDetailsPage() {
                                         />
                                     </div>
                                     <div>
-                                        <h1 className="font-[600] text-lg">
-                                            {hotelOrder?.referenceNumber}
-                                        </h1>
+                                        <h1 className="font-[600] text-lg">{hotelOrder?.referenceNumber}</h1>
                                         <span className="block text-sm text-grayColor mt-1">
                                             {formatDate(hotelOrder?.createdAt, true)}
                                         </span>
@@ -164,8 +159,7 @@ export default function HotelOrderDetailsPage() {
                                             - ({hotelOrder?.reseller?.agentCode})
                                         </span>
                                         <span className="block mt-1 text-sm">
-                                            {hotelOrder?.reseller?.name} (
-                                            {hotelOrder?.reseller?.email})
+                                            {hotelOrder?.reseller?.name} ({hotelOrder?.reseller?.email})
                                         </span>
                                     </div>
                                 </div>
@@ -301,21 +295,15 @@ export default function HotelOrderDetailsPage() {
                                             </tr>
                                             <tr className="odd:bg-[#f3f6f9]">
                                                 <td className="p-2 w-[180px]">Hotel</td>
-                                                <td className="p-2">
-                                                    {hotelOrder?.hotel?.hotelName}
-                                                </td>
+                                                <td className="p-2">{hotelOrder?.hotel?.hotelName}</td>
                                             </tr>
                                             <tr className="odd:bg-[#f3f6f9]">
                                                 <td className="p-2">CheckIn Date</td>
-                                                <td className="p-2">
-                                                    {formatDate(hotelOrder?.fromDate)}
-                                                </td>
+                                                <td className="p-2">{formatDate(hotelOrder?.fromDate)}</td>
                                             </tr>
                                             <tr className="odd:bg-[#f3f6f9]">
                                                 <td className="p-2">CheckOut Date</td>
-                                                <td className="p-2">
-                                                    {formatDate(hotelOrder?.toDate)}
-                                                </td>
+                                                <td className="p-2">{formatDate(hotelOrder?.toDate)}</td>
                                             </tr>
                                             <tr className="odd:bg-[#f3f6f9]">
                                                 <td className="p-2">Room Type</td>
@@ -363,61 +351,49 @@ export default function HotelOrderDetailsPage() {
                                                     <BsFillArrowRightCircleFill /> Mandatory Add Ons
                                                 </h1>
                                                 <ul className="list-disc pl-4 text-[15px] leading-[26px]">
-                                                    {hotelOrder?.mandatoryAddOns?.map(
-                                                        (addOn, index) => {
-                                                            return (
-                                                                <li key={index}>
-                                                                    {addOn?.addOnName} - (
-                                                                    {addOn?.dates?.map(
-                                                                        (date, dtIndex) => (
-                                                                            <span key={dtIndex}>
-                                                                                {formatDate(date)}
-                                                                                {dtIndex !==
-                                                                                    addOn?.dates
-                                                                                        ?.length -
-                                                                                        1 && ", "}
-                                                                            </span>
-                                                                        )
-                                                                    )}
-                                                                    )
-                                                                </li>
-                                                            );
-                                                        }
-                                                    )}
+                                                    {hotelOrder?.mandatoryAddOns?.map((addOn, index) => {
+                                                        return (
+                                                            <li key={index}>
+                                                                {addOn?.addOnName} - (
+                                                                {addOn?.dates?.map((date, dtIndex) => (
+                                                                    <span key={dtIndex}>
+                                                                        {formatDate(date)}
+                                                                        {dtIndex !==
+                                                                            addOn?.dates?.length - 1 && ", "}
+                                                                    </span>
+                                                                ))}
+                                                                )
+                                                            </li>
+                                                        );
+                                                    })}
                                                 </ul>
                                             </div>
                                         )}
                                         {hotelOrder?.addOnSupplements?.length > 0 && (
                                             <div className="mt-7">
                                                 <h1 className="font-[600] flex items-center gap-[10px] text-[15px] mb-2">
-                                                    <BsFillArrowRightCircleFill /> Supplement Add
-                                                    Ons
+                                                    <BsFillArrowRightCircleFill /> Supplement Add Ons
                                                 </h1>
                                                 <ul className="list-disc pl-4 text-[15px] leading-[26px]">
-                                                    {hotelOrder?.addOnSupplements?.map(
-                                                        (addOn, index) => {
-                                                            return (
-                                                                <li key={index}>
-                                                                    {addOn?.addOnName} - (all days)
-                                                                </li>
-                                                            );
-                                                        }
-                                                    )}
+                                                    {hotelOrder?.addOnSupplements?.map((addOn, index) => {
+                                                        return (
+                                                            <li key={index}>
+                                                                {addOn?.addOnName} - (all days)
+                                                            </li>
+                                                        );
+                                                    })}
                                                 </ul>
                                             </div>
                                         )}
                                         {hotelOrder?.appliedPromotions?.length > 0 && (
                                             <div className="mt-7">
                                                 <h1 className="font-[600] flex items-center gap-[10px] text-[15px] mb-2">
-                                                    <BsFillArrowRightCircleFill /> Applied
-                                                    Promotions
+                                                    <BsFillArrowRightCircleFill /> Applied Promotions
                                                 </h1>
                                                 <ul className="list-disc pl-4 text-[15px] leading-[26px]">
-                                                    {hotelOrder?.appliedPromotions?.map(
-                                                        (item, itemIndex) => {
-                                                            return <li key={itemIndex}>{item}</li>;
-                                                        }
-                                                    )}
+                                                    {hotelOrder?.appliedPromotions?.map((item, itemIndex) => {
+                                                        return <li key={itemIndex}>{item}</li>;
+                                                    })}
                                                 </ul>
                                             </div>
                                         )}
@@ -471,10 +447,7 @@ export default function HotelOrderDetailsPage() {
                                                 return (
                                                     <React.Fragment key={index}>
                                                         <tr className="bg-primaryColor text-white">
-                                                            <td
-                                                                className="p-2 font-medium"
-                                                                colSpan="2"
-                                                            >
+                                                            <td className="p-2 font-medium" colSpan="2">
                                                                 Room {index + 1}
                                                             </td>
                                                         </tr>
@@ -495,38 +468,21 @@ export default function HotelOrderDetailsPage() {
                                                                 {hotelOrder?.travellerDetails
                                                                     ?.filter((traveller) => {
                                                                         return (
-                                                                            traveller?.roomId ===
-                                                                            index + 1
+                                                                            traveller?.roomId === index + 1
                                                                         );
                                                                     })
-                                                                    ?.map(
-                                                                        (
-                                                                            traveller,
-                                                                            travellerIndex
-                                                                        ) => {
-                                                                            return (
-                                                                                <span
-                                                                                    key={
-                                                                                        travellerIndex
-                                                                                    }
-                                                                                >
-                                                                                    {travellerIndex !==
-                                                                                    0
-                                                                                        ? ", "
-                                                                                        : ""}
-                                                                                    {
-                                                                                        traveller?.title
-                                                                                    }{" "}
-                                                                                    {
-                                                                                        traveller?.firstName
-                                                                                    }{" "}
-                                                                                    {
-                                                                                        traveller?.lastName
-                                                                                    }
-                                                                                </span>
-                                                                            );
-                                                                        }
-                                                                    )}
+                                                                    ?.map((traveller, travellerIndex) => {
+                                                                        return (
+                                                                            <span key={travellerIndex}>
+                                                                                {travellerIndex !== 0
+                                                                                    ? ", "
+                                                                                    : ""}
+                                                                                {traveller?.title}{" "}
+                                                                                {traveller?.firstName}{" "}
+                                                                                {traveller?.lastName}
+                                                                            </span>
+                                                                        );
+                                                                    })}
                                                             </td>
                                                         </tr>
                                                     </React.Fragment>
@@ -552,9 +508,8 @@ export default function HotelOrderDetailsPage() {
                                                     <td className="text-grayColor py-1 w-full">
                                                         <div className="flex gap-[15px] items-center w-full">
                                                             <span className="">
-                                                                Room Price ({hotelOrder?.roomsCount}{" "}
-                                                                rooms for {hotelOrder?.noOfNights}{" "}
-                                                                nights)
+                                                                Room Price ({hotelOrder?.roomsCount} rooms for{" "}
+                                                                {hotelOrder?.noOfNights} nights)
                                                             </span>
                                                             <div className="border-b border-dashed flex-1"></div>
                                                             <span className="text-right">
@@ -566,13 +521,10 @@ export default function HotelOrderDetailsPage() {
                                                 <tr>
                                                     <td className="text-grayColor py-1 w-full">
                                                         <div className="flex gap-[15px] items-center w-full">
-                                                            <span className="">
-                                                                Extra Bed supplement
-                                                            </span>
+                                                            <span className="">Extra Bed supplement</span>
                                                             <div className="border-b border-dashed flex-1"></div>
                                                             <span className="text-right">
-                                                                {hotelOrder?.extraBedSupplementPrice ||
-                                                                    0}
+                                                                {hotelOrder?.extraBedSupplementPrice || 0}
                                                             </span>
                                                         </div>
                                                     </td>
@@ -580,13 +532,10 @@ export default function HotelOrderDetailsPage() {
                                                 <tr>
                                                     <td className="text-grayColor py-1 w-full">
                                                         <div className="flex gap-[15px] items-center w-full">
-                                                            <span className="">
-                                                                Child supplement
-                                                            </span>
+                                                            <span className="">Child supplement</span>
                                                             <div className="border-b border-dashed flex-1"></div>
                                                             <span className="text-right">
-                                                                {hotelOrder?.childSupplementPrice ||
-                                                                    0}
+                                                                {hotelOrder?.childSupplementPrice || 0}
                                                             </span>
                                                         </div>
                                                     </td>
@@ -594,13 +543,10 @@ export default function HotelOrderDetailsPage() {
                                                 <tr>
                                                     <td className="text-grayColor py-1 w-full">
                                                         <div className="flex gap-[15px] items-center w-full">
-                                                            <span className="">
-                                                                Meal supplement
-                                                            </span>
+                                                            <span className="">Meal supplement</span>
                                                             <div className="border-b border-dashed flex-1"></div>
                                                             <span className="text-right">
-                                                                {hotelOrder?.mealSupplementPrice ||
-                                                                    0}
+                                                                {hotelOrder?.mealSupplementPrice || 0}
                                                             </span>
                                                         </div>
                                                     </td>
@@ -608,13 +554,10 @@ export default function HotelOrderDetailsPage() {
                                                 <tr>
                                                     <td className="text-grayColor py-1 w-full">
                                                         <div className="flex gap-[15px] items-center w-full">
-                                                            <span className="">
-                                                                Mandatory Addon
-                                                            </span>
+                                                            <span className="">Mandatory Addon</span>
                                                             <div className="border-b border-dashed flex-1"></div>
                                                             <span className="text-right">
-                                                                {hotelOrder?.mandatoryAddOnPrice ||
-                                                                    0}
+                                                                {hotelOrder?.mandatoryAddOnPrice || 0}
                                                             </span>
                                                         </div>
                                                     </td>
@@ -622,13 +565,10 @@ export default function HotelOrderDetailsPage() {
                                                 <tr>
                                                     <td className="text-grayColor py-1 w-full">
                                                         <div className="flex gap-[15px] items-center w-full">
-                                                            <span className="">
-                                                                Addon Supplement
-                                                            </span>
+                                                            <span className="">Addon Supplement</span>
                                                             <div className="border-b border-dashed flex-1"></div>
                                                             <span className="text-right">
-                                                                {hotelOrder?.addOnSupplementPrice ||
-                                                                    0}
+                                                                {hotelOrder?.addOnSupplementPrice || 0}
                                                             </span>
                                                         </div>
                                                     </td>
@@ -762,15 +702,9 @@ export default function HotelOrderDetailsPage() {
                                                 </tr>
                                                 {hotelOrder?.payments?.map((payment, index) => {
                                                     return (
-                                                        <tr
-                                                            key={index}
-                                                            className="odd:bg-[#f3f6f9]"
-                                                        >
+                                                        <tr key={index} className="odd:bg-[#f3f6f9]">
                                                             <td className="p-2">
-                                                                {formatDate(
-                                                                    payment?.createdAt,
-                                                                    true
-                                                                )}
+                                                                {formatDate(payment?.createdAt, true)}
                                                             </td>
                                                             <td className="p-2 capitalize">
                                                                 {payment?.paymentMethod}
@@ -779,15 +713,13 @@ export default function HotelOrderDetailsPage() {
                                                                 {payment?.amount?.toFixed(2)} AED
                                                             </td>
                                                             <td className="p-2">
-                                                                {payment?.paymentStateMessage ||
-                                                                    "N/A"}
+                                                                {payment?.paymentStateMessage || "N/A"}
                                                             </td>
                                                             <td className="p-2">
                                                                 <span
                                                                     className={
                                                                         "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
-                                                                        (payment?.paymentState ===
-                                                                        "failed"
+                                                                        (payment?.paymentState === "failed"
                                                                             ? "bg-[#f065481A] text-[#f06548]"
                                                                             : payment?.paymentState ===
                                                                               "success"
@@ -844,18 +776,16 @@ export default function HotelOrderDetailsPage() {
                                                         Status
                                                     </td>
                                                 </tr>
-                                                {hotelOrder?.cancellations?.map(
-                                                    (cancellation, index) => {
-                                                        return (
-                                                            <HotelReservationCancellationTableRow
-                                                                key={index}
-                                                                cancellation={cancellation}
-                                                                hotelOrder={hotelOrder}
-                                                                setHotelOrder={setHotelOrder}
-                                                            />
-                                                        );
-                                                    }
-                                                )}
+                                                {hotelOrder?.cancellations?.map((cancellation, index) => {
+                                                    return (
+                                                        <HotelReservationCancellationTableRow
+                                                            key={index}
+                                                            cancellation={cancellation}
+                                                            hotelOrder={hotelOrder}
+                                                            setHotelOrder={setHotelOrder}
+                                                        />
+                                                    );
+                                                })}
                                             </tbody>
                                         </table>
                                     </div>
@@ -895,15 +825,9 @@ export default function HotelOrderDetailsPage() {
                                                 </tr>
                                                 {hotelOrder?.refunds?.map((refund, index) => {
                                                     return (
-                                                        <tr
-                                                            key={index}
-                                                            className="odd:bg-[#f3f6f9]"
-                                                        >
+                                                        <tr key={index} className="odd:bg-[#f3f6f9]">
                                                             <td className="p-2">
-                                                                {formatDate(
-                                                                    refund?.createdAt,
-                                                                    true
-                                                                )}
+                                                                {formatDate(refund?.createdAt, true)}
                                                             </td>
                                                             <td className="p-2 capitalize">
                                                                 {refund?.paymentMethod}
@@ -911,17 +835,14 @@ export default function HotelOrderDetailsPage() {
                                                             <td className="p-2 whitespace-nowrap">
                                                                 {refund?.amount?.toFixed(2)} AED
                                                             </td>
-                                                            <td className="p-2">
-                                                                {refund?.note || "N/A"}
-                                                            </td>
+                                                            <td className="p-2">{refund?.note || "N/A"}</td>
                                                             <td className="p-2">
                                                                 <span
                                                                     className={
                                                                         "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
                                                                         (refund?.status === "failed"
                                                                             ? "bg-[#f065481A] text-[#f06548]"
-                                                                            : refund?.status ===
-                                                                              "success"
+                                                                            : refund?.status === "success"
                                                                             ? "text-[#0ab39c] bg-[#0ab39c1A]"
                                                                             : "bg-[#f7b84b1A] text-[#f7b84b]")
                                                                     }
@@ -945,9 +866,7 @@ export default function HotelOrderDetailsPage() {
                                             return (
                                                 <li
                                                     key={index}
-                                                    className={
-                                                        selectedSection === section ? "active" : ""
-                                                    }
+                                                    className={selectedSection === section ? "active" : ""}
                                                     onClick={() => {
                                                         setSelectedSection(section);
                                                     }}
@@ -996,61 +915,43 @@ export default function HotelOrderDetailsPage() {
                                                             Net Price
                                                         </td>
                                                     </tr>
-                                                    {hotelOrder?.contracts?.map(
-                                                        (contract, index) => {
-                                                            return (
-                                                                <tr
-                                                                    key={index}
-                                                                    className="odd:bg-[#f3f6f9]"
-                                                                >
-                                                                    <td className="p-2">
-                                                                        {formatDate(contract?.date)}
-                                                                    </td>
-                                                                    <td className="p-2">
-                                                                        {
-                                                                            contract?.contract
-                                                                                ?.rateCode
-                                                                        }
-                                                                    </td>
-                                                                    <td className="p-2">
-                                                                        {contract?.isSpecialRate ===
-                                                                        true
-                                                                            ? "Yes"
-                                                                            : "No"}{" "}
-                                                                        {(contract?.isSpecialRate ===
-                                                                            true) ===
-                                                                        true
-                                                                            ? `(${contract?.appliedRateCode})`
-                                                                            : ""}
-                                                                    </td>
-                                                                    <td className="p-2 whitespace-nowrap">
-                                                                        {contract?.roomPrice} AED
-                                                                    </td>
-                                                                    <td className="p-2 whitespace-nowrap">
-                                                                        {
-                                                                            contract?.mealSupplementPrice
-                                                                        }{" "}
-                                                                        AED
-                                                                    </td>
-                                                                    <td className="p-2 whitespace-nowrap">
-                                                                        {
-                                                                            contract?.extraBedSupplementPrice
-                                                                        }{" "}
-                                                                        AED
-                                                                    </td>
-                                                                    <td className="p-2 whitespace-nowrap">
-                                                                        {
-                                                                            contract?.childSupplementPrice
-                                                                        }{" "}
-                                                                        AED
-                                                                    </td>
-                                                                    <td className="p-2 whitespace-nowrap">
-                                                                        {contract?.netPrice} AED
-                                                                    </td>
-                                                                </tr>
-                                                            );
-                                                        }
-                                                    )}
+                                                    {hotelOrder?.contracts?.map((contract, index) => {
+                                                        return (
+                                                            <tr key={index} className="odd:bg-[#f3f6f9]">
+                                                                <td className="p-2">
+                                                                    {formatDate(contract?.date)}
+                                                                </td>
+                                                                <td className="p-2">
+                                                                    {contract?.contract?.rateName}{" "}(
+                                                                    {contract?.contract?.rateCode})
+                                                                </td>
+                                                                <td className="p-2">
+                                                                    {contract?.isSpecialRate === true
+                                                                        ? "Yes"
+                                                                        : "No"}{" "}
+                                                                    {(contract?.isSpecialRate === true) ===
+                                                                    true
+                                                                        ? `(${contract?.appliedRateCode})`
+                                                                        : ""}
+                                                                </td>
+                                                                <td className="p-2 whitespace-nowrap">
+                                                                    {contract?.roomPrice} AED
+                                                                </td>
+                                                                <td className="p-2 whitespace-nowrap">
+                                                                    {contract?.mealSupplementPrice} AED
+                                                                </td>
+                                                                <td className="p-2 whitespace-nowrap">
+                                                                    {contract?.extraBedSupplementPrice} AED
+                                                                </td>
+                                                                <td className="p-2 whitespace-nowrap">
+                                                                    {contract?.childSupplementPrice} AED
+                                                                </td>
+                                                                <td className="p-2 whitespace-nowrap">
+                                                                    {contract?.netPrice} AED
+                                                                </td>
+                                                            </tr>
+                                                        );
+                                                    })}
                                                 </tbody>
                                             </table>
                                         )}
@@ -1081,47 +982,31 @@ export default function HotelOrderDetailsPage() {
                                                             Discount
                                                         </td>
                                                     </tr>
-                                                    {hotelOrder?.appliedDiscounts?.map(
-                                                        (discount, index) => {
-                                                            return (
-                                                                <tr
-                                                                    key={index}
-                                                                    className="odd:bg-[#f3f6f9]"
-                                                                >
-                                                                    <td className="p-2">
-                                                                        {discount?.promotion?.name}
-                                                                    </td>
-                                                                    <td className="p-2">
-                                                                        {discount?.rateCode}
-                                                                    </td>
-                                                                    <td className="p-2">
-                                                                        {discount?.dates?.map(
-                                                                            (item, index) => {
-                                                                                return (
-                                                                                    <span
-                                                                                        key={index}
-                                                                                    >
-                                                                                        {formatDate(
-                                                                                            item
-                                                                                        )}
-                                                                                        {index <
-                                                                                            discount
-                                                                                                ?.dates
-                                                                                                ?.length -
-                                                                                                1 &&
-                                                                                            ", "}
-                                                                                    </span>
-                                                                                );
-                                                                            }
-                                                                        )}
-                                                                    </td>
-                                                                    <td className="p-2">
-                                                                        {discount?.discount} AED
-                                                                    </td>
-                                                                </tr>
-                                                            );
-                                                        }
-                                                    )}
+                                                    {hotelOrder?.appliedDiscounts?.map((discount, index) => {
+                                                        return (
+                                                            <tr key={index} className="odd:bg-[#f3f6f9]">
+                                                                <td className="p-2">
+                                                                    {discount?.promotion?.name}
+                                                                </td>
+                                                                <td className="p-2">{discount?.rateCode}</td>
+                                                                <td className="p-2">
+                                                                    {discount?.dates?.map((item, index) => {
+                                                                        return (
+                                                                            <span key={index}>
+                                                                                {formatDate(item)}
+                                                                                {index <
+                                                                                    discount?.dates?.length -
+                                                                                        1 && ", "}
+                                                                            </span>
+                                                                        );
+                                                                    })}
+                                                                </td>
+                                                                <td className="p-2">
+                                                                    {discount?.discount} AED
+                                                                </td>
+                                                            </tr>
+                                                        );
+                                                    })}
                                                 </tbody>
                                             </table>
                                         )}
@@ -1152,15 +1037,9 @@ export default function HotelOrderDetailsPage() {
                                                     {hotelOrder?.appliedMealUpgrades?.map(
                                                         (mealUpgrade, index) => {
                                                             return (
-                                                                <tr
-                                                                    key={index}
-                                                                    className="odd:bg-[#f3f6f9]"
-                                                                >
+                                                                <tr key={index} className="odd:bg-[#f3f6f9]">
                                                                     <td className="p-2">
-                                                                        {
-                                                                            mealUpgrade?.promotion
-                                                                                ?.name
-                                                                        }
+                                                                        {mealUpgrade?.promotion?.name}
                                                                     </td>
                                                                     <td className="p-2">
                                                                         {mealUpgrade?.rateCode}
@@ -1169,18 +1048,12 @@ export default function HotelOrderDetailsPage() {
                                                                         {mealUpgrade?.dates?.map(
                                                                             (item, index) => {
                                                                                 return (
-                                                                                    <span
-                                                                                        key={index}
-                                                                                    >
-                                                                                        {formatDate(
-                                                                                            item
-                                                                                        )}
+                                                                                    <span key={index}>
+                                                                                        {formatDate(item)}
                                                                                         {index <
-                                                                                            mealUpgrade
-                                                                                                ?.dates
+                                                                                            mealUpgrade?.dates
                                                                                                 ?.length -
-                                                                                                1 &&
-                                                                                            ", "}
+                                                                                                1 && ", "}
                                                                                     </span>
                                                                                 );
                                                                             }
@@ -1220,15 +1093,9 @@ export default function HotelOrderDetailsPage() {
                                                     {hotelOrder?.appliedRoomTypeUpgrades?.map(
                                                         (roomTypeUpgrade, index) => {
                                                             return (
-                                                                <tr
-                                                                    key={index}
-                                                                    className="odd:bg-[#f3f6f9]"
-                                                                >
+                                                                <tr key={index} className="odd:bg-[#f3f6f9]">
                                                                     <td className="p-2">
-                                                                        {
-                                                                            roomTypeUpgrade
-                                                                                ?.promotion?.name
-                                                                        }
+                                                                        {roomTypeUpgrade?.promotion?.name}
                                                                     </td>
                                                                     <td className="p-2">
                                                                         {roomTypeUpgrade?.rateCode}
@@ -1237,18 +1104,13 @@ export default function HotelOrderDetailsPage() {
                                                                         {roomTypeUpgrade?.dates?.map(
                                                                             (item, index) => {
                                                                                 return (
-                                                                                    <span
-                                                                                        key={index}
-                                                                                    >
-                                                                                        {formatDate(
-                                                                                            item
-                                                                                        )}
+                                                                                    <span key={index}>
+                                                                                        {formatDate(item)}
                                                                                         {index <
                                                                                             roomTypeUpgrade
                                                                                                 ?.dates
                                                                                                 ?.length -
-                                                                                                1 &&
-                                                                                            ", "}
+                                                                                                1 && ", "}
                                                                                     </span>
                                                                                 );
                                                                             }
@@ -1288,47 +1150,31 @@ export default function HotelOrderDetailsPage() {
                                                             Discount
                                                         </td>
                                                     </tr>
-                                                    {hotelOrder?.appliedStayPays?.map(
-                                                        (staypay, index) => {
-                                                            return (
-                                                                <tr
-                                                                    key={index}
-                                                                    className="odd:bg-[#f3f6f9]"
-                                                                >
-                                                                    <td className="p-2">
-                                                                        {staypay?.promotion?.name}
-                                                                    </td>
-                                                                    <td className="p-2">
-                                                                        {staypay?.rateCode}
-                                                                    </td>
-                                                                    <td className="p-2">
-                                                                        {staypay?.dates?.map(
-                                                                            (item, index) => {
-                                                                                return (
-                                                                                    <span
-                                                                                        key={index}
-                                                                                    >
-                                                                                        {formatDate(
-                                                                                            item
-                                                                                        )}
-                                                                                        {index <
-                                                                                            staypay
-                                                                                                ?.dates
-                                                                                                ?.length -
-                                                                                                1 &&
-                                                                                            ", "}
-                                                                                    </span>
-                                                                                );
-                                                                            }
-                                                                        )}
-                                                                    </td>
-                                                                    <td className="p-2">
-                                                                        {staypay?.discount} AED
-                                                                    </td>
-                                                                </tr>
-                                                            );
-                                                        }
-                                                    )}
+                                                    {hotelOrder?.appliedStayPays?.map((staypay, index) => {
+                                                        return (
+                                                            <tr key={index} className="odd:bg-[#f3f6f9]">
+                                                                <td className="p-2">
+                                                                    {staypay?.promotion?.name}
+                                                                </td>
+                                                                <td className="p-2">{staypay?.rateCode}</td>
+                                                                <td className="p-2">
+                                                                    {staypay?.dates?.map((item, index) => {
+                                                                        return (
+                                                                            <span key={index}>
+                                                                                {formatDate(item)}
+                                                                                {index <
+                                                                                    staypay?.dates?.length -
+                                                                                        1 && ", "}
+                                                                            </span>
+                                                                        );
+                                                                    })}
+                                                                </td>
+                                                                <td className="p-2">
+                                                                    {staypay?.discount} AED
+                                                                </td>
+                                                            </tr>
+                                                        );
+                                                    })}
                                                 </tbody>
                                             </table>
                                         )}
@@ -1356,10 +1202,7 @@ export default function HotelOrderDetailsPage() {
                                                     {hotelOrder?.cancellationPolicies?.map(
                                                         (policy, index) => {
                                                             return (
-                                                                <tr
-                                                                    key={index}
-                                                                    className="odd:bg-[#f3f6f9]"
-                                                                >
+                                                                <tr key={index} className="odd:bg-[#f3f6f9]">
                                                                     <td className="p-2">
                                                                         {formatDate(policy?.from)}
                                                                     </td>
