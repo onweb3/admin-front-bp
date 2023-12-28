@@ -35,6 +35,27 @@ export default function B2BHomeBannerPage() {
         }
     };
 
+    const deleteBanner = async (bannerId) => {
+        try {
+            const isConfirm = window.confirm("Are you sure to delete?");
+            if (isConfirm) {
+                await axios.delete(
+                    `/b2b/home/banner/delete/${id}/${bannerId}`,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+
+                const filteredSection = banners.filter((banner) => {
+                    return banner?._id !== bannerId;
+                });
+                setBanners(filteredSection);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     useEffect(() => {
         fetchSections();
     }, []);
@@ -133,11 +154,11 @@ export default function B2BHomeBannerPage() {
                                                     <div className="flex gap-[10px]">
                                                         <button
                                                             className="h-auto bg-transparent text-red-500 text-xl"
-                                                            // onClick={() => {
-                                                            //     deleteAttraction(
-                                                            //         _id
-                                                            //     );
-                                                            // }}
+                                                            onClick={() => {
+                                                                deleteBanner(
+                                                                    section._id
+                                                                );
+                                                            }}
                                                         >
                                                             <MdDelete />
                                                         </button>

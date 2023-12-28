@@ -31,6 +31,23 @@ export default function B2bHomeSettingsPage() {
             console.log(err);
         }
     };
+    const deleteSection = async (id) => {
+        try {
+            const isConfirm = window.confirm("Are you sure to delete?");
+            if (isConfirm) {
+                await axios.delete(`/b2b/home/section/delete/${id}`, {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                });
+
+                const filteredSection = sections.filter((section) => {
+                    return section?._id !== id;
+                });
+                setSections(filteredSection);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     useEffect(() => {
         fetchSections();
@@ -106,11 +123,11 @@ export default function B2bHomeSettingsPage() {
                                                     <div className="flex gap-[10px]">
                                                         <button
                                                             className="h-auto bg-transparent text-red-500 text-xl"
-                                                            // onClick={() => {
-                                                            //     deleteAttraction(
-                                                            //         _id
-                                                            //     );
-                                                            // }}
+                                                            onClick={() => {
+                                                                deleteSection(
+                                                                    section._id
+                                                                );
+                                                            }}
                                                         >
                                                             <MdDelete />
                                                         </button>
