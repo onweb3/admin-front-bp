@@ -20,12 +20,12 @@ import Toggle from "../../components/Toggle";
 // import HotelTransfer from "./HotelTransfer";
 import axios from "axios";
 import { AiOutlineStar } from "react-icons/ai";
-import { IoBedOutline, IoFastFoodOutline } from "react-icons/io5";
+import { IoBedOutline, IoFastFoodOutline, IoTodaySharp } from "react-icons/io5";
 import { GiIsland } from "react-icons/gi";
 import { BtnLoader } from "../../components";
 import HotelSearchModal from "./HotelSearchModal";
 import { BiEditAlt } from "react-icons/bi";
-import { MdOutlineMeetingRoom } from "react-icons/md";
+import { MdCalendarToday, MdOutlineMeetingRoom } from "react-icons/md";
 import { TbClockUp } from "react-icons/tb";
 import HotelAlreadyAvailableSearchModal from "./HotelAlreadyAvailableSearchModal";
 
@@ -110,6 +110,18 @@ export default function StayMultiHotelForm({
             })
         );
     };
+    const [noOfNights, setnoOfNights] = useState("");
+
+    useEffect(() => {
+        if (hotel.checkInDate && hotel.checkOutDate) {
+            const convertedCheckOutDate = new Date(hotel.checkOutDate);
+            const convertedCheckInDate = new Date(hotel.checkInDate);
+            const diffTime = Math.abs(
+                convertedCheckOutDate - convertedCheckInDate
+            );
+            setnoOfNights(Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+        }
+    }, [hotel]);
 
     const openModal = (index) => {
         setSelectedIndex(index);
@@ -223,6 +235,15 @@ export default function StayMultiHotelForm({
                                                 {new Date(hotel?.checkOutDate)
                                                     .toISOString()
                                                     .substring(0, 10)}{" "}
+                                            </span>
+                                        </p>
+                                        <p className="flex gap-1 items-center mt-[8px]">
+                                            <span className="block  text-lg text-red-600 rotate-180">
+                                                <MdCalendarToday />{" "}
+                                            </span>
+                                            <span className="block text-sm text-black">
+                                                {noOfNights}N / {noOfNights + 1}
+                                                D{" "}
                                             </span>
                                         </p>
                                     </div>

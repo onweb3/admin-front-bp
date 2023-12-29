@@ -56,13 +56,15 @@ export default function B2bHomeSettingsPage() {
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">Airlines</h1>
+                <h1 className="font-[600] text-[15px] uppercase">
+                    Home Sections
+                </h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
                     </Link>
                     <span>{">"} </span>
-                    <span>Home settings</span>
+                    <span>Home Sections</span>
                 </div>
             </div>
 
