@@ -46,7 +46,7 @@ export default function AddAttrSubmission({ setSection, newImages, prev, next, l
             formData.append("bookingPriorDays", data?.bookingPriorDays);
             formData.append("offDates", JSON.stringify(offDates));
             formData.append("isCombo", data?.isCombo);
-            formData.append("countryCode", data?.countryCode);
+            formData.append("country", data?.country);
             formData.append("city", data?.city);
             formData.append("area", data?.area);
             formData.append("state", data?.state);
