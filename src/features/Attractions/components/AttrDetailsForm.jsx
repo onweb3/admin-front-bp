@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { setData } from "../../../redux/slices/attractionFormSlice";
-import axios from "../../../axios";
 import { SelectDropdown } from "../../../components";
+import axios from "../../../axios";
 
 export default function AttrDetailsForm({ section, isEdit = false }) {
+    const [apis, setApis] = useState([]);
+
     const { data, categories } = useSelector((state) => state.attractionForm);
     const { destinations } = useSelector((state) => state.general);
     const { states, cities, countries, areas } = useSelector((state) => state.general);
@@ -20,7 +22,6 @@ export default function AttrDetailsForm({ section, isEdit = false }) {
         return item?.country === data.country;
     });
     const dispatch = useDispatch();
-    const [apis, setApis] = useState([]);
 
     const handleChange = (e) => {
         dispatch(setData({ name: e.target.name, value: e.target.value }));

@@ -69,6 +69,7 @@ const initialState = {
         isApplicableForExtraBed: false,
         isApplicableForSupplement: false,
         applicableOnRatePromotion: false,
+        isApplicableForAddOn: false,
     },
     validDays: ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"],
     discounts: [
@@ -169,9 +170,7 @@ export const hotelPromotionsFormSlice = createSlice({
         },
         handleDiscountRoomTypeDataChange: (state, action) => {
             const { index, roomTypeIndex, occupancyIndex, value } = action.payload;
-            state.discounts[index].roomTypes[roomTypeIndex].roomOccupancies[
-                occupancyIndex
-            ].discount = value;
+            state.discounts[index].roomTypes[roomTypeIndex].roomOccupancies[occupancyIndex].discount = value;
         },
 
         addStayPaysRows: (state, action) => {
@@ -360,6 +359,7 @@ export const hotelPromotionsFormSlice = createSlice({
                 applicableNations,
                 isApplicableForExtraBed,
                 isApplicableForSupplement,
+                isApplicableForAddOn,
                 applicableOnRatePromotion,
             } = action.payload[1]?.data;
 
@@ -388,6 +388,7 @@ export const hotelPromotionsFormSlice = createSlice({
                 isApplicableForExtraBed: isApplicableForExtraBed || false,
                 isApplicableForSupplement: isApplicableForSupplement || false,
                 applicableOnRatePromotion: applicableOnRatePromotion || false,
+                isApplicableForAddOn: isApplicableForAddOn || false,
             };
 
             state.validDays = validDays;
@@ -398,10 +399,7 @@ export const hotelPromotionsFormSlice = createSlice({
                         return item?.roomTypeId === element?._id;
                     });
 
-                    if (
-                        roomObjIndex !== -1 &&
-                        state.roomTypes[roomObjIndex]?.roomOccupancies?.length > 0
-                    )
+                    if (roomObjIndex !== -1 && state.roomTypes[roomObjIndex]?.roomOccupancies?.length > 0)
                         return item;
                 })
                 ?.map((item) => {
@@ -409,17 +407,17 @@ export const hotelPromotionsFormSlice = createSlice({
                         return item?.roomTypeId === element?._id;
                     });
 
-                    const initialRoomOccupancies = state.roomTypes[
-                        roomObjIndex
-                    ].roomOccupancies.map((ele) => {
-                        const roomOccupancy = {
-                            occupancyId: ele._id,
-                            shortName: ele.shortName,
-                            discount: "",
-                        };
+                    const initialRoomOccupancies = state.roomTypes[roomObjIndex].roomOccupancies.map(
+                        (ele) => {
+                            const roomOccupancy = {
+                                occupancyId: ele._id,
+                                shortName: ele.shortName,
+                                discount: "",
+                            };
 
-                        return roomOccupancy;
-                    });
+                            return roomOccupancy;
+                        }
+                    );
 
                     return {
                         roomTypeId: item.roomTypeId,
@@ -477,8 +475,9 @@ export const hotelPromotionsFormSlice = createSlice({
                                         return {
                                             ...occupancy,
                                             discount:
-                                                discount?.roomTypes[roomTypeObjIndex]
-                                                    ?.roomOccupancies[occupancyObjIndex]?.discount,
+                                                discount?.roomTypes[roomTypeObjIndex]?.roomOccupancies[
+                                                    occupancyObjIndex
+                                                ]?.discount,
                                         };
                                     }
 
@@ -507,12 +506,8 @@ export const hotelPromotionsFormSlice = createSlice({
             state.roomTypeUpgrades =
                 roomTypeUpgrades?.map((roomTypeUpgrade) => ({
                     rateCode: roomTypeUpgrade.rateCode,
-                    fromDate: roomTypeUpgrade.fromDate
-                        ? convertIsoDateToYMD(roomTypeUpgrade.fromDate)
-                        : "",
-                    toDate: roomTypeUpgrade.toDate
-                        ? convertIsoDateToYMD(roomTypeUpgrade.toDate)
-                        : "",
+                    fromDate: roomTypeUpgrade.fromDate ? convertIsoDateToYMD(roomTypeUpgrade.fromDate) : "",
+                    toDate: roomTypeUpgrade.toDate ? convertIsoDateToYMD(roomTypeUpgrade.toDate) : "",
                     bookBefore: roomTypeUpgrade.bookBefore,
                     boardTypes: roomTypeUpgrade.boardTypes,
                     roomTypeFrom: roomTypeUpgrade.roomTypeFrom,
@@ -537,9 +532,7 @@ export const hotelPromotionsFormSlice = createSlice({
             state.roomDiscounts =
                 roomDiscounts?.map((roomDiscount) => ({
                     rateCode: roomDiscount.rateCode,
-                    fromDate: roomDiscount.fromDate
-                        ? convertIsoDateToYMD(roomDiscount.fromDate)
-                        : "",
+                    fromDate: roomDiscount.fromDate ? convertIsoDateToYMD(roomDiscount.fromDate) : "",
                     toDate: roomDiscount.toDate ? convertIsoDateToYMD(roomDiscount.toDate) : "",
                     bookBefore: roomDiscount.bookBefore,
                     roomTypes: roomDiscount.roomTypes,
