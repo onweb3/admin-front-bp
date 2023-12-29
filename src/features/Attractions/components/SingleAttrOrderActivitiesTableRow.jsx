@@ -1,15 +1,45 @@
 import React, { useState } from "react";
 import moment from "moment";
-
-import { config } from "../../../constants";
 import { MdNoTransfer } from "react-icons/md";
 import { FaBus } from "react-icons/fa";
 import AttractionOrdersTicketsModal from "./AttractionOrdersTicketsModal";
 import { AiFillEye } from "react-icons/ai";
 import { FiDownload } from "react-icons/fi";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+import { config } from "../../../constants";
+import axios from "../../../axios";
 
 export default function SingleAttrOrderActivitiesTableRow({ orderItem }) {
     const [isTicketsListModalOpen, setIsTicketsListModalOpen] = useState(false);
+
+    const { orderId } = useParams();
+    const { jwtToken } = useSelector((state) => state.admin);
+
+    const handleDownloadTickets = async () => {
+        try {
+            const pdfBuffer = await axios.get(
+                `/attractions/orders/${orderId}/orderItems/${orderItem?._id}/tickets`,
+                {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                    responseType: "arraybuffer",
+                }
+            );
+
+            console.log(pdfBuffer, "pdfBuffer");
+            const blob = new Blob([pdfBuffer.data], {
+                type: "application/pdf",
+            });
+            const link = document.createElement("a");
+            link.href = window.URL.createObjectURL(blob);
+            link.download = "tickets.pdf";
+            document.body.appendChild(link);
+            link.click();
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     return (
         <tr>
@@ -60,9 +90,17 @@ export default function SingleAttrOrderActivitiesTableRow({ orderItem }) {
             </td>
             <td className="p-3">
                 {orderItem?.bookingType === "booking" ? (
-                    <span className="bg-[#f3f6f9] py-1 px-2 text-sm rounded">
-                        {orderItem?.bookingConfirmationNumber || "N/A"}
-                    </span>
+                    <div className="flex items-center gap-2">
+                        <span className="bg-[#f3f6f9] py-1 px-2 text-sm rounded">
+                            {orderItem?.bookingConfirmationNumber || "N/A"}
+                        </span>
+                        <button
+                            className="h-auto bg-transparent text-[#333] text-lg"
+                            onClick={handleDownloadTickets}
+                        >
+                            <FiDownload />
+                        </button>
+                    </div>
                 ) : orderItem?.bookingType === "ticket" ? (
                     <div className="flex items-center gap-2">
                         <button
@@ -71,7 +109,10 @@ export default function SingleAttrOrderActivitiesTableRow({ orderItem }) {
                         >
                             <AiFillEye />
                         </button>
-                        <button className="h-auto bg-transparent text-[#333] text-lg">
+                        <button
+                            className="h-auto bg-transparent text-[#333] text-lg"
+                            onClick={handleDownloadTickets}
+                        >
                             <FiDownload />
                         </button>
                     </div>

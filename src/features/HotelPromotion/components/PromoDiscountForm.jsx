@@ -42,7 +42,7 @@ export default function PromoDiscountForm() {
     return (
         <div className="p-4">
             <div className="flex items-center justify-between gap-3 mb-6">
-                <div className="grid grid-cols-4 gap-3">
+                <div className="flex gap-3">
                     <div className="flex items-center justify-left gap-3">
                         <input
                             type="checkbox"
@@ -53,7 +53,7 @@ export default function PromoDiscountForm() {
                             id="isApplicableForExtraBed"
                         />
                         <label htmlFor="isApplicableForExtraBed" className="mb-0">
-                            Applicable On Extra Bed
+                            Apply on Other Supplements (Extra Bed)
                         </label>
                     </div>
                     <div className="flex items-center justify-left gap-3">
@@ -66,7 +66,20 @@ export default function PromoDiscountForm() {
                             id="isApplicableForSupplement"
                         />
                         <label htmlFor="isApplicableForSupplement" className="mb-0">
-                            Applicable On Supplement
+                            Apply On Meal Supplement
+                        </label>
+                    </div>
+                    <div className="flex items-center justify-left gap-3">
+                        <input
+                            type="checkbox"
+                            name="isApplicableForAddOn"
+                            checked={data?.isApplicableForAddOn || false}
+                            onChange={handleChkBoxChange}
+                            className="w-[17px] h-[17px] flex item-center justify-center"
+                            id="isApplicableForAddOn"
+                        />
+                        <label htmlFor="isApplicableForAddOn" className="mb-0">
+                            Apply On Add-on
                         </label>
                     </div>
                 </div>
@@ -84,9 +97,7 @@ export default function PromoDiscountForm() {
                         </option>
                         {roomTypes?.map((item, index) => {
                             if (
-                                initialRoomTypes?.some(
-                                    (rmType) => rmType?.roomTypeId === item?._id
-                                ) ||
+                                initialRoomTypes?.some((rmType) => rmType?.roomTypeId === item?._id) ||
                                 item?.roomOccupancies?.length < 1
                             ) {
                                 return <React.Fragment key={index}></React.Fragment>;
@@ -114,7 +125,7 @@ export default function PromoDiscountForm() {
                                 if (roomType?.roomOccupancies?.length < 1) {
                                     return <React.Fragment key={index}></React.Fragment>;
                                 }
-                                
+
                                 return (
                                     <th
                                         key={index}
@@ -125,11 +136,7 @@ export default function PromoDiscountForm() {
                                         <span
                                             className="absolute top-[50%] translate-y-[-50%] right-[10px] w-[18px] h-[18px] min-w-[18px] min-h-[18px] bg-gray-500 flex items-center justify-center rounded-full text-white cursor-pointer"
                                             onClick={() =>
-                                                dispatch(
-                                                    removeRoomTypeFromDiscounts(
-                                                        roomType?.roomTypeId
-                                                    )
-                                                )
+                                                dispatch(removeRoomTypeFromDiscounts(roomType?.roomTypeId))
                                             }
                                         >
                                             <MdClose />
@@ -277,38 +284,33 @@ export default function PromoDiscountForm() {
                                     </select>
                                 </td>
                                 {discount?.roomTypes?.map((roomType, roomTypeIndex) =>
-                                    roomType?.roomOccupancies?.map(
-                                        (roomOccupancy, occupancyIndex) => {
-                                            return (
-                                                <td
-                                                    key={occupancyIndex}
-                                                    className="border min-w-[100px]"
-                                                >
-                                                    <input
-                                                        type="number"
-                                                        className="h-[100%] arrow-hidden p-0 px-2 border-0"
-                                                        name="discount"
-                                                        value={
-                                                            !isNaN(roomOccupancy.discount) &&
-                                                            roomOccupancy.discount !== null
-                                                                ? roomOccupancy.discount
-                                                                : ""
-                                                        }
-                                                        onChange={(e) => {
-                                                            dispatch(
-                                                                handleDiscountRoomTypeDataChange({
-                                                                    index,
-                                                                    roomTypeIndex,
-                                                                    occupancyIndex,
-                                                                    value: e.target.value,
-                                                                })
-                                                            );
-                                                        }}
-                                                    />
-                                                </td>
-                                            );
-                                        }
-                                    )
+                                    roomType?.roomOccupancies?.map((roomOccupancy, occupancyIndex) => {
+                                        return (
+                                            <td key={occupancyIndex} className="border min-w-[100px]">
+                                                <input
+                                                    type="number"
+                                                    className="h-[100%] arrow-hidden p-0 px-2 border-0"
+                                                    name="discount"
+                                                    value={
+                                                        !isNaN(roomOccupancy.discount) &&
+                                                        roomOccupancy.discount !== null
+                                                            ? roomOccupancy.discount
+                                                            : ""
+                                                    }
+                                                    onChange={(e) => {
+                                                        dispatch(
+                                                            handleDiscountRoomTypeDataChange({
+                                                                index,
+                                                                roomTypeIndex,
+                                                                occupancyIndex,
+                                                                value: e.target.value,
+                                                            })
+                                                        );
+                                                    }}
+                                                />
+                                            </td>
+                                        );
+                                    })
                                 )}
                             </tr>
                         ))}
