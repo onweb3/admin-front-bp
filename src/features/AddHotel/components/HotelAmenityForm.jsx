@@ -7,7 +7,7 @@ import { FaStar } from "react-icons/fa";
 import HotelAmenityModal from "./HotelAmenityModal";
 import { removeSelectedHotelAmenity } from "../../../redux/slices/hotelFormSlice";
 
-export default function HotelAmenityForm({ selectedSection }) {
+export default function HotelAmenityForm({ selectedSection, isEditPermission = true }) {
     const [isAmenityModalOpen, setIsAmenityModalOpen] = useState(false);
 
     const dispatch = useDispatch();
@@ -20,18 +20,18 @@ export default function HotelAmenityForm({ selectedSection }) {
                     <h1 className="font-[600] flex items-center gap-[10px]">
                         <BsFillArrowRightCircleFill /> Hotel Amenities
                     </h1>
-                    <button
-                        className="flex items-center gap-[8px] px-3"
-                        onClick={() => setIsAmenityModalOpen(true)}
-                    >
-                        + Add New
-                    </button>
+                    {isEditPermission && (
+                        <button
+                            className="flex items-center gap-[8px] px-3"
+                            onClick={() => setIsAmenityModalOpen(true)}
+                        >
+                            + Add New
+                        </button>
+                    )}
                 </div>
                 {selectedAmenities?.length < 1 ? (
                     <div className="text-center">
-                        <span className="font-medium text-sm text-grayColor">
-                            No Amenities Selected..!
-                        </span>
+                        <span className="font-medium text-sm text-grayColor">No Amenities Selected..!</span>
                     </div>
                 ) : (
                     <div className="flex items-center gap-[10px] flex-wrap mt-2">
@@ -42,39 +42,29 @@ export default function HotelAmenityForm({ selectedSection }) {
                                     className="bg-[#f3f6f9] rounded px-2 py-1 text-sm flex items-center gap-[10px]"
                                 >
                                     <span className="capitalize">{item?.name}</span>
-                                    {item?.isPaid && (
-                                        <span className="font-medium text-green-500" >
-                                            $
-                                        </span>
-                                    )}
+                                    {item?.isPaid && <span className="font-medium text-green-500">$</span>}
                                     {item?.isFeatured && (
-                                        <span className="font-medium text-yellow-500" >
+                                        <span className="font-medium text-yellow-500">
                                             <FaStar />
                                         </span>
                                     )}
-                                    <span
-                                        className="text-base cursor-pointer text-red-500"
-                                        onClick={() => {
-                                            dispatch(
-                                                removeSelectedHotelAmenity(
-                                                    item?.amenity
-                                                )
-                                            );
-                                        }}
-                                    >
-                                        <MdClose />
-                                    </span>
+                                    {isEditPermission && (
+                                        <span
+                                            className="text-base cursor-pointer text-red-500"
+                                            onClick={() => {
+                                                dispatch(removeSelectedHotelAmenity(item?.amenity));
+                                            }}
+                                        >
+                                            <MdClose />
+                                        </span>
+                                    )}
                                 </span>
                             );
                         })}
                     </div>
                 )}
             </div>
-            {isAmenityModalOpen && (
-                <HotelAmenityModal
-                    setIsAmenityModalOpen={setIsAmenityModalOpen}
-                />
-            )}
+            {isAmenityModalOpen && <HotelAmenityModal setIsAmenityModalOpen={setIsAmenityModalOpen} />}
         </div>
     );
 }

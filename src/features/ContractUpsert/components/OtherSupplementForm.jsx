@@ -8,7 +8,7 @@ import {
 } from "../../../redux/slices/hotelContractSlice";
 import { MultipleSelectDropdown } from "../../../components";
 
-export default function OtherSupplementForm() {
+export default function OtherSupplementForm({ isEditPermission = true }) {
     const dispatch = useDispatch();
     const { extraSupplements, roomTypes } = useSelector((state) => state.hotelContractForm);
 
@@ -38,16 +38,18 @@ export default function OtherSupplementForm() {
                 <table className="w-full">
                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px]">
                         <tr>
-                            <th className="p-2 border w-[35px]">
-                                <div className="flex items-center justify-center">
-                                    <button
-                                        className="w-[25px] h-[25px] rounded-full bg-green-500"
-                                        onClick={() => dispatch(addExtraSupplementsRow())}
-                                    >
-                                        +
-                                    </button>
-                                </div>
-                            </th>
+                            {isEditPermission && (
+                                <th className="p-2 border w-[35px]">
+                                    <div className="flex items-center justify-center">
+                                        <button
+                                            className="w-[25px] h-[25px] rounded-full bg-green-500"
+                                            onClick={() => dispatch(addExtraSupplementsRow())}
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                </th>
+                            )}
                             <th className="font-[500] p-2 border">From Date</th>
                             <th className="font-[500] p-2 border">To Date</th>
                             <th className="font-[500] p-2 border">Room Type</th>
@@ -67,22 +69,24 @@ export default function OtherSupplementForm() {
                     <tbody className="text-sm">
                         {extraSupplements.map((extraSupplement, index) => (
                             <tr key={index} className="border-b border-tableBorderColor">
-                                <td className="p-2 border w-[35px] min-w-[35px]">
-                                    <div className="flex items-center justify-center">
-                                        <button
-                                            className="w-[25px] h-[25px] rounded-full bg-red-500"
-                                            onClick={(e) => {
-                                                dispatch(
-                                                    deleteExtraSupplementsRow({
-                                                        index,
-                                                    })
-                                                );
-                                            }}
-                                        >
-                                            -
-                                        </button>
-                                    </div>
-                                </td>
+                                {isEditPermission && (
+                                    <td className="p-2 border w-[35px] min-w-[35px]">
+                                        <div className="flex items-center justify-center">
+                                            <button
+                                                className="w-[25px] h-[25px] rounded-full bg-red-500"
+                                                onClick={(e) => {
+                                                    dispatch(
+                                                        deleteExtraSupplementsRow({
+                                                            index,
+                                                        })
+                                                    );
+                                                }}
+                                            >
+                                                -
+                                            </button>
+                                        </div>
+                                    </td>
+                                )}
                                 <td className="border w-[140px] min-w-[140px]">
                                     <input
                                         type="date"
@@ -90,6 +94,7 @@ export default function OtherSupplementForm() {
                                         value={extraSupplement?.fromDate || ""}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%]  px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[140px] min-w-[140px]">
@@ -99,6 +104,7 @@ export default function OtherSupplementForm() {
                                         value={extraSupplement?.toDate || ""}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%]  px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[180px] min-w-[180px]">
@@ -117,6 +123,7 @@ export default function OtherSupplementForm() {
                                             );
                                         }}
                                         randomIndex={index + "extraSupplement"}
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border min-w-[100px]">
@@ -126,6 +133,7 @@ export default function OtherSupplementForm() {
                                         value={extraSupplement?.extraBedAdultPrice}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border min-w-[100px]">
@@ -135,6 +143,7 @@ export default function OtherSupplementForm() {
                                         value={extraSupplement?.extraBedChildPrice}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td>
@@ -163,6 +172,7 @@ export default function OtherSupplementForm() {
                                                 }
                                                 handleChangeChk(e, index);
                                             }}
+                                            disabled={!isEditPermission}
                                         />
                                     </div>
                                 </td>
@@ -173,7 +183,9 @@ export default function OtherSupplementForm() {
                                         value={extraSupplement?.exbMealPriceAdult}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
-                                        disabled={extraSupplement.isMealIncluded === true}
+                                        disabled={
+                                            extraSupplement.isMealIncluded === true || !isEditPermission
+                                        }
                                     />
                                 </td>
                                 <td className="border min-w-[100px]">
@@ -183,7 +195,9 @@ export default function OtherSupplementForm() {
                                         value={extraSupplement?.exbMealPriceChild}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
-                                        disabled={extraSupplement.isMealIncluded === true}
+                                        disabled={
+                                            extraSupplement.isMealIncluded === true || !isEditPermission
+                                        }
                                     />
                                 </td>
                             </tr>

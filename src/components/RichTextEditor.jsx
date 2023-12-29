@@ -1,12 +1,10 @@
 import React, { memo, useRef } from "react";
 import JoditEditor from "jodit-react";
 
-
 const RichTextEditor = ({ initialValue, getValue }) => {
     const editor = useRef(null);
 
     return (
-       
         <JoditEditor
             ref={editor}
             value={initialValue}

@@ -3,22 +3,30 @@ import { useSelector } from "react-redux";
 
 import { SelectDropdown } from "../../../components";
 
-export default function MultiContactForm({ data, addItem, removeItem, handleChange }) {
+export default function MultiContactForm({
+    data,
+    addItem,
+    removeItem,
+    handleChange,
+    isEditPermission = true,
+}) {
     return (
         <div className="">
             <table className="w-full">
                 <thead className="bg-[#f3f6f9] text-grayColor text-[14px]">
                     <tr>
-                        <th className="p-2 border w-[35px]">
-                            <div className="flex items-center justify-center">
-                                <button
-                                    className="w-[25px] h-[25px] rounded-full bg-green-500"
-                                    onClick={addItem}
-                                >
-                                    +
-                                </button>
-                            </div>
-                        </th>
+                        {isEditPermission && (
+                            <th className="p-2 border w-[35px]">
+                                <div className="flex items-center justify-center">
+                                    <button
+                                        className="w-[25px] h-[25px] rounded-full bg-green-500"
+                                        onClick={addItem}
+                                    >
+                                        +
+                                    </button>
+                                </div>
+                            </th>
+                        )}
                         <th className="font-[500] p-2 border">Name</th>
                         <th className="font-[500] p-2 border">Position</th>
                         <th className="font-[500] p-2 border">Email</th>
@@ -34,6 +42,7 @@ export default function MultiContactForm({ data, addItem, removeItem, handleChan
                             removeItem={removeItem}
                             index={index}
                             handleChange={handleChange}
+                            isEditPermission={isEditPermission}
                         />
                     ))}
                 </tbody>
@@ -42,7 +51,7 @@ export default function MultiContactForm({ data, addItem, removeItem, handleChan
     );
 }
 
-const SingleMultiContactTableRow = ({ index, item, removeItem, handleChange }) => {
+const SingleMultiContactTableRow = ({ index, item, removeItem, handleChange, isEditPermission }) => {
     const { countries } = useSelector((state) => state.general);
 
     const handleInpChange = (e, index) => {
@@ -51,18 +60,20 @@ const SingleMultiContactTableRow = ({ index, item, removeItem, handleChange }) =
 
     return (
         <tr className="border-b border-tableBorderColor">
-            <td className="p-2 border w-[35px] min-w-[35px]">
-                <div className="flex items-center justify-center">
-                    <button
-                        className="w-[25px] h-[25px] rounded-full bg-red-500"
-                        onClick={() => {
-                            removeItem(index);
-                        }}
-                    >
-                        -
-                    </button>
-                </div>
-            </td>
+            {isEditPermission && (
+                <td className="p-2 border w-[35px] min-w-[35px]">
+                    <div className="flex items-center justify-center">
+                        <button
+                            className="w-[25px] h-[25px] rounded-full bg-red-500"
+                            onClick={() => {
+                                removeItem(index);
+                            }}
+                        >
+                            -
+                        </button>
+                    </div>
+                </td>
+            )}
             <td className="border">
                 <input
                     type="text"
@@ -71,6 +82,7 @@ const SingleMultiContactTableRow = ({ index, item, removeItem, handleChange }) =
                     onChange={(e) => handleInpChange(e, index)}
                     className="h-[100%]  px-2 border-0"
                     placeholder="Ex: John Smith"
+                    disabled={!isEditPermission}
                 />
             </td>
             <td className="border">
@@ -81,6 +93,7 @@ const SingleMultiContactTableRow = ({ index, item, removeItem, handleChange }) =
                     onChange={(e) => handleInpChange(e, index)}
                     className="h-[100%]  px-2 border-0"
                     placeholder="Ex: Manager"
+                    disabled={!isEditPermission}
                 />
             </td>
             <td className="border">
@@ -91,6 +104,7 @@ const SingleMultiContactTableRow = ({ index, item, removeItem, handleChange }) =
                     onChange={(e) => handleInpChange(e, index)}
                     className="h-[100%]  px-2 border-0"
                     placeholder="Ex: demo@gmail.com"
+                    disabled={!isEditPermission}
                 />
             </td>
             <td className="border w-[250px] min-w-[250px]">
@@ -103,6 +117,7 @@ const SingleMultiContactTableRow = ({ index, item, removeItem, handleChange }) =
                     setSelectedData={(val) => {
                         handleChange({ index, name: "country", value: val });
                     }}
+                    disabled={!isEditPermission}
                 />
             </td>
             <td className="border">
@@ -113,6 +128,7 @@ const SingleMultiContactTableRow = ({ index, item, removeItem, handleChange }) =
                     onChange={(e) => handleInpChange(e, index)}
                     className="h-[100%]  px-2 border-0 arrow-hidden"
                     placeholder="Ex: +971 9859345"
+                    disabled={!isEditPermission}
                 />
             </td>
         </tr>

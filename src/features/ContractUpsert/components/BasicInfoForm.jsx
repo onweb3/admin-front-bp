@@ -1,15 +1,13 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 import { handleContractDataChange } from "../../../redux/slices/hotelContractSlice";
 import { MultipleSelectDropdown, SelectDropdown } from "../../../components";
-import { useParams } from "react-router-dom";
 
-export default function BasicInfoForm() {
+export default function BasicInfoForm({ isEditPermission = true }) {
     const dispatch = useDispatch();
-    const { data, boardTypes, markets, contracts } = useSelector(
-        (state) => state.hotelContractForm
-    );
+    const { data, boardTypes, contracts } = useSelector((state) => state.hotelContractForm);
     const { countries } = useSelector((state) => state.general);
     const { contractId } = useParams();
 
@@ -45,6 +43,7 @@ export default function BasicInfoForm() {
                     name="basePlan"
                     value={data?.basePlan || ""}
                     onChange={handleInpChange}
+                    disabled={!isEditPermission}
                 >
                     <option value="" hidden>
                         Select Base Plan
@@ -64,6 +63,7 @@ export default function BasicInfoForm() {
                     value={data.rateName || ""}
                     onChange={handleInpChange}
                     placeholder="Ex: sample contract"
+                    disabled={!isEditPermission}
                 />
             </div>
             <div>
@@ -74,6 +74,7 @@ export default function BasicInfoForm() {
                     value={data.rateCode || ""}
                     onChange={handleInpChange}
                     placeholder="Ex: EXP001"
+                    disabled={!isEditPermission}
                 />
             </div>
             <div>
@@ -84,6 +85,7 @@ export default function BasicInfoForm() {
                     value={!isNaN(data.priority) ? data.priority : ""}
                     onChange={handleInpChange}
                     placeholder="0"
+                    disabled={!isEditPermission}
                 />
             </div>
             <div>
@@ -93,6 +95,7 @@ export default function BasicInfoForm() {
                     name="sellFrom"
                     value={data.sellFrom || ""}
                     onChange={handleInpChange}
+                    disabled={!isEditPermission}
                 />
             </div>
             <div>
@@ -102,6 +105,7 @@ export default function BasicInfoForm() {
                     name="sellTo"
                     value={data.sellTo || ""}
                     onChange={handleInpChange}
+                    disabled={!isEditPermission}
                 />
             </div>
             <div>
@@ -111,6 +115,7 @@ export default function BasicInfoForm() {
                     name="checkInTime"
                     value={data.checkInTime || ""}
                     onChange={handleInpChange}
+                    disabled={!isEditPermission}
                 />
             </div>
             <div>
@@ -120,6 +125,7 @@ export default function BasicInfoForm() {
                     name="checkOutTime"
                     value={data.checkOutTime || ""}
                     onChange={handleInpChange}
+                    disabled={!isEditPermission}
                 />
             </div>
             <div className="flex items-center justify-start gap-[10px] min-h-[40px]">
@@ -130,6 +136,7 @@ export default function BasicInfoForm() {
                     onChange={handleChkChange}
                     className="w-[17px] h-[17px]"
                     id="isSpecialRate"
+                    disabled={!isEditPermission}
                 />
                 <label htmlFor="isSpecialRate" className="mb-0">
                     Is Special Rate
@@ -154,6 +161,7 @@ export default function BasicInfoForm() {
                                 )
                             }
                             valueName={"_id"}
+                            disabled={!isEditPermission}
                         />
                     </div>
                     <div>
@@ -163,6 +171,7 @@ export default function BasicInfoForm() {
                             name="bookingWindowFrom"
                             value={data.bookingWindowFrom || ""}
                             onChange={handleInpChange}
+                            disabled={!isEditPermission}
                         />
                     </div>
                     <div>
@@ -172,6 +181,7 @@ export default function BasicInfoForm() {
                             name="bookingWindowTo"
                             value={data.bookingWindowTo || ""}
                             onChange={handleInpChange}
+                            disabled={!isEditPermission}
                         />
                     </div>
                 </>
@@ -185,6 +195,7 @@ export default function BasicInfoForm() {
                     onChange={handleChkChange}
                     className="w-[17px] h-[17px]"
                     id="isTourismFeeIncluded"
+                    disabled={!isEditPermission}
                 />
                 <label htmlFor="isTourismFeeIncluded" className="mb-0">
                     Is Tourism Fee Included
@@ -198,6 +209,7 @@ export default function BasicInfoForm() {
                     onChange={handleChkChange}
                     className="w-[17px] h-[17px]"
                     id="isActive"
+                    disabled={!isEditPermission}
                 />
                 <label htmlFor="isActive" className="mb-0">
                     Is Active
@@ -211,6 +223,7 @@ export default function BasicInfoForm() {
                     onChange={handleChkChange}
                     className="w-[17px] h-[17px]"
                     id="applyPromotion"
+                    disabled={!isEditPermission}
                 />
                 <label htmlFor="applyPromotion" className="mb-0">
                     Apply Promotion
@@ -225,6 +238,7 @@ export default function BasicInfoForm() {
                         onChange={handleChkChange}
                         className="w-[17px] h-[17px]"
                         id="specificNations"
+                        disabled={!isEditPermission}
                     />
                     <label htmlFor="specificNations" className="mb-0">
                         Specific Market
@@ -247,6 +261,7 @@ export default function BasicInfoForm() {
                                 );
                             }}
                             randomIndex={0 + "applicableNations"}
+                            disabled={!isEditPermission}
                         />
                     </div>
                 )}

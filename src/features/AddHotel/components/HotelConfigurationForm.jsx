@@ -3,33 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { FaCheck } from "react-icons/fa";
 import { FiCopy } from "react-icons/fi";
 
-import {
-    handleHotelDetailsChange,
-    removeHotelOpenDay,
-    selectHotelOpenDay,
-} from "../../../redux/slices/hotelFormSlice";
-import { MultipleSelectDropdown, SelectDropdown } from "../../../components";
+import { handleHotelDetailsChange } from "../../../redux/slices/hotelFormSlice";
+import { MultipleSelectDropdown } from "../../../components";
 
-const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
-
-export default function HotelConfigurationForm({ selectedSection }) {
+export default function HotelConfigurationForm({ selectedSection, isEditPermission = true }) {
     const [isHbIdCopied, setIsHbIdCopied] = useState(false);
 
-    const { details, accommodationTypes, apis, boards, hotelChains } = useSelector(
-        (state) => state.hotelForm
-    );
-    const { states, cities, countries, areas } = useSelector((state) => state.general);
+    const { details, apis } = useSelector((state) => state.hotelForm);
     const dispatch = useDispatch();
-
-    const availableStates = states?.filter((item) => {
-        return item?.country === details.country;
-    });
-    const availableCities = cities?.filter((item) => {
-        return item?.country === details.country;
-    });
-    const availableAreas = areas?.filter((item) => {
-        return item?.country === details.country;
-    });
 
     const handleChange = (e) => {
         dispatch(
@@ -70,6 +51,7 @@ export default function HotelConfigurationForm({ selectedSection }) {
                         onChange={handleCheckBoxChange}
                         className="w-[17px] h-[17px]"
                         id="isContractAvailable"
+                        disabled={!isEditPermission}
                     />
                     <label htmlFor="isContractAvailable" className="mb-0">
                         Contract Available
@@ -83,6 +65,7 @@ export default function HotelConfigurationForm({ selectedSection }) {
                         onChange={handleCheckBoxChange}
                         className="w-[17px] h-[17px]"
                         id="isApiConnected"
+                        disabled={!isEditPermission}
                     />
                     <label htmlFor="isApiConnected" className="mb-0">
                         Is Api Connected
@@ -105,6 +88,7 @@ export default function HotelConfigurationForm({ selectedSection }) {
                             }
                             valueName={"_id"}
                             randomIndex={"connectedApis"}
+                            disabled={!isEditPermission}
                         />
                     </div>
                 </div>
@@ -116,6 +100,7 @@ export default function HotelConfigurationForm({ selectedSection }) {
                         onChange={handleCheckBoxChange}
                         className="w-[17px] h-[17px]"
                         id="allGuestDetailsRequired"
+                        disabled={!isEditPermission}
                     />
                     <label htmlFor="allGuestDetailsRequired" className="mb-0">
                         All Guest Details Required?
@@ -130,6 +115,7 @@ export default function HotelConfigurationForm({ selectedSection }) {
                             name="hbId"
                             value={details?.hbId || ""}
                             onChange={handleChange}
+                            disabled={!isEditPermission}
                         />
                         <button
                             className={
@@ -156,6 +142,7 @@ export default function HotelConfigurationForm({ selectedSection }) {
                         onChange={handleCheckBoxChange}
                         className="w-[17px] h-[17px]"
                         id="isActive"
+                        disabled={!isEditPermission}
                     />
                     <label htmlFor="isActive" className="mb-0">
                         Is Active

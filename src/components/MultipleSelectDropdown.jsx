@@ -11,6 +11,7 @@ export default function MultipleSelectDropdown({
     displayName,
     randomIndex = 0,
     bracketName,
+    disabled,
 }) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [dropdownData, setDropdownData] = useState({
@@ -24,9 +25,7 @@ export default function MultipleSelectDropdown({
     useHandleClickOutside(wrapperRef, () => setIsDropdownOpen(false));
 
     const filteredData = searchQuery
-        ? data?.filter((item) =>
-              item[displayName]?.toLowerCase()?.includes(searchQuery?.toLowerCase())
-          )
+        ? data?.filter((item) => item[displayName]?.toLowerCase()?.includes(searchQuery?.toLowerCase()))
         : data;
 
     const removeSelectedItem = (selectedItem) => {
@@ -60,8 +59,10 @@ export default function MultipleSelectDropdown({
                     if (isDropdownOpen === false) {
                         setSearchQuery("");
                     }
-                    handleScreenChange();
-                    setIsDropdownOpen(true);
+                    if (!disabled) {
+                        handleScreenChange();
+                        setIsDropdownOpen(true);
+                    }
                 }}
             >
                 {isDropdownOpen ? (

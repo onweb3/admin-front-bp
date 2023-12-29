@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import axios from "../../axios";
 import { PageLoader } from "../../components";
@@ -14,11 +14,8 @@ import {
     HotelMediaForm,
     HotelRestAndBarForm,
 } from "../../features/AddHotel";
-import {
-    fetchInitialData,
-    initiateHotelFormFields,
-    resetHotelForm,
-} from "../../redux/slices/hotelFormSlice";
+import { fetchInitialData, initiateHotelFormFields, resetHotelForm } from "../../redux/slices/hotelFormSlice";
+import { hasPermission } from "../../utils";
 
 const sections = {
     "-details": "Details",
@@ -37,8 +34,13 @@ export default function EditHotelPage() {
 
     const dispatch = useDispatch();
     const { id } = useParams();
-    const { jwtToken } = useSelector((state) => state.admin);
-    const navigate = useNavigate();
+    const { jwtToken, admin } = useSelector((state) => state.admin);
+
+    const isEditPermission = hasPermission({
+        roles: admin?.roles,
+        name: "hotels",
+        permission: "update",
+    });
 
     const fetchHotel = async () => {
         try {
@@ -57,17 +59,13 @@ export default function EditHotelPage() {
 
     const goForward = () => {
         if (Object.keys(sections).indexOf(selectedSection) < Object.keys(sections).length - 1) {
-            setSelectedSection(
-                Object.keys(sections)[Object.keys(sections).indexOf(selectedSection) + 1]
-            );
+            setSelectedSection(Object.keys(sections)[Object.keys(sections).indexOf(selectedSection) + 1]);
         }
     };
 
     const goBack = () => {
         if (Object.keys(sections).indexOf(selectedSection) > 0) {
-            setSelectedSection(
-                Object.keys(sections)[Object.keys(sections).indexOf(selectedSection) - 1]
-            );
+            setSelectedSection(Object.keys(sections)[Object.keys(sections).indexOf(selectedSection) - 1]);
         }
     };
 
@@ -125,16 +123,35 @@ export default function EditHotelPage() {
                         </div>
 
                         <div className="p-4">
-                            <HotelDetailsForm selectedSection={selectedSection} />
-                            <HotelConfigurationForm selectedSection={selectedSection} />
-                            <HotelDescriptionForm selectedSection={selectedSection} />
-                            <HotelAmenityForm selectedSection={selectedSection} />
-                            <HotelRestAndBarForm selectedSection={selectedSection} />
-                            <HotelContactInfoForm selectedSection={selectedSection} />
+                            <HotelDetailsForm
+                                selectedSection={selectedSection}
+                                isEditPermission={isEditPermission}
+                            />
+                            <HotelConfigurationForm
+                                selectedSection={selectedSection}
+                                isEditPermission={isEditPermission}
+                            />
+                            <HotelDescriptionForm
+                                selectedSection={selectedSection}
+                                isEditPermission={isEditPermission}
+                            />
+                            <HotelAmenityForm
+                                selectedSection={selectedSection}
+                                isEditPermission={isEditPermission}
+                            />
+                            <HotelRestAndBarForm
+                                selectedSection={selectedSection}
+                                isEditPermission={isEditPermission}
+                            />
+                            <HotelContactInfoForm
+                                selectedSection={selectedSection}
+                                isEditPermission={isEditPermission}
+                            />
                             <HotelMediaForm
                                 selectedSection={selectedSection}
                                 newImages={newImages}
                                 setNewImages={setNewImages}
+                                isEditPermission={isEditPermission}
                             />
                             <HotelEditFormButtons
                                 newImages={newImages}
@@ -145,6 +162,7 @@ export default function EditHotelPage() {
                                 goForward={goForward}
                                 goBack={goBack}
                                 prev={Object.keys(sections).indexOf(selectedSection) !== 0}
+                                isEditPermission={isEditPermission}
                             />
                         </div>
                     </div>

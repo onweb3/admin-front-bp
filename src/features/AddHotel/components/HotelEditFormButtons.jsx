@@ -6,7 +6,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "../../../axios";
 import { BtnLoader } from "../../../components";
 
-export default function HotelEditFormButtons({ next, prev, newImages, goBack, goForward }) {
+export default function HotelEditFormButtons({
+    next,
+    prev,
+    newImages,
+    goBack,
+    goForward,
+    isEditPermission = true,
+}) {
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
@@ -97,11 +104,7 @@ export default function HotelEditFormButtons({ next, prev, newImages, goBack, go
 
             <div className="mt-4 flex items-center justify-end gap-[12px]">
                 {prev ? (
-                    <button
-                        className="bg-slate-300 text-textColor px-[15px]"
-                        type="button"
-                        onClick={goBack}
-                    >
+                    <button className="bg-slate-300 text-textColor px-[15px]" type="button" onClick={goBack}>
                         Back
                     </button>
                 ) : (
@@ -113,15 +116,11 @@ export default function HotelEditFormButtons({ next, prev, newImages, goBack, go
                         Cancel
                     </button>
                 )}
-                {/* {update && ( */}
-                <button
-                    className="w-[130px] bg-primaryColor"
-                    onClick={handleSubmit}
-                    disabled={isLoading}
-                >
-                    {isLoading ? <BtnLoader /> : details?.isPublished ? "Update" : "Publish"}
-                </button>
-                {/* )} */}
+                {isEditPermission === true && (
+                    <button className="w-[130px] bg-primaryColor" onClick={handleSubmit} disabled={isLoading}>
+                        {isLoading ? <BtnLoader /> : details?.isPublished ? "Update" : "Publish"}
+                    </button>
+                )}
                 {next === true && (
                     <button className="w-[130px]" onClick={goForward}>
                         Next

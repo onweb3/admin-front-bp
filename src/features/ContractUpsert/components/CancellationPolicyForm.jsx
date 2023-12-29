@@ -9,7 +9,7 @@ import {
 } from "../../../redux/slices/hotelContractSlice";
 import { MultipleSelectDropdown } from "../../../components";
 
-export default function CancellationPolicyForm() {
+export default function CancellationPolicyForm({ isEditPermission = true }) {
     const dispatch = useDispatch();
     const { cancellationPolicies, roomTypes } = useSelector((state) => state.hotelContractForm);
 
@@ -33,16 +33,18 @@ export default function CancellationPolicyForm() {
                 <table className="w-full">
                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px]">
                         <tr>
-                            <th className="p-2 border w-[35px]">
-                                <div className="flex items-center justify-center">
-                                    <button
-                                        className="w-[25px] h-[25px] rounded-full bg-green-500"
-                                        onClick={handleAddRow}
-                                    >
-                                        +
-                                    </button>
-                                </div>
-                            </th>
+                            {isEditPermission && (
+                                <th className="p-2 border w-[35px]">
+                                    <div className="flex items-center justify-center">
+                                        <button
+                                            className="w-[25px] h-[25px] rounded-full bg-green-500"
+                                            onClick={handleAddRow}
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                </th>
+                            )}
                             <th className="font-[500] p-2 border">From Date</th>
                             <th className="font-[500] p-2 border">To Date</th>
                             <th className="font-[500] p-2 border">Room Types</th>
@@ -56,22 +58,24 @@ export default function CancellationPolicyForm() {
                     <tbody className="text-sm">
                         {cancellationPolicies.map((cPolicy, index) => (
                             <tr key={index} className="border-b border-tableBorderColor">
-                                <td className="p-2 border w-[35px] min-w-[35px]">
-                                    <div className="flex items-center justify-center">
-                                        <button
-                                            className="w-[25px] h-[25px] rounded-full bg-red-500"
-                                            onClick={(e) => {
-                                                dispatch(
-                                                    deleteCancellationPoliciesRow({
-                                                        index,
-                                                    })
-                                                );
-                                            }}
-                                        >
-                                            -
-                                        </button>
-                                    </div>
-                                </td>
+                                {isEditPermission && (
+                                    <td className="p-2 border w-[35px] min-w-[35px]">
+                                        <div className="flex items-center justify-center">
+                                            <button
+                                                className="w-[25px] h-[25px] rounded-full bg-red-500"
+                                                onClick={(e) => {
+                                                    dispatch(
+                                                        deleteCancellationPoliciesRow({
+                                                            index,
+                                                        })
+                                                    );
+                                                }}
+                                            >
+                                                -
+                                            </button>
+                                        </div>
+                                    </td>
+                                )}
                                 <td className="border w-[140px] min-w-[140px]">
                                     <input
                                         type="date"
@@ -79,6 +83,7 @@ export default function CancellationPolicyForm() {
                                         value={cPolicy?.fromDate || ""}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%]  px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border min-w-[100px]">
@@ -88,6 +93,7 @@ export default function CancellationPolicyForm() {
                                         value={cPolicy?.toDate || ""}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[180px] min-w-[180px]">
@@ -106,6 +112,7 @@ export default function CancellationPolicyForm() {
                                             );
                                         }}
                                         randomIndex={index + "cancellationPolicy"}
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td>
@@ -140,6 +147,7 @@ export default function CancellationPolicyForm() {
                                             }
                                             handleChange(e, index);
                                         }}
+                                        disabled={!isEditPermission}
                                     >
                                         <option value="refundable">Refundable</option>
                                         <option value="non-refundable">Non Refundable</option>
@@ -154,6 +162,7 @@ export default function CancellationPolicyForm() {
                                         onChange={(e) => {
                                             handleChange(e, index);
                                         }}
+                                        disabled={!isEditPermission}
                                     >
                                         <option value="percentage">Percentage</option>
                                         <option value="flat">Flat</option>
@@ -176,7 +185,10 @@ export default function CancellationPolicyForm() {
                                             );
                                         }}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
-                                        disabled={cPolicy?.cancellationType === "non-refundable"}
+                                        disabled={
+                                            cPolicy?.cancellationType === "non-refundable" ||
+                                            !isEditPermission
+                                        }
                                     />
                                 </td>
                                 <td className="border min-w-[100px]">
@@ -186,7 +198,10 @@ export default function CancellationPolicyForm() {
                                         value={cPolicy?.cancellationCharge}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
-                                        disabled={cPolicy?.cancellationType === "non-refundable"}
+                                        disabled={
+                                            cPolicy?.cancellationType === "non-refundable" ||
+                                            !isEditPermission
+                                        }
                                     />
                                 </td>
                                 <td className="border min-w-[100px]">
@@ -196,7 +211,10 @@ export default function CancellationPolicyForm() {
                                         value={cPolicy?.requestCancelDaysBefore}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
-                                        disabled={cPolicy?.cancellationType === "non-refundable"}
+                                        disabled={
+                                            cPolicy?.cancellationType === "non-refundable" ||
+                                            !isEditPermission
+                                        }
                                     />
                                 </td>
                             </tr>

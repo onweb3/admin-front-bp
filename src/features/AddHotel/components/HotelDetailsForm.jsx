@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FaCheck } from "react-icons/fa";
-import { FiCopy } from "react-icons/fi";
 
 import {
     handleHotelDetailsChange,
@@ -12,12 +10,10 @@ import { MultipleSelectDropdown, SelectDropdown } from "../../../components";
 
 const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 
-export default function HotelDetailsForm({ selectedSection }) {
+export default function HotelDetailsForm({ selectedSection, isEditPermission = true }) {
     const [isHbIdCopied, setIsHbIdCopied] = useState(false);
 
-    const { details, accommodationTypes, apis, boards, hotelChains } = useSelector(
-        (state) => state.hotelForm
-    );
+    const { details, accommodationTypes, boards, hotelChains } = useSelector((state) => state.hotelForm);
     const { states, cities, countries, areas } = useSelector((state) => state.general);
     const dispatch = useDispatch();
 
@@ -36,15 +32,6 @@ export default function HotelDetailsForm({ selectedSection }) {
             handleHotelDetailsChange({
                 name: e.target?.name,
                 value: e.target?.value,
-            })
-        );
-    };
-
-    const handleCheckBoxChange = (e) => {
-        dispatch(
-            handleHotelDetailsChange({
-                name: e.target?.name,
-                value: e.target?.checked,
             })
         );
     };
@@ -70,6 +57,7 @@ export default function HotelDetailsForm({ selectedSection }) {
                         value={details?.hotelName || ""}
                         onChange={handleChange}
                         placeholder="Ex: Abc Hotel"
+                        disabled={!isEditPermission}
                     />
                 </div>
                 <div>
@@ -89,6 +77,7 @@ export default function HotelDetailsForm({ selectedSection }) {
                             );
                         }}
                         bracketValue={"chainCode"}
+                        disabled={!isEditPermission}
                     />
                 </div>
                 <div>
@@ -107,6 +96,7 @@ export default function HotelDetailsForm({ selectedSection }) {
                                 })
                             );
                         }}
+                        disabled={!isEditPermission}
                     />
                 </div>
                 <div>
@@ -125,6 +115,7 @@ export default function HotelDetailsForm({ selectedSection }) {
                                 })
                             );
                         }}
+                        disabled={!isEditPermission}
                     />
                 </div>
                 <div>
@@ -143,6 +134,7 @@ export default function HotelDetailsForm({ selectedSection }) {
                                 })
                             );
                         }}
+                        disabled={!isEditPermission}
                     />
                 </div>
                 <div>
@@ -161,6 +153,7 @@ export default function HotelDetailsForm({ selectedSection }) {
                                 })
                             );
                         }}
+                        disabled={!isEditPermission}
                     />
                 </div>
                 <div>
@@ -179,6 +172,7 @@ export default function HotelDetailsForm({ selectedSection }) {
                                 })
                             );
                         }}
+                        disabled={!isEditPermission}
                     />
                 </div>
                 <div>
@@ -189,6 +183,7 @@ export default function HotelDetailsForm({ selectedSection }) {
                         value={details?.address || ""}
                         onChange={handleChange}
                         placeholder="Enter Address"
+                        disabled={!isEditPermission}
                     />
                 </div>
                 <div>
@@ -199,6 +194,7 @@ export default function HotelDetailsForm({ selectedSection }) {
                         value={details?.landMark || ""}
                         onChange={handleChange}
                         placeholder="Ex: Near Burj Khalifa"
+                        disabled={!isEditPermission}
                     />
                 </div>
                 <div>
@@ -209,6 +205,7 @@ export default function HotelDetailsForm({ selectedSection }) {
                         value={details?.street || ""}
                         onChange={handleChange}
                         placeholder="Enter Street"
+                        disabled={!isEditPermission}
                     />
                 </div>
                 <div>
@@ -219,6 +216,7 @@ export default function HotelDetailsForm({ selectedSection }) {
                         value={details?.postalCode || ""}
                         onChange={handleChange}
                         placeholder="Enter Postal Code"
+                        disabled={!isEditPermission}
                     />
                 </div>
                 <div>
@@ -229,6 +227,7 @@ export default function HotelDetailsForm({ selectedSection }) {
                         value={details?.website || ""}
                         onChange={handleChange}
                         placeholder="Ex: https://hotel-name.com"
+                        disabled={!isEditPermission}
                     />
                 </div>
                 <div>
@@ -238,6 +237,7 @@ export default function HotelDetailsForm({ selectedSection }) {
                         name="starCategory"
                         value={details?.starCategory || ""}
                         onChange={handleChange}
+                        disabled={!isEditPermission}
                     >
                         <option value="" hidden>
                             Select Star Category
@@ -259,6 +259,7 @@ export default function HotelDetailsForm({ selectedSection }) {
                         value={details?.latitude || ""}
                         onChange={handleChange}
                         placeholder="Ex: 25.276987"
+                        disabled={!isEditPermission}
                     />
                 </div>
                 <div>
@@ -269,6 +270,7 @@ export default function HotelDetailsForm({ selectedSection }) {
                         value={details?.longitude || ""}
                         onChange={handleChange}
                         placeholder="Ex: 55.296249"
+                        disabled={!isEditPermission}
                     />
                 </div>
                 <div>
@@ -279,6 +281,7 @@ export default function HotelDetailsForm({ selectedSection }) {
                         name="checkInTime"
                         value={details?.checkInTime || ""}
                         onChange={handleChange}
+                        disabled={!isEditPermission}
                     />
                 </div>
                 <div>
@@ -289,6 +292,7 @@ export default function HotelDetailsForm({ selectedSection }) {
                         name="checkOutTime"
                         value={details?.checkOutTime || ""}
                         onChange={handleChange}
+                        disabled={!isEditPermission}
                     />
                 </div>
                 <div>
@@ -299,6 +303,7 @@ export default function HotelDetailsForm({ selectedSection }) {
                         name="roomsCount"
                         value={!isNaN(details?.roomsCount) ? details?.roomsCount : ""}
                         onChange={handleChange}
+                        disabled={!isEditPermission}
                     />
                 </div>
                 <div>
@@ -309,6 +314,7 @@ export default function HotelDetailsForm({ selectedSection }) {
                         value={!isNaN(details?.floorsCount) ? details?.floorsCount : ""}
                         onChange={handleChange}
                         placeholder="0"
+                        disabled={!isEditPermission}
                     />
                 </div>
                 <div>
@@ -319,6 +325,7 @@ export default function HotelDetailsForm({ selectedSection }) {
                         name="carParkingSlots"
                         value={!isNaN(details?.carParkingSlots) ? details?.carParkingSlots : ""}
                         onChange={handleChange}
+                        disabled={!isEditPermission}
                     />
                 </div>
                 <div>
@@ -329,6 +336,7 @@ export default function HotelDetailsForm({ selectedSection }) {
                         name="distanceFromCity"
                         value={!isNaN(details?.distanceFromCity) ? details?.distanceFromCity : ""}
                         onChange={handleChange}
+                        disabled={!isEditPermission}
                     />
                 </div>
                 <div>
@@ -348,6 +356,7 @@ export default function HotelDetailsForm({ selectedSection }) {
                             }
                             valueName={"_id"}
                             randomIndex={"boardTypes"}
+                            disabled={!isEditPermission}
                         />
                     </div>
                 </div>
@@ -360,9 +369,7 @@ export default function HotelDetailsForm({ selectedSection }) {
                                     key={index}
                                     className={
                                         "w-[25px] h-[25px] text-white cursor-pointer capitalize rounded flex items-center justify-center " +
-                                        (details?.openDays?.includes(day)
-                                            ? "bg-orange-500"
-                                            : "bg-gray-500")
+                                        (details?.openDays?.includes(day) ? "bg-orange-500" : "bg-gray-500")
                                     }
                                     onClick={() => {
                                         if (details?.openDays?.includes(day)) {

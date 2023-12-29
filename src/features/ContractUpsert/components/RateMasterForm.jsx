@@ -14,11 +14,9 @@ import { MdClose } from "react-icons/md";
 
 const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 
-export default function RateMasterForm() {
+export default function RateMasterForm({ isEditPermission = true }) {
     const dispatch = useDispatch();
-    const { roomRates, initialRoomTypes, data, roomTypes } = useSelector(
-        (state) => state.hotelContractForm
-    );
+    const { roomRates, initialRoomTypes, data, roomTypes } = useSelector((state) => state.hotelContractForm);
 
     const handleAddRow = () => {
         dispatch(addRoomRatesRow());
@@ -45,15 +43,14 @@ export default function RateMasterForm() {
                             dispatch(addRoomTypeToRateMaster(e.target.value));
                             e.target.value = "";
                         }}
+                        disabled={!isEditPermission}
                     >
                         <option value="" hidden>
                             Select Room Type
                         </option>
                         {roomTypes?.map((item, index) => {
                             if (
-                                initialRoomTypes?.some(
-                                    (rmType) => rmType?.roomTypeId === item?._id
-                                ) ||
+                                initialRoomTypes?.some((rmType) => rmType?.roomTypeId === item?._id) ||
                                 item?.roomOccupancies?.length < 1
                             ) {
                                 return <React.Fragment key={index}></React.Fragment>;
@@ -92,33 +89,35 @@ export default function RateMasterForm() {
                                         className="relative font-[500] p-2 pr-9 border"
                                     >
                                         <span className="">{roomType?.roomName}</span>
-                                        <span
-                                            className="absolute top-[50%] translate-y-[-50%] right-[10px] w-[18px] h-[18px] min-w-[18px] min-h-[18px] bg-gray-500 flex items-center justify-center rounded-full text-white cursor-pointer"
-                                            onClick={() =>
-                                                dispatch(
-                                                    removeRoomTypeFromRateMaster(
-                                                        roomType?.roomTypeId
+                                        {isEditPermission && (
+                                            <span
+                                                className="absolute top-[50%] translate-y-[-50%] right-[10px] w-[18px] h-[18px] min-w-[18px] min-h-[18px] bg-gray-500 flex items-center justify-center rounded-full text-white cursor-pointer"
+                                                onClick={() =>
+                                                    dispatch(
+                                                        removeRoomTypeFromRateMaster(roomType?.roomTypeId)
                                                     )
-                                                )
-                                            }
-                                        >
-                                            <MdClose />
-                                        </span>
+                                                }
+                                            >
+                                                <MdClose />
+                                            </span>
+                                        )}
                                     </th>
                                 );
                             })}
                         </tr>
                         <tr>
-                            <th className="p-2 border w-[35px]">
-                                <div className="flex items-center justify-center">
-                                    <button
-                                        className="w-[25px] h-[25px] rounded-full bg-green-500"
-                                        onClick={handleAddRow}
-                                    >
-                                        +
-                                    </button>
-                                </div>
-                            </th>
+                            {isEditPermission && (
+                                <th className="p-2 border w-[35px]">
+                                    <div className="flex items-center justify-center">
+                                        <button
+                                            className="w-[25px] h-[25px] rounded-full bg-green-500"
+                                            onClick={handleAddRow}
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                </th>
+                            )}
                             {data?.isSpecialRate === true && (
                                 <th className="font-[500] p-2 border">Rate Code</th>
                             )}
@@ -141,22 +140,24 @@ export default function RateMasterForm() {
                     <tbody className="text-sm">
                         {roomRates.map((roomRate, index) => (
                             <tr key={index} className="border-b border-tableBorderColor">
-                                <td className="p-2 border w-[35px] min-w-[35px]">
-                                    <div className="flex items-center justify-center">
-                                        <button
-                                            className="w-[25px] h-[25px] rounded-full bg-red-500"
-                                            onClick={() => {
-                                                dispatch(
-                                                    deleteRoomRatesRow({
-                                                        index,
-                                                    })
-                                                );
-                                            }}
-                                        >
-                                            -
-                                        </button>
-                                    </div>
-                                </td>
+                                {isEditPermission && (
+                                    <td className="p-2 border w-[35px] min-w-[35px]">
+                                        <div className="flex items-center justify-center">
+                                            <button
+                                                className="w-[25px] h-[25px] rounded-full bg-red-500"
+                                                onClick={() => {
+                                                    dispatch(
+                                                        deleteRoomRatesRow({
+                                                            index,
+                                                        })
+                                                    );
+                                                }}
+                                            >
+                                                -
+                                            </button>
+                                        </div>
+                                    </td>
+                                )}
                                 {data?.isSpecialRate === true && (
                                     <td className="border w-[140px] min-w-[140px]">
                                         <input
@@ -165,6 +166,7 @@ export default function RateMasterForm() {
                                             name="rateCode"
                                             value={roomRate?.rateCode || ""}
                                             onChange={(e) => handleChange(e, index)}
+                                            disabled={!isEditPermission}
                                         />
                                     </td>
                                 )}
@@ -175,6 +177,7 @@ export default function RateMasterForm() {
                                         name="fromDate"
                                         value={roomRate?.fromDate || ""}
                                         onChange={(e) => handleChange(e, index)}
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[140px] min-w-[140px]">
@@ -184,6 +187,7 @@ export default function RateMasterForm() {
                                         onChange={(e) => handleChange(e, index)}
                                         type="date"
                                         className="h-[100%]  px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="p-2 border w-[100px] min-w-[100px]">
@@ -223,6 +227,7 @@ export default function RateMasterForm() {
                                         onChange={(e) => handleChange(e, index)}
                                         type="number"
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[55px] min-w-[55px]">
@@ -232,41 +237,38 @@ export default function RateMasterForm() {
                                         onChange={(e) => handleChange(e, index)}
                                         type="number"
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 {roomRate?.roomTypes?.map((roomType, roomTypeIndex) => {
-                                    return roomType?.roomOccupancies?.map(
-                                        (roomOccupancy, occupancyIndex) => {
-                                            return (
-                                                <td
-                                                    key={occupancyIndex}
-                                                    className="border min-w-[100px]"
-                                                >
-                                                    <input
-                                                        type="number"
-                                                        className="h-[100%] arrow-hidden p-0 px-2 border-0"
-                                                        name="price"
-                                                        value={
-                                                            !isNaN(roomOccupancy.price) &&
-                                                            roomOccupancy.price !== null
-                                                                ? roomOccupancy.price
-                                                                : ""
-                                                        }
-                                                        onChange={(e) => {
-                                                            dispatch(
-                                                                handleRoomRateRoomTypeDataChange({
-                                                                    index,
-                                                                    roomTypeIndex,
-                                                                    occupancyIndex,
-                                                                    value: e.target.value,
-                                                                })
-                                                            );
-                                                        }}
-                                                    />
-                                                </td>
-                                            );
-                                        }
-                                    );
+                                    return roomType?.roomOccupancies?.map((roomOccupancy, occupancyIndex) => {
+                                        return (
+                                            <td key={occupancyIndex} className="border min-w-[100px]">
+                                                <input
+                                                    type="number"
+                                                    className="h-[100%] arrow-hidden p-0 px-2 border-0"
+                                                    name="price"
+                                                    value={
+                                                        !isNaN(roomOccupancy.price) &&
+                                                        roomOccupancy.price !== null
+                                                            ? roomOccupancy.price
+                                                            : ""
+                                                    }
+                                                    onChange={(e) => {
+                                                        dispatch(
+                                                            handleRoomRateRoomTypeDataChange({
+                                                                index,
+                                                                roomTypeIndex,
+                                                                occupancyIndex,
+                                                                value: e.target.value,
+                                                            })
+                                                        );
+                                                    }}
+                                                    disabled={!isEditPermission}
+                                                />
+                                            </td>
+                                        );
+                                    });
                                 })}
                             </tr>
                         ))}

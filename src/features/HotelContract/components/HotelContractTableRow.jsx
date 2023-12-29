@@ -5,7 +5,7 @@ import { BiEditAlt } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
 import { RxCopy } from "react-icons/rx";
 
-import { formatDate } from "../../../utils";
+import { formatDate, hasPermission } from "../../../utils";
 import axios from "../../../axios";
 import HotelContractCloneModal from "./HotelContractCloneModal";
 import ContractGroupChangeModal from "./ContractGroupChangeModal";
@@ -17,12 +17,16 @@ export default function HotelContractTableRow({
     isAllContracts = false,
     contractGroups = [],
 }) {
-    const [isContractCloneModalOpen, setIsContractCloneModalOpen] =
-        useState(false);
-    const [isContractGroupChangeModalOpen, setIsContractGroupChangeModalOpen] =
-        useState(false);
+    const [isContractCloneModalOpen, setIsContractCloneModalOpen] = useState(false);
+    const [isContractGroupChangeModalOpen, setIsContractGroupChangeModalOpen] = useState(false);
 
-    const { jwtToken } = useSelector((state) => state.admin);
+    const { jwtToken, admin } = useSelector((state) => state.admin);
+
+    const isEditPermission = hasPermission({
+        roles: admin?.roles,
+        name: "contracts",
+        permission: "delete",
+    });
 
     const deleteContract = async (id) => {
         try {
@@ -50,9 +54,7 @@ export default function HotelContractTableRow({
 
     const changeContractGroup = ({ contractId, contractGroup }) => {
         const tempContracts = contracts;
-        const objIndex = tempContracts.findIndex(
-            (item) => item._id === contractId
-        );
+        const objIndex = tempContracts.findIndex((item) => item._id === contractId);
         if (objIndex !== -1) {
             tempContracts[objIndex].contractGroup = contractGroup;
             setContracts(tempContracts);
@@ -64,14 +66,11 @@ export default function HotelContractTableRow({
             <td className="p-3">{formatDate(contract?.sellFrom)}</td>
             <td className="p-3">{formatDate(contract?.sellTo)}</td>
             <td className="p-3 capitalize">
-                {contract?.basePlan?.boardName} (
-                {contract?.basePlan?.boardShortName})
+                {contract?.basePlan?.boardName} ({contract?.basePlan?.boardShortName})
             </td>
             <td className="p-3  capitalize">
                 {contract?.rateName}
-                <span className="text-green-500">
-                    {contract?.isSpecialRate === true && " - (Promotion)"}
-                </span>
+                <span className="text-green-500">{contract?.isSpecialRate === true && " - (Promotion)"}</span>
             </td>
             <td className="p-3">{contract?.rateCode}</td>
             <td className="p-3">{contract?.priority}</td>
@@ -101,14 +100,16 @@ export default function HotelContractTableRow({
             {isAllContracts === false && (
                 <td className="p-3">
                     <div className="flex gap-[12px]">
-                        <button
-                            className="h-auto bg-transparent text-red-500 text-xl flex items-center justify-center"
-                            onClick={() => {
-                                deleteContract(contract?._id);
-                            }}
-                        >
-                            <MdDelete />
-                        </button>
+                        {isEditPermission && (
+                            <button
+                                className="h-auto bg-transparent text-red-500 text-xl flex items-center justify-center"
+                                onClick={() => {
+                                    deleteContract(contract?._id);
+                                }}
+                            >
+                                <MdDelete />
+                            </button>
+                        )}
                         <Link to={`${contract?._id}/edit`}>
                             <button className="h-auto bg-transparent text-green-500 text-xl flex items-center justify-center">
                                 <BiEditAlt />
@@ -125,9 +126,7 @@ export default function HotelContractTableRow({
 
                         {isContractCloneModalOpen && (
                             <HotelContractCloneModal
-                                setIsContractCloneModalOpen={
-                                    setIsContractCloneModalOpen
-                                }
+                                setIsContractCloneModalOpen={setIsContractCloneModalOpen}
                                 contractId={contract?._id}
                                 addNewContract={addNewContract}
                             />
@@ -150,9 +149,7 @@ export default function HotelContractTableRow({
                     </span>
                     {isContractGroupChangeModalOpen === true && (
                         <ContractGroupChangeModal
-                            setIsContractGroupChangeModalOpen={
-                                setIsContractGroupChangeModalOpen
-                            }
+                            setIsContractGroupChangeModalOpen={setIsContractGroupChangeModalOpen}
                             contract={contract}
                             changeContractGroup={changeContractGroup}
                             contractGroups={contractGroups}

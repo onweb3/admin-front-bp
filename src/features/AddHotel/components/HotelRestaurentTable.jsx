@@ -6,7 +6,7 @@ import {
     removeHotelRestaurant,
 } from "../../../redux/slices/hotelFormSlice";
 
-export default function HotelRestaurentTable() {
+export default function HotelRestaurentTable({ isEditPermission }) {
     const { restaurants } = useSelector((state) => state.hotelForm);
     const dispatch = useDispatch();
 
@@ -25,16 +25,18 @@ export default function HotelRestaurentTable() {
             <table className="w-full">
                 <thead className="bg-[#f3f6f9] text-grayColor text-[14px]">
                     <tr>
-                        <th className="p-2 border w-[35px]">
-                            <div className="flex items-center justify-center">
-                                <button
-                                    className="w-[25px] h-[25px] rounded-full bg-green-500"
-                                    onClick={() => dispatch(addHotelRestaurant())}
-                                >
-                                    +
-                                </button>
-                            </div>
-                        </th>
+                        {isEditPermission && (
+                            <th className="p-2 border w-[35px]">
+                                <div className="flex items-center justify-center">
+                                    <button
+                                        className="w-[25px] h-[25px] rounded-full bg-green-500"
+                                        onClick={() => dispatch(addHotelRestaurant())}
+                                    >
+                                        +
+                                    </button>
+                                </div>
+                            </th>
+                        )}
                         <th className="font-[500] p-2 border">Name</th>
                         <th className="font-[500] p-2 border">Cuisine</th>
                         <th className="font-[500] p-2 border">From Time</th>
@@ -44,18 +46,20 @@ export default function HotelRestaurentTable() {
                 <tbody className="text-sm">
                     {restaurants.map((item, index) => (
                         <tr key={index} className="border-b border-tableBorderColor">
-                            <td className="p-2 border w-[35px] min-w-[35px]">
-                                <div className="flex items-center justify-center">
-                                    <button
-                                        className="w-[25px] h-[25px] rounded-full bg-red-500"
-                                        onClick={() => {
-                                            dispatch(removeHotelRestaurant(index));
-                                        }}
-                                    >
-                                        -
-                                    </button>
-                                </div>
-                            </td>
+                            {isEditPermission && (
+                                <td className="p-2 border w-[35px] min-w-[35px]">
+                                    <div className="flex items-center justify-center">
+                                        <button
+                                            className="w-[25px] h-[25px] rounded-full bg-red-500"
+                                            onClick={() => {
+                                                dispatch(removeHotelRestaurant(index));
+                                            }}
+                                        >
+                                            -
+                                        </button>
+                                    </div>
+                                </td>
+                            )}
                             <td className="border">
                                 <input
                                     type="text"
@@ -64,6 +68,7 @@ export default function HotelRestaurentTable() {
                                     onChange={(e) => handleInpChange(e, index)}
                                     className="h-[100%]  px-2 border-0"
                                     placeholder="Ex: Abc restaurant"
+                                    disabled={!isEditPermission}
                                 />
                             </td>
                             <td className="border">
@@ -74,6 +79,7 @@ export default function HotelRestaurentTable() {
                                     onChange={(e) => handleInpChange(e, index)}
                                     className="h-[100%]  px-2 border-0"
                                     placeholder="Ex: Indian Food"
+                                    disabled={!isEditPermission}
                                 />
                             </td>
                             <td className="border">
@@ -83,6 +89,7 @@ export default function HotelRestaurentTable() {
                                     value={item?.fromTime || ""}
                                     onChange={(e) => handleInpChange(e, index)}
                                     className="h-[100%]  px-2 border-0"
+                                    disabled={!isEditPermission}
                                 />
                             </td>
                             <td className="border">
@@ -92,6 +99,7 @@ export default function HotelRestaurentTable() {
                                     value={item?.toTime || ""}
                                     onChange={(e) => handleInpChange(e, index)}
                                     className="h-[100%]  px-2 border-0"
+                                    disabled={!isEditPermission}
                                 />
                             </td>
                         </tr>

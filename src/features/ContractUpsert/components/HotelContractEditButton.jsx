@@ -5,13 +5,12 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import axios from "../../../axios";
 import { BtnLoader } from "../../../components";
-import { hasPermission } from "../../../utils";
 
-export default function HotelContractEditButtons({ next, prev, goForward, goBack }) {
+export default function HotelContractEditButtons({ next, prev, goForward, goBack, isEditPermission }) {
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
-    const { jwtToken, admin } = useSelector((state) => state.admin);
+    const { jwtToken } = useSelector((state) => state.admin);
     const {
         data,
         roomRates,
@@ -19,7 +18,7 @@ export default function HotelContractEditButtons({ next, prev, goForward, goBack
         cancellationPolicies,
         extraSupplements,
         childPolicies,
-        childMealPolicies,
+        // childMealPolicies,
         excludedDates,
     } = useSelector((state) => state.hotelContractForm);
     const navigate = useNavigate();
@@ -60,11 +59,7 @@ export default function HotelContractEditButtons({ next, prev, goForward, goBack
 
             <div className="flex items-center justify-end gap-[12px]">
                 {prev ? (
-                    <button
-                        className="bg-slate-300 text-textColor px-[15px]"
-                        type="button"
-                        onClick={goBack}
-                    >
+                    <button className="bg-slate-300 text-textColor px-[15px]" type="button" onClick={goBack}>
                         Back
                     </button>
                 ) : (
@@ -76,16 +71,8 @@ export default function HotelContractEditButtons({ next, prev, goForward, goBack
                         Cancel
                     </button>
                 )}
-                {hasPermission({
-                    roles: admin?.roles,
-                    name: "contracts",
-                    permission: "update",
-                }) && (
-                    <button
-                        className="w-[100px] bg-primaryColor"
-                        onClick={handleSubmit}
-                        disabled={isLoading}
-                    >
+                {isEditPermission && (
+                    <button className="w-[100px] bg-primaryColor" onClick={handleSubmit} disabled={isLoading}>
                         {isLoading ? <BtnLoader /> : "Update"}
                     </button>
                 )}

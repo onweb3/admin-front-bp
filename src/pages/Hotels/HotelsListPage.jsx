@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 
 import { PageLoader, Pagination } from "../../components";
 import axios from "../../axios";
-import { formatDate } from "../../utils";
+import { formatDate, hasPermission } from "../../utils";
 import { FaDownload } from "react-icons/fa";
 import { FiDownload } from "react-icons/fi";
 
@@ -26,8 +26,14 @@ function HotelsListPage() {
     const [isLoading, setIsLoading] = useState(true);
 
     const [searchParams, setSearchParams] = useSearchParams();
-    const { jwtToken } = useSelector((state) => state.admin);
+    const { jwtToken, admin } = useSelector((state) => state.admin);
     const { countries } = useSelector((state) => state.general);
+
+    const isDeletePermission = hasPermission({
+        roles: admin?.roles,
+        name: "hotels",
+        permission: "delete",
+    });
 
     const prevSearchParams = (e) => {
         let params = {};
@@ -68,15 +74,7 @@ function HotelsListPage() {
         }
     };
 
-    const fetchHotels = async ({
-        skip,
-        limit,
-        searchInput,
-        status,
-        loadedFrom,
-        starCategory,
-        country,
-    }) => {
+    const fetchHotels = async ({ skip, limit, searchInput, status, loadedFrom, starCategory, country }) => {
         try {
             setIsLoading(true);
 
@@ -207,9 +205,7 @@ function HotelsListPage() {
                         <h1 className="font-medium">All Hotels</h1>
                         <div className="flex items-center gap-[15px]">
                             <Link to="add">
-                                <button className="px-3 whitespace-nowrap bg-orange-500">
-                                    + Add Hotel
-                                </button>
+                                <button className="px-3 whitespace-nowrap bg-orange-500">+ Add Hotel</button>
                             </Link>
                             <button
                                 className="px-3 flex items-center gap-1"
@@ -299,11 +295,7 @@ function HotelsListPage() {
                                 <option value="">All</option>
                                 {countries?.map((country, cIndex) => {
                                     return (
-                                        <option
-                                            value={country?._id}
-                                            key={cIndex}
-                                            className="capitalize"
-                                        >
+                                        <option value={country?._id} key={cIndex} className="capitalize">
                                             {country?.countryName}
                                         </option>
                                     );
@@ -312,12 +304,7 @@ function HotelsListPage() {
                         </div>
                         <div className="">
                             <label htmlFor="">Status</label>
-                            <select
-                                id=""
-                                name="status"
-                                value={filters.status || ""}
-                                onChange={handleChange}
-                            >
+                            <select id="" name="status" value={filters.status || ""} onChange={handleChange}>
                                 <option value="">All</option>
                                 <option value="active">Active</option>
                                 <option value="inactive">Inactive</option>
@@ -327,12 +314,7 @@ function HotelsListPage() {
                         </div>
                         <div>
                             <label htmlFor="">Limit</label>
-                            <select
-                                id=""
-                                name="limit"
-                                value={filters.limit}
-                                onChange={handleChange}
-                            >
+                            <select id="" name="limit" value={filters.limit} onChange={handleChange}>
                                 <option value="10">10</option>
                                 <option value="50">50</option>
                                 <option value="100">100</option>
@@ -344,11 +326,7 @@ function HotelsListPage() {
                         <button className="flex items-center justify-center gap-[10px]">
                             <BiFilter /> Filter
                         </button>
-                        <button
-                            className="bg-slate-200 text-textColor"
-                            onClick={clearFilters}
-                            type="button"
-                        >
+                        <button className="bg-slate-200 text-textColor" onClick={clearFilters} type="button">
                             Clear
                         </button>
                     </form>
@@ -378,10 +356,7 @@ function HotelsListPage() {
                                     <tbody className="text-sm">
                                         {hotels?.map((hotel, index) => {
                                             return (
-                                                <tr
-                                                    className="border-b border-tableBorderColor"
-                                                    key={index}
-                                                >
+                                                <tr className="border-b border-tableBorderColor" key={index}>
                                                     <td className="p-3">
                                                         {hotel?.hotelName}{" "}
                                                         <span className="text-red-500">
@@ -428,9 +403,7 @@ function HotelsListPage() {
                                                                         : "bg-red-500")
                                                                 }
                                                             ></span>
-                                                            {hotel?.isActive === true
-                                                                ? "Active"
-                                                                : "Inactive"}
+                                                            {hotel?.isActive === true ? "Active" : "Inactive"}
                                                         </div>
                                                     </td>
                                                     {/* <td className="p-3">
@@ -455,15 +428,16 @@ function HotelsListPage() {
                                                     </td> */}
                                                     <td className="p-3">
                                                         <div className="flex gap-[10px]">
-                                                            <button
-                                                                className="h-auto bg-transparent text-red-500 text-xl flex items-center justify-center"
-                                                                onClick={() =>
-                                                                    deleteHotel(hotel?._id)
-                                                                }
-                                                                title="Delete Hotel"
-                                                            >
-                                                                <MdDelete />
-                                                            </button>
+                                                            {isDeletePermission && (
+                                                                <button
+                                                                    className="h-auto bg-transparent text-red-500 text-xl flex items-center justify-center"
+                                                                    onClick={() => deleteHotel(hotel?._id)}
+                                                                    title="Delete Hotel"
+                                                                >
+                                                                    <MdDelete />
+                                                                </button>
+                                                            )}
+
                                                             <Link to={`${hotel?._id}/room-types`}>
                                                                 <button
                                                                     className="h-auto bg-transparent text-green-500 text-xl flex items-center justify-center"

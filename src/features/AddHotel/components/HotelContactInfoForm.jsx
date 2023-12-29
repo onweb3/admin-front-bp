@@ -18,13 +18,10 @@ import {
 } from "../../../redux/slices/hotelFormSlice";
 import MultiContactForm from "./MultiContactForm";
 
-export default function HotelContactInfoForm({ selectedSection }) {
-    const {
-        accountsContacts,
-        salesContacts,
-        reservationsContacts,
-        hotelContacts,
-    } = useSelector((state) => state.hotelForm);
+export default function HotelContactInfoForm({ selectedSection, isEditPermission = true }) {
+    const { accountsContacts, salesContacts, reservationsContacts, hotelContacts } = useSelector(
+        (state) => state.hotelForm
+    );
     const dispatch = useDispatch();
 
     return (
@@ -38,10 +35,9 @@ export default function HotelContactInfoForm({ selectedSection }) {
                     addItem={() => dispatch(addHotelContact())}
                     removeItem={(indx) => dispatch(removeHotelContact(indx))}
                     handleChange={({ index, name, value }) =>
-                        dispatch(
-                            handleHotelContactDataChange({ index, name, value })
-                        )
+                        dispatch(handleHotelContactDataChange({ index, name, value }))
                     }
+                    isEditPermission={isEditPermission}
                 />
             </div>
 
@@ -56,6 +52,7 @@ export default function HotelContactInfoForm({ selectedSection }) {
                     handleChange={({ index, name, value }) =>
                         dispatch(handleSalesDataChange({ index, name, value }))
                     }
+                    isEditPermission={isEditPermission}
                 />
             </div>
 
@@ -68,10 +65,9 @@ export default function HotelContactInfoForm({ selectedSection }) {
                     addItem={() => dispatch(addAccountsContact())}
                     removeItem={(indx) => dispatch(removeAccountsContact(indx))}
                     handleChange={({ index, name, value }) =>
-                        dispatch(
-                            handleAccountsDataChange({ index, name, value })
-                        )
+                        dispatch(handleAccountsDataChange({ index, name, value }))
                     }
+                    isEditPermission={isEditPermission}
                 />
             </div>
 
@@ -82,14 +78,11 @@ export default function HotelContactInfoForm({ selectedSection }) {
                 <MultiContactForm
                     data={reservationsContacts}
                     addItem={() => dispatch(addReservationsContact())}
-                    removeItem={(indx) =>
-                        dispatch(removeReservationsContact(indx))
-                    }
+                    removeItem={(indx) => dispatch(removeReservationsContact(indx))}
                     handleChange={({ index, name, value }) =>
-                        dispatch(
-                            handleReservationsDataChange({ index, name, value })
-                        )
+                        dispatch(handleReservationsDataChange({ index, name, value }))
                     }
+                    isEditPermission={isEditPermission}
                 />
             </div>
         </div>

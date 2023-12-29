@@ -8,11 +8,9 @@ import {
 } from "../../../redux/slices/hotelContractSlice";
 import { MultipleSelectDropdown } from "../../../components";
 
-export default function MealMasterForm() {
+export default function MealMasterForm({ isEditPermission = true }) {
     const dispatch = useDispatch();
-    const { mealSupplements, roomTypes, boardTypes } = useSelector(
-        (state) => state.hotelContractForm
-    );
+    const { mealSupplements, roomTypes, boardTypes } = useSelector((state) => state.hotelContractForm);
 
     const handleChange = (e, index) => {
         dispatch(
@@ -30,16 +28,18 @@ export default function MealMasterForm() {
                 <table className="w-full">
                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px]">
                         <tr>
-                            <th className="p-2 border w-[35px]">
-                                <div className="flex items-center justify-center">
-                                    <button
-                                        className="w-[25px] h-[25px] rounded-full bg-green-500"
-                                        onClick={() => dispatch(addMealRow())}
-                                    >
-                                        +
-                                    </button>
-                                </div>
-                            </th>
+                            {isEditPermission && (
+                                <th className="p-2 border w-[35px]">
+                                    <div className="flex items-center justify-center">
+                                        <button
+                                            className="w-[25px] h-[25px] rounded-full bg-green-500"
+                                            onClick={() => dispatch(addMealRow())}
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                </th>
+                            )}
                             <th className="font-[500] p-2 border">From Date</th>
                             <th className="font-[500] p-2 border">To Date</th>
                             <th className="font-[500] p-2 border">Meals</th>
@@ -52,18 +52,20 @@ export default function MealMasterForm() {
                     <tbody className="text-sm">
                         {mealSupplements.map((mealSupplement, index) => (
                             <tr key={index} className="border-b border-tableBorderColor">
-                                <td className="p-2 border w-[35px] min-w-[35px]">
-                                    <div className="flex items-center justify-center">
-                                        <button
-                                            className="w-[25px] h-[25px] rounded-full bg-red-500"
-                                            onClick={() => {
-                                                dispatch(deleteMealRow({ index }));
-                                            }}
-                                        >
-                                            -
-                                        </button>
-                                    </div>
-                                </td>
+                                {isEditPermission && (
+                                    <td className="p-2 border w-[35px] min-w-[35px]">
+                                        <div className="flex items-center justify-center">
+                                            <button
+                                                className="w-[25px] h-[25px] rounded-full bg-red-500"
+                                                onClick={() => {
+                                                    dispatch(deleteMealRow({ index }));
+                                                }}
+                                            >
+                                                -
+                                            </button>
+                                        </div>
+                                    </td>
+                                )}
                                 <td className="border w-[140px] min-w-[140px]">
                                     <input
                                         type="date"
@@ -71,6 +73,7 @@ export default function MealMasterForm() {
                                         value={mealSupplement?.fromDate || ""}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%]  px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[140px] min-w-[140px]">
@@ -80,6 +83,7 @@ export default function MealMasterForm() {
                                         name="toDate"
                                         value={mealSupplement?.toDate || ""}
                                         onChange={(e) => handleChange(e, index)}
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td>
@@ -88,6 +92,7 @@ export default function MealMasterForm() {
                                         name="boardType"
                                         value={mealSupplement?.boardType || ""}
                                         onChange={(e) => handleChange(e, index)}
+                                        disabled={!isEditPermission}
                                     >
                                         <option value="" hidden>
                                             Select boardType
@@ -115,6 +120,7 @@ export default function MealMasterForm() {
                                             );
                                         }}
                                         randomIndex={index + "mealSupplement"}
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border min-w-[100px]">
@@ -124,6 +130,7 @@ export default function MealMasterForm() {
                                         name="adultPrice"
                                         value={mealSupplement?.adultPrice}
                                         onChange={(e) => handleChange(e, index)}
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border min-w-[100px]">
@@ -133,6 +140,7 @@ export default function MealMasterForm() {
                                         name="childPrice"
                                         value={mealSupplement?.childPrice}
                                         onChange={(e) => handleChange(e, index)}
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border min-w-[100px]">
@@ -142,6 +150,7 @@ export default function MealMasterForm() {
                                         name="infantPrice"
                                         value={mealSupplement?.infantPrice}
                                         onChange={(e) => handleChange(e, index)}
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                             </tr>

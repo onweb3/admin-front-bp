@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { FiCheck } from "react-icons/fi";
+import { MdClose } from "react-icons/md";
 
 import {
     BasicInfoForm,
     CancellationPolicyForm,
-    ChildMealPolicyForm,
     ChildPolicyForm,
     ContractExcludedDatesForm,
     HotelContractEditButtons,
@@ -20,11 +21,9 @@ import {
     fetchInitialDataWithContract,
     resetContractForm,
 } from "../../redux/slices/hotelContractSlice";
-import { BtnLoader, PageLoader } from "../../components";
+import { PageLoader } from "../../components";
 import axios from "../../axios";
 import { hasPermission } from "../../utils";
-import { FiCheck } from "react-icons/fi";
-import { MdClose } from "react-icons/md";
 
 const sections = {
     "basic-info": "Basic Info",
@@ -50,19 +49,21 @@ export default function EditContractPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const isEditPermission = hasPermission({
+        roles: admin?.roles,
+        name: "contracts",
+        permission: "update",
+    });
+
     const goForward = () => {
         if (Object.keys(sections).indexOf(selectedSection) < Object.keys(sections).length - 1) {
-            setSelectedSection(
-                Object.keys(sections)[Object.keys(sections).indexOf(selectedSection) + 1]
-            );
+            setSelectedSection(Object.keys(sections)[Object.keys(sections).indexOf(selectedSection) + 1]);
         }
     };
 
     const goBack = () => {
         if (Object.keys(sections).indexOf(selectedSection) > 0) {
-            setSelectedSection(
-                Object.keys(sections)[Object.keys(sections).indexOf(selectedSection) - 1]
-            );
+            setSelectedSection(Object.keys(sections)[Object.keys(sections).indexOf(selectedSection) - 1]);
         }
     };
 
@@ -208,25 +209,19 @@ export default function EditContractPage() {
                     ) : (
                         <>
                             <div className={selectedSection === "basic-info" ? "block" : "hidden"}>
-                                <BasicInfoForm />
+                                <BasicInfoForm isEditPermission={isEditPermission} />
                             </div>
                             <div className={selectedSection === "rate-master" ? "block" : "hidden"}>
-                                <RateMasterForm />
+                                <RateMasterForm isEditPermission={isEditPermission} />
                             </div>
                             <div className={selectedSection === "meal-master" ? "block" : "hidden"}>
-                                <MealMasterForm />
+                                <MealMasterForm isEditPermission={isEditPermission} />
                             </div>
-                            <div
-                                className={
-                                    selectedSection === "other-supplement" ? "block" : "hidden"
-                                }
-                            >
-                                <OtherSupplementForm />
+                            <div className={selectedSection === "other-supplement" ? "block" : "hidden"}>
+                                <OtherSupplementForm isEditPermission={isEditPermission} />
                             </div>
-                            <div
-                                className={selectedSection === "child-policy" ? "block" : "hidden"}
-                            >
-                                <ChildPolicyForm />
+                            <div className={selectedSection === "child-policy" ? "block" : "hidden"}>
+                                <ChildPolicyForm isEditPermission={isEditPermission} />
                             </div>
                             {/* <div
                         className={
@@ -237,23 +232,17 @@ export default function EditContractPage() {
                     >
                         <ChildMealPolicyForm />
                     </div> */}
-                            <div
-                                className={selectedSection === "cancel-policy" ? "block" : "hidden"}
-                            >
-                                <CancellationPolicyForm />
+                            <div className={selectedSection === "cancel-policy" ? "block" : "hidden"}>
+                                <CancellationPolicyForm isEditPermission={isEditPermission} />
                             </div>
                             <div className={selectedSection === "-inclusion" ? "block" : "hidden"}>
-                                <InclusionsForm />
+                                <InclusionsForm isEditPermission={isEditPermission} />
                             </div>
                             <div className={selectedSection === "-tac" ? "block" : "hidden"}>
-                                <TermsAndConditionForm />
+                                <TermsAndConditionForm isEditPermission={isEditPermission} />
                             </div>
-                            <div
-                                className={
-                                    selectedSection === "excluded-dates" ? "block" : "hidden"
-                                }
-                            >
-                                <ContractExcludedDatesForm />
+                            <div className={selectedSection === "excluded-dates" ? "block" : "hidden"}>
+                                <ContractExcludedDatesForm isEditPermission={isEditPermission} />
                             </div>
 
                             <HotelContractEditButtons
@@ -264,6 +253,7 @@ export default function EditContractPage() {
                                 goForward={goForward}
                                 goBack={goBack}
                                 prev={Object.keys(sections).indexOf(selectedSection) !== 0}
+                                isEditPermission={isEditPermission}
                             />
                         </>
                     )}
