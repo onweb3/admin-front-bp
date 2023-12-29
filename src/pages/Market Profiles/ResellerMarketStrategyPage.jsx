@@ -12,9 +12,7 @@ export default function ResellerMarketStrategyPage({}) {
 
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [profiles, setProfiles] = useState([]);
-    const [selectedProfile, setSelectedProfile] = useState(
-        reseller?.marketStrategy || ""
-    );
+    const [selectedProfile, setSelectedProfile] = useState("");
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
@@ -40,6 +38,28 @@ export default function ResellerMarketStrategyPage({}) {
             console.log(err);
         }
     };
+
+    const fetchActiveProfile = async () => {
+        try {
+            setIsLoading(true);
+
+            const response = await axios.get(`/market/b2b/get-selected/${id}`, {
+                headers: { authorization: `Bearer ${jwtToken}` },
+            });
+
+            console.log(response.data, "active market");
+
+            setSelectedProfile(response.data.selectedProfile);
+
+            setIsLoading(false);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    useEffect(() => {
+        fetchActiveProfile();
+    }, [id]);
 
     useEffect(() => {
         fetchProfiles();

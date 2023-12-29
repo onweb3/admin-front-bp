@@ -42,6 +42,12 @@ const adminRoles = [
         category: "attraction",
         permissions: [],
     },
+    {
+        name: "attractions-ticket-themes",
+        displayName: "Attractions Ticket Themes",
+        category: "attraction",
+        permissions: [],
+    },
 
     // HOTEL
     {
@@ -263,6 +269,12 @@ const adminRoles = [
     {
         name: "b2b-configurations",
         displayName: "B2B Configurations",
+        category: "core",
+        permissions: [],
+    },
+    {
+        name: "b2b-home-sections",
+        displayName: "B2B Home Sections",
         category: "core",
         permissions: [],
     },

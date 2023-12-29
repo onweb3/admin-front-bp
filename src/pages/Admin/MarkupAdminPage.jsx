@@ -10,7 +10,7 @@ export default function MarkupAdminPage({ data }) {
     const { id } = useParams();
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [profiles, setProfiles] = useState([]);
-    const [selectedProfile, setSelectedProfile] = useState(data.marketStrategy);
+    const [selectedProfile, setSelectedProfile] = useState("");
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
@@ -41,11 +41,14 @@ export default function MarkupAdminPage({ data }) {
         try {
             setIsLoading(true);
 
-            const response = await axios.get(`/market/b2b/get-selected/${id}`, {
-                headers: { authorization: `Bearer ${jwtToken}` },
-            });
+            const response = await axios.get(
+                `/market/admin/get-selected/${id}`,
+                {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                }
+            );
 
-            console.log(response.data, "active profile");
+            console.log(response.data, "active market");
 
             setSelectedProfile(response.data.selectedProfile);
 

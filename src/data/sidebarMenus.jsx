@@ -14,6 +14,8 @@ import {
     MdOutlineTour,
     MdSegment,
 } from "react-icons/md";
+import { TiWeatherPartlySunny } from "react-icons/ti";
+import { HiMiniTicket, HiTicket } from "react-icons/hi2";
 import { RxDashboard } from "react-icons/rx";
 import { ImAirplane } from "react-icons/im";
 import {
@@ -48,7 +50,7 @@ import {
 import { RiRefund2Line, RiProfileLine } from "react-icons/ri";
 import { GiWavyItinerary } from "react-icons/gi";
 import { FaGlobe, FaThList } from "react-icons/fa";
-import { BsFillChatLeftQuoteFill } from "react-icons/bs";
+import { BsFillChatLeftQuoteFill, BsImage } from "react-icons/bs";
 import { IoBusiness, IoWalletOutline } from "react-icons/io5";
 import { TbLicense } from "react-icons/tb";
 
@@ -132,6 +134,12 @@ const sidebarMenus = {
             name: "Guide",
             icon: <MdEmojiPeople />,
             link: "/attractions/guide",
+            permission: ["attr-itineraries", "view"],
+        },
+        {
+            name: "Attraction Ticket Themes",
+            icon: <HiMiniTicket />,
+            link: "attractions/ticket/theme",
             permission: ["attr-itineraries", "view"],
         },
     ],
@@ -532,6 +540,11 @@ const sidebarMenus = {
                     link: "/b2b/configurations",
                     permission: ["b2b-configurations", "view"],
                 },
+                {
+                    name: "Home Sections",
+                    link: "/b2b/home/sections",
+                    permission: ["b2b-home-sections", "view"],
+                },
             ],
         },
         {
@@ -785,7 +798,7 @@ const sidebarMenus = {
     settings: [
         {
             name: "Banners",
-            icon: <AiOutlineApi />,
+            icon: <BsImage />,
             link: "/banners",
             permission: ["banners", "view"],
         },
@@ -815,7 +828,7 @@ const sidebarMenus = {
         },
         {
             name: "Seasons",
-            icon: <AiOutlineApi />,
+            icon: <TiWeatherPartlySunny />,
             link: "/seasons",
             permission: ["seasons", "view"],
         },
