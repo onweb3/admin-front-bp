@@ -24,6 +24,8 @@ export default function AttractionsTicketsOrders() {
         activity: "",
         travellerEmail: "",
     });
+
+    console.log();
     const [section, setSection] = useState("reseller");
     const [searchParams, setSearchParams] = useSearchParams();
 

@@ -321,6 +321,7 @@ const ThemeRoutes = [
                 path: "/attractions/orders",
                 element: <AttractionOrdersPage />,
             },
+
             {
                 path: "/attractions/orders/bookings",
                 element: <AttractionsBookingOrdersPage />,

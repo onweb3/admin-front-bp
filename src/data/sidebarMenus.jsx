@@ -118,11 +118,11 @@ const sidebarMenus = {
                     link: "/attractions/orders/bookings",
                     permission: ["attraction-orders", "view"],
                 },
-                // {
-                //     name: "Attraction Tickets",
-                //     link: "/attractions/orders/tickets",
-                //     permission: ["attraction-orders", "view"],
-                // },
+                {
+                    name: "Attraction Tickets",
+                    link: "/attractions/orders/tickets",
+                    permission: ["attraction-orders", "view"],
+                },
                 {
                     name: "Order Statistics",
                     link: "/attractions/statistics",
