@@ -137,7 +137,7 @@ const sidebarMenus = {
             permission: ["attr-itineraries", "view"],
         },
         {
-            name: "Attraction Ticket Themes",
+            name: "Ticket Themes",
             icon: <HiMiniTicket />,
             link: "attractions/ticket/theme",
             permission: ["attr-itineraries", "view"],
@@ -239,12 +239,12 @@ const sidebarMenus = {
             link: "/hotels/reservation",
             permission: ["reservations", "view"],
         },
-        {
-            name: "Comparison List",
-            icon: <BiGitCompare />,
-            link: "/hotels/comparison-list",
-            permission: ["hotels", "view"],
-        },
+        // {
+        //     name: "Comparison List",
+        //     icon: <BiGitCompare />,
+        //     link: "/hotels/comparison-list",
+        //     permission: ["hotels", "view"],
+        // },
         {
             name: "Hotel Settings",
             icon: <MdAdminPanelSettings />,

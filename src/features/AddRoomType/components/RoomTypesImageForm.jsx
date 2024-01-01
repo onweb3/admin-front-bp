@@ -9,6 +9,7 @@ export default function RoomTypesImageForm({
     setNewImages,
     images,
     removeImage,
+    isEditPermission = true,
 }) {
     const handleImageChange = (e) => {
         for (let i = 0; i < e.target?.files?.length; i++) {
@@ -37,6 +38,7 @@ export default function RoomTypesImageForm({
                     type="file"
                     onChange={handleImageChange}
                     multiple={true}
+                    disabled={!isEditPermission}
                 />
             </div>
 
@@ -46,21 +48,22 @@ export default function RoomTypesImageForm({
                         <div
                             className="relative group w-[130px] aspect-video rounded overflow-hidden cursor-pointer"
                             key={index}
-                            onClick={() => removeImage(index)}
+                            onClick={() => {
+                                if (isEditPermission) removeImage(index);
+                            }}
                         >
                             <img
                                 src={
-                                    image?.isRelative === true
-                                        ? config.SERVER_URL +
-                                          image?.path
-                                        : image?.path
+                                    image?.isRelative === true ? config.SERVER_URL + image?.path : image?.path
                                 }
                                 alt=""
                                 className="w-full h-full object-cover"
                             />
-                            <div className="hidden group-hover:flex absolute inset-0 bg-[#0005] text-xl items-center justify-center cursor-pointer text-red-500">
-                                <MdDelete />
-                            </div>
+                            {isEditPermission && (
+                                <div className="hidden group-hover:flex absolute inset-0 bg-[#0005] text-xl items-center justify-center cursor-pointer text-red-500">
+                                    <MdDelete />
+                                </div>
+                            )}
                         </div>
                     );
                 })}
@@ -69,16 +72,20 @@ export default function RoomTypesImageForm({
                         <div
                             className="relative group w-[130px] aspect-video rounded overflow-hidden cursor-pointer"
                             key={index}
-                            onClick={() => removeNewImage(index)}
+                            onClick={() => {
+                                if (isEditPermission) removeNewImage(index);
+                            }}
                         >
                             <img
                                 src={URL.createObjectURL(image)}
                                 alt=""
                                 className="w-full h-full object-cover"
                             />
-                            <div className="hidden group-hover:flex absolute inset-0 bg-[#0005] text-xl items-center justify-center cursor-pointer text-red-500">
-                                <MdDelete />
-                            </div>
+                            {isEditPermission && (
+                                <div className="hidden group-hover:flex absolute inset-0 bg-[#0005] text-xl items-center justify-center cursor-pointer text-red-500">
+                                    <MdDelete />
+                                </div>
+                            )}
                         </div>
                     );
                 })}

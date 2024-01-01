@@ -8,12 +8,10 @@ import {
 } from "../../../redux/slices/hotelPromotionsFormSlice";
 import { MultipleSelectDropdown } from "../../../components";
 
-export default function PromoStayPayForm() {
+export default function PromoStayPayForm({ isEditPermission = true }) {
     const dispatch = useDispatch();
 
-    const { stayPays, boardTypes, roomTypes, data } = useSelector(
-        (state) => state.hotelPromotionsForm
-    );
+    const { stayPays, boardTypes, roomTypes, data } = useSelector((state) => state.hotelPromotionsForm);
 
     const handleInpChange = (e) => {
         dispatch(
@@ -54,6 +52,7 @@ export default function PromoStayPayForm() {
                         name="stayPayFreeOn"
                         value={data.stayPayFreeOn || ""}
                         onChange={handleInpChange}
+                        disabled={!isEditPermission}
                     >
                         <option value="" hidden>
                             Select Stay Pay Free On
@@ -72,6 +71,7 @@ export default function PromoStayPayForm() {
                         onChange={handleChkBoxChange}
                         className="w-[17px] h-[17px] flex item-center justify-center"
                         id="multipleStayPay"
+                        disabled={!isEditPermission}
                     />
                     <label htmlFor="multipleStayPay" className="mb-0">
                         Multiple Stay Pay
@@ -83,31 +83,24 @@ export default function PromoStayPayForm() {
                 <table className="w-full">
                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px]">
                         <tr>
-                            <th className="p-2 border w-[35px]">
-                                <div className="flex items-center justify-center">
-                                    <button
-                                        className="w-[25px] h-[25px] rounded-full bg-green-500"
-                                        onClick={() =>
-                                            dispatch(addStayPaysRows())
-                                        }
-                                    >
-                                        +
-                                    </button>
-                                </div>
-                            </th>
+                            {isEditPermission && (
+                                <th className="p-2 border w-[35px]">
+                                    <div className="flex items-center justify-center">
+                                        <button
+                                            className="w-[25px] h-[25px] rounded-full bg-green-500"
+                                            onClick={() => dispatch(addStayPaysRows())}
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                </th>
+                            )}
                             <th className="font-[500] p-2 border">Rate Code</th>
                             <th className="font-[500] p-2 border">From Date</th>
                             <th className="font-[500] p-2 border">To Date</th>
-                            <th className="font-[500] p-2 border">
-                                Book Before
-                            </th>
-                            <th className="font-[500] p-2 border">
-                                Board Types
-                            </th>
-
-                            <th className="font-[500] p-2 border">
-                                Room Types
-                            </th>
+                            <th className="font-[500] p-2 border">Book Before</th>
+                            <th className="font-[500] p-2 border">Board Types</th>
+                            <th className="font-[500] p-2 border">Room Types</th>
                             <th className="font-[500] p-2 border">Stay</th>
                             <th className="font-[500] p-2 border">Free</th>
                             {/* <th className="font-[500] p-2 border">Market</th> */}
@@ -116,23 +109,25 @@ export default function PromoStayPayForm() {
                     <tbody className="text-sm">
                         {stayPays.map((stayPay, index) => (
                             <tr className="border-b border-tableBorderColor">
-                                <td className="p-2 border w-[35px] min-w-[35px]">
-                                    <div className="flex items-center justify-center">
-                                        <button
-                                            className="w-[25px] h-[25px] rounded-full bg-red-500"
-                                            onClick={() => {
-                                                dispatch(
-                                                    deletePromotionItemRow({
-                                                        name: "stayPays",
-                                                        index,
-                                                    })
-                                                );
-                                            }}
-                                        >
-                                            -
-                                        </button>
-                                    </div>
-                                </td>
+                                {isEditPermission && (
+                                    <td className="p-2 border w-[35px] min-w-[35px]">
+                                        <div className="flex items-center justify-center">
+                                            <button
+                                                className="w-[25px] h-[25px] rounded-full bg-red-500"
+                                                onClick={() => {
+                                                    dispatch(
+                                                        deletePromotionItemRow({
+                                                            name: "stayPays",
+                                                            index,
+                                                        })
+                                                    );
+                                                }}
+                                            >
+                                                -
+                                            </button>
+                                        </div>
+                                    </td>
+                                )}
                                 <td className="border w-[100px] min-w-[100px]">
                                     <input
                                         type="text"
@@ -140,6 +135,7 @@ export default function PromoStayPayForm() {
                                         value={stayPay?.rateCode || ""}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[140px] min-w-[140px]">
@@ -149,6 +145,7 @@ export default function PromoStayPayForm() {
                                         value={stayPay?.fromDate || ""}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%]  px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[140px] min-w-[140px]">
@@ -158,6 +155,7 @@ export default function PromoStayPayForm() {
                                         value={stayPay?.toDate || ""}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%]  px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[100px] min-w-[100px]">
@@ -167,6 +165,7 @@ export default function PromoStayPayForm() {
                                         value={stayPay?.bookBefore}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
 
@@ -177,22 +176,18 @@ export default function PromoStayPayForm() {
                                             displayName={"boardName"}
                                             valueName={"_id"}
                                             selectedData={stayPay.boardTypes}
-                                            setSelectedData={(
-                                                selBoardTypes
-                                            ) => {
+                                            setSelectedData={(selBoardTypes) => {
                                                 dispatch(
-                                                    handlePromotionRowDataChange(
-                                                        {
-                                                            typeName:
-                                                                "stayPays",
-                                                            name: "boardTypes",
-                                                            value: selBoardTypes,
-                                                            index,
-                                                        }
-                                                    )
+                                                    handlePromotionRowDataChange({
+                                                        typeName: "stayPays",
+                                                        name: "boardTypes",
+                                                        value: selBoardTypes,
+                                                        index,
+                                                    })
                                                 );
                                             }}
                                             randomIndex={index + "stayPays"}
+                                            disabled={!isEditPermission}
                                         />
                                     </div>
                                 </td>
@@ -203,22 +198,18 @@ export default function PromoStayPayForm() {
                                             displayName={"roomName"}
                                             valueName={"_id"}
                                             selectedData={stayPay.roomTypes}
-                                            setSelectedData={(
-                                                selBoardTypes
-                                            ) => {
+                                            setSelectedData={(selBoardTypes) => {
                                                 dispatch(
-                                                    handlePromotionRowDataChange(
-                                                        {
-                                                            typeName:
-                                                                "stayPays",
-                                                            name: "roomTypes",
-                                                            value: selBoardTypes,
-                                                            index,
-                                                        }
-                                                    )
+                                                    handlePromotionRowDataChange({
+                                                        typeName: "stayPays",
+                                                        name: "roomTypes",
+                                                        value: selBoardTypes,
+                                                        index,
+                                                    })
                                                 );
                                             }}
                                             randomIndex={index + "stayPays"}
+                                            disabled={!isEditPermission}
                                         />
                                     </div>
                                 </td>
@@ -229,6 +220,7 @@ export default function PromoStayPayForm() {
                                         value={stayPay?.stayCount}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[70px] min-w-[70px]">
@@ -238,6 +230,7 @@ export default function PromoStayPayForm() {
                                         value={stayPay?.freeCount}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                             </tr>

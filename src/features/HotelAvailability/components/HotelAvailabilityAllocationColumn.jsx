@@ -1,16 +1,14 @@
 import React, { useState } from "react";
+
 import HotelAvailabilityDetailsModal from "./HotelAvailabilityDetailsModal";
 
-export default function HotelAvailabilityAllocationColumn({
-    allocation,
-    roomType,
-}) {
+export default function HotelAvailabilityAllocationColumn({ allocation, roomType }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     return (
         <td
             className={
-                "relative border text-center text-white " +
+                "border text-center text-white " +
                 (allocation?.allocationType === "static"
                     ? "bg-blue-500"
                     : allocation?.allocationType === "free-sale"
@@ -26,12 +24,10 @@ export default function HotelAvailabilityAllocationColumn({
             }}
         >
             {allocation?.allocationType === "static"
-                ? (allocation?.unitWise === "room" ? "R-" : "P-") +
-                  allocation?.allocation
+                ? (allocation?.unitWise === "room" ? "R-" : "P-") + allocation?.allocation
                 : ""}
             {allocation?.allocationType === "static"
-                ? (allocation?.unitWise === "room" ? " / R-" : " / P-") +
-                  allocation?.bookedAllocations
+                ? (allocation?.unitWise === "room" ? " / R-" : " / P-") + allocation?.bookedAllocations
                 : ""}
             {isModalOpen && (
                 <HotelAvailabilityDetailsModal

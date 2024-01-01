@@ -9,9 +9,9 @@ import axios from "../../axios";
 import { PageLoader } from "../../components";
 import { HotelAmenityModal } from "../../features/HotelFacility";
 import { config } from "../../constants";
+import { hasPermission } from "../../utils";
 
 export default function HotelSubAmenitiesPage() {
-    // const [allAmenities, setAllAmenities] = useState([]);
     const [amenities, setAmenities] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [hotelAmenityModal, setHotelAmenityModal] = useState({
@@ -22,18 +22,31 @@ export default function HotelSubAmenitiesPage() {
     const [searchText, setSearchText] = useState("");
     const [parentAmenity, setParentAmenity] = useState({});
 
-    const { jwtToken } = useSelector((state) => state.admin);
+    const { jwtToken, admin } = useSelector((state) => state.admin);
     const { id } = useParams();
+
+    const isCreatePermission = hasPermission({
+        roles: admin?.roles,
+        name: "hotel-amenities",
+        permission: "create",
+    });
+    const isEditPermission = hasPermission({
+        roles: admin?.roles,
+        name: "hotel-amenities",
+        permission: "update",
+    });
+    const isDeletePermission = hasPermission({
+        roles: admin?.roles,
+        name: "hotel-amenities",
+        permission: "delete",
+    });
 
     const fetchHotelFacilities = async () => {
         try {
             setIsLoading(true);
-            const response = await axios.get(
-                `/hotels/amenities/groups/${id}/all`,
-                {
-                    headers: { authorization: `Bearer ${jwtToken}` },
-                }
-            );
+            const response = await axios.get(`/hotels/amenities/groups/${id}/all`, {
+                headers: { authorization: `Bearer ${jwtToken}` },
+            });
             setAmenities(response?.data?.amenities);
             setParentAmenity(response?.data?.parentAmenity);
             setIsLoading(false);
@@ -78,9 +91,7 @@ export default function HotelSubAmenitiesPage() {
     };
 
     const filteredAmenities = amenities?.filter((item) => {
-        return searchText
-            ? item?.name?.toLowerCase()?.includes(searchText?.toLowerCase())
-            : true;
+        return searchText ? item?.name?.toLowerCase()?.includes(searchText?.toLowerCase()) : true;
     });
 
     useEffect(() => {
@@ -90,9 +101,7 @@ export default function HotelSubAmenitiesPage() {
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">
-                    Hotel Amenities
-                </h1>
+                <h1 className="font-[600] text-[15px] uppercase">Hotel Amenities</h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
@@ -126,10 +135,7 @@ export default function HotelSubAmenitiesPage() {
                             <div className="flex items-center gap-[15px] font-medium">
                                 {parentAmenity?.icon ? (
                                     <img
-                                        src={
-                                            config.SERVER_URL +
-                                            parentAmenity?.icon
-                                        }
+                                        src={config.SERVER_URL + parentAmenity?.icon}
                                         alt=""
                                         className="w-[40px] max-h-[40px]"
                                     />
@@ -138,29 +144,27 @@ export default function HotelSubAmenitiesPage() {
                                         <FaCheck />
                                     </span>
                                 )}
-                                <span className="capitalize">
-                                    {parentAmenity?.name}
-                                </span>
+                                <span className="capitalize">{parentAmenity?.name}</span>
                             </div>
                             <div className="flex items-center gap-[10px]">
                                 <input
                                     type="text"
                                     placeholder="Search here..."
-                                    onChange={(e) =>
-                                        setSearchText(e.target.value)
-                                    }
+                                    onChange={(e) => setSearchText(e.target.value)}
                                 />
-                                <button
-                                    className="px-3 whitespace-nowrap"
-                                    onClick={() =>
-                                        setHotelAmenityModal({
-                                            isOpen: true,
-                                            isEdit: false,
-                                        })
-                                    }
-                                >
-                                    + Add Amenity
-                                </button>
+                                {isCreatePermission && (
+                                    <button
+                                        className="px-3 whitespace-nowrap"
+                                        onClick={() =>
+                                            setHotelAmenityModal({
+                                                isOpen: true,
+                                                isEdit: false,
+                                            })
+                                        }
+                                    >
+                                        + Add Amenity
+                                    </button>
+                                )}
                             </div>
                         </div>
                         {!filteredAmenities || filteredAmenities?.length < 1 ? (
@@ -174,74 +178,64 @@ export default function HotelSubAmenitiesPage() {
                                 <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                     <tr>
                                         <th className="font-[500] p-3">Name</th>
-                                        <th className="font-[500] p-3">
-                                            Action
-                                        </th>
+                                        {(isEditPermission || isDeletePermission) && (
+                                            <th className="font-[500] p-3">Action</th>
+                                        )}
                                     </tr>
                                 </thead>
                                 <tbody className="text-sm">
-                                    {filteredAmenities?.map(
-                                        (amenity, index) => {
-                                            return (
-                                                <tr
-                                                    key={index}
-                                                    className="border-b border-tableBorderColor"
-                                                >
-                                                    <td className="p-3">
-                                                        <div className="flex items-center gap-[15px]">
-                                                            {amenity?.icon ? (
-                                                                <img
-                                                                    src={
-                                                                        config.SERVER_URL +
-                                                                        amenity?.icon
-                                                                    }
-                                                                    alt=""
-                                                                    className="w-[40px] max-h-[40px]"
-                                                                />
-                                                            ) : (
-                                                                <span className="text-lg w-[40px] flex items-center justify-center">
-                                                                    <FaCheck />
-                                                                </span>
-                                                            )}
-                                                            <span className="capitalize">
-                                                                {amenity?.name}
+                                    {filteredAmenities?.map((amenity, index) => {
+                                        return (
+                                            <tr key={index} className="border-b border-tableBorderColor">
+                                                <td className="p-3">
+                                                    <div className="flex items-center gap-[15px]">
+                                                        {amenity?.icon ? (
+                                                            <img
+                                                                src={config.SERVER_URL + amenity?.icon}
+                                                                alt=""
+                                                                className="w-[40px] max-h-[40px]"
+                                                            />
+                                                        ) : (
+                                                            <span className="text-lg w-[40px] flex items-center justify-center">
+                                                                <FaCheck />
                                                             </span>
-                                                        </div>
-                                                    </td>
+                                                        )}
+                                                        <span className="capitalize">{amenity?.name}</span>
+                                                    </div>
+                                                </td>
+                                                {(isEditPermission || isDeletePermission) && (
                                                     <td className="p-3">
                                                         <div className="flex gap-[10px]">
-                                                            <button
-                                                                className="h-auto bg-transparent text-red-500 text-xl"
-                                                                onClick={() =>
-                                                                    deleteHotelAmenity(
-                                                                        amenity?._id
-                                                                    )
-                                                                }
-                                                            >
-                                                                <MdDelete />
-                                                            </button>
-                                                            <button
-                                                                className="h-auto bg-transparent text-green-500 text-xl"
-                                                                onClick={() => {
-                                                                    setselectedHotelAmenity(
-                                                                        amenity
-                                                                    );
-                                                                    setHotelAmenityModal(
-                                                                        {
+                                                            {isDeletePermission && (
+                                                                <button
+                                                                    className="h-auto bg-transparent text-red-500 text-xl"
+                                                                    onClick={() =>
+                                                                        deleteHotelAmenity(amenity?._id)
+                                                                    }
+                                                                >
+                                                                    <MdDelete />
+                                                                </button>
+                                                            )}
+                                                            {isEditPermission && (
+                                                                <button
+                                                                    className="h-auto bg-transparent text-green-500 text-xl"
+                                                                    onClick={() => {
+                                                                        setselectedHotelAmenity(amenity);
+                                                                        setHotelAmenityModal({
                                                                             isOpen: true,
                                                                             isEdit: true,
-                                                                        }
-                                                                    );
-                                                                }}
-                                                            >
-                                                                <BiEditAlt />
-                                                            </button>
+                                                                        });
+                                                                    }}
+                                                                >
+                                                                    <BiEditAlt />
+                                                                </button>
+                                                            )}
                                                         </div>
                                                     </td>
-                                                </tr>
-                                            );
-                                        }
-                                    )}
+                                                )}
+                                            </tr>
+                                        );
+                                    })}
                                 </tbody>
                             </table>
                         )}

@@ -1,4 +1,5 @@
 import React from "react";
+
 import HotelAvailabilityAllocationColumn from "./HotelAvailabilityAllocationColumn";
 
 export default function HotelAvailabilityTableRow({ roomType }) {

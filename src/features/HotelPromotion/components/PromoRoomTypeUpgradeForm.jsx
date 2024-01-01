@@ -7,12 +7,10 @@ import {
 } from "../../../redux/slices/hotelPromotionsFormSlice";
 import { MultipleSelectDropdown } from "../../../components";
 
-export default function PromoRoomTypeUpgradeForm() {
+export default function PromoRoomTypeUpgradeForm({ isEditPermission = true }) {
     const dispatch = useDispatch();
 
-    const { roomTypeUpgrades, boardTypes, roomTypes } = useSelector(
-        (state) => state.hotelPromotionsForm
-    );
+    const { roomTypeUpgrades, boardTypes, roomTypes } = useSelector((state) => state.hotelPromotionsForm);
     const handleChange = (e, index) => {
         dispatch(
             handlePromotionRowDataChange({
@@ -30,26 +28,25 @@ export default function PromoRoomTypeUpgradeForm() {
                 <table className="w-full">
                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px]">
                         <tr>
-                            <th className="p-2 border w-[35px]">
-                                <div className="flex items-center justify-center">
-                                    <button
-                                        className="w-[25px] h-[25px] rounded-full bg-green-500"
-                                        onClick={() => dispatch(addRoomTypeUpgradesRows())}
-                                    >
-                                        +
-                                    </button>
-                                </div>
-                            </th>
+                            {isEditPermission && (
+                                <th className="p-2 border w-[35px]">
+                                    <div className="flex items-center justify-center">
+                                        <button
+                                            className="w-[25px] h-[25px] rounded-full bg-green-500"
+                                            onClick={() => dispatch(addRoomTypeUpgradesRows())}
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                </th>
+                            )}
                             <th className="font-[500] p-2 border">Rate Code</th>
                             <th className="font-[500] p-2 border">From Date</th>
                             <th className="font-[500] p-2 border">To Date</th>
                             <th className="font-[500] p-2 border">Book Before</th>
-
                             <th className="font-[500] p-2 border">Board Types</th>
-
                             <th className="font-[500] p-2 border">Room Type From</th>
                             <th className="font-[500] p-2 border">room Type To</th>
-
                             <th className="font-[500] p-2 border">Min</th>
                             <th className="font-[500] p-2 border">Max</th>
                         </tr>
@@ -57,23 +54,25 @@ export default function PromoRoomTypeUpgradeForm() {
                     <tbody className="text-sm">
                         {roomTypeUpgrades.map((roomTypeUpgrade, index) => (
                             <tr key={index} className="border-b border-tableBorderColor">
-                                <td className="p-2 border w-[35px] min-w-[35px]">
-                                    <div className="flex items-center justify-center">
-                                        <button
-                                            className="w-[25px] h-[25px] rounded-full bg-red-500"
-                                            onClick={() => {
-                                                dispatch(
-                                                    deletePromotionItemRow({
-                                                        name: "roomTypeUpgrades",
-                                                        index,
-                                                    })
-                                                );
-                                            }}
-                                        >
-                                            -
-                                        </button>
-                                    </div>
-                                </td>
+                                {isEditPermission && (
+                                    <td className="p-2 border w-[35px] min-w-[35px]">
+                                        <div className="flex items-center justify-center">
+                                            <button
+                                                className="w-[25px] h-[25px] rounded-full bg-red-500"
+                                                onClick={() => {
+                                                    dispatch(
+                                                        deletePromotionItemRow({
+                                                            name: "roomTypeUpgrades",
+                                                            index,
+                                                        })
+                                                    );
+                                                }}
+                                            >
+                                                -
+                                            </button>
+                                        </div>
+                                    </td>
+                                )}
                                 <td className="border w-[100px] min-w-[100px]">
                                     <input
                                         type="text"
@@ -81,6 +80,7 @@ export default function PromoRoomTypeUpgradeForm() {
                                         value={roomTypeUpgrade?.rateCode || ""}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[140px] min-w-[140px]">
@@ -90,6 +90,7 @@ export default function PromoRoomTypeUpgradeForm() {
                                         value={roomTypeUpgrade?.fromDate || ""}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%]  px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[140px] min-w-[140px]">
@@ -99,6 +100,7 @@ export default function PromoRoomTypeUpgradeForm() {
                                         value={roomTypeUpgrade?.toDate || ""}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%]  px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[100px] min-w-[100px]">
@@ -108,6 +110,7 @@ export default function PromoRoomTypeUpgradeForm() {
                                         value={roomTypeUpgrade?.bookBefore}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[180px] min-w-[180px]">
@@ -128,6 +131,7 @@ export default function PromoRoomTypeUpgradeForm() {
                                                 );
                                             }}
                                             randomIndex={index + "roomTypeUpgrades"}
+                                            disabled={!isEditPermission}
                                         />
                                     </div>
                                 </td>
@@ -136,6 +140,7 @@ export default function PromoRoomTypeUpgradeForm() {
                                         name="roomTypeFrom"
                                         value={roomTypeUpgrade?.roomTypeFrom || ""}
                                         onChange={(e) => handleChange(e, index)}
+                                        disabled={!isEditPermission}
                                     >
                                         <option value="" hidden>
                                             Select Room Type
@@ -152,6 +157,7 @@ export default function PromoRoomTypeUpgradeForm() {
                                         name="roomTypeTo"
                                         value={roomTypeUpgrade?.roomTypeTo || ""}
                                         onChange={(e) => handleChange(e, index)}
+                                        disabled={!isEditPermission}
                                     >
                                         <option value="" hidden>
                                             Select Room Type
@@ -171,6 +177,7 @@ export default function PromoRoomTypeUpgradeForm() {
                                         value={roomTypeUpgrade?.minimumLengthOfStay}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[70px] min-w-[70px]">
@@ -180,6 +187,7 @@ export default function PromoRoomTypeUpgradeForm() {
                                         value={roomTypeUpgrade?.maximumLengthOfStay}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                             </tr>

@@ -7,6 +7,7 @@ import { BiEditAlt } from "react-icons/bi";
 import { PageLoader, Pagination } from "../../components";
 import axios from "../../axios";
 import { HotelContractGroupModal } from "../../features/HotelContractGroups";
+import { hasPermission } from "../../utils";
 
 export default function HotelContractGroupsPage() {
     const [isLoading, setIsLoading] = useState(true);
@@ -24,8 +25,24 @@ export default function HotelContractGroupsPage() {
     const [selectedContractGroup, setSelectedContractGroup] = useState({});
 
     const { id } = useParams();
-    const { jwtToken } = useSelector((state) => state.admin);
+    const { jwtToken, admin } = useSelector((state) => state.admin);
     const { setSelectedSection } = useOutletContext();
+
+    const isCreatePermission = hasPermission({
+        roles: admin?.roles,
+        name: "contracts",
+        permission: "create",
+    });
+    const isEditPermission = hasPermission({
+        roles: admin?.roles,
+        name: "contracts",
+        permission: "update",
+    });
+    const isDeletePermission = hasPermission({
+        roles: admin?.roles,
+        name: "contracts",
+        permission: "delete",
+    });
 
     const fetchHotelContractGroups = async () => {
         try {
@@ -113,17 +130,19 @@ export default function HotelContractGroupsPage() {
                             Search
                         </button>
                     </form>
-                    <button
-                        className="px-3"
-                        onClick={() =>
-                            setContractGroupModal({
-                                isOpen: true,
-                                isEdit: false,
-                            })
-                        }
-                    >
-                        + Add Contract Group
-                    </button>
+                    {isCreatePermission && (
+                        <button
+                            className="px-3"
+                            onClick={() =>
+                                setContractGroupModal({
+                                    isOpen: true,
+                                    isEdit: false,
+                                })
+                            }
+                        >
+                            + Add Contract Group
+                        </button>
+                    )}
                 </div>
                 {contractGroupModal.isOpen && (
                     <HotelContractGroupModal
@@ -153,16 +172,15 @@ export default function HotelContractGroupsPage() {
                                     <th className="font-[500] p-3">Contract Code</th>
                                     <th className="font-[500] p-3">Contract Name</th>
                                     <th className="font-[500] p-3">Contracts & Rate Promotions</th>
-                                    <th className="font-[500] p-3">Actions</th>
+                                    {(isEditPermission || isDeletePermission) && (
+                                        <th className="font-[500] p-3">Actions</th>
+                                    )}
                                 </tr>
                             </thead>
                             <tbody className="text-sm">
                                 {hotelContractGroups?.map((contractGroup, index) => {
                                     return (
-                                        <tr
-                                            key={index}
-                                            className="border-b border-tableBorderColor"
-                                        >
+                                        <tr key={index} className="border-b border-tableBorderColor">
                                             <td className="p-3">{contractGroup?.contractCode}</td>
                                             <td className="p-3">{contractGroup?.contractName}</td>
                                             <td className="p-3">
@@ -174,30 +192,36 @@ export default function HotelContractGroupsPage() {
                                                     View
                                                 </Link>
                                             </td>
-                                            <td className="p-3">
-                                                <div className="flex gap-[10px]">
-                                                    <button
-                                                        className="h-auto bg-transparent text-red-500 text-xl"
-                                                        onClick={() => {
-                                                            deleteContractGroup(contractGroup?._id);
-                                                        }}
-                                                    >
-                                                        <MdDelete />
-                                                    </button>
-                                                    <button
-                                                        className="h-auto bg-transparent text-green-500 text-xl"
-                                                        onClick={() => {
-                                                            setSelectedContractGroup(contractGroup);
-                                                            setContractGroupModal({
-                                                                isOpen: true,
-                                                                isEdit: true,
-                                                            });
-                                                        }}
-                                                    >
-                                                        <BiEditAlt />
-                                                    </button>
-                                                </div>
-                                            </td>
+                                            {(isEditPermission || isDeletePermission) && (
+                                                <td className="p-3">
+                                                    <div className="flex gap-[10px]">
+                                                        {isDeletePermission && (
+                                                            <button
+                                                                className="h-auto bg-transparent text-red-500 text-xl"
+                                                                onClick={() => {
+                                                                    deleteContractGroup(contractGroup?._id);
+                                                                }}
+                                                            >
+                                                                <MdDelete />
+                                                            </button>
+                                                        )}
+                                                        {isEditPermission && (
+                                                            <button
+                                                                className="h-auto bg-transparent text-green-500 text-xl"
+                                                                onClick={() => {
+                                                                    setSelectedContractGroup(contractGroup);
+                                                                    setContractGroupModal({
+                                                                        isOpen: true,
+                                                                        isEdit: true,
+                                                                    });
+                                                                }}
+                                                            >
+                                                                <BiEditAlt />
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                </td>
+                                            )}
                                         </tr>
                                     );
                                 })}

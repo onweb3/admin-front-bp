@@ -11,6 +11,7 @@ import {
     RoomTypeOccupancyForm,
     RoomTypesImageForm,
 } from "../../features/AddRoomType";
+import { hasPermission } from "../../utils";
 
 export default function EditRoomTypePage() {
     const [data, setData] = useState({
@@ -41,9 +42,15 @@ export default function EditRoomTypePage() {
     });
     const [initialDataLoading, setInitialDataLoading] = useState(true);
 
-    const { jwtToken } = useSelector((state) => state.admin);
+    const { jwtToken, admin } = useSelector((state) => state.admin);
     const { id, roomTypeId } = useParams();
     const navigate = useNavigate();
+
+    const isEditPermission = hasPermission({
+        roles: admin?.roles,
+        name: "contracts",
+        permission: "update",
+    });
 
     const handleChange = (e) => {
         setData((prev) => {
@@ -246,6 +253,7 @@ export default function EditRoomTypePage() {
                                         value={data.roomName || ""}
                                         onChange={handleChange}
                                         required
+                                        disabled={!isEditPermission}
                                     />
                                 </div>
                                 <div>
@@ -255,6 +263,7 @@ export default function EditRoomTypePage() {
                                         value={data.serviceBy || ""}
                                         onChange={handleChange}
                                         id=""
+                                        disabled={!isEditPermission}
                                     >
                                         <option value="NIGHT">Night</option>
                                         {/* <option value="">Day</option> */}
@@ -268,6 +277,7 @@ export default function EditRoomTypePage() {
                                         name="areaInM2"
                                         value={data.areaInM2 || ""}
                                         onChange={handleChange}
+                                        disabled={!isEditPermission}
                                     />
                                 </div>
                                 <div>
@@ -288,6 +298,7 @@ export default function EditRoomTypePage() {
                                             }}
                                             randomIndex={"hb-room-type"}
                                             bracketName={"hbId"}
+                                            disabled={!isEditPermission}
                                         />
                                     </div>
                                 </div>
@@ -299,6 +310,7 @@ export default function EditRoomTypePage() {
                                         defaultChecked={data.isActive || false}
                                         onChange={handleChkChange}
                                         className="w-[16px] h-[16px]"
+                                        disabled={!isEditPermission}
                                     />
                                     <label htmlFor="isActive" className="mb-0">
                                         Is Active
@@ -310,8 +322,13 @@ export default function EditRoomTypePage() {
                                 roomOccupancies={roomOccupancies}
                                 setRoomOccupancies={setRoomOccupancies}
                                 defRmOccupancies={initialData.defRmOccupancies}
+                                isEditPermission={isEditPermission}
                             />
-                            <RoomAgePolicyForm data={data} handleChange={handleChange} />
+                            <RoomAgePolicyForm
+                                data={data}
+                                handleChange={handleChange}
+                                isEditPermission={isEditPermission}
+                            />
 
                             <div className="mt-5">
                                 <label htmlFor="">Description</label>
@@ -333,6 +350,7 @@ export default function EditRoomTypePage() {
                                     amenities={initialData.amenities}
                                     selectedAmenities={selectedAmenities}
                                     setSelectedAmenities={setSelectedAmenities}
+                                    isEditPermission={isEditPermission}
                                 />
                             </div>
 
@@ -341,10 +359,9 @@ export default function EditRoomTypePage() {
                                 setNewImages={setNewImages}
                                 images={data.images}
                                 removeImage={removeImage}
+                                isEditPermission={isEditPermission}
                             />
-                            {error && (
-                                <span className="text-sm block text-red-500 mt-2">{error}</span>
-                            )}
+                            {error && <span className="text-sm block text-red-500 mt-2">{error}</span>}
                             <div className="mt-4 flex items-center justify-end gap-[12px]">
                                 <button
                                     className="bg-slate-300 text-textColor px-[15px]"
@@ -353,9 +370,11 @@ export default function EditRoomTypePage() {
                                 >
                                     Cancel
                                 </button>
-                                <button className="w-[170px]">
-                                    {isLoading ? <BtnLoader /> : "Update Room Type"}
-                                </button>
+                                {isEditPermission && (
+                                    <button className="w-[170px]">
+                                        {isLoading ? <BtnLoader /> : "Update Room Type"}
+                                    </button>
+                                )}
                             </div>
                         </form>
                     </div>

@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { BiEditAlt } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
 import { useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import axios from "../../axios";
 import { PageLoader, Pagination } from "../../components";
 import AddBoardTypeModal from "../../features/Hotels/components/AddBoardTypeModal";
 import EditBoardTypeModal from "../../features/Hotels/components/EditBoardTypeModal";
-import EditHotelLayout from "../../layouts/EditHotelLayout";
+import { hasPermission } from "../../utils";
 
 export default function HotelBoardTypesPage() {
     const [isLoading, setIsLoading] = useState(false);
@@ -23,8 +23,23 @@ export default function HotelBoardTypesPage() {
         searchQuery: "",
     });
 
-    const { id } = useParams();
-    const { jwtToken } = useSelector((state) => state.admin);
+    const { jwtToken, admin } = useSelector((state) => state.admin);
+
+    const isCreatePermission = hasPermission({
+        roles: admin?.roles,
+        name: "hotel-boards",
+        permission: "create",
+    });
+    const isEditPermission = hasPermission({
+        roles: admin?.roles,
+        name: "hotel-boards",
+        permission: "update",
+    });
+    const isDeletePermission = hasPermission({
+        roles: admin?.roles,
+        name: "hotel-boards",
+        permission: "delete",
+    });
 
     const fetchBoardTypes = async () => {
         try {
@@ -128,12 +143,11 @@ export default function HotelBoardTypesPage() {
                                             Search
                                         </button>
                                     </form>
-                                    <button
-                                        className="px-3"
-                                        onClick={() => setIsAddBoardTypeModal(true)}
-                                    >
-                                        + Add Board
-                                    </button>
+                                    {isCreatePermission && (
+                                        <button className="px-3" onClick={() => setIsAddBoardTypeModal(true)}>
+                                            + Add Board
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                             {isLoading ? (
@@ -151,10 +165,10 @@ export default function HotelBoardTypesPage() {
                                             <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                                 <tr>
                                                     <th className="font-[500] p-3">Board Name</th>
-                                                    <th className="font-[500] p-3">
-                                                        Board Short Name
-                                                    </th>
-                                                    <th className="font-[500] p-3">Action</th>
+                                                    <th className="font-[500] p-3">Board Short Name</th>
+                                                    {(isEditPermission || isDeletePermission) && (
+                                                        <th className="font-[500] p-3">Action</th>
+                                                    )}
                                                 </tr>
                                             </thead>
                                             <tbody className="text-sm">
@@ -170,34 +184,40 @@ export default function HotelBoardTypesPage() {
                                                             <td className="p-3 capitalize">
                                                                 {boardType?.boardShortName}
                                                             </td>
-                                                            <td className="p-3">
-                                                                <div className="flex gap-[10px]">
-                                                                    <button
-                                                                        className="h-auto bg-transparent text-red-500 text-xl"
-                                                                        onClick={() =>
-                                                                            deleteBoardType(
-                                                                                boardType?._id
-                                                                            )
-                                                                        }
-                                                                    >
-                                                                        <MdDelete />
-                                                                    </button>
+                                                            {(isEditPermission || isDeletePermission) && (
+                                                                <td className="p-3">
+                                                                    <div className="flex gap-[10px]">
+                                                                        {isDeletePermission && (
+                                                                            <button
+                                                                                className="h-auto bg-transparent text-red-500 text-xl"
+                                                                                onClick={() =>
+                                                                                    deleteBoardType(
+                                                                                        boardType?._id
+                                                                                    )
+                                                                                }
+                                                                            >
+                                                                                <MdDelete />
+                                                                            </button>
+                                                                        )}
 
-                                                                    <button
-                                                                        className="h-auto bg-transparent text-green-500 text-xl"
-                                                                        onClick={() => {
-                                                                            setIsEditBoardTypeModal(
-                                                                                true
-                                                                            );
-                                                                            setSelectedBoardType(
-                                                                                boardType
-                                                                            );
-                                                                        }}
-                                                                    >
-                                                                        <BiEditAlt />
-                                                                    </button>
-                                                                </div>
-                                                            </td>
+                                                                        {isEditPermission && (
+                                                                            <button
+                                                                                className="h-auto bg-transparent text-green-500 text-xl"
+                                                                                onClick={() => {
+                                                                                    setIsEditBoardTypeModal(
+                                                                                        true
+                                                                                    );
+                                                                                    setSelectedBoardType(
+                                                                                        boardType
+                                                                                    );
+                                                                                }}
+                                                                            >
+                                                                                <BiEditAlt />
+                                                                            </button>
+                                                                        )}
+                                                                    </div>
+                                                                </td>
+                                                            )}
                                                         </tr>
                                                     );
                                                 })}

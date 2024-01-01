@@ -8,12 +8,10 @@ import {
 } from "../../../redux/slices/hotelPromotionsFormSlice";
 import { MultipleSelectDropdown } from "../../../components";
 
-export default function PromoMealUpgradeForm() {
+export default function PromoMealUpgradeForm({ isEditPermission = true }) {
     const dispatch = useDispatch();
 
-    const { mealUpgrades, boardTypes, roomTypes, data } = useSelector(
-        (state) => state.hotelPromotionsForm
-    );
+    const { mealUpgrades, boardTypes, roomTypes, data } = useSelector((state) => state.hotelPromotionsForm);
 
     const handleInpChange = (e) => {
         dispatch(
@@ -45,6 +43,7 @@ export default function PromoMealUpgradeForm() {
                         name="mealUpgradeOn"
                         value={data.mealUpgradeOn || ""}
                         onChange={handleInpChange}
+                        disabled={!isEditPermission}
                     >
                         <option value="" hidden>
                             Select Meal Upgrade On
@@ -60,16 +59,18 @@ export default function PromoMealUpgradeForm() {
                 <table className="w-full">
                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px]">
                         <tr>
-                            <th className="p-2 border w-[35px]">
-                                <div className="flex items-center justify-center">
-                                    <button
-                                        className="w-[25px] h-[25px] rounded-full bg-green-500"
-                                        onClick={() => dispatch(addMealUpgradesRows())}
-                                    >
-                                        +
-                                    </button>
-                                </div>
-                            </th>
+                            {isEditPermission && (
+                                <th className="p-2 border w-[35px]">
+                                    <div className="flex items-center justify-center">
+                                        <button
+                                            className="w-[25px] h-[25px] rounded-full bg-green-500"
+                                            onClick={() => dispatch(addMealUpgradesRows())}
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                </th>
+                            )}
                             <th className="font-[500] p-2 border">Rate Code</th>
                             <th className="font-[500] p-2 border">From Date</th>
                             <th className="font-[500] p-2 border">To Date</th>
@@ -84,23 +85,25 @@ export default function PromoMealUpgradeForm() {
                     <tbody className="text-sm">
                         {mealUpgrades.map((mealUpgrade, index) => (
                             <tr key={index} className="border-b border-tableBorderColor">
-                                <td className="p-2 border w-[35px] min-w-[35px]">
-                                    <div className="flex items-center justify-center">
-                                        <button
-                                            className="w-[25px] h-[25px] rounded-full bg-red-500"
-                                            onClick={() => {
-                                                dispatch(
-                                                    deletePromotionItemRow({
-                                                        name: "mealUpgrades",
-                                                        index,
-                                                    })
-                                                );
-                                            }}
-                                        >
-                                            -
-                                        </button>
-                                    </div>
-                                </td>
+                                {isEditPermission && (
+                                    <td className="p-2 border w-[35px] min-w-[35px]">
+                                        <div className="flex items-center justify-center">
+                                            <button
+                                                className="w-[25px] h-[25px] rounded-full bg-red-500"
+                                                onClick={() => {
+                                                    dispatch(
+                                                        deletePromotionItemRow({
+                                                            name: "mealUpgrades",
+                                                            index,
+                                                        })
+                                                    );
+                                                }}
+                                            >
+                                                -
+                                            </button>
+                                        </div>
+                                    </td>
+                                )}
                                 <td className="border w-[100px] min-w-[100px]">
                                     <input
                                         type="text"
@@ -108,6 +111,7 @@ export default function PromoMealUpgradeForm() {
                                         value={mealUpgrade?.rateCode || ""}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[140px] min-w-[140px]">
@@ -117,6 +121,7 @@ export default function PromoMealUpgradeForm() {
                                         value={mealUpgrade?.fromDate || ""}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%]  px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[140px] min-w-[140px]">
@@ -126,6 +131,7 @@ export default function PromoMealUpgradeForm() {
                                         value={mealUpgrade?.toDate || ""}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%]  px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[100px] min-w-[100px]">
@@ -135,6 +141,7 @@ export default function PromoMealUpgradeForm() {
                                         value={mealUpgrade?.bookBefore}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
 
@@ -156,6 +163,7 @@ export default function PromoMealUpgradeForm() {
                                                 );
                                             }}
                                             randomIndex={index + "mealUpgrades"}
+                                            disabled={!isEditPermission}
                                         />
                                     </div>
                                 </td>
@@ -164,6 +172,7 @@ export default function PromoMealUpgradeForm() {
                                         name="mealFrom"
                                         value={mealUpgrade?.mealFrom || ""}
                                         onChange={(e) => handleChange(e, index)}
+                                        disabled={!isEditPermission}
                                     >
                                         <option value="" hidden>
                                             Select Meal
@@ -180,6 +189,7 @@ export default function PromoMealUpgradeForm() {
                                         name="mealTo"
                                         value={mealUpgrade?.mealTo || ""}
                                         onChange={(e) => handleChange(e, index)}
+                                        disabled={!isEditPermission}
                                     >
                                         <option value="" hidden>
                                             Select Meal
@@ -198,6 +208,7 @@ export default function PromoMealUpgradeForm() {
                                         value={mealUpgrade?.minimumLengthOfStay}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[70px] min-w-[70px]">
@@ -207,6 +218,7 @@ export default function PromoMealUpgradeForm() {
                                         value={mealUpgrade?.maximumLengthOfStay}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                             </tr>

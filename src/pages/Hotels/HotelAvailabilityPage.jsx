@@ -1,12 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { FiChevronDown } from "react-icons/fi";
 
 import { BtnLoader, MultipleSelectDropdown, PageLoader, SelectDropdown } from "../../components";
 import { HotelAvailabilityModal, HotelAvailabilityTable } from "../../features/HotelAvailability";
 import axios from "../../axios";
-import { useHandleClickOutside } from "../../hooks";
+import { hasPermission } from "../../utils";
 
 function HotelAvailabilityPage() {
     const [data, setData] = useState({});
@@ -16,21 +15,17 @@ function HotelAvailabilityPage() {
         fromDate: "",
         toDate: "",
     });
-    const [searchQuery, setSearchQuery] = useState("");
     const [selectedHotel, setSelectedHotel] = useState({});
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [selectedContractGroups, setSelectedContractGroups] = useState([]);
     const [availabilityModalOpen, setAvailabilityModalOpen] = useState(false);
 
-    const { jwtToken } = useSelector((state) => state.admin);
-    const wrapperRef = useRef();
-    useHandleClickOutside(wrapperRef, () => setIsDropdownOpen(false));
+    const { jwtToken, admin } = useSelector((state) => state.admin);
 
-    const filteredHotels = searchQuery
-        ? hotels?.filter((item) => {
-              return item?.hotelName?.toLowerCase()?.includes(searchQuery?.toLowerCase());
-          })
-        : hotels;
+    const isEditPermission = hasPermission({
+        roles: admin?.roles,
+        name: "hotel-availability",
+        permission: "update",
+    });
 
     const handleChange = (e) => {
         setFilters((prev) => {
@@ -106,15 +101,13 @@ function HotelAvailabilityPage() {
                             </label>
                             <div className="relative">
                                 <SelectDropdown
-                                    data={filteredHotels}
+                                    data={hotels}
                                     valueName={"_id"}
                                     displayName={"hotelName"}
                                     placeholder={"Select Hotel"}
                                     selectedData={selectedHotel?._id}
                                     setSelectedData={(val) => {
-                                        setSelectedHotel(
-                                            filteredHotels?.find((item) => item._id === val)
-                                        );
+                                        setSelectedHotel(hotels?.find((item) => item._id === val));
                                         setSelectedContractGroups([]);
                                     }}
                                 />
@@ -148,12 +141,7 @@ function HotelAvailabilityPage() {
                             <label htmlFor="" className="font-[600]">
                                 To Date
                             </label>
-                            <input
-                                type="date"
-                                value={filters.toDate}
-                                name="toDate"
-                                onChange={handleChange}
-                            />
+                            <input type="date" value={filters.toDate} name="toDate" onChange={handleChange} />
                         </div>
                         <div className="col-span-1 flex items-end">
                             <button
@@ -170,7 +158,8 @@ function HotelAvailabilityPage() {
                                 {isLoading ? <BtnLoader /> : "View"}
                             </button>
                         </div>
-                        {filters.fromDate &&
+                        {isEditPermission &&
+                            filters.fromDate &&
                             filters.toDate &&
                             selectedHotel?.hotelName &&
                             selectedContractGroups?.length > 0 && (

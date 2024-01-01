@@ -7,6 +7,7 @@ import { BiEditAlt } from "react-icons/bi";
 import axios from "../../axios";
 import { PageLoader, Pagination } from "../../components";
 import { HotelChainModal } from "../../features/HotelChain";
+import { hasPermission } from "../../utils";
 
 export default function HotelChainsListPage() {
     const [isLoading, setIsLoading] = useState(true);
@@ -24,7 +25,23 @@ export default function HotelChainsListPage() {
     const [selectedChain, setSelectedChain] = useState({});
     const [hotelGroups, setHotelGroups] = useState([]);
 
-    const { jwtToken } = useSelector((state) => state.admin);
+    const { jwtToken, admin } = useSelector((state) => state.admin);
+
+    const isCreatePermission = hasPermission({
+        roles: admin?.roles,
+        name: "hotel-chains",
+        permission: "create",
+    });
+    const isEditPermission = hasPermission({
+        roles: admin?.roles,
+        name: "hotel-chains",
+        permission: "update",
+    });
+    const isDeletePermission = hasPermission({
+        roles: admin?.roles,
+        name: "hotel-chains",
+        permission: "delete",
+    });
 
     const fetchChains = async () => {
         try {
@@ -142,17 +159,19 @@ export default function HotelChainsListPage() {
                                     Search
                                 </button>
                             </form>
-                            <button
-                                className="px-3"
-                                onClick={() => {
-                                    setHotelChainModal({
-                                        isOpen: true,
-                                        isEdit: false,
-                                    });
-                                }}
-                            >
-                                + Add Chain
-                            </button>
+                            {isCreatePermission && (
+                                <button
+                                    className="px-3"
+                                    onClick={() => {
+                                        setHotelChainModal({
+                                            isOpen: true,
+                                            isEdit: false,
+                                        });
+                                    }}
+                                >
+                                    + Add Chain
+                                </button>
+                            )}
                         </div>
 
                         {hotelChainModal?.isOpen && (
@@ -182,45 +201,50 @@ export default function HotelChainsListPage() {
                                         <th className="font-[500] p-3">Chain Code</th>
                                         <th className="font-[500] p-3">Chain Name</th>
                                         <th className="font-[500] p-3">Group Name</th>
-                                        <th className="font-[500] p-3">Action</th>
+                                        {(isEditPermission || isDeletePermission) && (
+                                            <th className="font-[500] p-3">Action</th>
+                                        )}
                                     </tr>
                                 </thead>
                                 <tbody className="text-sm">
                                     {chains?.map((chain, index) => {
                                         return (
-                                            <tr
-                                                key={index}
-                                                className="border-b border-tableBorderColor"
-                                            >
+                                            <tr key={index} className="border-b border-tableBorderColor">
                                                 <td className="p-3">{chain?.chainCode}</td>
                                                 <td className="p-3 capitalize">
-                                                    {chain?.chainName}
+                                                    {chain?.chainName || "N/A"}
                                                 </td>
                                                 <td className="p-3 capitalize">
                                                     {chain?.hotelGroup?.groupName || "N/A"}
                                                 </td>
-                                                <td className="p-3">
-                                                    <div className="flex gap-[10px]">
-                                                        <button
-                                                            className="h-auto bg-transparent text-red-500 text-xl"
-                                                            onClick={() => deleteChain(chain?._id)}
-                                                        >
-                                                            <MdDelete />
-                                                        </button>
-                                                        <button
-                                                            className="h-auto bg-transparent text-green-500 text-xl"
-                                                            onClick={() => {
-                                                                setSelectedChain(chain);
-                                                                setHotelChainModal({
-                                                                    isOpen: true,
-                                                                    isEdit: true,
-                                                                });
-                                                            }}
-                                                        >
-                                                            <BiEditAlt />
-                                                        </button>
-                                                    </div>
-                                                </td>
+                                                {(isEditPermission || isDeletePermission) && (
+                                                    <td className="p-3">
+                                                        <div className="flex gap-[10px]">
+                                                            {isDeletePermission && (
+                                                                <button
+                                                                    className="h-auto bg-transparent text-red-500 text-xl"
+                                                                    onClick={() => deleteChain(chain?._id)}
+                                                                >
+                                                                    <MdDelete />
+                                                                </button>
+                                                            )}
+                                                            {isEditPermission && (
+                                                                <button
+                                                                    className="h-auto bg-transparent text-green-500 text-xl"
+                                                                    onClick={() => {
+                                                                        setSelectedChain(chain);
+                                                                        setHotelChainModal({
+                                                                            isOpen: true,
+                                                                            isEdit: true,
+                                                                        });
+                                                                    }}
+                                                                >
+                                                                    <BiEditAlt />
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                    </td>
+                                                )}
                                             </tr>
                                         );
                                     })}

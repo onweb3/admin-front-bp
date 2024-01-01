@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { RoomOccupancyForm } from "../../features/RoomOccupancies";
 import { BtnLoader, PageLoader } from "../../components";
 import axios from "../../axios";
+import { hasPermission } from "../../utils";
 
 export default function EditRoomOccupanciesPage() {
     const [roomOccupancy, setRoomOccupancy] = useState({
@@ -20,9 +21,15 @@ export default function EditRoomOccupanciesPage() {
     const [error, setError] = useState("");
     const [isPageLoading, setIsPageLoading] = useState(true);
 
-    const { jwtToken } = useSelector((state) => state.admin);
+    const { jwtToken, admin } = useSelector((state) => state.admin);
     const navigate = useNavigate();
     const { occupancyId } = useParams();
+
+    const isEditPermission = hasPermission({
+        roles: admin?.roles,
+        name: "room-occupancies",
+        permission: "update",
+    });
 
     const handleSubmit = async () => {
         try {
@@ -104,6 +111,7 @@ export default function EditRoomOccupanciesPage() {
                         <RoomOccupancyForm
                             roomOccupancy={roomOccupancy}
                             setRoomOccupancy={setRoomOccupancy}
+                            isEditPermission={isEditPermission}
                         />
 
                         {error && <span className="text-sm block text-red-500 mt-2">{error}</span>}
@@ -115,9 +123,11 @@ export default function EditRoomOccupanciesPage() {
                             >
                                 Back
                             </button>
-                            <button className="w-[200px]" onClick={handleSubmit}>
-                                {isLoading ? <BtnLoader /> : "Edit Room Occupancy"}
-                            </button>
+                            {isEditPermission && (
+                                <button className="w-[200px]" onClick={handleSubmit}>
+                                    {isLoading ? <BtnLoader /> : "Edit Room Occupancy"}
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>

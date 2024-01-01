@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import axios from "../../axios";
 import { PageLoader, Pagination } from "../../components";
 import AccommodationTypeModal from "../../features/AccommodationTypes/components/AccommodationTypeModal";
+import { hasPermission } from "../../utils";
 
 export default function AccommodationTypesPage() {
     const [isLoading, setIsLoading] = useState(true);
@@ -23,7 +24,23 @@ export default function AccommodationTypesPage() {
     });
     const [selectedAccType, setSelectedAccType] = useState({});
 
-    const { jwtToken } = useSelector((state) => state.admin);
+    const { jwtToken, admin } = useSelector((state) => state.admin);
+
+    const isCreatePermission = hasPermission({
+        roles: admin?.roles,
+        name: "accommodation-types",
+        permission: "create",
+    });
+    const isEditPermission = hasPermission({
+        roles: admin?.roles,
+        name: "accommodation-types",
+        permission: "update",
+    });
+    const isDeletePermission = hasPermission({
+        roles: admin?.roles,
+        name: "accommodation-types",
+        permission: "delete",
+    });
 
     const fetchAccommodationTypes = async () => {
         try {
@@ -141,17 +158,19 @@ export default function AccommodationTypesPage() {
                                     Search
                                 </button>
                             </form>
-                            <button
-                                className="px-3"
-                                onClick={() => {
-                                    setAccTypeModal({
-                                        isOpen: true,
-                                        isEdit: false,
-                                    });
-                                }}
-                            >
-                                + Add Accommodation Type
-                            </button>
+                            {isCreatePermission && (
+                                <button
+                                    className="px-3"
+                                    onClick={() => {
+                                        setAccTypeModal({
+                                            isOpen: true,
+                                            isEdit: false,
+                                        });
+                                    }}
+                                >
+                                    + Add Accommodation Type
+                                </button>
+                            )}
                         </div>
 
                         {accTypeModal.isOpen && (
@@ -179,44 +198,47 @@ export default function AccommodationTypesPage() {
                                     <tr>
                                         <th className="font-[500] p-3">Code</th>
                                         <th className="font-[500] p-3">Accommodation Type Name</th>
-                                        <th className="font-[500] p-3">Action</th>
+                                        {(isEditPermission || isDeletePermission) && (
+                                            <th className="font-[500] p-3">Action</th>
+                                        )}
                                     </tr>
                                 </thead>
                                 <tbody className="text-sm">
                                     {accommodationTypes?.map((acc, index) => {
                                         return (
-                                            <tr
-                                                key={index}
-                                                className="border-b border-tableBorderColor"
-                                            >
+                                            <tr key={index} className="border-b border-tableBorderColor">
                                                 <td className="p-3 uppercase">
                                                     {acc?.accommodationTypeCode}
                                                 </td>
-                                                <td className="p-3">
-                                                    {acc?.accommodationTypeName}
-                                                </td>
-                                                <td className="p-3">
-                                                    <div className="flex gap-[10px]">
-                                                        <button
-                                                            className="h-auto bg-transparent text-red-500 text-xl"
-                                                            onClick={() => deleteAccType(acc?._id)}
-                                                        >
-                                                            <MdDelete />
-                                                        </button>
-                                                        <button
-                                                            className="h-auto bg-transparent text-green-500 text-xl"
-                                                            onClick={() => {
-                                                                setSelectedAccType(acc);
-                                                                setAccTypeModal({
-                                                                    isEdit: true,
-                                                                    isOpen: true,
-                                                                });
-                                                            }}
-                                                        >
-                                                            <BiEditAlt />
-                                                        </button>
-                                                    </div>
-                                                </td>
+                                                <td className="p-3">{acc?.accommodationTypeName}</td>
+                                                {(isEditPermission || isDeletePermission) && (
+                                                    <td className="p-3">
+                                                        <div className="flex gap-[10px]">
+                                                            {isDeletePermission && (
+                                                                <button
+                                                                    className="h-auto bg-transparent text-red-500 text-xl"
+                                                                    onClick={() => deleteAccType(acc?._id)}
+                                                                >
+                                                                    <MdDelete />
+                                                                </button>
+                                                            )}
+                                                            {isEditPermission && (
+                                                                <button
+                                                                    className="h-auto bg-transparent text-green-500 text-xl"
+                                                                    onClick={() => {
+                                                                        setSelectedAccType(acc);
+                                                                        setAccTypeModal({
+                                                                            isEdit: true,
+                                                                            isOpen: true,
+                                                                        });
+                                                                    }}
+                                                                >
+                                                                    <BiEditAlt />
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                    </td>
+                                                )}
                                             </tr>
                                         );
                                     })}

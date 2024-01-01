@@ -1,10 +1,12 @@
 import React from "react";
+
 import RoomTypeOccupancySingleRow from "./RoomTypeOccupancySingleRow";
 
 export default function RoomTypeOccupancyForm({
     roomOccupancies,
     setRoomOccupancies,
     defRmOccupancies,
+    isEditPermission = true,
 }) {
     const addRoomOccupancyRow = () => {
         setRoomOccupancies((prev) => {
@@ -31,17 +33,19 @@ export default function RoomTypeOccupancyForm({
                 <table className="w-full">
                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px]">
                         <tr>
-                            <th className="p-2 border w-[35px]">
-                                <div className="flex items-center justify-center">
-                                    <button
-                                        className="w-[25px] h-[25px] rounded-full bg-green-500"
-                                        onClick={addRoomOccupancyRow}
-                                        type="button"
-                                    >
-                                        +
-                                    </button>
-                                </div>
-                            </th>
+                            {isEditPermission && (
+                                <th className="p-2 border w-[35px]">
+                                    <div className="flex items-center justify-center">
+                                        <button
+                                            className="w-[25px] h-[25px] rounded-full bg-green-500"
+                                            onClick={addRoomOccupancyRow}
+                                            type="button"
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                </th>
+                            )}
                             <th className="font-[500] p-2 border">Occupancy</th>
                             <th className="font-[500] p-2 border">Short Name</th>
                             <th className="font-[500] p-2 border">Max Count</th>
@@ -61,6 +65,7 @@ export default function RoomTypeOccupancyForm({
                                     setRoomOccupancies={setRoomOccupancies}
                                     defRmOccupancies={defRmOccupancies}
                                     index={index}
+                                    isEditPermission={isEditPermission}
                                 />
                             );
                         })}

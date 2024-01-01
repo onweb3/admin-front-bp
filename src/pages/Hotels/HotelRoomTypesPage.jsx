@@ -6,6 +6,7 @@ import { Link, useOutletContext, useParams } from "react-router-dom";
 
 import axios from "../../axios";
 import { PageLoader, Pagination } from "../../components";
+import { hasPermission } from "../../utils";
 
 export default function HotelRoomTypePage() {
     const [isLoading, setIsLoading] = useState(true);
@@ -18,8 +19,19 @@ export default function HotelRoomTypePage() {
     });
 
     const { id } = useParams();
-    const { jwtToken } = useSelector((state) => state.admin);
+    const { jwtToken, admin } = useSelector((state) => state.admin);
     const { setSelectedSection } = useOutletContext();
+
+    const isCreatePermission = hasPermission({
+        roles: admin?.roles,
+        name: "contracts",
+        permission: "create",
+    });
+    const isDeletePermission = hasPermission({
+        roles: admin?.roles,
+        name: "contracts",
+        permission: "delete",
+    });
 
     const fetchData = async () => {
         try {
@@ -108,18 +120,18 @@ export default function HotelRoomTypePage() {
                             Search
                         </button>
                     </form>
-                    <Link to={`/hotels/${id}/room-types/add`}>
-                        <button className="px-3">+ Add Room Types</button>
-                    </Link>
+                    {isCreatePermission && (
+                        <Link to={`/hotels/${id}/room-types/add`}>
+                            <button className="px-3">+ Add Room Types</button>
+                        </Link>
+                    )}
                 </div>
             </div>
             {isLoading ? (
                 <PageLoader />
             ) : roomTypes?.length < 1 ? (
                 <div className="p-6 flex flex-col items-center">
-                    <span className="text-sm text-grayColor block mt-[6px]">
-                        Oops.. No Room Types Found
-                    </span>
+                    <span className="text-sm text-grayColor block mt-[6px]">Oops.. No Room Types Found</span>
                 </div>
             ) : (
                 <div>
@@ -138,10 +150,7 @@ export default function HotelRoomTypePage() {
                             <tbody className="text-sm">
                                 {roomTypes?.map((data, index) => {
                                     return (
-                                        <tr
-                                            className="border-b border-tableBorderColor"
-                                            key={index}
-                                        >
+                                        <tr className="border-b border-tableBorderColor" key={index}>
                                             <td className="p-3 capitalize">{data?.roomName}</td>
                                             <td className="p-3 ">{data?.serviceBy}</td>
                                             <td className="p-3">
@@ -153,8 +162,7 @@ export default function HotelRoomTypePage() {
                                                         return (
                                                             <span key={index}>
                                                                 {item?.shortName}
-                                                                {index <
-                                                                data?.roomOccupancies?.length - 1
+                                                                {index < data?.roomOccupancies?.length - 1
                                                                     ? ", "
                                                                     : ""}
                                                             </span>
@@ -169,9 +177,7 @@ export default function HotelRoomTypePage() {
                                                     <span
                                                         className={
                                                             "block w-[10px] h-[10px] rounded-full " +
-                                                            (data?.isActive
-                                                                ? "bg-green-500"
-                                                                : "bg-red-500")
+                                                            (data?.isActive ? "bg-green-500" : "bg-red-500")
                                                         }
                                                     ></span>
                                                     {data?.isActive ? "Active" : "Inactive"}
@@ -179,14 +185,16 @@ export default function HotelRoomTypePage() {
                                             </td>
                                             <td className="p-3">
                                                 <div className="flex gap-[10px]">
-                                                    <button
-                                                        className="h-auto bg-transparent text-red-500 text-xl"
-                                                        onClick={() => {
-                                                            deleteRoomType(data?._id);
-                                                        }}
-                                                    >
-                                                        <MdDelete />
-                                                    </button>
+                                                    {isDeletePermission && (
+                                                        <button
+                                                            className="h-auto bg-transparent text-red-500 text-xl"
+                                                            onClick={() => {
+                                                                deleteRoomType(data?._id);
+                                                            }}
+                                                        >
+                                                            <MdDelete />
+                                                        </button>
+                                                    )}
                                                     <Link to={`${data?._id}/edit`}>
                                                         <button className="h-auto bg-transparent text-green-500 text-xl">
                                                             <BiEditAlt />

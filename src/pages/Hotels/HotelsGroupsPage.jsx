@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import axios from "../../axios";
 import { PageLoader, Pagination } from "../../components";
 import { HotelGroupModal } from "../../features/HotelGroup";
+import { hasPermission } from "../../utils";
 
 export default function HotelsGroupsPage() {
     const [hotelGroups, setHotelGroups] = useState([]);
@@ -23,7 +24,23 @@ export default function HotelsGroupsPage() {
         searchQuery: "",
     });
 
-    const { jwtToken } = useSelector((state) => state.admin);
+    const { jwtToken, admin } = useSelector((state) => state.admin);
+
+    const isCreatePermission = hasPermission({
+        roles: admin?.roles,
+        name: "hotel-groups",
+        permission: "create",
+    });
+    const isEditPermission = hasPermission({
+        roles: admin?.roles,
+        name: "hotel-groups",
+        permission: "update",
+    });
+    const isDeletePermission = hasPermission({
+        roles: admin?.roles,
+        name: "hotel-groups",
+        permission: "delete",
+    });
 
     const fetchHotelGroups = async () => {
         try {
@@ -125,17 +142,19 @@ export default function HotelsGroupsPage() {
                                     Search
                                 </button>
                             </form>
-                            <button
-                                className="px-3"
-                                onClick={() => {
-                                    setHotelGroupModalOpen({
-                                        isOpen: true,
-                                        isEdit: false,
-                                    });
-                                }}
-                            >
-                                + Add Group
-                            </button>
+                            {isCreatePermission && (
+                                <button
+                                    className="px-3"
+                                    onClick={() => {
+                                        setHotelGroupModalOpen({
+                                            isOpen: true,
+                                            isEdit: false,
+                                        });
+                                    }}
+                                >
+                                    + Add Group
+                                </button>
+                            )}
                         </div>
 
                         {hotelGroupModalOpen?.isOpen && (
@@ -163,44 +182,47 @@ export default function HotelsGroupsPage() {
                                     <tr>
                                         <th className="font-[500] p-3">Group Code</th>
                                         <th className="font-[500] p-3">Group Name</th>
-                                        <th className="font-[500] p-3">Action</th>
+                                        {(isEditPermission || isDeletePermission) && (
+                                            <th className="font-[500] p-3">Action</th>
+                                        )}
                                     </tr>
                                 </thead>
                                 <tbody className="text-sm">
                                     {hotelGroups?.map((group, index) => {
                                         return (
-                                            <tr
-                                                key={index}
-                                                className="border-b border-tableBorderColor"
-                                            >
+                                            <tr key={index} className="border-b border-tableBorderColor">
                                                 <td className="p-3">{group?.groupCode}</td>
-                                                <td className="p-3 capitalize">
-                                                    {group?.groupName}
-                                                </td>
-                                                <td className="p-3">
-                                                    <div className="flex gap-[10px]">
-                                                        <button
-                                                            className="h-auto bg-transparent text-red-500 text-xl"
-                                                            onClick={() =>
-                                                                deleteHotelGroup(group?._id)
-                                                            }
-                                                        >
-                                                            <MdDelete />
-                                                        </button>
-                                                        <button
-                                                            className="h-auto bg-transparent text-green-500 text-xl"
-                                                            onClick={() => {
-                                                                setSelectedHotelGroup(group);
-                                                                setHotelGroupModalOpen({
-                                                                    isOpen: true,
-                                                                    isEdit: true,
-                                                                });
-                                                            }}
-                                                        >
-                                                            <BiEditAlt />
-                                                        </button>
-                                                    </div>
-                                                </td>
+                                                <td className="p-3 capitalize">{group?.groupName}</td>
+                                                {(isEditPermission || isDeletePermission) && (
+                                                    <td className="p-3">
+                                                        <div className="flex gap-[10px]">
+                                                            {isDeletePermission && (
+                                                                <button
+                                                                    className="h-auto bg-transparent text-red-500 text-xl"
+                                                                    onClick={() =>
+                                                                        deleteHotelGroup(group?._id)
+                                                                    }
+                                                                >
+                                                                    <MdDelete />
+                                                                </button>
+                                                            )}
+                                                            {isEditPermission && (
+                                                                <button
+                                                                    className="h-auto bg-transparent text-green-500 text-xl"
+                                                                    onClick={() => {
+                                                                        setSelectedHotelGroup(group);
+                                                                        setHotelGroupModalOpen({
+                                                                            isOpen: true,
+                                                                            isEdit: true,
+                                                                        });
+                                                                    }}
+                                                                >
+                                                                    <BiEditAlt />
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                    </td>
+                                                )}
                                             </tr>
                                         );
                                     })}

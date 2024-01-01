@@ -6,7 +6,7 @@ import { Link, useOutletContext, useParams } from "react-router-dom";
 
 import axios from "../../axios";
 import { PageLoader, Pagination } from "../../components";
-import { formatDate } from "../../utils";
+import { formatDate, hasPermission } from "../../utils";
 
 export default function HotelAddOnsPage() {
     const [isLoading, setIsLoading] = useState(false);
@@ -19,8 +19,19 @@ export default function HotelAddOnsPage() {
     });
 
     const { id } = useParams();
-    const { jwtToken } = useSelector((state) => state.admin);
+    const { jwtToken, admin } = useSelector((state) => state.admin);
     const { setSelectedSection } = useOutletContext();
+
+    const isCreatePermission = hasPermission({
+        roles: admin?.roles,
+        name: "contracts",
+        permission: "create",
+    });
+    const isDeletePermission = hasPermission({
+        roles: admin?.roles,
+        name: "contracts",
+        permission: "delete",
+    });
 
     const fetchAddOns = async () => {
         try {
@@ -106,18 +117,18 @@ export default function HotelAddOnsPage() {
                             Search
                         </button>
                     </form>
-                    <Link to={`/hotels/${id}/add-ons/add`}>
-                        <button className="px-3">+ Add Add Ons</button>
-                    </Link>
+                    {isCreatePermission && (
+                        <Link to={`/hotels/${id}/add-ons/add`}>
+                            <button className="px-3">+ Add Add Ons</button>
+                        </Link>
+                    )}
                 </div>
             </div>
             {isLoading ? (
                 <PageLoader />
             ) : !addOns || addOns?.length < 1 ? (
                 <div className="p-6 flex flex-col items-center">
-                    <span className="text-sm text-grayColor block mt-[6px]">
-                        Oops.. No AddOns Found
-                    </span>
+                    <span className="text-sm text-grayColor block mt-[6px]">Oops.. No AddOns Found</span>
                 </div>
             ) : (
                 <div>
@@ -135,29 +146,23 @@ export default function HotelAddOnsPage() {
                             <tbody className="text-sm">
                                 {addOns?.map((addOn, index) => {
                                     return (
-                                        <tr
-                                            className="border-b border-tableBorderColor"
-                                            key={index}
-                                        >
-                                            <td className="p-3 capitalize">
-                                                {formatDate(addOn?.fromDate)}
-                                            </td>
-                                            <td className="p-3 capitalize">
-                                                {formatDate(addOn?.toDate)}
-                                            </td>
+                                        <tr className="border-b border-tableBorderColor" key={index}>
+                                            <td className="p-3 capitalize">{formatDate(addOn?.fromDate)}</td>
+                                            <td className="p-3 capitalize">{formatDate(addOn?.toDate)}</td>
                                             <td className="p-3 ">{addOn?.addOnName}</td>
                                             <td className="p-3 ">{addOn?.applyOn}</td>
-
                                             <td className="p-3">
                                                 <div className="flex gap-[10px]">
-                                                    <button
-                                                        className="h-auto bg-transparent text-red-500 text-xl"
-                                                        onClick={() => {
-                                                            deleteAddOn(addOn?._id);
-                                                        }}
-                                                    >
-                                                        <MdDelete />
-                                                    </button>
+                                                    {isDeletePermission && (
+                                                        <button
+                                                            className="h-auto bg-transparent text-red-500 text-xl"
+                                                            onClick={() => {
+                                                                deleteAddOn(addOn?._id);
+                                                            }}
+                                                        >
+                                                            <MdDelete />
+                                                        </button>
+                                                    )}
                                                     <Link to={`${addOn?._id}/edit`}>
                                                         <button className="h-auto bg-transparent text-green-500 text-xl">
                                                             <BiEditAlt />

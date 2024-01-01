@@ -4,12 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Toggle } from "../../../components";
 import { handlePromotionDataChange } from "../../../redux/slices/hotelPromotionsFormSlice";
 
-export default function PromotionalTypesForm() {
+export default function PromotionalTypesForm({ isEditPermission = true }) {
     const { data } = useSelector((state) => state.hotelPromotionsForm);
     const dispatch = useDispatch();
 
     return (
-        <div className="p-4">
+        <div className={"p-4 " + (isEditPermission ? "pointer-events-auto" : "pointer-events-none")}>
             <h3 className="font-medium mb-2">Promotion Types</h3>
             <div className="grid grid-cols-6 gap-3">
                 <div className="relative">
