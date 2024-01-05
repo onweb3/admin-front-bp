@@ -838,96 +838,76 @@ export default function EditActivityPage() {
                                     </button>
                                 </div>
                             </div>
-                            <div
-                                className={` ${
-                                    section === "markup" ? "w-full " : "hidden"
-                                }`}
-                            >
-                                <div className="overflow-x-auto">
-                                    <table className="w-full">
-                                        <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
-                                            <tr>
-                                                <th className="font-[500] p-3">
-                                                    Index
-                                                </th>
-                                                <th className="font-[500] p-3">
-                                                    Name
-                                                </th>
-                                                <th className="font-[500] p-3">
-                                                    Markup
-                                                </th>
-                                                <th className="font-[500] p-3">
-                                                    Markup Type
-                                                </th>
-
-                                                <th className="font-[500] p-3">
-                                                    Action
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="text-sm ">
-                                            {profiles?.map((profile, index) => {
-                                                return (
-                                                    <ActivityMarkupRow
-                                                        index={index}
-                                                        profile={profile}
-                                                        markupUpdate={
-                                                            markupUpdate
-                                                        }
-                                                        setMarkupUpdate={
-                                                            setMarkupUpdate
-                                                        }
-                                                        // section={section}
-                                                    />
-                                                );
-                                            })}
-                                        </tbody>
-                                    </table>
-                                </div>
-                                {error && (
-                                    <span className="text-sm block text-red-500 mt-2">
-                                        {error}
-                                    </span>
-                                )}
-                                <div className="mt-4 flex items-center justify-end gap-[12px]">
-                                    <button
-                                        className="bg-slate-300 text-textColor px-[15px]"
-                                        type="button"
-                                        onClick={() => navigate(-1)}
-                                    >
-                                        Cancel
-                                    </button>
-                                    <button
-                                        className="w-[150px]"
-                                        onClick={handleMarkupSubmit}
-                                    >
-                                        {isLoading ? (
-                                            <BtnLoader />
-                                        ) : (
-                                            "Update Markup"
-                                        )}
-                                    </button>
-                                </div>
-                            </div>
-                            <div
-                                className={` ${
-                                    section === "quotation" ? "" : "hidden"
-                                }`}
-                            >
-                                <div
-                                    className={` ${
-                                        section === "quotation"
-                                            ? "w-full"
-                                            : "hidden"
-                                    }`}
-                                >
-                                    <AddQuotationDetails
-                                        data={data}
-                                        setData={setData}
-                                    />
-                                </div>
-                            </div>
                         </form>
+
+                        <div
+                            className={` ${
+                                section === "markup" ? "w-full " : "hidden"
+                            }`}
+                        >
+                            <div className="overflow-x-auto">
+                                <table className="w-full">
+                                    <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
+                                        <tr>
+                                            <th className="font-[500] p-3">
+                                                Index
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Name
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Markup
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Markup Type
+                                            </th>
+
+                                            <th className="font-[500] p-3">
+                                                Action
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="text-sm ">
+                                        {profiles?.map((profile, index) => {
+                                            return (
+                                                <ActivityMarkupRow
+                                                    index={index}
+                                                    profile={profile}
+                                                    markupUpdate={markupUpdate}
+                                                    setMarkupUpdate={
+                                                        setMarkupUpdate
+                                                    }
+                                                    // section={section}
+                                                />
+                                            );
+                                        })}
+                                    </tbody>
+                                </table>
+                            </div>
+                            {error && (
+                                <span className="text-sm block text-red-500 mt-2">
+                                    {error}
+                                </span>
+                            )}
+                        </div>
+                        <div
+                            className={` ${
+                                section === "quotation" ? "" : "hidden"
+                            }`}
+                        >
+                            <div
+                                className={` ${
+                                    section === "quotation"
+                                        ? "w-full"
+                                        : "hidden"
+                                }`}
+                            >
+                                <AddQuotationDetails
+                                    data={data}
+                                    setData={setData}
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
             )}
