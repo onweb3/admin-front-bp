@@ -7,6 +7,7 @@ export default function RoomTypeOccupancySingleRow({
     setRoomOccupancies,
     defRmOccupancies,
     index,
+    isEditPermission,
 }) {
     const [defOccupDropdownOpen, setDefOccupDropdownOpen] = useState(false);
 
@@ -80,17 +81,19 @@ export default function RoomTypeOccupancySingleRow({
     return (
         <React.Fragment>
             <tr className="border-b border-tableBorderColor">
-                <td className="p-2 border w-[35px] min-w-[35px]">
-                    <div className="flex items-center justify-center">
-                        <button
-                            className="w-[25px] h-[25px] rounded-full bg-red-500"
-                            onClick={() => removeSingleOccupancyRow(index)}
-                            type="button"
-                        >
-                            -
-                        </button>
-                    </div>
-                </td>
+                {isEditPermission && (
+                    <td className="p-2 border w-[35px] min-w-[35px]">
+                        <div className="flex items-center justify-center">
+                            <button
+                                className="w-[25px] h-[25px] rounded-full bg-red-500"
+                                onClick={() => removeSingleOccupancyRow(index)}
+                                type="button"
+                            >
+                                -
+                            </button>
+                        </div>
+                    </td>
+                )}
                 <td className="border w-[250px] min-w-[250px]">
                     <div className="relative">
                         <input
@@ -101,6 +104,7 @@ export default function RoomTypeOccupancySingleRow({
                             onChange={(e) => handleChangeRoomOccupancyInp(e, index)}
                             placeholder="Ex: Single"
                             onClick={() => setDefOccupDropdownOpen(true)}
+                            disabled={!isEditPermission}
                         />
                         {defOccupDropdownOpen === true && (
                             <div
@@ -133,6 +137,7 @@ export default function RoomTypeOccupancySingleRow({
                         name="shortName"
                         onChange={(e) => handleChangeRoomOccupancyInp(e, index)}
                         placeholder="Ex: SGL"
+                        disabled={!isEditPermission}
                     />
                 </td>
                 <td className="border w-[100px] min-w-[100px]">
@@ -143,6 +148,7 @@ export default function RoomTypeOccupancySingleRow({
                         name="maxCount"
                         onChange={(e) => handleChangeRoomOccupancyInp(e, index)}
                         placeholder="Max Count"
+                        disabled={!isEditPermission}
                     />
                 </td>
                 <td className="border w-[70px] min-w-[70px]">
@@ -154,6 +160,7 @@ export default function RoomTypeOccupancySingleRow({
                             name="extraBed"
                             onChange={(e) => handleChangeRoomOccupancyInp(e, index)}
                             placeholder="Ex Bed"
+                            disabled={!isEditPermission}
                         />
                     </div>
                 </td>
@@ -164,7 +171,7 @@ export default function RoomTypeOccupancySingleRow({
                         value={item.displayName || ""}
                         name="displayName"
                         onChange={(e) => handleChangeRoomOccupancyInp(e, index)}
-                        disabled={!item.extraBed || Number(item.extraBed) < 1}
+                        disabled={!item.extraBed || Number(item.extraBed) < 1 || !isEditPermission}
                         placeholder="Disp Name (Optional)"
                     />
                 </td>
@@ -177,6 +184,7 @@ export default function RoomTypeOccupancySingleRow({
                             name="rollBed"
                             onChange={(e) => handleChangeRoomOccupancyInp(e, index)}
                             placeholder="RA Bed"
+                            disabled={!isEditPermission}
                         />
                     </div>
                 </td>
@@ -189,6 +197,7 @@ export default function RoomTypeOccupancySingleRow({
                             name="isActive"
                             onChange={(e) => handleChangeRoomOccupancyChk(e, index)}
                             title="Status"
+                            disabled={!isEditPermission}
                         />
                     </div>
                 </td>
@@ -200,17 +209,19 @@ export default function RoomTypeOccupancySingleRow({
                     <table className="w-full">
                         <thead className="bg-[#f3f6f9] text-grayColor text-[14px]">
                             <tr>
-                                <th className="p-2 border w-[35px]">
-                                    <div className="flex items-center justify-center">
-                                        <button
-                                            className="w-[25px] h-[25px] rounded-full bg-green-500"
-                                            onClick={() => addOccupancyCombinationRow(index)}
-                                            type="button"
-                                        >
-                                            +
-                                        </button>
-                                    </div>
-                                </th>
+                                {isEditPermission && (
+                                    <th className="p-2 border w-[35px]">
+                                        <div className="flex items-center justify-center">
+                                            <button
+                                                className="w-[25px] h-[25px] rounded-full bg-green-500"
+                                                onClick={() => addOccupancyCombinationRow(index)}
+                                                type="button"
+                                            >
+                                                +
+                                            </button>
+                                        </div>
+                                    </th>
+                                )}
                                 <th className="font-[500] p-2 border">Adult</th>
                                 <th className="font-[500] p-2 border">Child</th>
                                 <th className="font-[500] p-2 border">Infant</th>
@@ -219,30 +230,29 @@ export default function RoomTypeOccupancySingleRow({
                         <tbody>
                             {item?.combinations?.map((occupancyComb, combinationIndex) => {
                                 return (
-                                    <tr
-                                        key={combinationIndex}
-                                        className="border-b border-tableBorderColor"
-                                    >
-                                        <td className="p-2 border w-[35px] min-w-[35px]">
-                                            <div className="flex items-center justify-center">
-                                                <button
-                                                    className="w-[25px] h-[25px] rounded-full bg-red-500"
-                                                    onClick={() =>
-                                                        removeOccupancyCombinationRow(
-                                                            index,
-                                                            combinationIndex
-                                                        )
-                                                    }
-                                                    type="button"
-                                                >
-                                                    -
-                                                </button>
-                                            </div>
-                                        </td>
+                                    <tr key={combinationIndex} className="border-b border-tableBorderColor">
+                                        {isEditPermission && (
+                                            <td className="p-2 border w-[35px] min-w-[35px]">
+                                                <div className="flex items-center justify-center">
+                                                    <button
+                                                        className="w-[25px] h-[25px] rounded-full bg-red-500"
+                                                        onClick={() =>
+                                                            removeOccupancyCombinationRow(
+                                                                index,
+                                                                combinationIndex
+                                                            )
+                                                        }
+                                                        type="button"
+                                                    >
+                                                        -
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        )}
                                         <td className="border min-w-[100px]">
                                             <input
                                                 type="number"
-                                                className="h-[100%] arrow-hidden p-0 px-2 border-0"
+                                                className="h-[100%] arrow-hidden p-2 border-0"
                                                 value={occupancyComb.adultCount}
                                                 name="adultCount"
                                                 onChange={(e) =>
@@ -253,12 +263,13 @@ export default function RoomTypeOccupancySingleRow({
                                                     )
                                                 }
                                                 placeholder="0"
+                                                disabled={!isEditPermission}
                                             />
                                         </td>
                                         <td className="border min-w-[100px]">
                                             <input
                                                 type="number"
-                                                className="h-[100%] arrow-hidden p-0 px-2 border-0"
+                                                className="h-[100%] arrow-hidden p-2 border-0"
                                                 value={occupancyComb.childCount}
                                                 name="childCount"
                                                 onChange={(e) =>
@@ -269,12 +280,13 @@ export default function RoomTypeOccupancySingleRow({
                                                     )
                                                 }
                                                 placeholder="0"
+                                                disabled={!isEditPermission}
                                             />
                                         </td>
                                         <td className="border min-w-[100px]">
                                             <input
                                                 type="number"
-                                                className="h-[100%] arrow-hidden p-0 px-2 border-0"
+                                                className="h-[100%] arrow-hidden p-2 border-0"
                                                 value={occupancyComb.infantCount}
                                                 name="infantCount"
                                                 onChange={(e) =>
@@ -285,6 +297,7 @@ export default function RoomTypeOccupancySingleRow({
                                                     )
                                                 }
                                                 placeholder="0"
+                                                disabled={!isEditPermission}
                                             />
                                         </td>
                                     </tr>

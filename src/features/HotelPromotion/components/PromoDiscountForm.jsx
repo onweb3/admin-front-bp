@@ -13,7 +13,7 @@ import {
 } from "../../../redux/slices/hotelPromotionsFormSlice";
 import { MultipleSelectDropdown } from "../../../components";
 
-export default function PromoDiscountForm() {
+export default function PromoDiscountForm({ isEditPermission = true }) {
     const dispatch = useDispatch();
     const { boardTypes, roomTypes, initialRoomTypes, discounts, data } = useSelector(
         (state) => state.hotelPromotionsForm
@@ -51,6 +51,7 @@ export default function PromoDiscountForm() {
                             onChange={handleChkBoxChange}
                             className="w-[17px] h-[17px] flex item-center justify-center"
                             id="isApplicableForExtraBed"
+                            disabled={!isEditPermission}
                         />
                         <label htmlFor="isApplicableForExtraBed" className="mb-0">
                             Apply on Other Supplements (Extra Bed)
@@ -64,6 +65,7 @@ export default function PromoDiscountForm() {
                             onChange={handleChkBoxChange}
                             className="w-[17px] h-[17px] flex item-center justify-center"
                             id="isApplicableForSupplement"
+                            disabled={!isEditPermission}
                         />
                         <label htmlFor="isApplicableForSupplement" className="mb-0">
                             Apply On Meal Supplement
@@ -77,6 +79,7 @@ export default function PromoDiscountForm() {
                             onChange={handleChkBoxChange}
                             className="w-[17px] h-[17px] flex item-center justify-center"
                             id="isApplicableForAddOn"
+                            disabled={!isEditPermission}
                         />
                         <label htmlFor="isApplicableForAddOn" className="mb-0">
                             Apply On Add-on
@@ -91,6 +94,7 @@ export default function PromoDiscountForm() {
                             dispatch(addRoomTypeToDiscounts(e.target.value));
                             e.target.value = "";
                         }}
+                        disabled={!isEditPermission}
                     >
                         <option value="" hidden>
                             Select Room Type
@@ -133,29 +137,35 @@ export default function PromoDiscountForm() {
                                         className="relative font-[500] p-2 pr-9 border"
                                     >
                                         <span className="">{roomType?.roomName}</span>
-                                        <span
-                                            className="absolute top-[50%] translate-y-[-50%] right-[10px] w-[18px] h-[18px] min-w-[18px] min-h-[18px] bg-gray-500 flex items-center justify-center rounded-full text-white cursor-pointer"
-                                            onClick={() =>
-                                                dispatch(removeRoomTypeFromDiscounts(roomType?.roomTypeId))
-                                            }
-                                        >
-                                            <MdClose />
-                                        </span>
+                                        {isEditPermission && (
+                                            <span
+                                                className="absolute top-[50%] translate-y-[-50%] right-[10px] w-[18px] h-[18px] min-w-[18px] min-h-[18px] bg-gray-500 flex items-center justify-center rounded-full text-white cursor-pointer"
+                                                onClick={() =>
+                                                    dispatch(
+                                                        removeRoomTypeFromDiscounts(roomType?.roomTypeId)
+                                                    )
+                                                }
+                                            >
+                                                <MdClose />
+                                            </span>
+                                        )}
                                     </th>
                                 );
                             })}
                         </tr>
                         <tr>
-                            <th className="p-2 border w-[35px]">
-                                <div className="flex items-center justify-center">
-                                    <button
-                                        className="w-[25px] h-[25px] rounded-full bg-green-500"
-                                        onClick={() => dispatch(addDiscountRows())}
-                                    >
-                                        +
-                                    </button>
-                                </div>
-                            </th>
+                            {isEditPermission && (
+                                <th className="p-2 border w-[35px]">
+                                    <div className="flex items-center justify-center">
+                                        <button
+                                            className="w-[25px] h-[25px] rounded-full bg-green-500"
+                                            onClick={() => dispatch(addDiscountRows())}
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                </th>
+                            )}
                             <th className="font-[500] p-2 border">Rate Code</th>
                             <th className="font-[500] p-2 border">From Date</th>
                             <th className="font-[500] p-2 border">To Date</th>
@@ -178,23 +188,25 @@ export default function PromoDiscountForm() {
                     <tbody className="text-sm">
                         {discounts.map((discount, index) => (
                             <tr key={index} className="border-b border-tableBorderColor">
-                                <td className="p-2 border w-[35px] min-w-[35px]">
-                                    <div className="flex items-center justify-center">
-                                        <button
-                                            className="w-[25px] h-[25px] rounded-full bg-red-500"
-                                            onClick={() => {
-                                                dispatch(
-                                                    deletePromotionItemRow({
-                                                        name: "discounts",
-                                                        index,
-                                                    })
-                                                );
-                                            }}
-                                        >
-                                            -
-                                        </button>
-                                    </div>
-                                </td>
+                                {isEditPermission && (
+                                    <td className="p-2 border w-[35px] min-w-[35px]">
+                                        <div className="flex items-center justify-center">
+                                            <button
+                                                className="w-[25px] h-[25px] rounded-full bg-red-500"
+                                                onClick={() => {
+                                                    dispatch(
+                                                        deletePromotionItemRow({
+                                                            name: "discounts",
+                                                            index,
+                                                        })
+                                                    );
+                                                }}
+                                            >
+                                                -
+                                            </button>
+                                        </div>
+                                    </td>
+                                )}
                                 <td className="border w-[100px] min-w-[100px]">
                                     <input
                                         type="text"
@@ -202,6 +214,7 @@ export default function PromoDiscountForm() {
                                         value={discount?.rateCode || ""}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[140px] min-w-[140px]">
@@ -211,6 +224,7 @@ export default function PromoDiscountForm() {
                                         value={discount?.fromDate || ""}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%] px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[140px] min-w-[140px]">
@@ -220,6 +234,7 @@ export default function PromoDiscountForm() {
                                         value={discount?.toDate || ""}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%]  px-2  border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[100px] min-w-[100px]">
@@ -229,6 +244,7 @@ export default function PromoDiscountForm() {
                                         value={discount?.bookBefore}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[180px] min-w-[180px]">
@@ -249,6 +265,7 @@ export default function PromoDiscountForm() {
                                                 );
                                             }}
                                             randomIndex={index + "promodiscounts"}
+                                            disabled={!isEditPermission}
                                         />
                                     </div>
                                 </td>
@@ -259,6 +276,7 @@ export default function PromoDiscountForm() {
                                         value={discount?.minimumLengthOfStay}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[70px] min-w-[70px]">
@@ -268,6 +286,7 @@ export default function PromoDiscountForm() {
                                         value={discount?.maximumLengthOfStay}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[140px] min-w-[140px]">
@@ -275,6 +294,7 @@ export default function PromoDiscountForm() {
                                         name="discountType"
                                         value={discount?.discountType || ""}
                                         onChange={(e) => handleChange(e, index)}
+                                        disabled={!isEditPermission}
                                     >
                                         <option value="" disabled hidden>
                                             Select Type
@@ -307,6 +327,7 @@ export default function PromoDiscountForm() {
                                                             })
                                                         );
                                                     }}
+                                                    disabled={!isEditPermission}
                                                 />
                                             </td>
                                         );

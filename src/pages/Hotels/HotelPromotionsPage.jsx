@@ -5,6 +5,7 @@ import { Link, useOutletContext, useParams } from "react-router-dom";
 import axios from "../../axios";
 import { PageLoader, Pagination } from "../../components";
 import { HotelPromotionTableRow } from "../../features/HotelPromotion";
+import { hasPermission } from "../../utils";
 
 export default function HotelPromotionsPage() {
     const [isLoading, setIsLoading] = useState(false);
@@ -17,8 +18,14 @@ export default function HotelPromotionsPage() {
     });
 
     const { id } = useParams();
-    const { jwtToken } = useSelector((state) => state.admin);
+    const { jwtToken, admin } = useSelector((state) => state.admin);
     const { setSelectedSection } = useOutletContext();
+
+    const isCreatePermission = hasPermission({
+        roles: admin?.roles,
+        name: "contracts",
+        permission: "create",
+    });
 
     const fetchPromotions = async () => {
         try {
@@ -90,9 +97,11 @@ export default function HotelPromotionsPage() {
                             Search
                         </button>
                     </form>
-                    <Link to={`/hotels/${id}/promotions/add`}>
-                        <button className="px-3">+ Add Promotions</button>
-                    </Link>
+                    {isCreatePermission && (
+                        <Link to={`/hotels/${id}/promotions/add`}>
+                            <button className="px-3">+ Add Promotions</button>
+                        </Link>
+                    )}
                 </div>
             </div>
 
@@ -100,9 +109,7 @@ export default function HotelPromotionsPage() {
                 <PageLoader />
             ) : !promotions || promotions?.length < 1 ? (
                 <div className="p-6 flex flex-col items-center">
-                    <span className="text-sm text-grayColor block mt-[6px]">
-                        Oops.. No Promotions Found
-                    </span>
+                    <span className="text-sm text-grayColor block mt-[6px]">Oops.. No Promotions Found</span>
                 </div>
             ) : (
                 <div>

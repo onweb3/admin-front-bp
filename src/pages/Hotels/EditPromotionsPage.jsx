@@ -19,6 +19,7 @@ import {
     resetPromotionForm,
 } from "../../redux/slices/hotelPromotionsFormSlice";
 import { PageLoader } from "../../components";
+import { hasPermission } from "../../utils";
 
 const sections = {
     "-discount": "Discount",
@@ -37,7 +38,14 @@ export default function EditPromotionPage() {
     const { id, promotionId } = useParams();
 
     const dispatch = useDispatch();
+    const { admin } = useSelector((state) => state.admin);
     const { data, isPromotionLoading } = useSelector((state) => state.hotelPromotionsForm);
+
+    const isEditPermission = hasPermission({
+        roles: admin?.roles,
+        name: "contracts",
+        permission: "update",
+    });
 
     useEffect(() => {
         dispatch(fetchInitialDataWithPromotion({ promotionId, id }));
@@ -70,7 +78,7 @@ export default function EditPromotionPage() {
                 </div>
             </div>
 
-            <div className="p-6 ">
+            <div className="p-6">
                 <div className="bg-white rounded shadow-sm p-[10px]">
                     <div className="flex items-center justify-between border-b border-dashed p-4">
                         <h1 className="font-medium">Edit Promotion</h1>
@@ -80,8 +88,8 @@ export default function EditPromotionPage() {
                         <PageLoader />
                     ) : (
                         <>
-                            <PromotionBasicForm />
-                            <PromotionalTypesForm />
+                            <PromotionBasicForm isEditPermission={isEditPermission} />
+                            <PromotionalTypesForm isEditPermission={isEditPermission} />
 
                             <div className="p-4">
                                 <ul className="dir-btn">
@@ -114,24 +122,28 @@ export default function EditPromotionPage() {
                             </div>
 
                             {data.isDiscountAvailable && selectedSection === "-discount" && (
-                                <PromoDiscountForm />
+                                <PromoDiscountForm isEditPermission={isEditPermission} />
                             )}
                             {data.isStayPayAvailable && selectedSection === "-staypay" && (
-                                <PromoStayPayForm />
+                                <PromoStayPayForm isEditPermission={isEditPermission} />
                             )}
                             {data.isRoomTypeUpgradeAvailable && selectedSection === "-roomtype-upgrade" && (
-                                <PromoRoomTypeUpgradeForm />
+                                <PromoRoomTypeUpgradeForm isEditPermission={isEditPermission} />
                             )}
                             {data.isMealUpgradeAvailable && selectedSection === "-meal-upgrade" && (
-                                <PromoMealUpgradeForm />
+                                <PromoMealUpgradeForm isEditPermission={isEditPermission} />
                             )}
                             {/* {selectedSection === "-room-discount" && (
-                                <PromoRoomDiscountForm />
+                                    <PromoRoomDiscountForm />
                             )} */}
-                            {selectedSection === "-excluded-dates" && <PromoExcludedDatesForm />}
-                            {selectedSection === "-cancel-policy" && <PromoCancellationForm />}
+                            {selectedSection === "-excluded-dates" && (
+                                <PromoExcludedDatesForm isEditPermission={isEditPermission} />
+                            )}
+                            {selectedSection === "-cancel-policy" && (
+                                <PromoCancellationForm isEditPermission={isEditPermission} />
+                            )}
                             {/* {selectedSection === "-tandc" && <PromoStayPayForm />} */}
-                            <PromotionEditFormButtons />
+                            <PromotionEditFormButtons isEditPermission={isEditPermission} />
                         </>
                     )}
                 </div>

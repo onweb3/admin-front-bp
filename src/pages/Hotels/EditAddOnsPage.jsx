@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import { BtnLoader, MultipleSelectDropdown, PageLoader } from "../../components";
 import axios from "../../axios";
-import { useSelector } from "react-redux";
+import { hasPermission } from "../../utils";
 
 export default function EditAddOnsPage() {
     const [isLoading, setIsLoading] = useState(false);
@@ -29,7 +30,13 @@ export default function EditAddOnsPage() {
 
     const { id, addOnsId } = useParams();
     const navigate = useNavigate();
-    const { jwtToken } = useSelector((state) => state.admin);
+    const { jwtToken, admin } = useSelector((state) => state.admin);
+
+    const isEditPermission = hasPermission({
+        roles: admin?.roles,
+        name: "contracts",
+        permission: "update",
+    });
 
     const handleChange = (e) => {
         setData((prev) => {
@@ -179,13 +186,12 @@ export default function EditAddOnsPage() {
                                         name="fromDate"
                                         value={
                                             data.fromDate
-                                                ? new Date(data.fromDate)
-                                                      ?.toISOString()
-                                                      .slice(0, 10)
+                                                ? new Date(data.fromDate)?.toISOString().slice(0, 10)
                                                 : ""
                                         }
                                         onChange={handleChange}
                                         required
+                                        disabled={!isEditPermission}
                                     />
                                 </div>
                                 <div>
@@ -200,6 +206,7 @@ export default function EditAddOnsPage() {
                                         }
                                         onChange={handleChange}
                                         required
+                                        disabled={!isEditPermission}
                                     />
                                 </div>
                                 <div>
@@ -211,6 +218,7 @@ export default function EditAddOnsPage() {
                                             selectedData={selectedRoomTypes}
                                             setSelectedData={setSelectedRoomTypes}
                                             valueName={"_id"}
+                                            disabled={!isEditPermission}
                                         />
                                     </div>
                                 </div>
@@ -223,6 +231,7 @@ export default function EditAddOnsPage() {
                                             selectedData={selectedBoardTypes}
                                             setSelectedData={setSelectedBoardTypes}
                                             valueName={"_id"}
+                                            disabled={!isEditPermission}
                                         />
                                     </div>
                                 </div>
@@ -235,6 +244,7 @@ export default function EditAddOnsPage() {
                                         onChange={handleChange}
                                         required
                                         placeholder="Ex: Compulsory Gala Dinner"
+                                        disabled={!isEditPermission}
                                     />
                                 </div>
 
@@ -245,6 +255,7 @@ export default function EditAddOnsPage() {
                                         value={data.applyOn || ""}
                                         onChange={handleChange}
                                         required
+                                        disabled={!isEditPermission}
                                     >
                                         <option value="" disabled hidden>
                                             Select Apply On
@@ -264,6 +275,7 @@ export default function EditAddOnsPage() {
                                                 onChange={handleChange}
                                                 required
                                                 placeholder="0"
+                                                disabled={!isEditPermission}
                                             />
                                         </div>
                                         <div>
@@ -275,6 +287,7 @@ export default function EditAddOnsPage() {
                                                 onChange={handleChange}
                                                 required
                                                 placeholder="0"
+                                                disabled={!isEditPermission}
                                             />
                                         </div>
                                         <div>
@@ -286,6 +299,7 @@ export default function EditAddOnsPage() {
                                                 onChange={handleChange}
                                                 required
                                                 placeholder="0"
+                                                disabled={!isEditPermission}
                                             />
                                         </div>
                                     </>
@@ -299,6 +313,7 @@ export default function EditAddOnsPage() {
                                             onChange={handleChange}
                                             required
                                             placeholder="0"
+                                            disabled={!isEditPermission}
                                         />
                                     </div>
                                 )}
@@ -310,6 +325,7 @@ export default function EditAddOnsPage() {
                                         onChange={handleCheckBoxChange}
                                         className="w-[17px] h-[17px]"
                                         id="isMandatory"
+                                        disabled={!isEditPermission}
                                     />
                                     <label htmlFor="isMandatory" className="mb-0">
                                         Is Mandatory{" "}
@@ -317,9 +333,7 @@ export default function EditAddOnsPage() {
                                 </div>
                             </div>
 
-                            {error && (
-                                <span className="text-sm block text-red-500 mt-2">{error}</span>
-                            )}
+                            {error && <span className="text-sm block text-red-500 mt-2">{error}</span>}
 
                             <div className="mt-4 flex items-center justify-end gap-[12px]">
                                 <button
@@ -329,9 +343,11 @@ export default function EditAddOnsPage() {
                                 >
                                     Cancel
                                 </button>
-                                <button className="w-[150px]">
-                                    {isLoading ? <BtnLoader /> : "Update AddOns"}
-                                </button>
+                                {isEditPermission && (
+                                    <button className="w-[150px]">
+                                        {isLoading ? <BtnLoader /> : "Update AddOns"}
+                                    </button>
+                                )}
                             </div>
                         </form>
                     </div>

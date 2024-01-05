@@ -2,17 +2,24 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { MdDelete } from "react-icons/md";
 import { BiEditAlt } from "react-icons/bi";
-
-import { formatDate } from "../../../utils";
-import axios from "../../../axios";
 import { useSelector } from "react-redux";
 
-export default function HotelPromotionTableRow({
-    promotion,
-    promotions,
-    setPromotions,
-}) {
-    const { jwtToken } = useSelector((state) => state.admin);
+import { formatDate, hasPermission } from "../../../utils";
+import axios from "../../../axios";
+
+export default function HotelPromotionTableRow({ promotion, promotions, setPromotions }) {
+    const { jwtToken, admin } = useSelector((state) => state.admin);
+
+    // const isEditPermission = hasPermission({
+    //     roles: admin?.roles,
+    //     name: "contracts",
+    //     permission: "update",
+    // });
+    const isDeletePermission = hasPermission({
+        roles: admin?.roles,
+        name: "contracts",
+        permission: "delete",
+    });
 
     const deletePromotion = async (id) => {
         try {
@@ -34,9 +41,7 @@ export default function HotelPromotionTableRow({
 
     return (
         <tr className="border-b border-tableBorderColor">
-            <td className="p-3 capitalize">
-                {formatDate(promotion?.sellFrom)}
-            </td>
+            <td className="p-3 capitalize">{formatDate(promotion?.sellFrom)}</td>
             <td className="p-3 capitalize">{formatDate(promotion?.sellTo)}</td>
             <td className="p-3 ">{promotion?.name}</td>
             <td className="p-3 ">{promotion?.promotionCode}</td>
@@ -46,9 +51,7 @@ export default function HotelPromotionTableRow({
                     <span
                         className={
                             "block w-[10px] h-[10px] min-w-[10px] min-h-[10px] rounded-full " +
-                            (promotion?.isActive === true
-                                ? "bg-green-500"
-                                : "bg-red-500")
+                            (promotion?.isActive === true ? "bg-green-500" : "bg-red-500")
                         }
                     ></span>
                     {promotion?.isActive === true ? "Active" : "Inactive"}
@@ -57,14 +60,16 @@ export default function HotelPromotionTableRow({
 
             <td className="p-3">
                 <div className="flex gap-[10px]">
-                    <button
-                        className="h-auto bg-transparent text-red-500 text-xl"
-                        onClick={() => {
-                            deletePromotion(promotion?._id);
-                        }}
-                    >
-                        <MdDelete />
-                    </button>
+                    {isDeletePermission && (
+                        <button
+                            className="h-auto bg-transparent text-red-500 text-xl"
+                            onClick={() => {
+                                deletePromotion(promotion?._id);
+                            }}
+                        >
+                            <MdDelete />
+                        </button>
+                    )}
                     <Link to={`${promotion?._id}/edit`}>
                         <button className="h-auto bg-transparent text-green-500 text-xl">
                             <BiEditAlt />

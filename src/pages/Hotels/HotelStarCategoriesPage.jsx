@@ -7,6 +7,7 @@ import { BiEditAlt } from "react-icons/bi";
 import axios from "../../axios";
 import { PageLoader, Pagination } from "../../components";
 import { UpsertHotelStarCategoriesModal } from "../../features/HotelStarCategories";
+import { hasPermission } from "../../utils";
 
 export default function HotelStarCategoriesPage() {
     const [isLoading, setIsLaoding] = useState(false);
@@ -23,7 +24,23 @@ export default function HotelStarCategoriesPage() {
     });
     const [selectedStarCategory, setSelectedStarCategory] = useState({});
 
-    const { jwtToken } = useSelector((state) => state.admin);
+    const { jwtToken, admin } = useSelector((state) => state.admin);
+
+    const isCreatePermission = hasPermission({
+        roles: admin?.roles,
+        name: "star-categories",
+        permission: "create",
+    });
+    const isEditPermission = hasPermission({
+        roles: admin?.roles,
+        name: "star-categories",
+        permission: "update",
+    });
+    const isDeletePermission = hasPermission({
+        roles: admin?.roles,
+        name: "star-categories",
+        permission: "delete",
+    });
 
     const fetchStarCategories = async () => {
         try {
@@ -126,17 +143,19 @@ export default function HotelStarCategoriesPage() {
                                     Search
                                 </button>
                             </form>
-                            <button
-                                className="px-3"
-                                onClick={() => {
-                                    setStarCategoriesModal({
-                                        isOpen: true,
-                                        isEdit: false,
-                                    });
-                                }}
-                            >
-                                + Add Star Category
-                            </button>
+                            {isCreatePermission && (
+                                <button
+                                    className="px-3"
+                                    onClick={() => {
+                                        setStarCategoriesModal({
+                                            isOpen: true,
+                                            isEdit: false,
+                                        });
+                                    }}
+                                >
+                                    + Add Star Category
+                                </button>
+                            )}
                         </div>
 
                         {starCategoriesModal?.isOpen && (
@@ -165,45 +184,48 @@ export default function HotelStarCategoriesPage() {
                                         <th className="font-[500] p-3">Category Code</th>
                                         <th className="font-[500] p-3">Category Name</th>
                                         <th className="font-[500] p-3">Order</th>
-                                        <th className="font-[500] p-3">Action</th>
+                                        {(isEditPermission || isDeletePermission) && (
+                                            <th className="font-[500] p-3">Action</th>
+                                        )}
                                     </tr>
                                 </thead>
                                 <tbody className="text-sm">
                                     {starCategories?.map((category, index) => {
                                         return (
-                                            <tr
-                                                key={index}
-                                                className="border-b border-tableBorderColor"
-                                            >
+                                            <tr key={index} className="border-b border-tableBorderColor">
                                                 <td className="p-3">{category?.categoryCode}</td>
-                                                <td className="p-3 capitalize">
-                                                    {category?.categoryName}
-                                                </td>
+                                                <td className="p-3 capitalize">{category?.categoryName}</td>
                                                 <td className="p-3">{category?.order}</td>
-                                                <td className="p-3">
-                                                    <div className="flex gap-[10px]">
-                                                        <button
-                                                            className="h-auto bg-transparent text-red-500 text-xl"
-                                                            onClick={() =>
-                                                                deleteStarCategory(category?._id)
-                                                            }
-                                                        >
-                                                            <MdDelete />
-                                                        </button>
-                                                        <button
-                                                            className="h-auto bg-transparent text-green-500 text-xl"
-                                                            onClick={() => {
-                                                                setSelectedStarCategory(category);
-                                                                setStarCategoriesModal({
-                                                                    isOpen: true,
-                                                                    isEdit: true,
-                                                                });
-                                                            }}
-                                                        >
-                                                            <BiEditAlt />
-                                                        </button>
-                                                    </div>
-                                                </td>
+                                                {(isEditPermission || isDeletePermission) && (
+                                                    <td className="p-3">
+                                                        <div className="flex gap-[10px]">
+                                                            {isDeletePermission && (
+                                                                <button
+                                                                    className="h-auto bg-transparent text-red-500 text-xl"
+                                                                    onClick={() =>
+                                                                        deleteStarCategory(category?._id)
+                                                                    }
+                                                                >
+                                                                    <MdDelete />
+                                                                </button>
+                                                            )}
+                                                            {isDeletePermission && (
+                                                                <button
+                                                                    className="h-auto bg-transparent text-green-500 text-xl"
+                                                                    onClick={() => {
+                                                                        setSelectedStarCategory(category);
+                                                                        setStarCategoriesModal({
+                                                                            isOpen: true,
+                                                                            isEdit: true,
+                                                                        });
+                                                                    }}
+                                                                >
+                                                                    <BiEditAlt />
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                    </td>
+                                                )}
                                             </tr>
                                         );
                                     })}

@@ -1,6 +1,6 @@
 import React from "react";
 
-const Toggle = ({ value, onChange }) => {
+const Toggle = ({ value, onChange, disabled = false }) => {
     return (
         <div className="relative">
             <label className="toggle">
@@ -9,6 +9,7 @@ const Toggle = ({ value, onChange }) => {
                     type="checkbox"
                     checked={value}
                     onChange={onChange}
+                    disabled={disabled}
                 />
                 <div className="toggle-switch"></div>
             </label>

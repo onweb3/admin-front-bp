@@ -6,6 +6,7 @@ import { BiEditAlt } from "react-icons/bi";
 
 import axios from "../../axios";
 import { PageLoader, Pagination } from "../../components";
+import { hasPermission } from "../../utils";
 
 export default function RoomOccupacniesListPage() {
     const [roomOccupancies, setRoomOccupacies] = useState([]);
@@ -17,7 +18,18 @@ export default function RoomOccupacniesListPage() {
         searchQuery: "",
     });
 
-    const { jwtToken } = useSelector((state) => state.admin);
+    const { jwtToken, admin } = useSelector((state) => state.admin);
+
+    const isAddPermission = hasPermission({
+        roles: admin?.roles,
+        name: "room-occupancies",
+        permission: "create",
+    });
+    const isDeletePermission = hasPermission({
+        roles: admin?.roles,
+        name: "room-occupancies",
+        permission: "delete",
+    });
 
     const fetchRoomOccupancies = async () => {
         try {
@@ -118,14 +130,13 @@ export default function RoomOccupacniesListPage() {
                                         Search
                                     </button>
                                 </form>
-                                <Link to="add">
-                                    <button
-                                        className="px-3"
-                                        onClick={() => setIsAddBoardTypeModal(true)}
-                                    >
-                                        + Add Room Occupancy
-                                    </button>
-                                </Link>
+                                {isAddPermission && (
+                                    <Link to="add">
+                                        <button className="px-3" onClick={() => setIsAddBoardTypeModal(true)}>
+                                            + Add Room Occupancy
+                                        </button>
+                                    </Link>
+                                )}
                             </div>
                         </div>
                         {isLoading ? (
@@ -166,16 +177,18 @@ export default function RoomOccupacniesListPage() {
                                                         </td>
                                                         <td className="p-3">
                                                             <div className="flex gap-[10px]">
-                                                                <button
-                                                                    className="h-auto bg-transparent text-red-500 text-xl"
-                                                                    onClick={() =>
-                                                                        deleteRoomOccupancy(
-                                                                            occupancy?._id
-                                                                        )
-                                                                    }
-                                                                >
-                                                                    <MdDelete />
-                                                                </button>
+                                                                {isDeletePermission && (
+                                                                    <button
+                                                                        className="h-auto bg-transparent text-red-500 text-xl"
+                                                                        onClick={() =>
+                                                                            deleteRoomOccupancy(
+                                                                                occupancy?._id
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        <MdDelete />
+                                                                    </button>
+                                                                )}
 
                                                                 <Link to={`${occupancy?._id}/edit`}>
                                                                     <button className="h-auto bg-transparent text-green-500 text-xl">

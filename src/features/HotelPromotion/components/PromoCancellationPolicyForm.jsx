@@ -8,7 +8,7 @@ import {
 } from "../../../redux/slices/hotelPromotionsFormSlice";
 import { MultipleSelectDropdown } from "../../../components";
 
-export default function PromoCancellationForm() {
+export default function PromoCancellationForm({ isEditPermission = true }) {
     const dispatch = useDispatch();
 
     const { cancellationPolicies, roomTypes } = useSelector((state) => state.hotelPromotionsForm);
@@ -34,16 +34,18 @@ export default function PromoCancellationForm() {
                 <table className="w-full">
                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px]">
                         <tr>
-                            <th className="p-2 border w-[35px]">
-                                <div className="flex items-center justify-center">
-                                    <button
-                                        className="w-[25px] h-[25px] rounded-full bg-green-500"
-                                        onClick={handleAddRow}
-                                    >
-                                        +
-                                    </button>
-                                </div>
-                            </th>
+                            {isEditPermission && (
+                                <th className="p-2 border w-[35px]">
+                                    <div className="flex items-center justify-center">
+                                        <button
+                                            className="w-[25px] h-[25px] rounded-full bg-green-500"
+                                            onClick={handleAddRow}
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                </th>
+                            )}
                             <th className="font-[500] p-2 border">From Date</th>
                             <th className="font-[500] p-2 border">To Date</th>
                             <th className="font-[500] p-2 border">Room Types</th>
@@ -57,23 +59,25 @@ export default function PromoCancellationForm() {
                     <tbody className="text-sm">
                         {cancellationPolicies.map((cancellationPolicie, index) => (
                             <tr key={index} className="border-b border-tableBorderColor">
-                                <td className="p-2 border w-[35px] min-w-[35px]">
-                                    <div className="flex items-center justify-center">
-                                        <button
-                                            className="w-[25px] h-[25px] rounded-full bg-red-500"
-                                            onClick={() => {
-                                                dispatch(
-                                                    deletePromotionItemRow({
-                                                        name: "cancellationPolicies",
-                                                        index,
-                                                    })
-                                                );
-                                            }}
-                                        >
-                                            -
-                                        </button>
-                                    </div>
-                                </td>
+                                {isEditPermission && (
+                                    <td className="p-2 border w-[35px] min-w-[35px]">
+                                        <div className="flex items-center justify-center">
+                                            <button
+                                                className="w-[25px] h-[25px] rounded-full bg-red-500"
+                                                onClick={() => {
+                                                    dispatch(
+                                                        deletePromotionItemRow({
+                                                            name: "cancellationPolicies",
+                                                            index,
+                                                        })
+                                                    );
+                                                }}
+                                            >
+                                                -
+                                            </button>
+                                        </div>
+                                    </td>
+                                )}
                                 <td className="border w-[140px] min-w-[140px]">
                                     <input
                                         type="date"
@@ -81,6 +85,7 @@ export default function PromoCancellationForm() {
                                         value={cancellationPolicie?.fromDate || ""}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%]  px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[140px] min-w-[140px]">
@@ -90,6 +95,7 @@ export default function PromoCancellationForm() {
                                         value={cancellationPolicie?.toDate || ""}
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%]  px-2 border-0"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[180px] min-w-[180px]">
@@ -109,6 +115,7 @@ export default function PromoCancellationForm() {
                                             );
                                         }}
                                         randomIndex={index + "cancellationPolicy"}
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[100px] min-w-[100px]">
@@ -144,6 +151,7 @@ export default function PromoCancellationForm() {
                                             }
                                             handleChange(e, index);
                                         }}
+                                        disabled={!isEditPermission}
                                     >
                                         <option value="refundable">Refundable</option>
                                         <option value="non-refundable">Non Refundable</option>
@@ -182,6 +190,7 @@ export default function PromoCancellationForm() {
                                             }
                                             handleChange(e, index);
                                         }}
+                                        disabled={!isEditPermission}
                                     >
                                         <option value="percentage">Percentage</option>
                                         <option value="flat">Flat</option>
@@ -206,8 +215,8 @@ export default function PromoCancellationForm() {
                                         }}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
                                         disabled={
-                                            cancellationPolicie?.cancellationType ===
-                                            "non-refundable"
+                                            cancellationPolicie?.cancellationType === "non-refundable" ||
+                                            !isEditPermission
                                         }
                                     />
                                 </td>
@@ -219,8 +228,8 @@ export default function PromoCancellationForm() {
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
                                         disabled={
-                                            cancellationPolicie?.cancellationType ===
-                                            "non-refundable"
+                                            cancellationPolicie?.cancellationType === "non-refundable" ||
+                                            !isEditPermission
                                         }
                                     />
                                 </td>
@@ -232,8 +241,8 @@ export default function PromoCancellationForm() {
                                         onChange={(e) => handleChange(e, index)}
                                         className="h-[100%] arrow-hidden p-0 px-2 border-0"
                                         disabled={
-                                            cancellationPolicie?.cancellationType ===
-                                            "non-refundable"
+                                            cancellationPolicie?.cancellationType === "non-refundable" ||
+                                            !isEditPermission
                                         }
                                     />
                                 </td>

@@ -9,10 +9,8 @@ import { MultipleSelectDropdown } from "../../../components";
 
 const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 
-export default function PromotionBasicForm() {
-    const { data, validDays, contractGroups, promotions, markets } = useSelector(
-        (state) => state.hotelPromotionsForm
-    );
+export default function PromotionBasicForm({ isEditPermission = true }) {
+    const { data, validDays, contractGroups, promotions } = useSelector((state) => state.hotelPromotionsForm);
     const { countries } = useSelector((state) => state.general);
     const dispatch = useDispatch();
 
@@ -44,6 +42,7 @@ export default function PromotionBasicForm() {
                     value={data.name || ""}
                     onChange={handleChange}
                     placeholder="Ex: promotion name"
+                    disabled={!isEditPermission}
                 />
             </div>
             <div>
@@ -54,6 +53,7 @@ export default function PromotionBasicForm() {
                     value={data.promotionCode || ""}
                     onChange={handleChange}
                     placeholder="Ex: PRO001"
+                    disabled={!isEditPermission}
                 />
             </div>
             <div>
@@ -64,6 +64,7 @@ export default function PromotionBasicForm() {
                     value={!isNaN(data.priority) ? data.priority : ""}
                     onChange={handleChange}
                     placeholder="0"
+                    disabled={!isEditPermission}
                 />
             </div>
             <div>
@@ -84,6 +85,7 @@ export default function PromotionBasicForm() {
                             );
                         }}
                         randomIndex={0 + "contractGroups"}
+                        disabled={!isEditPermission}
                     />
                 </div>
             </div>
@@ -121,6 +123,7 @@ export default function PromotionBasicForm() {
                     onChange={handleChkBoxChange}
                     className="w-[17px] h-[17px]"
                     id="specificNations"
+                    disabled={!isEditPermission}
                 />
                 <label htmlFor="specificNations" className="mb-0">
                     Specific Market
@@ -143,6 +146,7 @@ export default function PromotionBasicForm() {
                             );
                         }}
                         randomIndex={0 + "applicableNations"}
+                        disabled={!isEditPermission}
                     />
                 </div>
             )}
@@ -153,6 +157,7 @@ export default function PromotionBasicForm() {
                     name="sellFrom"
                     value={data.sellFrom || ""}
                     onChange={handleChange}
+                    disabled={!isEditPermission}
                 />
             </div>
             <div>
@@ -162,6 +167,7 @@ export default function PromotionBasicForm() {
                     name="sellTo"
                     value={data.sellTo || ""}
                     onChange={handleChange}
+                    disabled={!isEditPermission}
                 />
             </div>
             <div>
@@ -171,6 +177,7 @@ export default function PromotionBasicForm() {
                     name="bookingWindowFrom"
                     value={data.bookingWindowFrom || ""}
                     onChange={handleChange}
+                    disabled={!isEditPermission}
                 />
             </div>
             <div>
@@ -180,6 +187,7 @@ export default function PromotionBasicForm() {
                     name="bookingWindowTo"
                     value={data.bookingWindowTo || ""}
                     onChange={handleChange}
+                    disabled={!isEditPermission}
                 />
             </div>
             <div className="flex items-center justify-left gap-3">
@@ -190,6 +198,7 @@ export default function PromotionBasicForm() {
                     onChange={handleChkBoxChange}
                     className="w-[17px] h-[17px] flex item-center justify-center"
                     id="isCombinedPromotion"
+                    disabled={!isEditPermission}
                 />
                 <label htmlFor="isCombinedPromotion" className="mb-0">
                     Is Combined Promotion
@@ -217,6 +226,7 @@ export default function PromotionBasicForm() {
                                 );
                             }}
                             randomIndex={0 + "promotions"}
+                            disabled={!isEditPermission}
                         />
                     </div>
                 </div>
@@ -229,6 +239,7 @@ export default function PromotionBasicForm() {
                     onChange={handleChkBoxChange}
                     className="w-[17px] h-[17px] flex item-center justify-center"
                     id="applicableOnRatePromotion"
+                    disabled={!isEditPermission}
                 />
                 <label htmlFor="applicableOnRatePromotion" className="mb-0">
                     Applicable On Rate Promotion
@@ -242,6 +253,7 @@ export default function PromotionBasicForm() {
                     onChange={handleChkBoxChange}
                     className="w-[17px] h-[17px] flex item-center justify-center"
                     id="isActive"
+                    disabled={!isEditPermission}
                 />
                 <label htmlFor="isActive" className="mb-0">
                     Is Active

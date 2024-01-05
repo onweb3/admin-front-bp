@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function RoomOccupancyForm({ roomOccupancy, setRoomOccupancy }) {
+export default function RoomOccupancyForm({ roomOccupancy, setRoomOccupancy, isEditPermission = true }) {
     const handleChangeRoomOccupancyInp = (e) => {
         setRoomOccupancy((prev) => {
             return { ...prev, [e.target?.name]: e.target.value };
@@ -55,21 +55,23 @@ export default function RoomOccupancyForm({ roomOccupancy, setRoomOccupancy }) {
                                 <td className="border w-[250px] min-w-[250px]">
                                     <input
                                         type="text"
-                                        className="h-[100%]  px-2 border-0"
+                                        className="h-[100%] px-2 border-0"
                                         value={roomOccupancy.occupancyName || ""}
                                         name="occupancyName"
                                         onChange={handleChangeRoomOccupancyInp}
                                         placeholder="Ex: Single"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[150px] min-w-[250px]">
                                     <input
                                         type="text"
-                                        className="h-[100%]  px-2 border-0"
+                                        className="h-[100%] px-2 border-0"
                                         value={roomOccupancy.shortName || ""}
                                         name="shortName"
                                         onChange={handleChangeRoomOccupancyInp}
                                         placeholder="Ex: SGL"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[100px] min-w-[100px]">
@@ -80,6 +82,7 @@ export default function RoomOccupancyForm({ roomOccupancy, setRoomOccupancy }) {
                                         name="maxCount"
                                         onChange={handleChangeRoomOccupancyInp}
                                         placeholder="Max Count"
+                                        disabled={!isEditPermission}
                                     />
                                 </td>
                                 <td className="border w-[70px] min-w-[70px]">
@@ -91,19 +94,21 @@ export default function RoomOccupancyForm({ roomOccupancy, setRoomOccupancy }) {
                                             name="extraBed"
                                             onChange={handleChangeRoomOccupancyInp}
                                             placeholder="Ex Bed"
+                                            disabled={!isEditPermission}
                                         />
                                     </div>
                                 </td>
                                 <td className="border w-[250px] min-w-[250px]">
                                     <input
                                         type="text"
-                                        className="h-[100%]  px-2 border-0"
+                                        className="h-[100%] px-2 border-0"
                                         value={roomOccupancy.displayName || ""}
                                         name="displayName"
                                         onChange={handleChangeRoomOccupancyInp}
                                         disabled={
                                             !roomOccupancy.extraBed ||
-                                            Number(roomOccupancy.extraBed) < 1
+                                            Number(roomOccupancy.extraBed) < 1 ||
+                                            !isEditPermission
                                         }
                                         placeholder="Disp Name (Optional)"
                                     />
@@ -117,6 +122,7 @@ export default function RoomOccupancyForm({ roomOccupancy, setRoomOccupancy }) {
                                             name="rollBed"
                                             onChange={handleChangeRoomOccupancyInp}
                                             placeholder="RA Bed"
+                                            disabled={!isEditPermission}
                                         />
                                     </div>
                                 </td>
@@ -128,17 +134,19 @@ export default function RoomOccupancyForm({ roomOccupancy, setRoomOccupancy }) {
                                     <table className="w-full">
                                         <thead className="bg-[#f3f6f9] text-grayColor text-[14px]">
                                             <tr>
-                                                <th className="p-2 border w-[35px]">
-                                                    <div className="flex items-center justify-center">
-                                                        <button
-                                                            className="w-[25px] h-[25px] rounded-full bg-green-500"
-                                                            onClick={addOccupancyCombinationRow}
-                                                            type="button"
-                                                        >
-                                                            +
-                                                        </button>
-                                                    </div>
-                                                </th>
+                                                {isEditPermission && (
+                                                    <th className="p-2 border w-[35px]">
+                                                        <div className="flex items-center justify-center">
+                                                            <button
+                                                                className="w-[25px] h-[25px] rounded-full bg-green-500"
+                                                                onClick={addOccupancyCombinationRow}
+                                                                type="button"
+                                                            >
+                                                                +
+                                                            </button>
+                                                        </div>
+                                                    </th>
+                                                )}
                                                 <th className="font-[500] p-2 border">Adult</th>
                                                 <th className="font-[500] p-2 border">Child</th>
                                                 <th className="font-[500] p-2 border">Infant</th>
@@ -152,25 +160,27 @@ export default function RoomOccupancyForm({ roomOccupancy, setRoomOccupancy }) {
                                                             key={combinationIndex}
                                                             className="border-b border-tableBorderColor"
                                                         >
-                                                            <td className="p-2 border w-[35px] min-w-[35px]">
-                                                                <div className="flex items-center justify-center">
-                                                                    <button
-                                                                        className="w-[25px] h-[25px] rounded-full bg-red-500"
-                                                                        onClick={() =>
-                                                                            removeOccupancyCombinationRow(
-                                                                                combinationIndex
-                                                                            )
-                                                                        }
-                                                                        type="button"
-                                                                    >
-                                                                        -
-                                                                    </button>
-                                                                </div>
-                                                            </td>
+                                                            {isEditPermission && (
+                                                                <td className="p-2 border w-[35px] min-w-[35px]">
+                                                                    <div className="flex items-center justify-center">
+                                                                        <button
+                                                                            className="w-[25px] h-[25px] rounded-full bg-red-500"
+                                                                            onClick={() =>
+                                                                                removeOccupancyCombinationRow(
+                                                                                    combinationIndex
+                                                                                )
+                                                                            }
+                                                                            type="button"
+                                                                        >
+                                                                            -
+                                                                        </button>
+                                                                    </div>
+                                                                </td>
+                                                            )}
                                                             <td className="border min-w-[100px]">
                                                                 <input
                                                                     type="number"
-                                                                    className="h-[100%] arrow-hidden p-0 px-2 border-0"
+                                                                    className="h-[100%] arrow-hidden p-0 px-2 py-2 border-0"
                                                                     value={occupancyComb.adultCount}
                                                                     name="adultCount"
                                                                     onChange={(e) =>
@@ -180,6 +190,7 @@ export default function RoomOccupancyForm({ roomOccupancy, setRoomOccupancy }) {
                                                                         )
                                                                     }
                                                                     placeholder="0"
+                                                                    disabled={!isEditPermission}
                                                                 />
                                                             </td>
                                                             <td className="border min-w-[100px]">
@@ -195,15 +206,14 @@ export default function RoomOccupancyForm({ roomOccupancy, setRoomOccupancy }) {
                                                                         )
                                                                     }
                                                                     placeholder="0"
+                                                                    disabled={!isEditPermission}
                                                                 />
                                                             </td>
                                                             <td className="border min-w-[100px]">
                                                                 <input
                                                                     type="number"
                                                                     className="h-[100%] arrow-hidden p-0 px-2 border-0"
-                                                                    value={
-                                                                        occupancyComb.infantCount
-                                                                    }
+                                                                    value={occupancyComb.infantCount}
                                                                     name="infantCount"
                                                                     onChange={(e) =>
                                                                         handleChangeRoomOccupancyCombInp(
@@ -212,6 +222,7 @@ export default function RoomOccupancyForm({ roomOccupancy, setRoomOccupancy }) {
                                                                         )
                                                                     }
                                                                     placeholder="0"
+                                                                    disabled={!isEditPermission}
                                                                 />
                                                             </td>
                                                         </tr>

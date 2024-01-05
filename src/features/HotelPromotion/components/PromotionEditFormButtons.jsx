@@ -6,7 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "../../../axios";
 import { BtnLoader } from "../../../components";
 
-export default function PromotionEditFormButtons() {
+export default function PromotionEditFormButtons({ isEditPermission = true }) {
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
@@ -63,17 +63,15 @@ export default function PromotionEditFormButtons() {
                 <button
                     className="bg-slate-300 text-textColor px-[15px]"
                     type="button"
-                    onClick={() => navigate(-1)}
+                    onClick={(e) => navigate(-1)}
                 >
                     Cancel
                 </button>
-                <button
-                    className="w-[100px] bg-primaryColor"
-                    onClick={handleSubmit}
-                    disabled={isLoading}
-                >
-                    {isLoading ? <BtnLoader /> : "Update"}
-                </button>
+                {isEditPermission && (
+                    <button className="w-[100px] bg-primaryColor" onClick={handleSubmit} disabled={isLoading}>
+                        {isLoading ? <BtnLoader /> : "Update"}
+                    </button>
+                )}
             </div>
         </div>
     );

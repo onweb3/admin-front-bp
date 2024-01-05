@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function RoomAgePolicyForm({ data, handleChange }) {
+export default function RoomAgePolicyForm({ data, handleChange, isEditPermission = true }) {
     return (
         <div className="mt-7">
             <h1 className="font-[600] underline">Age Policy</h1>
@@ -30,7 +30,7 @@ export default function RoomAgePolicyForm({ data, handleChange }) {
                             <td className="border text-center">To</td>
                         </tr>
                         <tr className="border-b border-tableBorderColor">
-                        <td className="border">
+                            <td className="border">
                                 <input
                                     type="number"
                                     className="h-[100%] arrow-hidden p-0 px-2 border-0"
@@ -38,6 +38,7 @@ export default function RoomAgePolicyForm({ data, handleChange }) {
                                     name="infantAgeFrom"
                                     onChange={handleChange}
                                     placeholder="0"
+                                    disabled={!isEditPermission}
                                 />
                             </td>
                             <td className="border">
@@ -48,6 +49,7 @@ export default function RoomAgePolicyForm({ data, handleChange }) {
                                     name="infantAgeTo"
                                     onChange={handleChange}
                                     placeholder="0"
+                                    disabled={!isEditPermission}
                                 />
                             </td>
                             <td className="border">
@@ -58,6 +60,7 @@ export default function RoomAgePolicyForm({ data, handleChange }) {
                                     name="childAgeFrom"
                                     onChange={handleChange}
                                     placeholder="0"
+                                    disabled={!isEditPermission}
                                 />
                             </td>
                             <td className="border">
@@ -68,6 +71,7 @@ export default function RoomAgePolicyForm({ data, handleChange }) {
                                     name="childAgeTo"
                                     onChange={handleChange}
                                     placeholder="0"
+                                    disabled={!isEditPermission}
                                 />
                             </td>
                             <td className="border py-2">
@@ -78,6 +82,7 @@ export default function RoomAgePolicyForm({ data, handleChange }) {
                                     name="adultAgeFrom"
                                     onChange={handleChange}
                                     placeholder="0"
+                                    disabled={!isEditPermission}
                                 />
                             </td>
                             <td className="border">
@@ -88,6 +93,7 @@ export default function RoomAgePolicyForm({ data, handleChange }) {
                                     name="adultAgeTo"
                                     onChange={handleChange}
                                     placeholder="0"
+                                    disabled={!isEditPermission}
                                 />
                             </td>
                         </tr>
