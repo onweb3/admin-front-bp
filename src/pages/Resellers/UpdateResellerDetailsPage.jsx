@@ -25,20 +25,64 @@ export default function UpdateResellerDetailsPage() {
         companyRegistration: "",
         telephoneNumber: "",
         status: "",
+        shortName: "",
     });
     const [isLoading, setIsLoading] = useState(false);
+    const [isShortNameLoading, setIsShortNameLoading] = useState(false);
     const [sendEmail, setSendEmail] = useState(false);
     const [error, setError] = useState("");
+    const [shortNameError, setShortNameError] = useState("");
+
     const { id } = useParams();
+    const [shortName, setShortName] = useState("");
 
     const { jwtToken } = useSelector((state) => state.admin);
     const { countries } = useSelector((state) => state.general);
     const navigate = useNavigate();
-
+    const [successMessage, setSuccessMessage] = useState("");
     const handleChange = (e) => {
         setData((prev) => {
             return { ...prev, [e.target.name]: e.target.value };
         });
+    };
+
+    useEffect(() => {
+        let timer;
+        if (successMessage) {
+            timer = setTimeout(() => {
+                setSuccessMessage("");
+                setIsShortNameLoading(false);
+            }, 5000); // 35 seconds in milliseconds
+        }
+
+        return () => clearTimeout(timer); // Cleanup timer on component unmount or re-render
+    }, [successMessage]);
+
+    const onhandleChange = async (e) => {
+        try {
+            setIsShortNameLoading(true);
+
+            const capitalizedValue = e.target.value.toUpperCase();
+            setShortName(capitalizedValue);
+            await axios.get(
+                `/resellers/availability/shortName/${id}?search=${capitalizedValue}`,
+                {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                }
+            );
+
+            setShortNameError("");
+            setData((prev) => {
+                return { ...prev, [e.target.name]: capitalizedValue };
+            });
+            setIsShortNameLoading(false);
+        } catch (err) {
+            console.log(err);
+            setShortNameError(
+                err?.response?.data?.error || "Something went wrong, Try again"
+            );
+            setIsShortNameLoading(false);
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -47,13 +91,42 @@ export default function UpdateResellerDetailsPage() {
             setIsLoading(true);
             setError("");
 
-            await axios.patch(`/resellers/update/${id}?sendEmail=${sendEmail}`, data, {
-                headers: { authorization: `Bearer ${jwtToken}` },
-            });
+            await axios.patch(
+                `/resellers/update/${id}?sendEmail=${sendEmail}`,
+                data,
+                {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                }
+            );
             navigate(-1);
         } catch (err) {
-            setError(err?.response?.data?.error || "Something went wrong, Try again");
+            setError(
+                err?.response?.data?.error || "Something went wrong, Try again"
+            );
             setIsLoading(false);
+        }
+    };
+
+    const onHandelSubmit = async (e) => {
+        try {
+            e.preventDefault();
+            setIsShortNameLoading(true);
+            setError("");
+
+            await axios.patch(
+                `/resellers/update/shotName/${id}`,
+                { shortName: data?.shortName },
+                {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                }
+            );
+            setSuccessMessage("short name updated successfully");
+            setIsShortNameLoading(false);
+        } catch (err) {
+            setShortNameError(
+                err?.response?.data?.error || "Something went wrong, Try again"
+            );
+            setIsShortNameLoading(false);
         }
     };
 
@@ -81,6 +154,7 @@ export default function UpdateResellerDetailsPage() {
                 companyRegistration,
                 telephoneNumber,
                 status,
+                shortName,
             } = response.data;
             setData((prev) => {
                 return {
@@ -101,8 +175,11 @@ export default function UpdateResellerDetailsPage() {
                     companyRegistration,
                     telephoneNumber,
                     status,
+                    shortName,
                 };
             });
+
+            setShortName(shortName);
             setIsPageLoading(false);
         } catch (err) {
             console.log(err);
@@ -116,7 +193,9 @@ export default function UpdateResellerDetailsPage() {
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">Edit Reseller</h1>
+                <h1 className="font-[600] text-[15px] uppercase">
+                    Edit Reseller
+                </h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
@@ -140,7 +219,9 @@ export default function UpdateResellerDetailsPage() {
                 <div className="p-6">
                     <div className="bg-white rounded p-6 shadow-sm">
                         <form action="" onSubmit={handleSubmit}>
-                            <h2 className="font-[600] text-lg mb-3">Company Information</h2>
+                            <h2 className="font-[600] text-lg mb-3">
+                                Company Information
+                            </h2>
                             <div className="grid grid-cols-3 gap-4">
                                 <div>
                                     <label htmlFor="">Company Name *</label>
@@ -200,8 +281,9 @@ export default function UpdateResellerDetailsPage() {
                                         })}
                                     </select>
                                 </div>
-                                {countries?.find((item) => item?._id === data.country)?.isocode ===
-                                    "AE" && (
+                                {countries?.find(
+                                    (item) => item?._id === data.country
+                                )?.isocode === "AE" && (
                                     <>
                                         <div>
                                             <label htmlFor="">TRN Number</label>
@@ -214,12 +296,17 @@ export default function UpdateResellerDetailsPage() {
                                             />
                                         </div>
                                         <div>
-                                            <label htmlFor="">Company Registration Number</label>
+                                            <label htmlFor="">
+                                                Company Registration Number
+                                            </label>
                                             <input
                                                 type="text"
                                                 placeholder="Enter Company Registration Number"
                                                 name="companyRegistration"
-                                                value={data.companyRegistration || ""}
+                                                value={
+                                                    data.companyRegistration ||
+                                                    ""
+                                                }
                                                 onChange={handleChange}
                                             />
                                         </div>
@@ -247,7 +334,9 @@ export default function UpdateResellerDetailsPage() {
                                     />
                                 </div>
                             </div>
-                            <h2 className="font-[600] text-lg mb-3 mt-8">Personal Information</h2>
+                            <h2 className="font-[600] text-lg mb-3 mt-8">
+                                Personal Information
+                            </h2>
                             <div className="grid grid-cols-3 gap-4">
                                 <div>
                                     <label htmlFor="">Agent Name *</label>
@@ -267,9 +356,12 @@ export default function UpdateResellerDetailsPage() {
                                             type="text"
                                             disabled
                                             value={
-                                                data.country && countries?.length > 0
+                                                data.country &&
+                                                countries?.length > 0
                                                     ? countries.find(
-                                                          (item) => item?._id === data.country
+                                                          (item) =>
+                                                              item?._id ===
+                                                              data.country
                                                       )?.phonecode
                                                     : ""
                                             }
@@ -292,9 +384,12 @@ export default function UpdateResellerDetailsPage() {
                                             type="text"
                                             disabled
                                             value={
-                                                data.country && countries?.length > 0
+                                                data.country &&
+                                                countries?.length > 0
                                                     ? countries.find(
-                                                          (item) => item?._id === data.country
+                                                          (item) =>
+                                                              item?._id ===
+                                                              data.country
                                                       )?.phonecode
                                                     : ""
                                             }
@@ -353,8 +448,52 @@ export default function UpdateResellerDetailsPage() {
                                     />
                                 </div>
                             </div>
+                            <h2 className="font-[600] text-lg mb-3 mt-8">
+                                Agent Short Name
+                            </h2>
+                            <div className="grid grid-cols-3 gap-4">
+                                <div>
+                                    <label htmlFor="shortName"></label>
+                                    <input
+                                        type="text"
+                                        placeholder="TCTT"
+                                        name="shortName"
+                                        value={shortName || ""}
+                                        onChange={onhandleChange}
+                                        capitalize
+                                    />
+                                </div>
+                                <div>
+                                    {shortNameError ? (
+                                        <span className="text-sm block text-red-500 mt-2">
+                                            {shortNameError}
+                                        </span>
+                                    ) : (
+                                        <button
+                                            className="w-[150px]"
+                                            disabled={isShortNameLoading}
+                                            onClick={onHandelSubmit}
+                                        >
+                                            {isShortNameLoading ? (
+                                                <BtnLoader />
+                                            ) : (
+                                                "Update "
+                                            )}
+                                        </button>
+                                    )}
+                                </div>
+                                <div>
+                                    {successMessage && (
+                                        <span className="text-sm block text-green-500 mt-2">
+                                            {successMessage}
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
 
-                            <h2 className="font-[600] text-lg mb-3 mt-8">Other Info</h2>
+                            <h2 className="font-[600] text-lg mb-3 mt-8">
+                                Other Info
+                            </h2>
                             <div className="grid grid-cols-3 gap-4">
                                 <div>
                                     <label htmlFor="">Password</label>
@@ -380,8 +519,12 @@ export default function UpdateResellerDetailsPage() {
                                         </option>
                                         <option value="pending">Pending</option>
                                         <option value="ok">Ok</option>
-                                        <option value="cancelled">Cancelled</option>
-                                        <option value="disabled">Disabled</option>
+                                        <option value="cancelled">
+                                            Cancelled
+                                        </option>
+                                        <option value="disabled">
+                                            Disabled
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -391,17 +534,22 @@ export default function UpdateResellerDetailsPage() {
                                     type="checkbox"
                                     name="sendEmail"
                                     checked={sendEmail || false}
-                                    onChange={(e) => setSendEmail(e.target.checked)}
+                                    onChange={(e) =>
+                                        setSendEmail(e.target.checked)
+                                    }
                                     className="w-[15px] h-[15px]"
                                     id="sendEmail"
                                 />
                                 <label htmlFor="sendEmail" className="mb-0">
-                                    Do you want to send email with updated credentials?
+                                    Do you want to send email with updated
+                                    credentials?
                                 </label>
                             </div>
 
                             {error && (
-                                <span className="text-sm block text-red-500 mt-2">{error}</span>
+                                <span className="text-sm block text-red-500 mt-2">
+                                    {error}
+                                </span>
                             )}
                             <div className="mt-4 flex items-center justify-end gap-[12px]">
                                 <button
@@ -411,8 +559,15 @@ export default function UpdateResellerDetailsPage() {
                                 >
                                     Cancel
                                 </button>
-                                <button className="w-[150px]" disabled={isLoading}>
-                                    {isLoading ? <BtnLoader /> : "Update Reseller"}
+                                <button
+                                    className="w-[150px]"
+                                    disabled={isLoading}
+                                >
+                                    {isLoading ? (
+                                        <BtnLoader />
+                                    ) : (
+                                        "Update Reseller"
+                                    )}
                                 </button>
                             </div>
                         </form>

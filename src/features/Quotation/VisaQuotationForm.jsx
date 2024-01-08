@@ -25,6 +25,7 @@ export default function VisaQuotaionForm() {
     const [selectedNationality, setSelectedNationality] = useState();
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
+    const [error, setError] = useState("");
 
     const fetchVisasNationality = async () => {
         try {
@@ -43,6 +44,8 @@ export default function VisaQuotaionForm() {
     };
     const fetchVisaData = async () => {
         try {
+            setIsLoading(true);
+            setError("");
             const res = await axios.get(
                 `/quotations/inital/visa-type/${selectedVisaNationality}`,
                 {
@@ -51,8 +54,13 @@ export default function VisaQuotaionForm() {
             );
 
             setVisa(res.data || []);
+            setIsLoading(false);
         } catch (err) {
-            console.log(err);
+            setError(
+                err?.response?.data?.error ||
+                    "Something went wrong! try again.."
+            );
+            setIsLoading(false);
         }
     };
 
@@ -64,7 +72,7 @@ export default function VisaQuotaionForm() {
         if (nationalities.length > 0) {
             fetchVisaData();
         }
-    }, [selectedVisaNationality, nationalities]);
+    }, [selectedVisaNationality]);
 
     return (
         <div>
@@ -165,6 +173,13 @@ export default function VisaQuotaionForm() {
                             ) : (
                                 ""
                             )}
+                            <div>
+                                {error && (
+                                    <div className="text-sm block text-red-500 mt-2">
+                                        {error}
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
                     {selectedVisa && Object.keys(selectedVisa)?.length > 0 && (
