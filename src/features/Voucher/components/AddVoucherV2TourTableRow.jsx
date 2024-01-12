@@ -91,6 +91,7 @@ export default function AddVoucherV2TourTableRow({
                     <option value="arrival">Arrival</option>
                     <option value="departure">Departure</option>
                     <option value="ticket-only">Ticket Only</option>
+                    <option value="half-day">Half Day</option>
                 </select>
             </td>
 
