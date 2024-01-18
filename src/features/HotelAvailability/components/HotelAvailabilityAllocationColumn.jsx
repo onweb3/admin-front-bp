@@ -23,11 +23,13 @@ export default function HotelAvailabilityAllocationColumn({ allocation, roomType
                 setIsModalOpen(true);
             }}
         >
+            {["free-sale", "static", "on-request"].includes(allocation?.allocationType) && (
+                <span className="">{allocation?.rateType === "contract-rate" ? "Co Rate" : ""}</span>
+            )}
             {allocation?.allocationType === "static"
-                ? (allocation?.unitWise === "room" ? "R-" : "P-") + allocation?.allocation
-                : ""}
-            {allocation?.allocationType === "static"
-                ? (allocation?.unitWise === "room" ? " / R-" : " / P-") + allocation?.bookedAllocations
+                ? allocation?.unitWise === "room"
+                    ? ` (R-${allocation?.allocation || 0}/${allocation?.bookedAllocations || 0})`
+                    : ` (R-${allocation?.allocation || 0}/${allocation?.bookedAllocations || 0})`
                 : ""}
             {isModalOpen && (
                 <HotelAvailabilityDetailsModal

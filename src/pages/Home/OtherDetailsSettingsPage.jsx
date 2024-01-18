@@ -12,6 +12,9 @@ export default function OtherDetailsSettingsPage() {
         email: "",
         facebookUrl: "",
         instagramUrl: "",
+        youtubeUrl: "",
+        twitterUrl: "",
+        tripAdvisorUrl: "",
         footerDescription: "",
     });
     const [error, setError] = useState("");
@@ -39,6 +42,9 @@ export default function OtherDetailsSettingsPage() {
                 email: response?.data?.email,
                 facebookUrl: response?.data?.facebookUrl,
                 instagramUrl: response?.data?.instagramUrl,
+                youtubeUrl: response?.data?.youtubeUrl,
+                twitterUrl: response?.data?.twitterUrl,
+                tripAdvisorUrl: response?.data?.tripAdvisorUrl,
                 footerDescription: response?.data?.footerDescription,
             });
             setIsPageLoading(false);
@@ -59,9 +65,7 @@ export default function OtherDetailsSettingsPage() {
 
             setIsLoading(false);
         } catch (err) {
-            setError(
-                err?.response?.data?.error || "Something went wrong, Try again"
-            );
+            setError(err?.response?.data?.error || "Something went wrong, Try again");
             setIsLoading(false);
         }
     };
@@ -73,9 +77,7 @@ export default function OtherDetailsSettingsPage() {
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">
-                    Other Details Setting
-                </h1>
+                <h1 className="font-[600] text-[15px] uppercase">Other Details Setting</h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
@@ -146,6 +148,36 @@ export default function OtherDetailsSettingsPage() {
                                         placeholder="Enter Instagram URL"
                                     />
                                 </div>
+                                <div>
+                                    <label htmlFor="">Youtube Url</label>
+                                    <input
+                                        type="text"
+                                        value={data.youtubeUrl || ""}
+                                        name="youtubeUrl"
+                                        onChange={handleChange}
+                                        placeholder="Enter Youtube URL"
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="">Twitter Url</label>
+                                    <input
+                                        type="text"
+                                        value={data.twitterUrl || ""}
+                                        name="twitterUrl"
+                                        onChange={handleChange}
+                                        placeholder="Enter Twitter URL"
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="">Trip Advisor Url</label>
+                                    <input
+                                        type="text"
+                                        value={data.tripAdvisorUrl || ""}
+                                        name="tripAdvisorUrl"
+                                        onChange={handleChange}
+                                        placeholder="Enter Trip Advisor URL"
+                                    />
+                                </div>
                             </div>
                             <div className="mt-4">
                                 <label htmlFor="">Footer Description</label>
@@ -158,15 +190,9 @@ export default function OtherDetailsSettingsPage() {
                                 ></textarea>
                             </div>
 
-                            {error && (
-                                <span className="text-sm block text-red-500 mt-2">
-                                    {error}
-                                </span>
-                            )}
+                            {error && <span className="text-sm block text-red-500 mt-2">{error}</span>}
                             <div className="mt-4 flex items-center justify-end gap-[12px]">
-                                <button className="w-[100px]">
-                                    {isLoading ? <BtnLoader /> : "Update"}
-                                </button>
+                                <button className="w-[100px]">{isLoading ? <BtnLoader /> : "Update"}</button>
                             </div>
                         </form>
                     </div>

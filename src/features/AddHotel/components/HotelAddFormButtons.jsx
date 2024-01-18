@@ -82,6 +82,7 @@ export default function HotelAddFormButtons({
             );
             formData.append("boardTypes", JSON.stringify(details.boardTypes));
             formData.append("hbId", details.hbId);
+            formData.append("ottilaId", details.ottilaId);
             formData.append("hotelChain", details.hotelChain);
             formData.append("restaurants", JSON.stringify(restaurants));
             formData.append("bars", JSON.stringify(bars));

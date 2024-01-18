@@ -76,6 +76,7 @@ export default function HotelEditFormButtons({
 
             formData.append("oldImages", JSON.stringify(images));
             formData.append("hbId", details.hbId);
+            formData.append("ottilaId", details.ottilaId);
             formData.append("hotelChain", details.hotelChain);
             formData.append("restaurants", JSON.stringify(restaurants));
             formData.append("bars", JSON.stringify(bars));
