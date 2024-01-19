@@ -1,8 +1,4 @@
-import {
-    AdminLayout,
-    EditProfileLayout,
-    SingleResellerLayout,
-} from "../layouts";
+import { AdminLayout, EditProfileLayout, SingleResellerLayout } from "../layouts";
 import A2aAddTicketPage from "../pages/A2A/A2aAddTicketPage";
 import A2AEditTicketPage from "../pages/A2A/A2aEditTicketPage";
 import A2AEnquiryPage from "../pages/A2A/A2AEnquiryPage";
@@ -259,6 +255,9 @@ import SingleOrderDetailsPage from "../pages/Orders/SinlgeOrderDetailsPage";
 import AttractionTicketSettingPage from "../pages/Attraction/AttractionTicketSettings";
 import B2bHomeSettingsPage from "../pages/Resellers/B2bHomeSections";
 import B2BHomeBannerPage from "../pages/Resellers/B2BHomeBannerPage";
+import CompanyAddressesPage from "../pages/Settings/CompanyAddressesPage";
+import AddCompanyAddressPage from "../pages/Settings/AddCompanyAddressPage";
+import EditCompanyAddressPage from "../pages/Settings/EditCompanyAddressPage";
 
 const ThemeRoutes = [
     {
@@ -1328,6 +1327,19 @@ const ThemeRoutes = [
             {
                 path: "/orders/single/:orderId",
                 element: <SingleOrderDetailsPage />,
+            },
+
+            {
+                path: "/company/addresses",
+                element: <CompanyAddressesPage />,
+            },
+            {
+                path: "/company/addresses/add",
+                element: <AddCompanyAddressPage />,
+            },
+            {
+                path: "/company/addresses/:addressId/edit",
+                element: <EditCompanyAddressPage />,
             },
         ],
     },
