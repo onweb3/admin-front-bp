@@ -259,6 +259,10 @@ import SingleOrderDetailsPage from "../pages/Orders/SinlgeOrderDetailsPage";
 import AttractionTicketSettingPage from "../pages/Attraction/AttractionTicketSettings";
 import B2bHomeSettingsPage from "../pages/Resellers/B2bHomeSections";
 import B2BHomeBannerPage from "../pages/Resellers/B2BHomeBannerPage";
+import SeoMainCategoryPage from "../pages/Seo/SeoMainCategoryPage";
+import SeoCategoryPage from "../pages/Seo/SeoCategoryPage";
+import SeoSubCategoryPage from "../pages/Seo/SeoSubCategoryPage";
+import SeoProductListPage from "../pages/Seo/SeoProductListPage";
 
 const ThemeRoutes = [
     {
@@ -1328,6 +1332,24 @@ const ThemeRoutes = [
             {
                 path: "/orders/single/:orderId",
                 element: <SingleOrderDetailsPage />,
+            },
+
+            //seo routes
+            {
+                path: "/seo/main-category",
+                element: <SeoMainCategoryPage />,
+            },
+            {
+                path: "/seo/main-category/:id/category",
+                element: <SeoCategoryPage />,
+            },
+            {
+                path: "/seo/main-category/:id/category/:categoryId/sub-category",
+                element: <SeoSubCategoryPage />,
+            },
+            {
+                path: "/seo/main-category/:id/category/:categoryId/sub-category/:subCategoryId",
+                element: <SeoProductListPage />,
             },
         ],
     },

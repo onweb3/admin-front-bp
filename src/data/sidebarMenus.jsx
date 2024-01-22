@@ -681,6 +681,18 @@ const sidebarMenus = {
                 },
             ],
         },
+        {
+            name: "SEO Settings",
+            icon: <HiOutlineShoppingCart />,
+            link: "#",
+            dropdown: [
+                {
+                    name: "SEO ",
+                    link: "/seo/main-category",
+                    permission: ["seo-main-cateogry", "view"],
+                },
+            ],
+        },
     ],
     Accounts: [
         {
