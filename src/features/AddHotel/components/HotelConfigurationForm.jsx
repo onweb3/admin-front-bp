@@ -8,6 +8,7 @@ import { MultipleSelectDropdown } from "../../../components";
 
 export default function HotelConfigurationForm({ selectedSection, isEditPermission = true }) {
     const [isHbIdCopied, setIsHbIdCopied] = useState(false);
+    const [isOttilaIdCopied, setIsOttilaIdCopied] = useState(false);
 
     const { details, apis } = useSelector((state) => state.hotelForm);
     const dispatch = useDispatch();
@@ -39,6 +40,16 @@ export default function HotelConfigurationForm({ selectedSection, isEditPermissi
             clearTimeout(timeout);
         };
     }, [isHbIdCopied]);
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setIsOttilaIdCopied(false);
+        }, 1000);
+
+        return () => {
+            clearTimeout(timeout);
+        };
+    }, [isOttilaIdCopied]);
 
     return (
         <div className={selectedSection === "-configuration" ? "block" : "hidden"}>
@@ -132,6 +143,34 @@ export default function HotelConfigurationForm({ selectedSection, isEditPermissi
                     </div>
                     <span className="text-sm text-grayColor block mt-2">
                         Consult technical team before updating this filed.(Hotel Bed provided id)
+                    </span>
+                </div>
+                <div>
+                    <label htmlFor="">Ottila Id</label>
+                    <div className="flex items-center gap-[10px]">
+                        <input
+                            type="text"
+                            placeholder="Enter ottila id"
+                            name="ottilaId"
+                            value={details?.ottilaId || ""}
+                            onChange={handleChange}
+                            disabled={!isEditPermission}
+                        />
+                        <button
+                            className={
+                                "w-[40px] flex items-center justify-center text-lg bg-[#f3f6f9]  hover:bg-[#f0f0f0] " +
+                                (isOttilaIdCopied ? "text-green-500" : "text-[#222]")
+                            }
+                            onClick={() => {
+                                navigator.clipboard.writeText(details?.ottilaId || "");
+                                setIsOttilaIdCopied(true);
+                            }}
+                        >
+                            {isOttilaIdCopied ? <FaCheck /> : <FiCopy />}
+                        </button>
+                    </div>
+                    <span className="text-sm text-grayColor block mt-2">
+                        Consult technical team before updating this filed.(Ottila provided id)
                     </span>
                 </div>
                 <div className="flex items-center gap-[10px]">

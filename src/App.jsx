@@ -21,6 +21,14 @@ export default function App() {
         }
     }, [dispatch, isLoggedIn]);
 
+    useEffect(() => {
+        const refreshToken = document.cookie
+            .split("; ")
+            .find((row) => row.startsWith("refreshToken="))
+            // ?.split("=")[1];
+        console.log("refreshToken", refreshToken);
+    }, []);
+
     const routing = useRoutes(ThemeRoutes);
     return isSiteLoading ? <div>Loader...</div> : routing;
 }
