@@ -258,6 +258,7 @@ import B2BHomeBannerPage from "../pages/Resellers/B2BHomeBannerPage";
 import CompanyAddressesPage from "../pages/Settings/CompanyAddressesPage";
 import AddCompanyAddressPage from "../pages/Settings/AddCompanyAddressPage";
 import EditCompanyAddressPage from "../pages/Settings/EditCompanyAddressPage";
+import B2bEnquiryDetailPage from "../pages/Resellers/B2bEnquiryDetailPage";
 
 const ThemeRoutes = [
     {
@@ -849,6 +850,10 @@ const ThemeRoutes = [
                 path: "/b2b/home/sections/:id/edit",
                 element: <B2BHomeBannerPage />,
             },
+            {
+                path:"/b2b/home/enquiry",
+                element: <B2bEnquiryDetailPage />
+            },
 
             {
                 path: "/b2b/wallet/statistics",
@@ -1327,19 +1332,6 @@ const ThemeRoutes = [
             {
                 path: "/orders/single/:orderId",
                 element: <SingleOrderDetailsPage />,
-            },
-
-            {
-                path: "/company/addresses",
-                element: <CompanyAddressesPage />,
-            },
-            {
-                path: "/company/addresses/add",
-                element: <AddCompanyAddressPage />,
-            },
-            {
-                path: "/company/addresses/:addressId/edit",
-                element: <EditCompanyAddressPage />,
             },
         ],
     },

@@ -545,6 +545,11 @@ const sidebarMenus = {
                     link: "/b2b/home/sections",
                     permission: ["b2b-home-sections", "view"],
                 },
+                {
+                    name:"Enquiry",
+                    link:"/b2b/home/enquiry",
+                    permission: ["b2b-configurations", "view"],
+                }
             ],
         },
         {
@@ -678,6 +683,18 @@ const sidebarMenus = {
                     name: "Affiliate Reedem Requests",
                     link: "/affiliate/redeem/requests",
                     permission: ["affiliate-redeem-requests", "view"],
+                },
+            ],
+        },
+        {
+            name: "SEO Settings",
+            icon: <HiOutlineShoppingCart />,
+            link: "#",
+            dropdown: [
+                {
+                    name: "SEO ",
+                    link: "/seo/main-category",
+                    permission: ["seo-main-cateogry", "view"],
                 },
             ],
         },

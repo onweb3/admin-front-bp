@@ -461,6 +461,12 @@ const adminRoles = [
         category: "marketing",
         permissions: [],
     },
+    {
+        name: "seo-main-cateogry",
+        displayName: "SEO",
+        category: "marketing",
+        permissions: [],
+    },
 
     // Users
     {
