@@ -255,6 +255,10 @@ import SingleOrderDetailsPage from "../pages/Orders/SinlgeOrderDetailsPage";
 import AttractionTicketSettingPage from "../pages/Attraction/AttractionTicketSettings";
 import B2bHomeSettingsPage from "../pages/Resellers/B2bHomeSections";
 import B2BHomeBannerPage from "../pages/Resellers/B2BHomeBannerPage";
+import CompanyAddressesPage from "../pages/Settings/CompanyAddressesPage";
+import AddCompanyAddressPage from "../pages/Settings/AddCompanyAddressPage";
+import EditCompanyAddressPage from "../pages/Settings/EditCompanyAddressPage";
+import B2bEnquiryDetailPage from "../pages/Resellers/B2bEnquiryDetailPage";
 
 const ThemeRoutes = [
     {
@@ -845,6 +849,10 @@ const ThemeRoutes = [
             {
                 path: "/b2b/home/sections/:id/edit",
                 element: <B2BHomeBannerPage />,
+            },
+            {
+                path:"/b2b/home/enquiry",
+                element: <B2bEnquiryDetailPage />
             },
 
             {
