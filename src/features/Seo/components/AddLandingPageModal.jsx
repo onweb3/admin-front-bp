@@ -61,6 +61,19 @@ export default function AddLandingPageModal({
         }
     };
 
+    const removeKeyword = (index) => {
+        try {
+            setData((prev) => ({
+                ...prev,
+                keywords: prev.keywords.filter((_, i) => i !== index),
+            }));
+        } catch (err) {
+            setError(
+                err?.response?.data?.error || "Something went wrong, Try again"
+            );
+        }
+    };
+
     const handleSubmit = async (e) => {
         try {
             e.preventDefault();
@@ -163,14 +176,23 @@ export default function AddLandingPageModal({
                             </div>
                         </div>
                         {data.keywords && (
-                            <div className="flex pt-3">
-                                {data.keywords.map((keyword) => {
-                                    return (
-                                        <div className="bg-slate-300 text-textColor px-[15px]">
-                                            {keyword}
+                            <div className="flex flex-wrap pt-3 gap-2 w-full">
+                                {data.keywords.map((keyword, index) => (
+                                    <div
+                                        key={index}
+                                        className="bg-slate-300 text-textColor px-[15px] flex items-center"
+                                    >
+                                        <div>{keyword}</div>
+                                        <div
+                                            className="text-red-500 cursor-pointer"
+                                            onClick={(e) => {
+                                                removeKeyword(index);
+                                            }}
+                                        >
+                                            <MdClose />
                                         </div>
-                                    );
-                                })}
+                                    </div>
+                                ))}
                             </div>
                         )}
 

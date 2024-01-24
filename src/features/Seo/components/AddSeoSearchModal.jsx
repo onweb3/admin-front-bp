@@ -62,6 +62,19 @@ export default function AddSeoSearchModal({
         }
     };
 
+    const removeKeyword = (index) => {
+        try {
+            setData((prev) => ({
+                ...prev,
+                keywords: prev.keywords.filter((_, i) => i !== index),
+            }));
+        } catch (err) {
+            setError(
+                err?.response?.data?.error || "Something went wrong, Try again"
+            );
+        }
+    };
+
     const fetchData = async () => {
         try {
             let response;
@@ -235,11 +248,20 @@ export default function AddSeoSearchModal({
                             </div>
                         </div>
                         {data.keywords && (
-                            <div className="flex pt-3">
-                                {data.keywords.map((keyword) => {
+                            <div className="flex pt-3 gap-2">
+                                {data.keywords.map((keyword, index) => {
                                     return (
-                                        <div className="bg-slate-300 text-textColor px-[15px]">
-                                            {keyword}
+                                        <div className="bg-slate-300 text-textColor px-[15px] flex items-center">
+                                            <div> {keyword} </div>
+                                            <div
+                                                className="text-red-500"
+                                                onClick={(e) => {
+                                                    removeKeyword(index);
+                                                }}
+                                            >
+                                                {" "}
+                                                <MdClose />
+                                            </div>
                                         </div>
                                     );
                                 })}

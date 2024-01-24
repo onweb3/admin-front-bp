@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import axios from "../../../axios";
 import { config } from "../../../constants";
+import { BtnLoader } from "../../../components";
 
 export default function AddBannerModal({
     setIsModalOpen,
@@ -48,47 +49,55 @@ export default function AddBannerModal({
     } = useImageChange();
 
     const handleDataChange = async (e) => {
-        e.preventDefault();
-        setIsLoading(true);
-        setError("");
+        try {
+            e.preventDefault();
+            setIsLoading(true);
+            setError("");
 
-        const formData = new FormData();
-        formData.append("title", initial.title);
-        formData.append("body", initial.body);
-        formData.append("isButton", initial.isButton);
-        formData.append("buttonText", initial.buttonText);
-        formData.append("buttonUrl", initial.buttonUrl);
-        formData.append("image", image);
+            const formData = new FormData();
+            formData.append("title", initial.title);
+            formData.append("body", initial.body);
+            formData.append("isButton", initial.isButton);
+            formData.append("buttonText", initial.buttonText);
+            formData.append("buttonUrl", initial.buttonUrl);
+            formData.append("image", image);
 
-        if (edit) {
-            const response = await axios.patch(
-                `/banners/edit/single/${id}/${data?.banners[editIndex]?._id}`,
-                formData,
-                {
-                    headers: { Authorization: `Bearer ${jwtToken}` },
-                }
+            if (edit) {
+                const response = await axios.patch(
+                    `/banners/edit/single/${id}/${data?.banners[editIndex]?._id}`,
+                    formData,
+                    {
+                        headers: { Authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+
+                setData((prev) => ({
+                    ...prev,
+                    banners: response.data.banners,
+                }));
+            } else {
+                const response = await axios.patch(
+                    `/banners/add/single/${id}`,
+                    formData,
+                    {
+                        headers: { Authorization: `Bearer ${jwtToken}` },
+                    }
+                );
+                setData((prev) => ({
+                    ...prev,
+                    banners: response.data.banners,
+                }));
+            }
+            setIsModalOpen(false);
+            setEdit(false);
+            setEditIndex("");
+            setIsLoading(false);
+        } catch (e) {
+            setError(
+                err?.response?.data?.error || "Something went wrong, Try again"
             );
-
-            setData((prev) => ({
-                ...prev,
-                banners: response.data.banners,
-            }));
-        } else {
-            const response = await axios.patch(
-                `/banners/add/single/${id}`,
-                formData,
-                {
-                    headers: { Authorization: `Bearer ${jwtToken}` },
-                }
-            );
-            setData((prev) => ({
-                ...prev,
-                banners: response.data.banners,
-            }));
+            setIsLoading(false);
         }
-        setIsModalOpen(false);
-        setEdit(false);
-        setEditIndex("");
     };
     useEffect(() => {
         setInitial({
@@ -100,8 +109,6 @@ export default function AddBannerModal({
             buttonUrl: data?.banners[editIndex]?.buttonUrl || "",
         });
     }, [editIndex, data]);
-
-    console.log(initial, "title");
 
     useHandleClickOutside(wrapperRef, () => setIsModalOpen(false));
 
@@ -205,9 +212,14 @@ export default function AddBannerModal({
                             </div>
                         </>
                     )}
+                    {error && (
+                        <span className="text-sm block text-red-500 mt-2">
+                            {error}
+                        </span>
+                    )}
                     <div className="flex items-center justify-end mt-6">
                         <button className="px-3" onClick={handleDataChange}>
-                            Add Banner
+                            {isLoading ? <BtnLoader /> : "Add Banner"}
                         </button>
                     </div>
                 </div>
