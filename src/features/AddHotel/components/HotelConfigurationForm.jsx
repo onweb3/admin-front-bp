@@ -145,7 +145,7 @@ export default function HotelConfigurationForm({ selectedSection, isEditPermissi
                         Consult technical team before updating this filed.(Hotel Bed provided id)
                     </span>
                 </div>
-                <div>
+                {/* <div>
                     <label htmlFor="">Ottila Id</label>
                     <div className="flex items-center gap-[10px]">
                         <input
@@ -172,7 +172,7 @@ export default function HotelConfigurationForm({ selectedSection, isEditPermissi
                     <span className="text-sm text-grayColor block mt-2">
                         Consult technical team before updating this filed.(Ottila provided id)
                     </span>
-                </div>
+                </div> */}
                 <div className="flex items-center gap-[10px]">
                     <input
                         type="checkbox"

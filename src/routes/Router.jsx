@@ -263,6 +263,10 @@ import SeoMainCategoryPage from "../pages/Seo/SeoMainCategoryPage";
 import SeoCategoryPage from "../pages/Seo/SeoCategoryPage";
 import SeoSubCategoryPage from "../pages/Seo/SeoSubCategoryPage";
 import SeoProductListPage from "../pages/Seo/SeoProductListPage";
+import CompanyAddressesPage from "../pages/Settings/CompanyAddressesPage";
+import AddCompanyAddressPage from "../pages/Settings/AddCompanyAddressPage";
+import EditCompanyAddressPage from "../pages/Settings/EditCompanyAddressPage";
+import B2bEnquiryDetailPage from "../pages/Resellers/B2bEnquiryDetailPage";
 
 const ThemeRoutes = [
     {
@@ -853,6 +857,10 @@ const ThemeRoutes = [
             {
                 path: "/b2b/home/sections/:id/edit",
                 element: <B2BHomeBannerPage />,
+            },
+            {
+                path:"/b2b/home/enquiry",
+                element: <B2bEnquiryDetailPage />
             },
 
             {

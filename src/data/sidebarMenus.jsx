@@ -545,6 +545,11 @@ const sidebarMenus = {
                     link: "/b2b/home/sections",
                     permission: ["b2b-home-sections", "view"],
                 },
+                {
+                    name:"Enquiry",
+                    link:"/b2b/home/enquiry",
+                    permission: ["b2b-configurations", "view"],
+                }
             ],
         },
         {

@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { FiDownload } from "react-icons/fi";
 import { BiFilter } from "react-icons/bi";
+import moment from "moment";
 
 import axios from "../../axios";
 import { AttractionTicketOrdersTable } from "../../features/Orders";
@@ -18,7 +19,7 @@ export default function AttractionsTicketsOrders() {
         status: "",
         referenceNo: "",
         agentCode: "",
-        dateFrom: "",
+        dateFrom: moment().subtract(2, "months").date(1).format("YYYY-MM-DD"),
         dateTo: "",
         attraction: "",
         activity: "",
@@ -46,7 +47,7 @@ export default function AttractionsTicketsOrders() {
                 status: "",
                 referenceNo: "",
                 agentCode: "",
-                dateFrom: "",
+                dateFrom: moment().subtract(2, "months").date(1).format("YYYY-MM-DD"),
                 dateTo: "",
                 attraction: "",
                 activity: "",
@@ -60,7 +61,7 @@ export default function AttractionsTicketsOrders() {
             status: "",
             referenceNo: "",
             agentCode: "",
-            dateFrom: "",
+            dateFrom: moment().subtract(2, "months").date(1).format("YYYY-MM-DD"),
             dateTo: "",
             attraction: "",
             activity: "",
@@ -156,9 +157,7 @@ export default function AttractionsTicketsOrders() {
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">
-                    Ticket Orders
-                </h1>
+                <h1 className="font-[600] text-[15px] uppercase">Ticket Orders</h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
@@ -177,9 +176,7 @@ export default function AttractionsTicketsOrders() {
             <div className="p-6">
                 <div className="bg-white rounded shadow-sm">
                     <div className="flex items-center justify-between border-b border-dashed p-4">
-                        <h1 className="font-medium">
-                            All Attraction Ticket Orders
-                        </h1>
+                        <h1 className="font-medium">All Attraction Ticket Orders</h1>
                         <button
                             className="px-3 bg-[#299cdb] flex items-center justify-center gap-[10px]"
                             onClick={handleDownload}
@@ -274,12 +271,7 @@ export default function AttractionsTicketsOrders() {
                         </div>
                         <div>
                             <label htmlFor="">Status</label>
-                            <select
-                                name="status"
-                                id=""
-                                value={filters.status || ""}
-                                onChange={handleChange}
-                            >
+                            <select name="status" id="" value={filters.status || ""} onChange={handleChange}>
                                 <option value="">All</option>
                                 <option value="booked">Booked</option>
                                 <option value="pending">Pending</option>
@@ -289,12 +281,7 @@ export default function AttractionsTicketsOrders() {
                         </div>
                         <div>
                             <label htmlFor="">Limit</label>
-                            <select
-                                id=""
-                                name="limit"
-                                value={filters.limit}
-                                onChange={handleChange}
-                            >
+                            <select id="" name="limit" value={filters.limit} onChange={handleChange}>
                                 <option value="10">10</option>
                                 <option value="25">25</option>
                                 <option value="50">50</option>
@@ -304,11 +291,7 @@ export default function AttractionsTicketsOrders() {
                         <button className="flex items-center justify-center gap-[10px]">
                             <BiFilter /> Filter
                         </button>
-                        <button
-                            className="bg-slate-200 text-textColor"
-                            onClick={clearFilters}
-                            type="button"
-                        >
+                        <button className="bg-slate-200 text-textColor" onClick={clearFilters} type="button">
                             Clear
                         </button>
                     </form>
@@ -317,9 +300,7 @@ export default function AttractionsTicketsOrders() {
                         <button
                             className={
                                 "px-2 py-4 h-auto bg-transparent text-primaryColor font-medium rounded-none " +
-                                (section === "reseller"
-                                    ? "border-b border-b-orange-500"
-                                    : "")
+                                (section === "reseller" ? "border-b border-b-orange-500" : "")
                             }
                             onClick={() =>
                                 setSearchParams((prev) => {
@@ -332,9 +313,7 @@ export default function AttractionsTicketsOrders() {
                         <button
                             className={
                                 "px-2 py-4 h-auto bg-transparent text-primaryColor font-medium rounded-none " +
-                                (section === "sub-agent"
-                                    ? "border-b border-b-orange-500"
-                                    : "")
+                                (section === "sub-agent" ? "border-b border-b-orange-500" : "")
                             }
                             onClick={() =>
                                 setSearchParams((prev) => {
@@ -347,9 +326,7 @@ export default function AttractionsTicketsOrders() {
                         <button
                             className={
                                 "px-2 py-4 h-auto bg-transparent text-primaryColor font-medium rounded-none " +
-                                (section === "b2c"
-                                    ? "border-b border-b-orange-500"
-                                    : "")
+                                (section === "b2c" ? "border-b border-b-orange-500" : "")
                             }
                             onClick={() =>
                                 setSearchParams((prev) => {
