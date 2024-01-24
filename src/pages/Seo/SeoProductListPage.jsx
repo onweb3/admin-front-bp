@@ -15,7 +15,7 @@ export default function SeoProductListPage() {
         skip: 0,
         limit: 10,
         totalCategories: 0,
-        searchQuery: "",
+        search: "",
     });
     const [categoryModal, setCategoryModal] = useState({
         isOpen: false,
@@ -32,17 +32,17 @@ export default function SeoProductListPage() {
             setIsLoading(true);
 
             const response = await axios.get(
-                `/seo/sub-categories/${id}/${categoryId}/${subCategoryId}?skip=${filters.skip}&limit=${filters.limit}&searchQuery=${filters.searchQuery}`,
+                `/seo/sub-categories/${id}/${categoryId}/${subCategoryId}?skip=${filters.skip}&limit=${filters.limit}&search=${filters.search}`,
                 {
                     headers: { authorization: `Bearer ${jwtToken}` },
                 }
             );
 
-            setCategories(response?.data);
+            setCategories(response?.data.seoSubCategory);
             setFilters((prev) => {
                 return {
                     ...prev,
-                    totalAirports: response?.data?.totalAirports,
+                    totalSeoSubCategory: response?.data?.totalAirports,
                 };
             });
             setIsLoading(false);
@@ -131,11 +131,11 @@ export default function SeoProductListPage() {
                                         setFilters((prev) => {
                                             return {
                                                 ...prev,
-                                                searchQuery: e.target.value,
+                                                search: e.target.value,
                                             };
                                         });
                                     }}
-                                    value={filters.searchQuery || ""}
+                                    value={filters.search || ""}
                                 />
                                 <button
                                     type="submit"
@@ -241,7 +241,7 @@ export default function SeoProductListPage() {
                                 <Pagination
                                     limit={filters?.limit}
                                     skip={filters?.skip}
-                                    total={filters?.totalAirports}
+                                    total={filters?.totalCategories}
                                     incOrDecSkip={(number) =>
                                         setFilters((prev) => {
                                             return {
