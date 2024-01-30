@@ -18,6 +18,7 @@ export default function B2bWalletDepositsRequestPage() {
         dateTo: "",
         bankId: "",
         referenceNo: "",
+        agentCode: "",
         status: "",
     });
     const [banks, setBanks] = useState([]);
@@ -40,6 +41,7 @@ export default function B2bWalletDepositsRequestPage() {
                 dateTo: "",
                 bankId: "",
                 referenceNo: "",
+                agentCode: "",
                 status: "",
                 totalWalletDepositRequests: 0,
             };
@@ -52,6 +54,7 @@ export default function B2bWalletDepositsRequestPage() {
                 dateFrom: "",
                 dateTo: "",
                 referenceNo: "",
+                agentCode: "",
                 bankId: "",
                 status: "",
             });
@@ -64,6 +67,7 @@ export default function B2bWalletDepositsRequestPage() {
         dateFrom,
         dateTo,
         referenceNo,
+        agentCode,
         bankId,
         status,
     }) => {
@@ -71,7 +75,7 @@ export default function B2bWalletDepositsRequestPage() {
             setIsPageLoading(true);
 
             const response = await axios.get(
-                `/wallets/deposit-requests/all?status=${status}&dateFrom=${dateFrom}&dateTo=${dateTo}&limit=${limit}&skip=${skip}&bankId=${bankId}&referenceNo=${referenceNo}`,
+                `/wallets/deposit-requests/all?status=${status}&dateFrom=${dateFrom}&dateTo=${dateTo}&limit=${limit}&skip=${skip}&bankId=${bankId}&referenceNo=${referenceNo}&agentCode=${agentCode}`,
                 {
                     headers: { authorization: `Bearer ${jwtToken}` },
                 }
@@ -152,7 +156,7 @@ export default function B2bWalletDepositsRequestPage() {
                         }}
                         className="grid grid-cols-7 items-end gap-4 border-b border-dashed p-4"
                     >
-                        <div className="col-span-2">
+                        <div className="">
                             <label htmlFor="">Reference Number</label>
                             <input
                                 type="text"
@@ -160,6 +164,17 @@ export default function B2bWalletDepositsRequestPage() {
                                 className=""
                                 name="referenceNo"
                                 value={filters.referenceNo || ""}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div className="">
+                            <label htmlFor="">Agent Code</label>
+                            <input
+                                type="text"
+                                placeholder="Enter Agent Code"
+                                className=""
+                                name="agentCode"
+                                value={filters.agentCode || ""}
                                 onChange={handleChange}
                             />
                         </div>
@@ -185,12 +200,7 @@ export default function B2bWalletDepositsRequestPage() {
                         </div>
                         <div>
                             <label htmlFor="">Bank</label>
-                            <select
-                                name="bankId"
-                                id=""
-                                value={filters.bankId || ""}
-                                onChange={handleChange}
-                            >
+                            <select name="bankId" id="" value={filters.bankId || ""} onChange={handleChange}>
                                 <option value="">All</option>
                                 {banks?.map((bank, index) => {
                                     return (
@@ -203,12 +213,7 @@ export default function B2bWalletDepositsRequestPage() {
                         </div>
                         <div>
                             <label htmlFor="">Status</label>
-                            <select
-                                name="status"
-                                id=""
-                                value={filters.status || ""}
-                                onChange={handleChange}
-                            >
+                            <select name="status" id="" value={filters.status || ""} onChange={handleChange}>
                                 <option value="">All</option>
                                 <option value="pending">Pending</option>
                                 <option value="confirmed">Confirmed</option>
@@ -217,12 +222,7 @@ export default function B2bWalletDepositsRequestPage() {
                         </div>
                         <div>
                             <label htmlFor="">Limit</label>
-                            <select
-                                id=""
-                                name="limit"
-                                value={filters.limit}
-                                onChange={handleChange}
-                            >
+                            <select id="" name="limit" value={filters.limit} onChange={handleChange}>
                                 <option value="15">15</option>
                                 <option value="25">25</option>
                                 <option value="50">50</option>
@@ -232,11 +232,7 @@ export default function B2bWalletDepositsRequestPage() {
                         <button className="flex items-center justify-center gap-[10px]">
                             <BiFilter /> Filter
                         </button>
-                        <button
-                            className="bg-slate-200 text-textColor"
-                            onClick={clearFilters}
-                            type="button"
-                        >
+                        <button className="bg-slate-200 text-textColor" onClick={clearFilters} type="button">
                             Clear
                         </button>
                     </form>
@@ -270,9 +266,7 @@ export default function B2bWalletDepositsRequestPage() {
                                             <B2bWalletDepositRequestsTableRow
                                                 key={index}
                                                 deposit={deposit}
-                                                updateDepositRequestStatus={
-                                                    updateDepositRequestStatus
-                                                }
+                                                updateDepositRequestStatus={updateDepositRequestStatus}
                                             />
                                         );
                                     })}

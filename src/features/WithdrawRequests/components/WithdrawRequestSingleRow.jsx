@@ -27,8 +27,8 @@ export default function WithdrawRequestSingleRow({ request, banks }) {
         <>
             <tr className="border-b border-tableBorderColor">
                 <td className="p-3">{request.b2bWalletWithdrawRequestRefNo || "N/A"}</td>
-                <td className="p-3 whitespace-nowrap">
-                    {request.reseller?.name} ({request?.reseller?.agentCode})
+                <td className="p-3 whitespace-nowrap capitalize">
+                    {request.resellerId?.companyName} ({request?.resellerId?.agentCode})
                 </td>
                 <td className="p-3 ">{request?.amount} AED</td>
                 <td className="p-3">{formatDate(request?.createdAt, true)}</td>

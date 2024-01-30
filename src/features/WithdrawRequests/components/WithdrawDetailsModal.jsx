@@ -27,13 +27,8 @@ export default function WithdrawRequestDetailsModal({ setWithdrawDetailsModalOpe
                         <tr>
                             <td className="pr-2 py-[5px] text-gray-500">Company Name</td>
                             <td className="px-1">:</td>
-                            <td className="pl-2">{request.reseller?.companyName}</td>
-                        </tr>
-                        <tr>
-                            <td className="pr-2 py-[5px] text-gray-500">Reseller Name</td>
-                            <td className="px-1">:</td>
                             <td className="pl-2">
-                                {request.reseller?.name} ({request.reseller?.agentCode})
+                                {request.resellerId?.companyName} ({request.resellerId?.agentCode})
                             </td>
                         </tr>
                         <tr>

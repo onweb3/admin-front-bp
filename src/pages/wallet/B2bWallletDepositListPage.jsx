@@ -17,6 +17,7 @@ export default function B2bWallletDepositListPage() {
         dateFrom: "",
         dateTo: "",
         referenceNo: "",
+        agentCode: "",
         paymentProcessor: "",
         bankId: "",
         status: "",
@@ -40,6 +41,7 @@ export default function B2bWallletDepositListPage() {
                 dateFrom: "",
                 dateTo: "",
                 referenceNo: "",
+                agentCode: "",
                 status: "",
                 paymentProcessor: "",
                 bankId: "",
@@ -54,6 +56,7 @@ export default function B2bWallletDepositListPage() {
                 dateFrom: "",
                 dateTo: "",
                 referenceNo: "",
+                agentCode: "",
                 status: "",
                 paymentProcessor: "",
                 bankId: "",
@@ -67,6 +70,7 @@ export default function B2bWallletDepositListPage() {
         dateFrom,
         dateTo,
         referenceNo,
+        agentCode,
         status,
         paymentProcessor,
         bankId,
@@ -75,7 +79,7 @@ export default function B2bWallletDepositListPage() {
             setIsPageLoading(true);
 
             const response = await axios.get(
-                `/wallets/b2b/deposits/all?status=${status}&paymentProcessor=${paymentProcessor}&dateFrom=${dateFrom}&dateTo=${dateTo}&limit=${limit}&skip=${skip}&bankId=${bankId}&referenceNo=${referenceNo}`,
+                `/wallets/b2b/deposits/all?status=${status}&paymentProcessor=${paymentProcessor}&dateFrom=${dateFrom}&dateTo=${dateTo}&limit=${limit}&skip=${skip}&bankId=${bankId}&referenceNo=${referenceNo}&agentCode=${agentCode}`,
                 {
                     headers: { authorization: `Bearer ${jwtToken}` },
                 }
@@ -131,7 +135,6 @@ export default function B2bWallletDepositListPage() {
                 <div className="bg-white rounded shadow-sm">
                     <div className="flex items-center justify-between border-b border-dashed p-4">
                         <h1 className="font-medium">All B2B Wallet Deposits</h1>
-                        {/* <button className="px-3">+ Add Driver</button> */}
                     </div>
                     <form
                         onSubmit={(e) => {
@@ -152,6 +155,17 @@ export default function B2bWallletDepositListPage() {
                                 className=""
                                 name="referenceNo"
                                 value={filters.referenceNo || ""}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div className="">
+                            <label htmlFor="">Agent Code</label>
+                            <input
+                                type="text"
+                                placeholder="Enter Agent Code"
+                                className=""
+                                name="agentCode"
+                                value={filters.agentCode || ""}
                                 onChange={handleChange}
                             />
                         </div>
@@ -191,12 +205,7 @@ export default function B2bWallletDepositListPage() {
                         </div>
                         <div>
                             <label htmlFor="">Bank</label>
-                            <select
-                                name="bankId"
-                                id=""
-                                value={filters.bankId || ""}
-                                onChange={handleChange}
-                            >
+                            <select name="bankId" id="" value={filters.bankId || ""} onChange={handleChange}>
                                 <option value="">All</option>
                                 {banks?.map((bank, index) => {
                                     return (
@@ -209,12 +218,7 @@ export default function B2bWallletDepositListPage() {
                         </div>
                         <div>
                             <label htmlFor="">Status</label>
-                            <select
-                                name="status"
-                                id=""
-                                value={filters.status || ""}
-                                onChange={handleChange}
-                            >
+                            <select name="status" id="" value={filters.status || ""} onChange={handleChange}>
                                 <option value="">All</option>
                                 <option value="pending">Pending</option>
                                 <option value="completed">Completed</option>
@@ -223,12 +227,7 @@ export default function B2bWallletDepositListPage() {
                         </div>
                         <div>
                             <label htmlFor="">Limit</label>
-                            <select
-                                id=""
-                                name="limit"
-                                value={filters.limit}
-                                onChange={handleChange}
-                            >
+                            <select id="" name="limit" value={filters.limit} onChange={handleChange}>
                                 <option value="10">10</option>
                                 <option value="25">25</option>
                                 <option value="50">50</option>
@@ -238,11 +237,7 @@ export default function B2bWallletDepositListPage() {
                         <button className="flex items-center justify-center gap-[10px]">
                             <BiFilter /> Filter
                         </button>
-                        <button
-                            className="bg-slate-200 text-textColor"
-                            onClick={clearFilters}
-                            type="button"
-                        >
+                        <button className="bg-slate-200 text-textColor" onClick={clearFilters} type="button">
                             Clear
                         </button>
                     </form>
@@ -272,12 +267,7 @@ export default function B2bWallletDepositListPage() {
                                 </thead>
                                 <tbody className="text-sm">
                                     {walletDeposits?.map((deposit, index) => {
-                                        return (
-                                            <B2bWalletDepositListTableRow
-                                                key={index}
-                                                deposit={deposit}
-                                            />
-                                        );
+                                        return <B2bWalletDepositListTableRow key={index} deposit={deposit} />;
                                     })}
                                 </tbody>
                             </table>

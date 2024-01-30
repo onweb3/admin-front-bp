@@ -100,7 +100,7 @@ export default function HotelBedRoomTypesPage() {
                                     <th className="font-[500] p-3">Room Name</th>
                                     <th className="font-[500] p-3">Min Pax</th>
                                     <th className="font-[500] p-3">Max Pax</th>
-                                    <th className="font-[500] p-3">Contract Room Types</th>
+                                    {/* <th className="font-[500] p-3">Contract Room Types</th> */}
                                     <th className="font-[500] p-3">Action</th>
                                 </tr>
                             </thead>
@@ -120,7 +120,7 @@ export default function HotelBedRoomTypesPage() {
                                                 {data?.maxChildren} CHD, {data?.maxAdults} ADT,{" "}
                                                 {data?.maxPax} TOT
                                             </td>
-                                            {data?.roomTypes?.length > 0 ? (
+                                            {/* {data?.roomTypes?.length > 0 ? (
                                                 <td className="p-3 ">
                                                     {data?.roomTypes?.map((item, index) => {
                                                         return (
@@ -139,7 +139,7 @@ export default function HotelBedRoomTypesPage() {
                                                 </td>
                                             ) : (
                                                 <td className="p-3">N/A</td>
-                                            )}
+                                            )} */}
                                             <td className="p-3">
                                                 <div className="flex gap-[10px]">
                                                     <button

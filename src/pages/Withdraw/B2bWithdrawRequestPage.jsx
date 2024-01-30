@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { BiFilter } from "react-icons/bi";
 
 import axios from "../../axios";
 import { PageLoader, Pagination } from "../../components";
@@ -12,7 +12,10 @@ export default function WithdrawRequestPage() {
     const [filters, setFilters] = useState({
         skip: 0,
         limit: 10,
-        name: "",
+        referenceNo: "",
+        agentCode: "",
+        dateFrom: "",
+        dateTo: "",
         status: "",
         totalWithdrawRequests: 0,
     });
@@ -20,20 +23,27 @@ export default function WithdrawRequestPage() {
     const [banks, setBanks] = useState([]);
 
     const { jwtToken } = useSelector((state) => state.admin);
-    const [searchParams, setSearchParams] = useSearchParams();
 
-    const fetchWithdrawalRequests = async ({ skip, limit, name, status }) => {
+    const fetchWithdrawalRequests = async ({
+        skip,
+        limit,
+        referenceNo,
+        agentCode,
+        dateFrom,
+        dateTo,
+        status,
+    }) => {
         try {
             setIsLoading(true);
 
             const response = await axios.get(
-                `/wallets/b2b/withdraw-request/all?skip=${skip}&limit=${limit}&search=${name}&status=${status}`,
+                `/wallets/b2b/withdraw-request/all?skip=${skip}&limit=${limit}&referenceNo=${referenceNo}&agentCode=${agentCode}&dateFrom=${dateFrom}&dateTo=${dateTo}&status=${status}`,
                 {
                     headers: { authorization: `Bearer ${jwtToken}` },
                 }
             );
 
-            setWithdrawRequests(response.data.walletRequestDetails);
+            setWithdrawRequests(response.data.walletWithdrawRequests || []);
             setFilters((prev) => {
                 return {
                     ...prev,
@@ -48,33 +58,42 @@ export default function WithdrawRequestPage() {
     };
 
     const handleChange = (e) => {
-        let params = prevSearchParams();
-        setSearchParams({
-            ...params,
-            [e.target.name]: e.target.value,
-            skip: 0,
+        setFilters((prev) => {
+            return { ...prev, [e.target.name]: e.target.value };
         });
     };
 
-    const prevSearchParams = (e) => {
-        let params = {};
-        for (let [key, value] of searchParams.entries()) {
-            params[key] = value;
+    const clearFilters = () => {
+        setFilters((prev) => {
+            return {
+                ...prev,
+                skip: 0,
+                limit: 15,
+                dateFrom: "",
+                dateTo: "",
+                referenceNo: "",
+                agentCode: "",
+                status: "",
+                totalWithdrawals: 0,
+            };
+        });
+
+        if (filters.skip === 0) {
+            fetchWithdrawalRequests({
+                skip: 0,
+                limit: 15,
+                dateFrom: "",
+                dateTo: "",
+                referenceNo: "",
+                agentCode: "",
+                status: "",
+            });
         }
-        return params;
     };
 
     useEffect(() => {
-        let skip = Number(searchParams.get("skip")) > 0 ? Number(searchParams.get("skip")) - 1 : 0;
-        let limit = Number(searchParams.get("limit")) > 0 ? Number(searchParams.get("limit")) : 10;
-        let name = searchParams.get("name") || "";
-        let status = searchParams.get("status") || "";
-
-        setFilters((prev) => {
-            return { ...prev, skip, limit, name, status };
-        });
-        fetchWithdrawalRequests({ skip, limit, name, status });
-    }, [searchParams]);
+        fetchWithdrawalRequests({ ...filters });
+    }, [filters.skip]);
 
     useEffect(() => {
         const fetchBankNames = async () => {
@@ -108,29 +127,86 @@ export default function WithdrawRequestPage() {
                 <div className="bg-white rounded shadow-sm">
                     <div className="flex items-center justify-between border-b border-dashed p-4">
                         <h1 className="font-medium">All Withdraw Requests</h1>
-                        <div className="flex items-center gap-[10px]">
-                            <select
-                                name="status"
-                                value={filters.status || ""}
-                                onChange={handleChange}
-                                id=""
-                            >
-                                <option value="">All</option>
-                                <option value="initiated">Initiated</option>
-                                <option value="pending">Pending</option>
-                                <option value="approved">Approved</option>
-                                <option value="cancelled">Cancelled</option>
-                            </select>
+                    </div>
+                    <form
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            if (filters.skip !== 0) {
+                                setFilters({ ...filters, skip: 0 });
+                            } else {
+                                fetchWithdrawalRequests({ ...filters });
+                            }
+                        }}
+                        className="grid grid-cols-7 items-end gap-4 border-b border-dashed p-4"
+                    >
+                        <div className="col-span-2">
+                            <label htmlFor="">Reference Number</label>
                             <input
                                 type="text"
-                                placeholder=" Reference Number..."
-                                className="min-w-[200px]"
-                                name="name"
+                                placeholder="Search Reference No."
+                                className=""
+                                name="referenceNo"
+                                value={filters.referenceNo || ""}
                                 onChange={handleChange}
-                                value={filters.name || ""}
                             />
                         </div>
-                    </div>
+                        <div className="">
+                            <label htmlFor="">Agent Code</label>
+                            <input
+                                type="text"
+                                placeholder="Enter Agent Code"
+                                className=""
+                                name="agentCode"
+                                value={filters.agentCode || ""}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div className="">
+                            <label htmlFor="">Date From</label>
+                            <input
+                                type="date"
+                                className=""
+                                name="dateFrom"
+                                value={filters.dateFrom || ""}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div className="">
+                            <label htmlFor="">Date To</label>
+                            <input
+                                type="date"
+                                className=""
+                                name="dateTo"
+                                value={filters.dateTo || ""}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="">Status</label>
+                            <select name="status" id="" value={filters.status || ""} onChange={handleChange}>
+                                <option value="">All</option>
+                                <option value="pending">Pending</option>
+                                <option value="completed">Completed</option>
+                                <option value="failed">Failed</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label htmlFor="">Limit</label>
+                            <select id="" name="limit" value={filters.limit} onChange={handleChange}>
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+                        <button className="flex items-center justify-center gap-[10px]">
+                            <BiFilter /> Filter
+                        </button>
+                        <button className="bg-slate-200 text-textColor" onClick={clearFilters} type="button">
+                            Clear
+                        </button>
+                    </form>
+
                     {isLoading ? (
                         <PageLoader />
                     ) : withdrawRequests?.length < 1 ? (
