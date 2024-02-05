@@ -335,6 +335,10 @@ export default function HotelOrderDetailsPage() {
                                                 </td>
                                             </tr>
                                             <tr className="odd:bg-[#f3f6f9]">
+                                                <td className="p-2">Nationality</td>
+                                                <td className="p-2">{hotelOrder?.nationality || "N/A"}</td>
+                                            </tr>
+                                            <tr className="odd:bg-[#f3f6f9]">
                                                 <td className="p-2">Special Request</td>
                                                 <td className="p-2">
                                                     {hotelOrder?.specialRequest
@@ -615,6 +619,17 @@ export default function HotelOrderDetailsPage() {
                                                             <div className="border-b border-dashed flex-1"></div>
                                                             <span className="text-right">
                                                                 {hotelOrder?.clientMarkup || 0}
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td className="text-grayColor py-1 w-full">
+                                                        <div className="flex gap-[15px] items-center w-full">
+                                                            <span className="">Total Fee</span>
+                                                            <div className="border-b border-dashed flex-1"></div>
+                                                            <span className="text-right">
+                                                                {hotelOrder?.totalFee?.toFixed(2) || 0}
                                                             </span>
                                                         </div>
                                                     </td>
@@ -922,7 +937,7 @@ export default function HotelOrderDetailsPage() {
                                                                     {formatDate(contract?.date)}
                                                                 </td>
                                                                 <td className="p-2">
-                                                                    {contract?.contract?.rateName}{" "}(
+                                                                    {contract?.contract?.rateName} (
                                                                     {contract?.contract?.rateCode})
                                                                 </td>
                                                                 <td className="p-2">

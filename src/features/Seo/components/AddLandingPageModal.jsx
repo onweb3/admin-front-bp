@@ -18,17 +18,14 @@ export default function AddLandingPageModal({
         keyword: (categoryModal?.isEdit && selectedCategory?.keyword) || "",
         keywords: (categoryModal?.isEdit && selectedCategory?.keywords) || "",
         title: (categoryModal?.isEdit && selectedCategory?.title) || "",
-        description:
-            (categoryModal?.isEdit && selectedCategory?.description) || "",
+        description: (categoryModal?.isEdit && selectedCategory?.description) || "",
     });
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [list, setList] = useState([]);
 
     const wrapperRef = useRef();
-    useHandleClickOutside(wrapperRef, () =>
-        setCategoryModal({ isEdit: false, isOpen: false })
-    );
+    useHandleClickOutside(wrapperRef, () => setCategoryModal({ isEdit: false, isOpen: false }));
     const { jwtToken } = useSelector((state) => state.admin);
 
     const handleChange = (e) => {
@@ -68,9 +65,7 @@ export default function AddLandingPageModal({
                 keywords: prev.keywords.filter((_, i) => i !== index),
             }));
         } catch (err) {
-            setError(
-                err?.response?.data?.error || "Something went wrong, Try again"
-            );
+            setError(err?.response?.data?.error || "Something went wrong, Try again");
         }
     };
 
@@ -95,18 +90,12 @@ export default function AddLandingPageModal({
                     }
                 );
 
-                updateCategory({
-                    title: data.title,
-                    description: data.description,
-                    keywords: data.keywords,
-                });
+                updateCategory({ ...response.data, type: id });
             }
 
             setCategoryModal({ isOpen: false, isEdit: false });
         } catch (err) {
-            setError(
-                err?.response?.data?.error || "Something went wrong, Try again"
-            );
+            setError(err?.response?.data?.error || "Something went wrong, Try again");
             setIsLoading(false);
         }
     };
@@ -119,15 +108,11 @@ export default function AddLandingPageModal({
             >
                 <div className="flex items-center justify-between border-b p-4">
                     <h2 className="font-medium">
-                        {categoryModal?.isEdit
-                            ? "Update  Category"
-                            : "Add  Category"}
+                        {categoryModal?.isEdit ? "Update  Category" : "Add  Category"}
                     </h2>
                     <button
                         className="h-auto bg-transparent text-textColor text-xl"
-                        onClick={() =>
-                            setCategoryModal({ isOpen: false, isEdit: false })
-                        }
+                        onClick={() => setCategoryModal({ isOpen: false, isEdit: false })}
                     >
                         <MdClose />
                     </button>
@@ -196,11 +181,7 @@ export default function AddLandingPageModal({
                             </div>
                         )}
 
-                        {error && (
-                            <span className="tdiv>ext-sm block text-red-500 mt-2">
-                                {error}
-                            </span>
-                        )}
+                        {error && <span className="tdiv>ext-sm block text-red-500 mt-2">{error}</span>}
                         <div className="mt-4 flex items-center justify-end gap-[12px]">
                             <button
                                 className="bg-slate-300 text-textColor px-[15px]"
