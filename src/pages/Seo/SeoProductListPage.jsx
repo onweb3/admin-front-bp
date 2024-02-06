@@ -14,7 +14,7 @@ export default function SeoProductListPage() {
     const [filters, setFilters] = useState({
         skip: 0,
         limit: 10,
-        totalCategories: 0,
+        totalSeoSubCategory: 0,
         search: "",
     });
     const [categoryModal, setCategoryModal] = useState({
@@ -42,7 +42,7 @@ export default function SeoProductListPage() {
             setFilters((prev) => {
                 return {
                     ...prev,
-                    totalSeoSubCategory: response?.data?.totalAirports,
+                    totalSeoSubCategory: response?.data?.totalSeoSubCategory,
                 };
             });
             setIsLoading(false);
@@ -241,7 +241,7 @@ export default function SeoProductListPage() {
                                 <Pagination
                                     limit={filters?.limit}
                                     skip={filters?.skip}
-                                    total={filters?.totalCategories}
+                                    total={filters?.totalSeoSubCategory}
                                     incOrDecSkip={(number) =>
                                         setFilters((prev) => {
                                             return {
