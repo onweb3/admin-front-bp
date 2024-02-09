@@ -46,7 +46,7 @@ export default function SingleExcSupplement({
             if (
                 (type.toLowerCase() === "private" ||
                     excSupplementTransferType.toLowerCase() === "private") &&
-                edit === false
+                excursion?.isEdit === false
             ) {
                 setIsLoading(true);
                 setError("");

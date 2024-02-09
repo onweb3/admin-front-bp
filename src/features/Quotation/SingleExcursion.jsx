@@ -31,7 +31,7 @@ export default function SingleExcursion({
     const [isLoading, setIsLoading] = useState(false);
     const { jwtToken } = useSelector((state) => state.admin);
     const [vehicles, setVehicles] = useState([]);
-    const [edit, setEdit] = useState(isEdit || false);
+    const [edit, setEdit] = useState(excursion?.isEdit || true);
 
     const dispatch = useDispatch();
 
@@ -45,10 +45,16 @@ export default function SingleExcursion({
 
     const onTransferChange = async (type) => {
         try {
-            console.log("type SSS ", type);
+            console.log(
+                "type SSS ",
+                type,
+                excursionTransferType,
+                edit,
+                excursion?.isEdit
+            );
             if (
                 (type === "private" || excursionTransferType === "private") &&
-                edit === false
+                excursion?.isEdit === false
             ) {
                 console.log("type ", type);
 

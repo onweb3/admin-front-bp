@@ -347,6 +347,7 @@ export const quotationsSlice = createSlice({
                         action?.payload?.excursionTransferType === "all"
                             ? "ticket"
                             : action?.payload?.excursionTransferType,
+                    isEdit: false,
                 });
                 state.selectedExcursionsIds.push(
                     action.payload?.excursion.activityId
@@ -389,6 +390,9 @@ export const quotationsSlice = createSlice({
                     state.selectedExcursions[
                         selectedExcursionIndex
                     ].vehicleType = [];
+                    state.selectedExcursions[
+                        selectedExcursionIndex
+                    ].isEdit = false;
                 }
 
                 if (
@@ -399,6 +403,9 @@ export const quotationsSlice = createSlice({
                     state.selectedExcursions[
                         selectedExcursionIndex
                     ].vehicleType = [];
+                    state.selectedExcursions[
+                        selectedExcursionIndex
+                    ].isEdit = false;
                     // state.excursions[excursionIndex].transferVehicleType;
                 }
             }
@@ -536,6 +543,7 @@ export const quotationsSlice = createSlice({
                         action?.payload?.excSupplementTransferType === "all"
                             ? "ticket"
                             : action.payload?.excSupplementTransferType,
+                    isEdit: false,
                 });
                 state.selectedExcSupplementIds.push(
                     action.payload?.excursion?.activityId
@@ -657,6 +665,9 @@ export const quotationsSlice = createSlice({
                     state.selectedExcSupplements[
                         selectedExcursionIndex
                     ].vehicleType = [];
+                    state.selectedExcursions[
+                        selectedExcursionIndex
+                    ].isEdit = false;
                 }
 
                 if (
@@ -667,6 +678,9 @@ export const quotationsSlice = createSlice({
                     state.selectedExcSupplements[
                         selectedExcursionIndex
                     ].vehicleType = [];
+                    state.selectedExcursions[
+                        selectedExcursionIndex
+                    ].isEdit = false;
                 }
             }
         },
