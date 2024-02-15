@@ -90,6 +90,10 @@ export default function AddSeoSearchModal({
                 response = await axios.get(`/seo/destination`, {
                     headers: { Authorization: `Bearer ${jwtToken}` },
                 });
+            } else if (subCategoryId === "tours-products") {
+                response = await axios.get(`/seo/tours`, {
+                    headers: { Authorization: `Bearer ${jwtToken}` },
+                });
             }
 
             setList(response?.data);

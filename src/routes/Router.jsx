@@ -267,6 +267,7 @@ import CompanyAddressesPage from "../pages/Settings/CompanyAddressesPage";
 import AddCompanyAddressPage from "../pages/Settings/AddCompanyAddressPage";
 import EditCompanyAddressPage from "../pages/Settings/EditCompanyAddressPage";
 import B2bEnquiryDetailPage from "../pages/Resellers/B2bEnquiryDetailPage";
+import B2cMarkupProfilePage from "../pages/B2c Markup Profile/B2cMarkupProfilePage";
 
 const ThemeRoutes = [
     {
@@ -723,7 +724,10 @@ const ThemeRoutes = [
                 path: "/markup/profile/:profileId/edit",
                 element: <EditMarkupProfilePage />,
             },
-
+            {
+                path: "/markup/b2c/profile/",
+                element: <B2cMarkupProfilePage />,
+            },
             {
                 path: "/market/startegy",
                 element: <MarketProfileListPage />,
@@ -859,8 +863,8 @@ const ThemeRoutes = [
                 element: <B2BHomeBannerPage />,
             },
             {
-                path:"/b2b/home/enquiry",
-                element: <B2bEnquiryDetailPage />
+                path: "/b2b/home/enquiry",
+                element: <B2bEnquiryDetailPage />,
             },
 
             {
