@@ -268,6 +268,7 @@ import AddCompanyAddressPage from "../pages/Settings/AddCompanyAddressPage";
 import EditCompanyAddressPage from "../pages/Settings/EditCompanyAddressPage";
 import B2bEnquiryDetailPage from "../pages/Resellers/B2bEnquiryDetailPage";
 import B2cMarkupProfilePage from "../pages/B2c Markup Profile/B2cMarkupProfilePage";
+import AddStandAlone from "../pages/AttractionStandAlone/AddStandAlone";
 
 const ThemeRoutes = [
     {
@@ -372,6 +373,10 @@ const ThemeRoutes = [
             {
                 path: "/attractions/guide/:id/edit",
                 element: <EditGuidePage />,
+            },
+            {
+                path: "/attractions/standalone",
+                element: <AddStandAlone />
             },
 
             {
