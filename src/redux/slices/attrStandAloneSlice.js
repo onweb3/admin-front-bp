@@ -6,7 +6,6 @@ const initialState = {
         attractions: [],
         gallery: [],
         description: "",
-        attractionFullData: []
     }
 }
 
@@ -16,6 +15,8 @@ export const attractionStandAloneSlice = createSlice({
     reducers : {
 
         addAttractionStandAloneDatas: (state, { payload })=>{
+
+            console.log(payload);
 
             if(payload.name === "attraction") {
                 if(state.attrData.attractions.length) {
@@ -29,13 +30,34 @@ export const attractionStandAloneSlice = createSlice({
             }else {
                 state.attrData[payload.name] = payload.value
             }
+        },
+
+        clearAttractionStandAloneDataAfterAdding: (state, { payload })=>{
+            state.attrData = {
+                title: "",
+                attractions: [],
+                gallery: [],
+                description: "",
+            }
+        }, 
+
+        addEditEnitial: (state, { payload })=> {
+
+            state.attrData = {
+                title: payload?.title,
+                description: payload?.description,
+                gallery: payload?.images,
+                attractions: payload?.attraction
+            }
         }
 
     }
 })
 
 export const {
-    addAttractionStandAloneDatas
+    addAttractionStandAloneDatas,
+    clearAttractionStandAloneDataAfterAdding,
+    addEditEnitial
 } = attractionStandAloneSlice.actions;
 
 export default attractionStandAloneSlice.reducer

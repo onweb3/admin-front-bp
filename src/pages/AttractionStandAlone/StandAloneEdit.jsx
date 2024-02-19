@@ -1,99 +1,90 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { RichTextEditor } from '../../components'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { addAttractionStandAloneDatas } from '../../redux/slices/attrStandAloneSlice'
-import SuggestionsModal from './SuggestionsModal'
 import axios from '../../axios'
-import { config } from '../../constants'
 import { BtnLoader } from '../../components'
-import { useNavigate } from 'react-router-dom'
-import { clearAttractionStandAloneDataAfterAdding } from '../../redux/slices/attrStandAloneSlice'
+import { config } from '../../constants'
+import {RichTextEditor} from '../../components'
+import SuggestionsModal from './SuggestionsModal'
+import { addAttractionStandAloneDatas, addEditEnitial } from '../../redux/slices/attrStandAloneSlice'
 
 
-function AddStandAlone() {
-  
+function StandAloneEdit() {
+
     const navigate = useNavigate()
+    const params = useParams()
 
-   const dispatch = useDispatch()
-   const { attrData } = useSelector((state)=> state.attrStandAlone)
-   const { jwtToken } = useSelector((state) => state.admin);
+    const dispatch = useDispatch()
+    const { attrData } = useSelector((state)=> state.attrStandAlone)
+    const { jwtToken } = useSelector((state) => state.admin);
+ 
+    const [value, setValue] = useState('')
+    const [dropdown, setDropdown] = useState(false)
+    const [suggestions, setSuggestion] = useState([])
+    const [gallery, setGallery] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
 
-   const [value, setValue] = useState('')
-   const [dropdown, setDropdown] = useState(false)
-   const [suggestions, setSuggestion] = useState([])
-   const [gallery, setGallery] = useState([])
-   const [isLoading, setIsLoading] = useState(false)
 
+    const fetchDetails = async () =>{
+        try{
+            const res = await axios.get(`/attractions/standalone/single-details/${params.id}`, {
+                headers: { Authorization: `Bearer ${jwtToken}`}
+            })
 
-   const getSuggestions = async(value)=>{
-    try {
-        const res = await axios.get(`/attractions/all-suggestions?search=${value}`, {
-            headers: { Authorization: `Bearer ${jwtToken}`}
-        })
-
-        setSuggestion(res?.data)
-    } catch (error) {
-        console.log(error);
+            dispatch(addEditEnitial(res?.data))
+            
+        }catch(err){
+            console.log(err);
+        }
     }
-   }
 
-   useEffect(()=>{
-    if(value?.length){
-        getSuggestions(value)
+    useEffect(()=>{
+        fetchDetails()
+    }, [])
+    
+
+    const getSuggestions = async(value)=>{
+        try {
+            const res = await axios.get(`/attractions/all-suggestions?search=${value}`, {
+                headers: { Authorization: `Bearer ${jwtToken}`}
+            })
+    
+            setSuggestion(res?.data)
+        } catch (error) {
+            console.log(error);
+        }
+       }
+    
+       useEffect(()=>{
+        if(value?.length){
+            getSuggestions(value)
+        }
+       }, [value])
+
+       const imageChangeHandler = (e) => {
+        const files = e.target.files 
+        let img = []
+    
+        for(let i = 0; i < files.length; i++) {
+            img.push(files[i])
+        }
+        setGallery(img)
+    
     }
-   }, [value])
 
-
-const imageChangeHandler = (e) => {
-    const files = e.target.files 
-    let img = []
-
-    for(let i = 0; i < files.length; i++) {
-        img.push(files[i])
+    const handleFocus = ()=>{
+        setDropdown(true)
+        setValue("")
     }
-    dispatch(addAttractionStandAloneDatas({name: "gallery", value: img}))
-    setGallery(img)
 
-}
-
-const handleFocus = ()=>{
-    setDropdown(true)
-    setValue("")
-}
-
-const handleSubmit = async (e) =>{
-    try {
+       const handleSubmit = (e) =>{
+        try {
         e.preventDefault()
-        const formData = new FormData()
-
-        let attractions = []
-
-        if(attrData?.attractions?.length){
-            for(let i = 0; i < attrData?.attractions?.length; i++){
-                attractions.push(attrData?.attractions[i]?._id)
-            }
+            
+        } catch (error) {
+            console.log(error);
         }
-        formData.append("attractions[]", JSON.stringify(attractions))
-        formData.append("title", attrData?.title )
-        formData.append("description", attrData?.description)
-        for(let i = 0; i < gallery.length; i++){
-            formData.append("images", gallery[i])
-        }
-
-        setIsLoading(true)
-        const res = await axios.post("/attractions/standalone/create", formData, {
-            headers: { Authorization: `Bearer ${jwtToken}`}
-        })
-
-        dispatch(clearAttractionStandAloneDataAfterAdding())
-        setIsLoading(false)
-        navigate("/attractions/standalone")
-    } catch (error) {
-        setIsLoading(false)
-        console.log(error);
-    }
-}
+       }
 
   return (
     <div className=''>
@@ -113,7 +104,7 @@ const handleSubmit = async (e) =>{
                     <span>{">"} </span>
                     <span>StandAlone </span>
                     <span>{">"} </span>
-                    <span>Add</span>
+                    <span>edit</span>
                 </div>
             </div>
         </div>
@@ -127,6 +118,7 @@ const handleSubmit = async (e) =>{
                         onChange={(e)=>{
                             dispatch(addAttractionStandAloneDatas({name:"title", value: e.target.value}))
                         }}
+                        value={attrData?.title}
                         type="text" 
                         className='w-full h-10 outline-none border' />
                     </div>
@@ -198,7 +190,7 @@ const handleSubmit = async (e) =>{
                         <h1>Description</h1>
                     </div>
                     <RichTextEditor
-                    initialValue={""}
+                    initialValue={attrData?.description ? attrData?.description : ""}
                     getValue={(value) => {
                         dispatch(addAttractionStandAloneDatas({name: "description", value: value}))
                     }}
@@ -214,4 +206,4 @@ const handleSubmit = async (e) =>{
   )
 }
 
-export default AddStandAlone
+export default StandAloneEdit
