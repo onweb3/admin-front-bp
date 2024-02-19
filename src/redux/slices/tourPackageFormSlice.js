@@ -17,7 +17,7 @@ const initialState = {
         exclusions: "",
         visaPolicy: "",
         termsAndConditions: "",
-        thumbnail: "",
+        thumbnail: [],
     },
     availableDates: [],
     excludedDates: [],
@@ -59,7 +59,10 @@ export const tourPackageFormSlice = createSlice({
         handleTourDataChange: (state, action) => {
             state.data[action.payload?.name] = action.payload?.value;
             if (action.payload?.name === "noOfDays") {
-                if (isNaN(state.data.noOfDays) || Number(state.data.noOfDays) < 1) {
+                if (
+                    isNaN(state.data.noOfDays) ||
+                    Number(state.data.noOfDays) < 1
+                ) {
                     state.itineraries = [];
                 } else {
                     let tempItineraries = [];
@@ -75,8 +78,12 @@ export const tourPackageFormSlice = createSlice({
                     }
                     state.itineraries = tempItineraries;
 
-                    if (state.tPackageHotels?.length === 1 && !state.tPackageHotels[0].noOfNights) {
-                        state.tPackageHotels[0].noOfNights = Number(state.data.noOfDays) - 1;
+                    if (
+                        state.tPackageHotels?.length === 1 &&
+                        !state.tPackageHotels[0].noOfNights
+                    ) {
+                        state.tPackageHotels[0].noOfNights =
+                            Number(state.data.noOfDays) - 1;
                     }
                 }
             }
@@ -136,19 +143,21 @@ export const tourPackageFormSlice = createSlice({
             );
         },
         handleTPackageItinerariesDataChange: (state, action) => {
-            state.itineraries[action.payload?.itineraryIndex][action.payload?.name] =
-                action.payload?.value;
+            state.itineraries[action.payload?.itineraryIndex][
+                action.payload?.name
+            ] = action.payload?.value;
         },
         addTPackageItineraryItems: (state, action) => {
-            state.itineraries[action.payload?.itineraryIndex]?.itineraryItems?.push({
+            state.itineraries[
+                action.payload?.itineraryIndex
+            ]?.itineraryItems?.push({
                 ...action.payload,
             });
         },
         removeTPackageItineraryItems: (state, action) => {
-            state.itineraries[action.payload?.itineraryIndex]?.itineraryItems?.splice(
-                action.payload?.itineraryItemIndex,
-                1
-            );
+            state.itineraries[
+                action.payload?.itineraryIndex
+            ]?.itineraryItems?.splice(action.payload?.itineraryItemIndex, 1);
         },
         updateTourPackageFormAllData: (state, action) => {
             state.data = {
@@ -159,8 +168,10 @@ export const tourPackageFormSlice = createSlice({
                 overveiw: action.payload?.overveiw,
                 packageThemes: action.payload?.packageThemes || [],
                 isAirportTransfer: action.payload?.isAirportTransfer || false,
-                airportTransferPrice: action.payload?.airportTransferPrice || "",
-                isInterHotelTransfer: action.payload?.isInterHotelTransfer || false,
+                airportTransferPrice:
+                    action.payload?.airportTransferPrice || "",
+                isInterHotelTransfer:
+                    action.payload?.isInterHotelTransfer || false,
                 interHotelPrice: action.payload?.interHotelPrice || "",
                 inclusions: action.payload?.inclusions,
                 exclusions: action.payload?.exclusions,

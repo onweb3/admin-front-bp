@@ -5,14 +5,19 @@ import { useSelector } from "react-redux";
 import axios from "../../../axios";
 import { BtnLoader } from "../../../components";
 
-export default function TourPackageAddFormButtons({ next, prev, goForward, goBack, thumImg }) {
+export default function TourPackageAddFormButtons({
+    next,
+    prev,
+    goForward,
+    goBack,
+    newImages,
+}) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
 
     const { jwtToken } = useSelector((state) => state.admin);
-    const { data, itineraries, tPackageHotels, availableDates, excludedDates } = useSelector(
-        (state) => state.tourPackageForm
-    );
+    const { data, itineraries, tPackageHotels, availableDates, excludedDates } =
+        useSelector((state) => state.tourPackageForm);
     const navigate = useNavigate();
 
     const handleSubmit = async () => {
@@ -56,7 +61,10 @@ export default function TourPackageAddFormButtons({ next, prev, goForward, goBac
             formData.append("packageType", data?.packageType);
             formData.append("packageName", data?.packageName);
             formData.append("overveiw", data?.overveiw);
-            formData.append("packageThemes", JSON.stringify(data?.packageThemes));
+            formData.append(
+                "packageThemes",
+                JSON.stringify(data?.packageThemes)
+            );
             formData.append("noOfDays", data?.noOfDays);
             formData.append("isCustomDate", data?.isCustomDate);
             formData.append("availableDates", JSON.stringify(availableDates));
@@ -71,8 +79,8 @@ export default function TourPackageAddFormButtons({ next, prev, goForward, goBac
             formData.append("exclusions", data?.exclusions);
             formData.append("visaPolicy", data?.visaPolicy);
             formData.append("termsAndConditions", data?.termsAndConditions);
-            if (thumImg) {
-                formData.append("thumbnailImg", thumImg);
+            for (let i = 0; i < newImages?.length; i++) {
+                formData.append("thumbnailImg", newImages[i]);
             }
 
             const response = await axios.post(`/tour-packages/add`, formData, {
@@ -89,7 +97,9 @@ export default function TourPackageAddFormButtons({ next, prev, goForward, goBac
 
     return (
         <div className="mt-8">
-            {error && <span className="text-sm text-red-500 block mt-4">{error}</span>}
+            {error && (
+                <span className="text-sm text-red-500 block mt-4">{error}</span>
+            )}
 
             <div className="mt-4 flex items-center justify-end gap-[12px]">
                 {prev ? (
@@ -110,7 +120,11 @@ export default function TourPackageAddFormButtons({ next, prev, goForward, goBac
                     </button>
                 )}
                 {next ? (
-                    <button className="w-[100px] bg-primaryColor" type="button" onClick={goForward}>
+                    <button
+                        className="w-[100px] bg-primaryColor"
+                        type="button"
+                        onClick={goForward}
+                    >
                         next
                     </button>
                 ) : (

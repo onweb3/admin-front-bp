@@ -31,6 +31,7 @@ const sections = {
 export default function EditTourPackagePage() {
     const [isPageLoading, setIsPageLoading] = useState(true);
     const [selectedSection, setSelectedSection] = useState("details");
+    const [newImages, setNewImages] = useState([]);
 
     const { tPackageId } = useParams();
     const { jwtToken } = useSelector((state) => state.admin);
@@ -45,9 +46,12 @@ export default function EditTourPackagePage() {
         try {
             setIsPageLoading(true);
 
-            const response = await axios.get(`/tour-packages/single/${tPackageId}`, {
-                headers: { authorization: `Bearer ${jwtToken}` },
-            });
+            const response = await axios.get(
+                `/tour-packages/single/${tPackageId}`,
+                {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                }
+            );
 
             dispatch(updateTourPackageFormAllData(response.data));
             setIsPageLoading(false);
@@ -57,9 +61,14 @@ export default function EditTourPackagePage() {
     };
 
     const goForward = () => {
-        if (Object.keys(sections).indexOf(selectedSection) < Object.keys(sections).length - 1) {
+        if (
+            Object.keys(sections).indexOf(selectedSection) <
+            Object.keys(sections).length - 1
+        ) {
             setSelectedSection(
-                Object.keys(sections)[Object.keys(sections).indexOf(selectedSection) + 1]
+                Object.keys(sections)[
+                    Object.keys(sections).indexOf(selectedSection) + 1
+                ]
             );
         }
     };
@@ -67,7 +76,9 @@ export default function EditTourPackagePage() {
     const goBack = () => {
         if (Object.keys(sections).indexOf(selectedSection) > 0) {
             setSelectedSection(
-                Object.keys(sections)[Object.keys(sections).indexOf(selectedSection) - 1]
+                Object.keys(sections)[
+                    Object.keys(sections).indexOf(selectedSection) - 1
+                ]
             );
         }
     };
@@ -83,7 +94,9 @@ export default function EditTourPackagePage() {
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">Edit Tour Package</h1>
+                <h1 className="font-[600] text-[15px] uppercase">
+                    Edit Tour Package
+                </h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
@@ -108,46 +121,65 @@ export default function EditTourPackagePage() {
                     <div className="bg-white rounded shadow-sm">
                         <div className="p-4">
                             <ul className="dir-btn">
-                                {Object.keys(sections)?.map((section, index) => {
-                                    return (
-                                        <li
-                                            key={index}
-                                            className={selectedSection === section ? "active" : ""}
-                                            onClick={() => {
-                                                setSelectedSection(section);
-                                            }}
-                                        >
-                                            <span>{sections[section]}</span>
-                                        </li>
-                                    );
-                                })}
+                                {Object.keys(sections)?.map(
+                                    (section, index) => {
+                                        return (
+                                            <li
+                                                key={index}
+                                                className={
+                                                    selectedSection === section
+                                                        ? "active"
+                                                        : ""
+                                                }
+                                                onClick={() => {
+                                                    setSelectedSection(section);
+                                                }}
+                                            >
+                                                <span>{sections[section]}</span>
+                                            </li>
+                                        );
+                                    }
+                                )}
                             </ul>
                         </div>
 
                         <div className="p-4">
                             <TourPackageDetailsForm
                                 selectedSection={selectedSection}
-                                thumImg={thumImg}
-                                handleThumImgChange={handleThumImgChange}
-                                thumImgError={thumImgError}
+                                newImages={newImages}
+                                setNewImages={setNewImages}
                             />
-                            <TourPackageTermsAndPolicyForm selectedSection={selectedSection} />
-                            <TourPackageHotelForm selectedSection={selectedSection} />
-                            <TourPackageActivitiesForm selectedSection={selectedSection} />
-                            <TourPackageTransferForm selectedSection={selectedSection} />
+                            <TourPackageTermsAndPolicyForm
+                                selectedSection={selectedSection}
+                            />
+                            <TourPackageHotelForm
+                                selectedSection={selectedSection}
+                            />
+                            <TourPackageActivitiesForm
+                                selectedSection={selectedSection}
+                            />
+                            <TourPackageTransferForm
+                                selectedSection={selectedSection}
+                            />
                             <TourPackageSummaryForm
                                 selectedSection={selectedSection}
                                 thumImg={thumImg}
                             />
                             <TourPackageEditFormButtons
                                 next={
-                                    Object.keys(sections).indexOf(selectedSection) <
+                                    Object.keys(sections).indexOf(
+                                        selectedSection
+                                    ) <
                                     Object.keys(sections).length - 1
                                 }
                                 goForward={goForward}
                                 goBack={goBack}
-                                prev={Object.keys(sections).indexOf(selectedSection) !== 0}
-                                thumImg={thumImg}
+                                prev={
+                                    Object.keys(sections).indexOf(
+                                        selectedSection
+                                    ) !== 0
+                                }
+                                newImages={newImages}
                             />
                         </div>
                     </div>

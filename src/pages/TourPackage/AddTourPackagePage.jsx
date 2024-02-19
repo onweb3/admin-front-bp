@@ -25,6 +25,7 @@ const sections = {
 
 export default function AddTourPackagePage() {
     const [selectedSection, setSelectedSection] = useState("details");
+    const [newImages, setNewImages] = useState([]);
 
     const dispatch = useDispatch();
     const {
@@ -34,9 +35,14 @@ export default function AddTourPackagePage() {
     } = useImageChange();
 
     const goForward = () => {
-        if (Object.keys(sections).indexOf(selectedSection) < Object.keys(sections).length - 1) {
+        if (
+            Object.keys(sections).indexOf(selectedSection) <
+            Object.keys(sections).length - 1
+        ) {
             setSelectedSection(
-                Object.keys(sections)[Object.keys(sections).indexOf(selectedSection) + 1]
+                Object.keys(sections)[
+                    Object.keys(sections).indexOf(selectedSection) + 1
+                ]
             );
         }
     };
@@ -44,7 +50,9 @@ export default function AddTourPackagePage() {
     const goBack = () => {
         if (Object.keys(sections).indexOf(selectedSection) > 0) {
             setSelectedSection(
-                Object.keys(sections)[Object.keys(sections).indexOf(selectedSection) - 1]
+                Object.keys(sections)[
+                    Object.keys(sections).indexOf(selectedSection) - 1
+                ]
             );
         }
     };
@@ -52,18 +60,21 @@ export default function AddTourPackagePage() {
     useEffect(() => {
         dispatch(fetchTPackageInitialData());
     }, []);
+    // console.log(newImages, "Images");
 
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">Add Tour Package</h1>
+                <h1 className="font-[600] text-[15px] uppercase">
+                    Add Tour Package
+                </h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
                     </Link>
                     <span>{">"} </span>
                     <Link to="/tour-packages" className="text-textColor">
-                        Tour Packages{" "}
+                        Tour Package{" "}
                     </Link>
                     <span>{">"} </span>
                     <span>Add</span>
@@ -78,7 +89,11 @@ export default function AddTourPackagePage() {
                                 return (
                                     <li
                                         key={index}
-                                        className={selectedSection === section ? "active" : ""}
+                                        className={
+                                            selectedSection === section
+                                                ? "active"
+                                                : ""
+                                        }
                                         onClick={() => {
                                             setSelectedSection(section);
                                         }}
@@ -93,14 +108,22 @@ export default function AddTourPackagePage() {
                     <div className="p-4">
                         <TourPackageDetailsForm
                             selectedSection={selectedSection}
-                            thumImg={thumImg}
-                            handleThumImgChange={handleThumImgChange}
-                            thumImgError={thumImgError}
+                            newImages={newImages}
+                            setNewImages={setNewImages}
+                            // handleThumImgChange={handleThumImgChange}
                         />
-                        <TourPackageTermsAndPolicyForm selectedSection={selectedSection} />
-                        <TourPackageHotelForm selectedSection={selectedSection} />
-                        <TourPackageActivitiesForm selectedSection={selectedSection} />
-                        <TourPackageTransferForm selectedSection={selectedSection} />
+                        <TourPackageTermsAndPolicyForm
+                            selectedSection={selectedSection}
+                        />
+                        <TourPackageHotelForm
+                            selectedSection={selectedSection}
+                        />
+                        <TourPackageActivitiesForm
+                            selectedSection={selectedSection}
+                        />
+                        <TourPackageTransferForm
+                            selectedSection={selectedSection}
+                        />
                         <TourPackageSummaryForm
                             selectedSection={selectedSection}
                             thumImg={thumImg}
@@ -112,8 +135,12 @@ export default function AddTourPackagePage() {
                             }
                             goForward={goForward}
                             goBack={goBack}
-                            prev={Object.keys(sections).indexOf(selectedSection) !== 0}
-                            thumImg={thumImg}
+                            prev={
+                                Object.keys(sections).indexOf(
+                                    selectedSection
+                                ) !== 0
+                            }
+                            newImages={newImages}
                         />
                     </div>
                 </div>
