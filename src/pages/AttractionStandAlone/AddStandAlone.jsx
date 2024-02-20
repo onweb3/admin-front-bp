@@ -8,8 +8,8 @@ import axios from '../../axios'
 import { config } from '../../constants'
 import { BtnLoader } from '../../components'
 import { useNavigate } from 'react-router-dom'
-import { clearAttractionStandAloneDataAfterAdding } from '../../redux/slices/attrStandAloneSlice'
-
+import { clearAttractionStandAloneDataAfterAdding, deleteAddedAttractions } from '../../redux/slices/attrStandAloneSlice'
+import { MdCancel } from "react-icons/md";
 
 function AddStandAlone() {
   
@@ -151,13 +151,20 @@ const handleSubmit = async (e) =>{
                     <div>
                         {
                             attrData?.attractions?.length ? (
-                                <div className='grid md:grid-cols-10 pt-2 gap-2'>
+                                <div className='grid md:grid-cols-8 pt-2 gap-2'>
                                     {
                                         attrData?.attractions?.map((ele)=>{
                                             return (
                                                 <div className='bg-white shadow-md  xl:h-44 w-full border'>
-                                                    <div>
+                                                    <div className='relative'>
                                                         <img className='w-full h-32 object-cover' src={config.SERVER_URL + ele?.images[1]} alt="" />
+                                                        <div className='absolute  right-0 top-0 '>
+                                                            <p className='text-xl text-red-500 cursor-pointer' 
+                                                            onClick={()=>{
+                                                                dispatch(deleteAddedAttractions(ele?._id))
+                                                            }}
+                                                            ><MdCancel /></p>
+                                                        </div>
                                                     </div>
                                                     <div className='pt-2'>
                                                         <h1 className='text-sm text-center'>{ele?.title}</h1>

@@ -15,9 +15,14 @@ function StandAloneTableList({ ele }) {
 
     const deleteStandAlone = async (id) => {
         try {
-            const res = await axios.patch(`/attractions/standalone/delete/${id}`,  {} ,{
-                headers: { Authorization: `Bearer ${jwtToken}` },
-            })
+
+            const isConfirm = window.confirm("Are you sure to delete")
+
+            if(isConfirm){
+                const res = await axios.patch(`/attractions/standalone/delete/${id}`,  {} ,{
+                    headers: { Authorization: `Bearer ${jwtToken}` },
+                })
+            }
         } catch (error) {
             console.log(error);
         }

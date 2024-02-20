@@ -6,7 +6,9 @@ import { BtnLoader } from '../../components'
 import { config } from '../../constants'
 import {RichTextEditor} from '../../components'
 import SuggestionsModal from './SuggestionsModal'
-import { addAttractionStandAloneDatas, addEditEnitial } from '../../redux/slices/attrStandAloneSlice'
+import { addAttractionStandAloneDatas, addEditEnitial, deleteAddedAttractions, clearAttractionStandAloneDataAfterAdding } from '../../redux/slices/attrStandAloneSlice'
+import { MdCancel } from "react-icons/md";
+
 
 
 function StandAloneEdit() {
@@ -23,6 +25,7 @@ function StandAloneEdit() {
     const [suggestions, setSuggestion] = useState([])
     const [gallery, setGallery] = useState([])
     const [isLoading, setIsLoading] = useState(false)
+    const [initialImg, setInitialImg] = useState()
 
 
     const fetchDetails = async () =>{
@@ -32,6 +35,7 @@ function StandAloneEdit() {
             })
 
             dispatch(addEditEnitial(res?.data))
+            setInitialImg(res?.data?.images)
             
         }catch(err){
             console.log(err);
@@ -77,20 +81,53 @@ function StandAloneEdit() {
         setValue("")
     }
 
-       const handleSubmit = (e) =>{
-        try {
+     
+const handleSubmit = async (e) =>{
+    try {
         e.preventDefault()
-            
-        } catch (error) {
-            console.log(error);
+        const formData = new FormData()
+
+        let attractions = []
+
+        
+        if(attrData?.attractions?.length){
+            for(let i = 0; i < attrData?.attractions?.length; i++){
+                attractions.push(attrData?.attractions[i]?._id)
+            }
         }
-       }
+        formData.append("attractions[]", JSON.stringify(attractions))
+        formData.append("title", attrData?.title )
+        formData.append("description", attrData?.description)
+
+        if(gallery?.length){
+            for(let i = 0; i < gallery.length; i++){
+                formData.append("images", gallery[i])
+            }
+        } else {
+            console.log(initialImg, "show this");
+                formData.append("initialImg[]", JSON.stringify(initialImg))
+        }
+
+        setIsLoading(true)
+        const res = await axios.patch(`/attractions/standalone/update/${params.id}`, formData, {
+            headers: { Authorization: `Bearer ${jwtToken}`}
+        })
+
+        navigate("/attractions/standalone")
+        dispatch(clearAttractionStandAloneDataAfterAdding())
+        setIsLoading(false)
+    } catch (error) {
+        setIsLoading(false)
+        console.log(error);
+    }
+}
+
 
   return (
     <div className=''>
         <div className='bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t  py-2'>
             <div>
-                <h1>Add Attraction Stand Alone</h1>
+                <h1>Edit Attraction Stand Alone</h1>
             </div>
             <div>
             <div className="text-sm text-grayColor">
@@ -148,8 +185,15 @@ function StandAloneEdit() {
                                         attrData?.attractions?.map((ele)=>{
                                             return (
                                                 <div className='bg-white shadow-md  xl:h-44 w-full border'>
-                                                    <div>
+                                                    <div className='relative'>
                                                         <img className='w-full h-32 object-cover' src={config.SERVER_URL + ele?.images[1]} alt="" />
+                                                        <div className='absolute  right-0 top-0 '>
+                                                            <p className='text-xl text-red-500 cursor-pointer' 
+                                                            onClick={()=>{
+                                                                dispatch(deleteAddedAttractions(ele?._id))
+                                                            }}
+                                                            ><MdCancel /></p>
+                                                        </div>
                                                     </div>
                                                     <div className='pt-2'>
                                                         <h1 className='text-sm text-center'>{ele?.title}</h1>
@@ -171,17 +215,28 @@ function StandAloneEdit() {
                     </div>
                     <div className='pt-2'>
                         {
-                            gallery?.length ? (
+                            gallery?.length  ? (
                                 <div className='flex gap-2 w-full h-20'>
                                     {
                                         gallery?.map((ele)=>(
                                             <div className='w-36 h-28'>
-                                                <img className='w-full h-full object-fill' src={URL.createObjectURL(ele)} alt="" />
+                                                <img className='w-full h-full object-fill' src={ URL.createObjectURL(ele) } alt="" />
                                             </div>
                                         ))
                                     }
                                 </div>
-                            ) : ""
+                            ) : (
+                                <div className='flex gap-2 w-full h-20'>
+                                    {
+                                        initialImg?.length ? (
+                                            <div className='w-36 h-28'>
+                                                <img className='w-full h-full object-fill' src={ config.SERVER_URL + initialImg[0]} alt="" />
+                                            </div>
+
+                                        ) : ""
+                                    }
+                            </div>
+                            )
                         }
                     </div>
                 </div>

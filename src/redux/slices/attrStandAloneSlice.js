@@ -15,19 +15,16 @@ export const attractionStandAloneSlice = createSlice({
     reducers : {
 
         addAttractionStandAloneDatas: (state, { payload })=>{
-
-            console.log(payload);
-
             if(payload.name === "attraction") {
-                if(state.attrData.attractions.length) {
-                    const exist = state.attrData.attractions.findIndex((item)=> item?._id !== payload?.value?._id)
-                    if(exist !== -1){
-                        state.attrData.attractions.push(payload.value)
-                    } 
+                if (state.attrData.attractions.length) {
+                    const exist = state.attrData.attractions.findIndex((item) => item?._id === payload?.value?._id);
+                    if (exist === -1) {
+                        state.attrData.attractions.push(payload.value);
+                    }
                 } else {
-                    state.attrData.attractions.push(payload.value)
+                    state.attrData.attractions.push(payload.value);
                 }
-            }else {
+            } else {
                 state.attrData[payload.name] = payload.value
             }
         },
@@ -43,13 +40,25 @@ export const attractionStandAloneSlice = createSlice({
 
         addEditEnitial: (state, { payload })=> {
 
-            state.attrData = {
-                title: payload?.title,
-                description: payload?.description,
-                gallery: payload?.images,
-                attractions: payload?.attraction
+           if(payload){
+
+               state.attrData = {
+                   title: payload?.title,
+                   description: payload?.description,
+                   gallery: payload?.images,
+                   attractions: payload?.attraction
+               }
+           }
+
+        },
+
+        deleteAddedAttractions: (state, { payload })=>{
+            if(state.attrData.attractions.length){
+                state.attrData.attractions = state.attrData.attractions.filter((item)=> item?._id !== payload)
             }
         }
+
+
 
     }
 })
@@ -57,7 +66,8 @@ export const attractionStandAloneSlice = createSlice({
 export const {
     addAttractionStandAloneDatas,
     clearAttractionStandAloneDataAfterAdding,
-    addEditEnitial
+    addEditEnitial,
+    deleteAddedAttractions
 } = attractionStandAloneSlice.actions;
 
 export default attractionStandAloneSlice.reducer

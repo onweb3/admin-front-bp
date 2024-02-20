@@ -3,12 +3,15 @@ import { Link } from 'react-router-dom'
 import { PageLoader } from '../../components';
 import axios from '../../axios';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {Pagination, BtnLoader} from '../../components';
 import StandAloneTableList from './StandAloneTableList';
 import { useSearchParams } from 'react-router-dom';
+import { clearAttractionStandAloneDataAfterAdding } from '../../redux/slices/attrStandAloneSlice';
 
 function StandAloneList() {
+
+    const dispatch = useDispatch()
 
     const [standAlone, setStandAlone] = useState([])
     const [isLoading, setIsLoading] = useState(false)
@@ -56,6 +59,9 @@ function StandAloneList() {
         fetchAllDetails({ skip, limit, searchInput });
     }, [searchParams])
 
+    useEffect(()=>{
+        dispatch(clearAttractionStandAloneDataAfterAdding())
+    }, [])
 
   return (
     <div>
