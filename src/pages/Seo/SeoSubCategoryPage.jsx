@@ -7,6 +7,7 @@ import { Link, useParams, useSearchParams } from "react-router-dom";
 import axios from "../../axios";
 import { PageLoader, Pagination } from "../../components";
 import SeoAttractionSubCategoryTablePage from "../../features/Seo/components/SeoAttractionSubCategoryTable";
+import SeoToursSubCategoryTablePage from "../../features/Seo/components/SeoToursSubCategoryTablePage";
 import SeoVisaSubCategoryTablePage from "../../features/Seo/components/SeoVisaSubCategoryPage";
 
 export default function SeoSubCategoryPage() {
@@ -86,6 +87,7 @@ export default function SeoSubCategoryPage() {
                 <SeoAttractionSubCategoryTablePage />
             )}
             {categoryId === "visa" && <SeoVisaSubCategoryTablePage />}
+            {categoryId === "tours" && <SeoToursSubCategoryTablePage />}
         </div>
     );
 }

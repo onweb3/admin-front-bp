@@ -53,6 +53,7 @@ import { FaGlobe, FaThList } from "react-icons/fa";
 import { BsFillChatLeftQuoteFill, BsImage } from "react-icons/bs";
 import { IoBusiness, IoWalletOutline } from "react-icons/io5";
 import { TbLicense } from "react-icons/tb";
+import { PiGlobeStand } from "react-icons/pi";
 
 const sidebarMenus = {
     Dashboard: [
@@ -140,6 +141,12 @@ const sidebarMenus = {
             name: "Ticket Themes",
             icon: <HiMiniTicket />,
             link: "attractions/ticket/theme",
+            permission: ["attr-itineraries", "view"],
+        },
+        {
+            name: "Stand Alone",
+            icon: <PiGlobeStand />,
+            link: "attractions/standalone",
             permission: ["attr-itineraries", "view"],
         },
     ],

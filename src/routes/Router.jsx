@@ -267,6 +267,10 @@ import CompanyAddressesPage from "../pages/Settings/CompanyAddressesPage";
 import AddCompanyAddressPage from "../pages/Settings/AddCompanyAddressPage";
 import EditCompanyAddressPage from "../pages/Settings/EditCompanyAddressPage";
 import B2bEnquiryDetailPage from "../pages/Resellers/B2bEnquiryDetailPage";
+import B2cMarkupProfilePage from "../pages/B2c Markup Profile/B2cMarkupProfilePage";
+import AddStandAlone from "../pages/AttractionStandAlone/AddStandAlone";
+import StandAloneList from "../pages/AttractionStandAlone/StandAloneList";
+import StandAloneEdit from "../pages/AttractionStandAlone/StandAloneEdit";
 
 const ThemeRoutes = [
     {
@@ -371,6 +375,18 @@ const ThemeRoutes = [
             {
                 path: "/attractions/guide/:id/edit",
                 element: <EditGuidePage />,
+            },
+            {
+                path: "/attractions/addStandalone",
+                element: <AddStandAlone />
+            },
+            {
+                path: "/attractions/standalone",
+                element: <StandAloneList/>
+            },
+            {
+                path:"/attractions/standalone/edit/:id",
+                element: <StandAloneEdit/>
             },
 
             {
@@ -723,7 +739,10 @@ const ThemeRoutes = [
                 path: "/markup/profile/:profileId/edit",
                 element: <EditMarkupProfilePage />,
             },
-
+            {
+                path: "/markup/b2c/profile/",
+                element: <B2cMarkupProfilePage />,
+            },
             {
                 path: "/market/startegy",
                 element: <MarketProfileListPage />,
@@ -859,8 +878,8 @@ const ThemeRoutes = [
                 element: <B2BHomeBannerPage />,
             },
             {
-                path:"/b2b/home/enquiry",
-                element: <B2bEnquiryDetailPage />
+                path: "/b2b/home/enquiry",
+                element: <B2bEnquiryDetailPage />,
             },
 
             {

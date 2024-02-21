@@ -39,6 +39,9 @@ export default function EditActivityPage() {
         b2bPromoAmountAdult: "",
         b2bPromoAmountChild: "",
         images: [],
+        termsAndConditions: "",
+        inculsionsAndExclusions: "",
+        overview: "",
     });
 
     const [section, setSection] = useState("activity");
@@ -203,7 +206,12 @@ export default function EditActivityPage() {
                 JSON.stringify(privateTransfers)
             );
             formData.append("oldImages", JSON.stringify(data?.images));
-
+            formData.append("termsAndConditions", data?.termsAndConditions);
+            formData.append(
+                "inculsionsAndExclusions",
+                data?.inculsionsAndExclusions
+            );
+            formData.append("overview", data?.overview);
             for (let i = 0; i < newImages?.length; i++) {
                 formData.append("images", newImages[i]);
             }
@@ -264,6 +272,9 @@ export default function EditActivityPage() {
                 b2bPromoCode,
                 b2bPromoAmountAdult,
                 b2bPromoAmountChild,
+                termsAndConditions,
+                inculsionsAndExclusions,
+                overview,
             } = response.data;
             setData((prev) => ({
                 ...prev,
@@ -293,6 +304,9 @@ export default function EditActivityPage() {
                 b2bPromoCode,
                 b2bPromoAmountAdult: b2bPromoAmountAdult || "",
                 b2bPromoAmountChild: b2bPromoAmountChild || "",
+                termsAndConditions: termsAndConditions || "",
+                inculsionsAndExclusions: inculsionsAndExclusions || "",
+                overview: overview || "",
             }));
 
             setAttraction(response?.data?.attraction);
@@ -910,6 +924,65 @@ export default function EditActivityPage() {
                                             }}
                                             initialValue={
                                                 data?.description || ""
+                                            }
+                                        />
+                                    </div>
+                                </div>
+                                <div className="col-span-3 mt-5">
+                                    <label htmlFor="">
+                                        Terms And Conditions
+                                    </label>
+                                    <div className="border border-t-0">
+                                        <RichTextEditor
+                                            getValue={(value) => {
+                                                setData((prev) => {
+                                                    return {
+                                                        ...prev,
+                                                        termsAndConditions:
+                                                            value,
+                                                    };
+                                                });
+                                            }}
+                                            initialValue={
+                                                data?.termsAndConditions || ""
+                                            }
+                                        />
+                                    </div>
+                                </div>
+                                <div className="col-span-3 mt-5">
+                                    <label htmlFor="">Overview</label>
+                                    <div className="border border-t-0">
+                                        <RichTextEditor
+                                            getValue={(value) => {
+                                                setData((prev) => {
+                                                    return {
+                                                        ...prev,
+                                                        overview: value,
+                                                    };
+                                                });
+                                            }}
+                                            initialValue={data?.overview || ""}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="col-span-3 mt-5">
+                                    <label htmlFor="">
+                                        Inculsions And Exclusions{" "}
+                                    </label>
+                                    <div className="border border-t-0">
+                                        <RichTextEditor
+                                            getValue={(value) => {
+                                                setData((prev) => {
+                                                    return {
+                                                        ...prev,
+                                                        inculsionsAndExclusions:
+                                                            value,
+                                                    };
+                                                });
+                                            }}
+                                            initialValue={
+                                                data?.inculsionsAndExclusions ||
+                                                ""
                                             }
                                         />
                                     </div>
