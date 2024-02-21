@@ -10,6 +10,7 @@ import PromoRoomDiscountForm from "./components/PromoRoomDiscountForm";
 import PromotionEditFormButtons from "./components/PromotionEditFormButtons";
 import HotelPromotionTableRow from "./components/HotelPromotionTableRow";
 import PromoExcludedDatesForm from "./components/PromoExcludedDatesForm";
+import HotelPromotionCloneModal from "./components/HotelPromotionCloneModal";
 
 export {
     PromoDiscountForm,
@@ -24,4 +25,5 @@ export {
     PromotionEditFormButtons,
     HotelPromotionTableRow,
     PromoExcludedDatesForm,
+    HotelPromotionCloneModal,
 };

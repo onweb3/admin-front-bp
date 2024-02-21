@@ -54,6 +54,7 @@ export default function EditAttrSubmission({ setSection, newImages, next, update
             formData.append("state", data?.state);
             formData.append("longitude", data?.longitude);
             formData.append("latitude", data?.latitude);
+            formData.append("displayOrder", data?.displayOrder);
 
             for (let i = 0; i < newImages?.length; i++) {
                 formData.append("images", newImages[i]);
