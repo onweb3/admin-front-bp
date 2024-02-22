@@ -16,14 +16,21 @@ export default function TourPackageAddFormButtons({
     const [error, setError] = useState("");
 
     const { jwtToken } = useSelector((state) => state.admin);
-    const { data, itineraries, tPackageHotels, availableDates, excludedDates } =
-        useSelector((state) => state.tourPackageForm);
+    const {
+        data,
+        itineraries,
+        tPackageHotels,
+        availableDates,
+        excludedDates,
+        thumbnail,
+    } = useSelector((state) => state.tourPackageForm);
     const navigate = useNavigate();
 
     const handleSubmit = async () => {
         try {
             setError("");
             setIsLoading(true);
+
 
             const filteredItineraries = itineraries?.map((itin) => {
                 return {
@@ -79,6 +86,9 @@ export default function TourPackageAddFormButtons({
             formData.append("exclusions", data?.exclusions);
             formData.append("visaPolicy", data?.visaPolicy);
             formData.append("termsAndConditions", data?.termsAndConditions);
+            formData.append("oldImages", JSON.stringify(data?.thumbnail || []));
+            formData.append("country", data?.country);
+            formData.append("destination", data?.destination);
             for (let i = 0; i < newImages?.length; i++) {
                 formData.append("thumbnailImg", newImages[i]);
             }

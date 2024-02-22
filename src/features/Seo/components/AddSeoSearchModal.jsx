@@ -94,6 +94,10 @@ export default function AddSeoSearchModal({
                 response = await axios.get(`/seo/tours`, {
                     headers: { Authorization: `Bearer ${jwtToken}` },
                 });
+            } else if (subCategoryId === "attraction-stand-alone") {
+                response = await axios.get(`/seo/stand-alone`, {
+                    headers: { Authorization: `Bearer ${jwtToken}` },
+                });
             }
 
             setList(response?.data);

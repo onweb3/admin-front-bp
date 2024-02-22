@@ -6,19 +6,21 @@ import { useSelector } from "react-redux";
 
 import { config } from "../../../constants";
 
-export default function TourPackageSummaryForm({ selectedSection, thumImg }) {
-    const { data, itineraries, tPackageHotels } = useSelector((state) => state.tourPackageForm);
+export default function TourPackageSummaryForm({ selectedSection, newImages }) {
+    const { data, itineraries, tPackageHotels } = useSelector(
+        (state) => state.tourPackageForm
+    );
 
     return (
         <div className={selectedSection === "summary" ? "block" : "hidden"}>
             <div className="relative flex flex-col items-center justify-center bg-slate-300 w-full h-[200px] rounded">
-                {(thumImg || data?.thumbnail) && (
+                {(newImages || data?.thumbnail) && (
                     <div className="absolute inset-0">
                         <img
                             src={
-                                thumImg
-                                    ? URL.createObjectURL(thumImg)
-                                    : config.SERVER_URL + data?.thumbnail
+                                newImages && newImages[0]
+                                    ? URL.createObjectURL(newImages[0])
+                                    : config.SERVER_URL + data?.thumbnail[0]
                             }
                             alt=""
                             className="w-full h-full object-cover"
@@ -26,7 +28,9 @@ export default function TourPackageSummaryForm({ selectedSection, thumImg }) {
                     </div>
                 )}
                 <div className="z-10 text-center">
-                    <h2 className="text-lg font-[600]">{data?.packageName || "N/A"}</h2>
+                    <h2 className="text-lg font-[600]">
+                        {data?.packageName || "N/A"}
+                    </h2>
                     <span className="text-sm block mt-1">
                         {data?.noOfDays || "N/A"} Days - Availability (
                         {data?.isCustomDate === true ? "Custom" : "All Day"})
@@ -48,25 +52,35 @@ export default function TourPackageSummaryForm({ selectedSection, thumImg }) {
                 ) : (
                     itineraries?.map((itinerary, itineraryIndex) => {
                         const airportPickup =
-                            itineraryIndex === 0 && data?.isAirportTransfer === true;
+                            itineraryIndex === 0 &&
+                            data?.isAirportTransfer === true;
                         const airportDropOff =
                             itineraryIndex === itineraries?.length - 1 &&
                             data?.isAirportTransfer === true;
 
                         return (
-                            <div key={itineraryIndex} className="relative pl-[50px] pb-5">
+                            <div
+                                key={itineraryIndex}
+                                className="relative pl-[50px] pb-5"
+                            >
                                 <div
                                     className={
                                         "absolute top-0 left-0 h-full w-[40px] text-white flex flex-col items-center justify-center text-center " +
-                                        (itineraryIndex % 2 === 0 ? "bg-[#be61c9]" : "bg-[#9821a7]")
+                                        (itineraryIndex % 2 === 0
+                                            ? "bg-[#be61c9]"
+                                            : "bg-[#9821a7]")
                                     }
                                 >
                                     <span className="text-[13px]">Day</span>
-                                    <span className="font-[600]">{itineraryIndex + 1}</span>
+                                    <span className="font-[600]">
+                                        {itineraryIndex + 1}
+                                    </span>
                                 </div>
                                 <div className="flex items-center gap-4 mb-3">
                                     <h3 className="font-[600] text-[14px]">
-                                        {itinerary?.title ? itinerary?.title : "N/A"}
+                                        {itinerary?.title
+                                            ? itinerary?.title
+                                            : "N/A"}
                                     </h3>
                                 </div>
 
@@ -84,9 +98,11 @@ export default function TourPackageSummaryForm({ selectedSection, thumImg }) {
                                                 Air Port Pick Up
                                             </h4>
                                             <p className="mt-2 text-sm leading-6">
-                                                At the time of your arrival our driver will greet
-                                                you & assist you with your baggage to the Vehicle
-                                                and drive you safely to your Hotel or Residence.
+                                                At the time of your arrival our
+                                                driver will greet you & assist
+                                                you with your baggage to the
+                                                Vehicle and drive you safely to
+                                                your Hotel or Residence.
                                             </p>
                                         </div>
                                     </div>
@@ -109,7 +125,9 @@ export default function TourPackageSummaryForm({ selectedSection, thumImg }) {
                                                         <img
                                                             src={
                                                                 config.SERVER_URL +
-                                                                itineraryItem?.activity?.attraction
+                                                                itineraryItem
+                                                                    ?.activity
+                                                                    ?.attraction
                                                                     ?.image
                                                             }
                                                             alt=""
@@ -118,12 +136,16 @@ export default function TourPackageSummaryForm({ selectedSection, thumImg }) {
                                                     </div>
                                                     <div className="border p-3 w-full relative">
                                                         <h4 className="font-[500] text-sm mb-1">
-                                                            {itineraryItem?.itineraryName}
+                                                            {
+                                                                itineraryItem?.itineraryName
+                                                            }
                                                         </h4>
                                                         <div className="flex items-center flex-wrap gap-3 text-[13px]">
                                                             <span className="flex items-center gap-1">
                                                                 <FaCar />
-                                                                {itineraryItem?.transferType}{" "}
+                                                                {
+                                                                    itineraryItem?.transferType
+                                                                }{" "}
                                                                 {itineraryItem?.transferType ===
                                                                     "private" &&
                                                                     `(${itineraryItem?.vehicleType?.name})`}
@@ -138,7 +160,9 @@ export default function TourPackageSummaryForm({ selectedSection, thumImg }) {
                                                             </span>
                                                         </div>
                                                         <p className="mt-2 text-sm leading-6">
-                                                            {itineraryItem?.description}
+                                                            {
+                                                                itineraryItem?.description
+                                                            }
                                                         </p>
 
                                                         {/* <div className="absolute bottom-[100%] right-0">
@@ -176,9 +200,11 @@ export default function TourPackageSummaryForm({ selectedSection, thumImg }) {
                                                 Air Port Drop Off
                                             </h4>
                                             <p className="mt-2 text-sm leading-6">
-                                                At the time of your departure Our Driver will Pick
-                                                you from your desired hotel in Dubai and drop you at
-                                                the Dubai International Airport.
+                                                At the time of your departure
+                                                Our Driver will Pick you from
+                                                your desired hotel in Dubai and
+                                                drop you at the Dubai
+                                                International Airport.
                                             </p>
                                         </div>
                                     </div>
@@ -194,7 +220,8 @@ export default function TourPackageSummaryForm({ selectedSection, thumImg }) {
 
                 {tPackageHotels?.map((tpHotel, tpHotelIndex) => {
                     let lastNight =
-                        (tpHotelIndex !== 0 && tPackageHotels[tpHotelIndex - 1]?.noOfNights - 1) ||
+                        (tpHotelIndex !== 0 &&
+                            tPackageHotels[tpHotelIndex - 1]?.noOfNights - 1) ||
                         0;
 
                     return (
@@ -202,10 +229,13 @@ export default function TourPackageSummaryForm({ selectedSection, thumImg }) {
                             <h3 className="text-[14px]">
                                 <span className="text-orange-500 font-[600] uppercase">
                                     Day {tpHotelIndex + 1 + lastNight} To{" "}
-                                    {tpHotelIndex + Number(tpHotel?.noOfNights) + 1 + lastNight ||
-                                        "N/A"}
+                                    {tpHotelIndex +
+                                        Number(tpHotel?.noOfNights) +
+                                        1 +
+                                        lastNight || "N/A"}
                                 </span>
-                                {tpHotel?.noOfNights && ` (${tpHotel?.noOfNights} Nights)`}
+                                {tpHotel?.noOfNights &&
+                                    ` (${tpHotel?.noOfNights} Nights)`}
                             </h3>
                             <div className="grid grid-cols-7 gap-4 mt-3">
                                 {tpHotel?.hotelOptions?.length < 1 ? (
@@ -213,35 +243,54 @@ export default function TourPackageSummaryForm({ selectedSection, thumImg }) {
                                         No Hotels Added
                                     </span>
                                 ) : (
-                                    tpHotel?.hotelOptions?.map((hOption, hOptIndex) => {
-                                        return (
-                                            <div key={hOptIndex}>
-                                                <div className="w-full rounded overflow-hidden relative aspect-[5/3]">
-                                                    <img
-                                                        src={
-                                                            hOption?.hotel?.image?.isRelative ===
-                                                            true
-                                                                ? config.SERVER_URL +
-                                                                  hOption?.hotel?.image?.path
-                                                                : hOption?.hotel?.image?.path
+                                    tpHotel?.hotelOptions?.map(
+                                        (hOption, hOptIndex) => {
+                                            return (
+                                                <div key={hOptIndex}>
+                                                    <div className="w-full rounded overflow-hidden relative aspect-[5/3]">
+                                                        <img
+                                                            src={
+                                                                hOption?.hotel
+                                                                    ?.image
+                                                                    ?.isRelative ===
+                                                                true
+                                                                    ? config.SERVER_URL +
+                                                                      hOption
+                                                                          ?.hotel
+                                                                          ?.image
+                                                                          ?.path
+                                                                    : hOption
+                                                                          ?.hotel
+                                                                          ?.image
+                                                                          ?.path
+                                                            }
+                                                            alt=""
+                                                            className="w-full h-full object-cover"
+                                                        />
+                                                    </div>
+                                                    <span className="block font-medium text-sm mt-2">
+                                                        {
+                                                            hOption?.hotel
+                                                                ?.hotelName
                                                         }
-                                                        alt=""
-                                                        className="w-full h-full object-cover"
-                                                    />
+                                                    </span>
+                                                    <span className="block text-sm text-grayColor capitalize">
+                                                        {
+                                                            hOption?.hotel
+                                                                ?.address
+                                                        }
+                                                    </span>
+                                                    <span className="text-sm capitalize">
+                                                        {
+                                                            hOption?.roomType
+                                                                ?.roomName
+                                                        }{" "}
+                                                        | {hOption?.boardCode}
+                                                    </span>
                                                 </div>
-                                                <span className="block font-medium text-sm mt-2">
-                                                    {hOption?.hotel?.hotelName}
-                                                </span>
-                                                <span className="block text-sm text-grayColor capitalize">
-                                                    {hOption?.hotel?.address}
-                                                </span>
-                                                <span className="text-sm capitalize">
-                                                    {hOption?.roomType?.roomName} |{" "}
-                                                    {hOption?.boardCode}
-                                                </span>
-                                            </div>
-                                        );
-                                    })
+                                            );
+                                        }
+                                    )
                                 )}
                             </div>
                         </div>

@@ -11,7 +11,10 @@ import {
     TourPackageTermsAndPolicyForm,
 } from "../../features/TourPackage";
 import { useDispatch } from "react-redux";
-import { fetchTPackageInitialData } from "../../redux/slices/tourPackageFormSlice";
+import {
+    fetchTPackageInitialData,
+    clearTourData,
+} from "../../redux/slices/tourPackageFormSlice";
 import { useImageChange } from "../../hooks";
 
 const sections = {
@@ -59,6 +62,10 @@ export default function AddTourPackagePage() {
 
     useEffect(() => {
         dispatch(fetchTPackageInitialData());
+    }, []);
+
+    useEffect(() => {
+        return () => dispatch(clearTourData());
     }, []);
     // console.log(newImages, "Images");
 
@@ -126,7 +133,7 @@ export default function AddTourPackagePage() {
                         />
                         <TourPackageSummaryForm
                             selectedSection={selectedSection}
-                            thumImg={thumImg}
+                            newImages={newImages}
                         />
                         <TourPackageAddFormButtons
                             next={

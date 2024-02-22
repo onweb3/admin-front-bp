@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { handleTourDataChange } from "../../../redux/slices/tourPackageFormSlice";
-import { MultipleSelectDropdown } from "../../../components";
+import { MultipleSelectDropdown, SelectDropdown } from "../../../components";
 import { config } from "../../../constants";
 import { MdDelete } from "react-icons/md";
 import { isImageValid } from "../../../utils";
@@ -15,12 +15,18 @@ export default function TourPackageDetailsForm({
     const { data, tPackageThemes, thumbnail } = useSelector(
         (state) => state.tourPackageForm
     );
+    const { countries, destinations } = useSelector((state) => state.general);
+
     const dispatch = useDispatch();
 
     const handleDataInpChange = (e) => {
         dispatch(
             handleTourDataChange({ name: e.target.name, value: e.target.value })
         );
+    };
+
+    const handleDropDownInpChange = ({ name, value }) => {
+        dispatch(handleTourDataChange({ name: name, value: value }));
     };
     const handleImageChange = (e) => {
         for (let i = 0; i < e.target?.files?.length; i++) {
@@ -98,7 +104,40 @@ export default function TourPackageDetailsForm({
                         randomIndex={"packageThemes01"}
                     />
                 </div>
+                <div>
+                    <label htmlFor="">Country</label>
+                    <SelectDropdown
+                        data={countries || []}
+                        displayName="countryName"
+                        valueName="_id"
+                        placeholder="Select country"
+                        selectedData={data?.country}
+                        setSelectedData={(val) => {
+                            handleDropDownInpChange({
+                                name: "country",
+                                value: val,
+                            });
+                        }}
+                    />
+                </div>
+                <div>
+                    <label htmlFor="">Destination</label>
+                    <SelectDropdown
+                        data={destinations || []}
+                        displayName="name"
+                        valueName="_id"
+                        placeholder="Select destination"
+                        selectedData={data?.destination}
+                        setSelectedData={(val) => {
+                            handleDropDownInpChange({
+                                name: "destination",
+                                value: val,
+                            });
+                        }}
+                    />
+                </div>
             </div>
+
             <div className="mt-4">
                 <label htmlFor="">Images</label>
                 <input type="file" onChange={handleImageChange} />
@@ -123,24 +162,25 @@ export default function TourPackageDetailsForm({
                         </div>
                     );
                 })}
-                {thumbnail?.map((image, index) => {
-                    return (
-                        <div
-                            className="relative group w-[130px] aspect-video rounded overflow-hidden cursor-pointer"
-                            key={index}
-                            // onClick={() => dispatch(removeImage(index))}
-                        >
-                            <img
-                                src={config.SERVER_URL + image}
-                                alt=""
-                                className="w-full h-full object-cover"
-                            />
-                            <div className="hidden group-hover:flex absolute inset-0 bg-[#0005] text-xl items-center justify-center cursor-pointer text-red-500">
-                                <MdDelete />
+                {Array.isArray(data?.thumbnail) &&
+                    data?.thumbnail?.map((image, index) => {
+                        return (
+                            <div
+                                className="relative group w-[130px] aspect-video rounded overflow-hidden cursor-pointer"
+                                key={index}
+                                // onClick={() => dispatch(removeImage(index))}
+                            >
+                                <img
+                                    src={config?.SERVER_URL + image}
+                                    alt=""
+                                    className="w-full h-full object-cover"
+                                />
+                                <div className="hidden group-hover:flex absolute inset-0 bg-[#0005] text-xl items-center justify-center cursor-pointer text-red-500">
+                                    <MdDelete />
+                                </div>
                             </div>
-                        </div>
-                    );
-                })}
+                        );
+                    })}
             </div>
             <div className="mt-4">
                 <label htmlFor="">Overview *</label>

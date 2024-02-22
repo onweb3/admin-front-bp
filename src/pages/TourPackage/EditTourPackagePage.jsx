@@ -6,6 +6,7 @@ import axios from "../../axios";
 import {
     fetchTPackageInitialData,
     updateTourPackageFormAllData,
+    clearTourData,
 } from "../../redux/slices/tourPackageFormSlice";
 import {
     TourPackageActivitiesForm,
@@ -91,6 +92,10 @@ export default function EditTourPackagePage() {
         dispatch(fetchTPackageInitialData());
     }, []);
 
+    useEffect(() => {
+        return () => dispatch(clearTourData());
+    }, []);
+
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
@@ -163,7 +168,7 @@ export default function EditTourPackagePage() {
                             />
                             <TourPackageSummaryForm
                                 selectedSection={selectedSection}
-                                thumImg={thumImg}
+                                newImages={newImages}
                             />
                             <TourPackageEditFormButtons
                                 next={

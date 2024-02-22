@@ -5,16 +5,22 @@ import { useSelector } from "react-redux";
 import axios from "../../../axios";
 import { BtnLoader } from "../../../components";
 
-export default function TourPackageEditFormButtons({ next, prev, goForward, goBack, thumImg }) {
+export default function TourPackageEditFormButtons({
+    next,
+    prev,
+    goForward,
+    goBack,
+    newImages,
+}) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
 
     const { tPackageId } = useParams();
     const { jwtToken } = useSelector((state) => state.admin);
-    const { data, itineraries, tPackageHotels, availableDates, excludedDates } = useSelector(
-        (state) => state.tourPackageForm
-    );
+    const { data, itineraries, tPackageHotels, availableDates, excludedDates } =
+        useSelector((state) => state.tourPackageForm);
     const navigate = useNavigate();
+    console.log(itineraries, "itineraries");
 
     const handleSubmit = async () => {
         try {
@@ -33,6 +39,7 @@ export default function TourPackageEditFormButtons({ next, prev, goForward, goBa
                             vehicleTypeId: itinItem.vehicleTypeId || undefined,
                             itineraryName: itinItem.itineraryName,
                             description: itinItem.description,
+                            price: itinItem.price,
                         };
                     }),
                 };
@@ -57,7 +64,10 @@ export default function TourPackageEditFormButtons({ next, prev, goForward, goBa
             formData.append("packageType", data?.packageType);
             formData.append("packageName", data?.packageName);
             formData.append("overveiw", data?.overveiw);
-            formData.append("packageThemes", JSON.stringify(data?.packageThemes));
+            formData.append(
+                "packageThemes",
+                JSON.stringify(data?.packageThemes)
+            );
             formData.append("noOfDays", data?.noOfDays);
             formData.append("isCustomDate", data?.isCustomDate);
             formData.append("availableDates", JSON.stringify(availableDates));
@@ -72,13 +82,20 @@ export default function TourPackageEditFormButtons({ next, prev, goForward, goBa
             formData.append("exclusions", data?.exclusions);
             formData.append("visaPolicy", data?.visaPolicy);
             formData.append("termsAndConditions", data?.termsAndConditions);
-            if (thumImg) {
-                formData.append("thumbnailImg", thumImg);
+            formData.append("oldImages", JSON.stringify(data?.thumbnail || []));
+            formData.append("country", data?.country);
+            formData.append("destination", data?.destination);
+            for (let i = 0; i < newImages?.length; i++) {
+                formData.append("thumbnailImg", newImages[i]);
             }
 
-            const response = await axios.patch(`/tour-packages/update/${tPackageId}`, formData, {
-                headers: { authorization: `Bearer ${jwtToken}` },
-            });
+            const response = await axios.patch(
+                `/tour-packages/update/${tPackageId}`,
+                formData,
+                {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                }
+            );
 
             setIsLoading(false);
         } catch (err) {
@@ -90,7 +107,9 @@ export default function TourPackageEditFormButtons({ next, prev, goForward, goBa
 
     return (
         <div className="mt-8">
-            {error && <span className="text-sm text-red-500 block mt-4">{error}</span>}
+            {error && (
+                <span className="text-sm text-red-500 block mt-4">{error}</span>
+            )}
 
             <div className="mt-4 flex items-center justify-end gap-[12px]">
                 {prev ? (
@@ -111,7 +130,11 @@ export default function TourPackageEditFormButtons({ next, prev, goForward, goBa
                     </button>
                 )}
                 {next ? (
-                    <button className="w-[100px] bg-primaryColor" type="button" onClick={goForward}>
+                    <button
+                        className="w-[100px] bg-primaryColor"
+                        type="button"
+                        onClick={goForward}
+                    >
                         next
                     </button>
                 ) : (

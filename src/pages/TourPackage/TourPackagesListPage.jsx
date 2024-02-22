@@ -22,7 +22,9 @@ export default function TourPackagesListPage() {
 
     const deleteTourPackage = async (id) => {
         try {
-            const isConfirm = window.confirm("Are you sure to delete this package?");
+            const isConfirm = window.confirm(
+                "Are you sure to delete this package?"
+            );
             if (isConfirm) {
                 await axios.delete(`/tour-packages/delete/${id}`, {
                     headers: { authorization: `Bearer ${jwtToken}` },
@@ -31,7 +33,9 @@ export default function TourPackagesListPage() {
                 const filteredTourPackages = tourPackages.filter((tPackage) => {
                     return tPackage?._id !== id;
                 });
-                setTourPackages(JSON.parse(JSON.stringify(filteredTourPackages)));
+                setTourPackages(
+                    JSON.parse(JSON.stringify(filteredTourPackages))
+                );
             }
         } catch (err) {
             console.log(err);
@@ -51,7 +55,10 @@ export default function TourPackagesListPage() {
 
             setTourPackages(response.data?.tourPackages);
             setFilters((prev) => {
-                return { ...prev, totalTourPackages: response?.data?.totalTourPackages };
+                return {
+                    ...prev,
+                    totalTourPackages: response?.data?.totalTourPackages,
+                };
             });
             setIsPageLoading(false);
         } catch (err) {
@@ -66,7 +73,9 @@ export default function TourPackagesListPage() {
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">Tour Package</h1>
+                <h1 className="font-[600] text-[15px] uppercase">
+                    Tour Package
+                </h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
@@ -84,7 +93,9 @@ export default function TourPackagesListPage() {
                         <div className="flex items-center justify-between border-b border-dashed p-4">
                             <h1 className="font-medium">All Tour Packages</h1>
                             <Link to="add">
-                                <button className="px-3">+ Add Tour Package</button>
+                                <button className="px-3">
+                                    + Add Tour Package
+                                </button>
                             </Link>
                         </div>
                         {tourPackages?.length < 1 ? (
@@ -98,70 +109,101 @@ export default function TourPackagesListPage() {
                                 <table className="w-full">
                                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                         <tr>
-                                            <th className="font-[500] p-3">Package</th>
-                                            <th className="font-[500] p-3">No Of Days</th>
-                                            <th className="font-[500] p-3">View</th>
-                                            <th className="font-[500] p-3">Price</th>
-                                            <th className="font-[500] p-3">Action</th>
+                                            <th className="font-[500] p-3">
+                                                Package
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                No Of Days
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                View
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Price
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Action
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="text-sm">
-                                        {tourPackages?.map((tPackage, tPackageIndex) => {
-                                            return (
-                                                <tr
-                                                    key={tPackageIndex}
-                                                    className="border-b border-tableBorderColor"
-                                                >
-                                                    <td className="p-3">
-                                                        <div className="flex items-center gap-[10px]">
-                                                            <div className="bg-slate-300 w-[40px] rounded h-[30px] overflow-hidden">
-                                                                {tPackage?.thumbnail && (
-                                                                    <img
-                                                                        src={
-                                                                            config.SERVER_URL +
-                                                                            tPackage?.thumbnail
-                                                                        }
-                                                                        alt=""
-                                                                        className="w-full h-full object-cover"
-                                                                    />
-                                                                )}
+                                        {tourPackages?.map(
+                                            (tPackage, tPackageIndex) => {
+                                                return (
+                                                    <tr
+                                                        key={tPackageIndex}
+                                                        className="border-b border-tableBorderColor"
+                                                    >
+                                                        <td className="p-3">
+                                                            <div className="flex items-center gap-[10px]">
+                                                                <div className="bg-slate-300 w-[40px] rounded h-[30px] overflow-hidden">
+                                                                    {tPackage?.thumbnail &&
+                                                                        tPackage
+                                                                            ?.thumbnail[0] && (
+                                                                            <img
+                                                                                src={
+                                                                                    config.SERVER_URL +
+                                                                                    tPackage
+                                                                                        ?.thumbnail[0]
+                                                                                }
+                                                                                alt=""
+                                                                                className="w-full h-full object-cover"
+                                                                            />
+                                                                        )}
+                                                                </div>
+                                                                <span>
+                                                                    {
+                                                                        tPackage?.packageName
+                                                                    }
+                                                                </span>
                                                             </div>
-                                                            <span>{tPackage?.packageName}</span>
-                                                        </div>
-                                                    </td>
-                                                    <td className="p-3 capitalize">
-                                                        {tPackage?.noOfDays - 1}N / {tPackage?.noOfDays}D
-                                                    </td>
-                                                    <td className="p-3">
-                                                        <Link to={`${tPackage?._id}`}>
-                                                            <button className="bg-transparent h-auto text-[#444] text-lg">
-                                                                <AiFillEye />
-                                                            </button>
-                                                        </Link>
-                                                    </td>
-                                                    <td className="p-3">
-                                                        {tPackage?.totalPrice || 0} AED
-                                                    </td>
-                                                    <td className="p-3">
-                                                        <div className="flex gap-[10px]">
-                                                            <button
-                                                                className="h-auto bg-transparent text-red-500 text-xl"
-                                                                onClick={() =>
-                                                                    deleteTourPackage(tPackage?._id)
-                                                                }
+                                                        </td>
+                                                        <td className="p-3 capitalize">
+                                                            {tPackage?.noOfDays -
+                                                                1}
+                                                            N /{" "}
+                                                            {tPackage?.noOfDays}
+                                                            D
+                                                        </td>
+                                                        <td className="p-3">
+                                                            <Link
+                                                                to={`${tPackage?._id}`}
                                                             >
-                                                                <MdDelete />
-                                                            </button>
-                                                            <Link to={`${tPackage?._id}/edit`}>
-                                                                <button className="h-auto bg-transparent text-green-500 text-xl">
-                                                                    <BiEditAlt />
+                                                                <button className="bg-transparent h-auto text-[#444] text-lg">
+                                                                    <AiFillEye />
                                                                 </button>
                                                             </Link>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })}
+                                                        </td>
+                                                        <td className="p-3">
+                                                            {tPackage?.totalPrice ||
+                                                                0}{" "}
+                                                            AED
+                                                        </td>
+                                                        <td className="p-3">
+                                                            <div className="flex gap-[10px]">
+                                                                <button
+                                                                    className="h-auto bg-transparent text-red-500 text-xl"
+                                                                    onClick={() =>
+                                                                        deleteTourPackage(
+                                                                            tPackage?._id
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <MdDelete />
+                                                                </button>
+                                                                <Link
+                                                                    to={`${tPackage?._id}/edit`}
+                                                                >
+                                                                    <button className="h-auto bg-transparent text-green-500 text-xl">
+                                                                        <BiEditAlt />
+                                                                    </button>
+                                                                </Link>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            }
+                                        )}
                                     </tbody>
                                 </table>
 

@@ -56,6 +56,21 @@ export default function SeoAttractionSubCategoryTablePage({}) {
                                     </div>
                                 </td>
                             </tr>
+                            <tr className="border-b border-tableBorderColor">
+                                <td className="p-3">
+                                    <span className="block">Stand Alone</span>
+                                </td>
+
+                                <td className="p-3">
+                                    <div className="flex gap-[10px]">
+                                        <Link to={`attraction-stand-alone`}>
+                                            <button className="h-auto bg-transparent text-green-500 text-xl">
+                                                <BsEyeFill />
+                                            </button>
+                                        </Link>
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

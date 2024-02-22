@@ -94,6 +94,40 @@ export const tourPackageFormSlice = createSlice({
                 endDate: "",
             });
         },
+        clearTourData: (state, action) => {
+            state.data = {
+                packageType: "static",
+                packageName: "",
+                overveiw: "",
+                packageThemes: [],
+                noOfDays: "",
+                isCustomDate: false,
+                isAirportTransfer: false,
+                airportTransferPrice: "",
+                isInterHotelTransfer: false,
+                interHotelPrice: "",
+                inclusions: "",
+                exclusions: "",
+                visaPolicy: "",
+                termsAndConditions: "",
+                thumbnail: [],
+            };
+            state.availableDates = [];
+            state.excludedDates = [];
+            state.tPackageHotels = [
+                {
+                    country: "",
+                    city: "",
+                    noOfNights: "",
+                    title: "",
+                    price: "",
+                    hotelOptions: [],
+                },
+            ];
+            state.itineraries = [];
+            state.activities = [];
+            state.tPackageThemes = [];
+        },
         removeTPackageAvailableDateRow: (state, action) => {
             state.availableDates?.splice(action.payload, 1);
         },
@@ -176,6 +210,8 @@ export const tourPackageFormSlice = createSlice({
                 inclusions: action.payload?.inclusions,
                 exclusions: action.payload?.exclusions,
                 visaPolicy: action.payload?.visaPolicy,
+                country: action.payload?.country,
+                destination: action.payload?.destination,
                 termsAndConditions: action.payload?.termsAndConditions,
                 thumbnail: action.payload?.thumbnail,
             };
@@ -209,6 +245,7 @@ export const {
     addTPackageExcludedDateRow,
     handleChangeTPackageExcludedDateData,
     removeTPackageExcludedDateRow,
+    clearTourData,
 } = tourPackageFormSlice.actions;
 
 export default tourPackageFormSlice.reducer;
