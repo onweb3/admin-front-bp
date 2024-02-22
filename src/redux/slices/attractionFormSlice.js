@@ -55,6 +55,7 @@ const initialState = {
         state: "",
         city: "",
         area: "",
+        displayOrder: 1,
     },
     logo: "",
     images: [],
@@ -107,6 +108,7 @@ export const attractionFormSlice = createSlice({
                 state: "",
                 city: "",
                 area: "",
+                displayOrder: 1,
             };
             state.images = [];
             state.availability = availabilityData;
@@ -183,6 +185,7 @@ export const attractionFormSlice = createSlice({
                 country,
                 city,
                 area,
+                displayOrder,
                 longitude,
                 latitude,
             } = action.payload;
@@ -220,6 +223,7 @@ export const attractionFormSlice = createSlice({
             state.data.country = country || "";
             state.data.city = city || "";
             state.data.area = area || "";
+            state.data.displayOrder = displayOrder || 1;
             state.data.state = action.payload?.state || "";
             state.data.longitude = longitude || "";
             state.data.latitude = latitude || "";

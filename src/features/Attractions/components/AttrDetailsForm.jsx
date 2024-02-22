@@ -13,6 +13,7 @@ export default function AttrDetailsForm({ section, isEdit = false }) {
     const { states, cities, countries, areas } = useSelector(
         (state) => state.general
     );
+    const { jwtToken } = useSelector((state) => state.admin);
 
     const availableStates = states?.filter((item) => {
         return item?.country === data.country;
@@ -32,8 +33,6 @@ export default function AttrDetailsForm({ section, isEdit = false }) {
     const handleDetailsChange = ({ name, value }) => {
         dispatch(setData({ name: name, value: value }));
     };
-
-    const { jwtToken } = useSelector((state) => state.admin);
 
     const fetchApisList = async () => {
         try {
@@ -419,6 +418,19 @@ export default function AttrDetailsForm({ section, isEdit = false }) {
                         </div>
                     </>
                 )}
+                <div className="flex flex-col justify-end h-full">
+                    <label htmlFor="">Display Order</label>
+                    <input
+                        type="number"
+                        name="displayOrder"
+                        onChange={handleChange}
+                        value={data?.displayOrder || ""}
+                        placeholder="Ex: 1"
+                    />
+                    <span className="text-sm text-grayColor mt-1">
+                        This field is used to arrange the order of attractions list.
+                    </span>
+                </div>
             </div>
         </div>
     );
