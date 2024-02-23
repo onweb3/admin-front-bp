@@ -356,12 +356,12 @@ const adminRoles = [
         category: "settings",
         permissions: [],
     },
-    {
-        name: "home-settings",
-        displayName: "Home Settings",
-        category: "settings",
-        permissions: [],
-    },
+    // {
+    //     name: "home-settings",
+    //     displayName: "Home Settings",
+    //     category: "settings",
+    //     permissions: [],
+    // },
 
     //Quotations
     {
@@ -585,6 +585,20 @@ const adminRoles = [
         name: "tour-packages",
         displayName: "Tour Packages",
         category: "tour-packages",
+        permissions: [],
+    },
+
+    //CMS
+    {
+        name: "b2b-frontend",
+        displayName: "B2B Frontend",
+        category: "frontend",
+        permissions: [],
+    },
+    {
+        name: "b2c-frontend",
+        displayName: "B2C Frontend",
+        category: "frontend",
         permissions: [],
     },
 ];

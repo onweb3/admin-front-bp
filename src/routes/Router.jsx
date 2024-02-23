@@ -271,6 +271,30 @@ import B2cMarkupProfilePage from "../pages/B2c Markup Profile/B2cMarkupProfilePa
 import AddStandAlone from "../pages/AttractionStandAlone/AddStandAlone";
 import StandAloneList from "../pages/AttractionStandAlone/StandAloneList";
 import StandAloneEdit from "../pages/AttractionStandAlone/StandAloneEdit";
+import LogoSettingsB2bPage from "../pages/B2bFrontend/LogoSettingsB2bPage";
+import HeroSettingsB2bPage from "../pages/B2bFrontend/HeroSettingsB2bPage";
+import AddCardSettingsB2bPage from "../pages/B2bFrontend/AddCardSettingsB2bPage";
+import EditCardSettingsB2bPage from "../pages/B2bFrontend/EditCardSettingsB2bPage";
+import SectionsSettingsB2bPage from "../pages/B2bFrontend/SectionsSettingsB2bPage";
+import OtherDetailsSettingsB2bPage from "../pages/B2bFrontend/OtherDetailsSettingsB2bPage";
+import MetaDataSettingsB2bPage from "../pages/B2bFrontend/MetaDataSettingsB2bPage";
+import BannerListB2bPage from "../pages/B2bFrontend/BannerListB2bPage";
+import EditBannerB2bPage from "../pages/B2bFrontend/EditBannerB2bPage";
+import HomeSettingsB2bPage from "../pages/B2bFrontend/HomeSectionsB2bPage";
+import HomeBannerB2bPage from "../pages/B2bFrontend/HomeBannerB2bPage";
+import LogoSettingsB2cPage from "../pages/B2cFrontend/LogoSettingsB2cPage";
+import CardsSettingsB2cPage from "../pages/B2cFrontend/CardsSettingsB2cPage";
+import HeroSettingsB2cPage from "../pages/B2cFrontend/HeroSettingsB2cPage";
+import AddCardSettingsB2cPage from "../pages/B2cFrontend/AddCardSettingsB2cPage";
+import EditCardSettingsB2cPage from "../pages/B2cFrontend/EditCardSettingsB2cPage";
+import FooterSettingsB2cPage from "../pages/B2cFrontend/FooterSettingsB2cPage";
+import OtherDetailsSettingsB2cPage from "../pages/B2cFrontend/OtherDetailsSettingsB2cPage";
+import MetaDataSettingsB2cPage from "../pages/B2cFrontend/MetaDataSettingsB2cPage";
+import BannerListB2cPage from "../pages/B2cFrontend/BannerListB2cPage";
+import EditBannerB2cPage from "../pages/B2cFrontend/EditBannerB2cPage";
+import FooterSettingsB2bPage from "../pages/B2bFrontend/FooterSettingsB2bPage";
+import CardsSettingsB2bPage from "../pages/B2bFrontend/CardsSettingsB2bPage";
+import SectionsSettingsB2cPage from "../pages/B2cFrontend/SectionsSettingsB2cPage";
 
 const ThemeRoutes = [
     {
@@ -378,15 +402,15 @@ const ThemeRoutes = [
             },
             {
                 path: "/attractions/addStandalone",
-                element: <AddStandAlone />
+                element: <AddStandAlone />,
             },
             {
                 path: "/attractions/standalone",
-                element: <StandAloneList/>
+                element: <StandAloneList />,
             },
             {
-                path:"/attractions/standalone/edit/:id",
-                element: <StandAloneEdit/>
+                path: "/attractions/standalone/edit/:id",
+                element: <StandAloneEdit />,
             },
 
             {
@@ -776,6 +800,104 @@ const ThemeRoutes = [
                 element: <DestinationsPage />,
             },
             { path: "/subscribers", element: <SubscribersPage /> },
+            {
+                path: "/b2b/frontend/home/settings/logo",
+                element: <LogoSettingsB2bPage />,
+            },
+            {
+                path: "/b2b/frontend/home/settings/hero",
+                element: <HeroSettingsB2bPage />,
+            },
+            {
+                path: "/b2b/frontend/home/settings/cards",
+                element: <CardsSettingsB2bPage />,
+            },
+            {
+                path: "/b2b/frontend/home/settings/cards/add",
+                element: <AddCardSettingsB2bPage />,
+            },
+            {
+                path: "/b2b/frontend/home/settings/cards/:id/edit",
+                element: <EditCardSettingsB2bPage />,
+            },
+            {
+                path: "/b2b/frontend/home/settings/sections",
+                element: <SectionsSettingsB2bPage />,
+            },
+            {
+                path: "/b2b/frontend/home/settings/footer",
+                element: <FooterSettingsB2bPage />,
+            },
+            {
+                path: "/b2b/frontend/home/settings/contact-details",
+                element: <OtherDetailsSettingsB2bPage />,
+            },
+            {
+                path: "/b2b/frontend/home/settings/policy",
+                element: <MetaDataSettingsB2bPage />,
+            },
+            {
+                path: "/b2b/frontend/home/settings/banners",
+                element: <BannerListB2bPage />,
+            },
+            {
+                path: "/b2b/frontend/home/settings/banners/:id/edit",
+                element: <EditBannerB2bPage />,
+            },
+            {
+                path: "/b2b/frontend/home/settings/home-sections",
+                element: <HomeSettingsB2bPage />,
+            },
+            {
+                path: "/b2b/frontend/home/settings/home-sections/:id/edit",
+                element: <HomeBannerB2bPage />,
+            },
+
+            ///
+            {
+                path: "/b2c/frontend/home/settings/logo",
+                element: <LogoSettingsB2cPage />,
+            },
+            {
+                path: "/b2c/frontend/home/settings/hero",
+                element: <HeroSettingsB2cPage />,
+            },
+            {
+                path: "/b2c/frontend/home/settings/cards",
+                element: <CardsSettingsB2cPage />,
+            },
+            {
+                path: "/b2c/frontend/home/settings/cards/add",
+                element: <AddCardSettingsB2cPage />,
+            },
+            {
+                path: "/b2c/frontend/home/settings/cards/:id/edit",
+                element: <EditCardSettingsB2cPage />,
+            },
+            {
+                path: "/b2c/frontend/home/settings/sections",
+                element: <SectionsSettingsB2cPage />,
+            },
+            {
+                path: "/b2c/frontend/home/settings/footer",
+                element: <FooterSettingsB2cPage />,
+            },
+            {
+                path: "/b2c/frontend/home/settings/contact-details",
+                element: <OtherDetailsSettingsB2cPage />,
+            },
+            {
+                path: "/b2C/frontend/home/settings/policy",
+                element: <MetaDataSettingsB2cPage />,
+            },
+            {
+                path: "/b2C/frontend/home/settings/banners",
+                element: <BannerListB2cPage />,
+            },
+            {
+                path: "/b2C/frontend/home/settings/banners/:id/edit",
+                element: <EditBannerB2cPage />,
+            },
             {
                 path: "/home/settings/logo",
                 element: <LogoSettingsPage />,

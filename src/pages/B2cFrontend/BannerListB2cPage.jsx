@@ -7,7 +7,7 @@ import { A2AIndexTable, AddA2AModal } from "../../features/A2A";
 import axios from "../../axios";
 import BannerTableRow from "../../features/Banner/componenets/BannerTableRow";
 
-function BannerListPage() {
+function BannerListB2cPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [result, setResult] = useState([]);
 
@@ -19,7 +19,7 @@ function BannerListPage() {
         try {
             setIsLoading(true);
 
-            const response = await axios.get(`/banners/all`, {
+            const response = await axios.get(`/frontend/b2c/banners/all`, {
                 headers: { Authorization: `Bearer ${jwtToken}` },
             });
             console.log(response.data);
@@ -51,7 +51,6 @@ function BannerListPage() {
                 <div className="bg-white rounded shadow-sm">
                     <div className="flex items-center justify-between border-b border-dashed p-4">
                         <h1 className="font-medium">All Banners</h1>
-                        <div className="flex items-center gap-[15px]"></div>
                     </div>
                     {isLoading ? (
                         <PageLoader />
@@ -96,4 +95,4 @@ function BannerListPage() {
     );
 }
 
-export default BannerListPage;
+export default BannerListB2cPage;

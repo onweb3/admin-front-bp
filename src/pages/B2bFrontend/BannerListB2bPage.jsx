@@ -7,7 +7,7 @@ import { A2AIndexTable, AddA2AModal } from "../../features/A2A";
 import axios from "../../axios";
 import BannerTableRow from "../../features/Banner/componenets/BannerTableRow";
 
-function BannerListPage() {
+function BannerListB2bPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [result, setResult] = useState([]);
 
@@ -19,7 +19,7 @@ function BannerListPage() {
         try {
             setIsLoading(true);
 
-            const response = await axios.get(`/banners/all`, {
+            const response = await axios.get(`/frontend/b2b/banners/all`, {
                 headers: { Authorization: `Bearer ${jwtToken}` },
             });
             console.log(response.data);
@@ -96,4 +96,4 @@ function BannerListPage() {
     );
 }
 
-export default BannerListPage;
+export default BannerListB2bPage;

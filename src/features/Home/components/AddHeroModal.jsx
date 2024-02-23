@@ -14,6 +14,7 @@ export default function AddHeroModal({
     selectedHero,
     updateHero,
     addHero,
+    b2b,
 }) {
     const [data, setData] = useState({
         title: (heroModal?.isEdit && selectedHero?.title) || "",
@@ -51,7 +52,9 @@ export default function AddHeroModal({
 
             if (heroModal?.isEdit) {
                 const response = await axios.patch(
-                    `/home/heros/update/${selectedHero?._id}`,
+                    b2b
+                        ? `/frontend/b2b/home/heros/update/${selectedHero?._id}`
+                        : `/frontend/b2c/home/heros/edit/${selectedHero?._id}`,
                     formData,
                     {
                         headers: { Authorization: `Bearer ${jwtToken}` },

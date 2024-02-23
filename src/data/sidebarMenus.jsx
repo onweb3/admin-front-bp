@@ -415,6 +415,109 @@ const sidebarMenus = {
             permission: ["insurance-enquiries", "view"],
         },
     ],
+    CMS: [
+        {
+            name: "B2B ",
+            icon: <BiTransferAlt />,
+            link: "#",
+            dropdown: [
+                {
+                    name: "Logo",
+                    link: "/b2b/frontend/home/settings/logo",
+                    permission: ["home-settings", "view"],
+                },
+
+                {
+                    name: "Hero",
+                    link: "/b2b/frontend/home/settings/hero",
+                    permission: ["home-settings", "view"],
+                },
+                {
+                    name: "Cards",
+                    link: "/b2b/frontend/home/settings/cards",
+                    permission: ["home-settings", "view"],
+                },
+                {
+                    name: "Sections",
+                    link: "/b2b/frontend/home/settings/sections",
+                    permission: ["home-settings", "view"],
+                },
+                {
+                    name: "Footer",
+                    link: "/b2b/frontend/home/settings/footer",
+                    permission: ["home-settings", "view"],
+                },
+                {
+                    name: "Contact Details",
+                    link: "/b2b/frontend/home/settings/contact-details",
+                    permission: ["home-settings", "view"],
+                },
+                {
+                    name: "T&C And Policy",
+                    link: "/b2b/frontend/home/settings/policy",
+                    permission: ["home-settings", "view"],
+                },
+                {
+                    name: "Banners",
+                    link: "/b2b/frontend/home/settings/banners",
+                    permission: ["home-settings", "view"],
+                },
+                {
+                    name: "Home-sections",
+                    link: "/b2b/frontend/home/settings/home-sections",
+                    permission: ["home-settings", "view"],
+                },
+            ],
+        },
+        {
+            name: "B2C ",
+            icon: <BiTransferAlt />,
+            link: "#",
+            dropdown: [
+                {
+                    name: "Logo",
+                    link: "/b2c/frontend/home/settings/logo",
+                    permission: ["home-settings", "view"],
+                },
+
+                {
+                    name: "Hero",
+                    link: "/b2c/frontend/home/settings/hero",
+                    permission: ["home-settings", "view"],
+                },
+                {
+                    name: "Cards",
+                    link: "/b2c/frontend/home/settings/cards",
+                    permission: ["home-settings", "view"],
+                },
+                {
+                    name: "Sections",
+                    link: "/b2c/frontend/home/settings/sections",
+                    permission: ["home-settings", "view"],
+                },
+                {
+                    name: "Footer",
+                    link: "/b2c/frontend/home/settings/footer",
+                    permission: ["home-settings", "view"],
+                },
+                {
+                    name: "Contact Details",
+                    link: "/b2c/frontend/home/settings/contact-details",
+                    permission: ["home-settings", "view"],
+                },
+                {
+                    name: "T&C And Policy",
+                    link: "/b2c/frontend/home/settings/policy",
+                    permission: ["home-settings", "view"],
+                },
+                {
+                    name: "Banners",
+                    link: "/b2c/frontend/home/settings/banners",
+                    permission: ["home-settings", "view"],
+                },
+            ],
+        },
+    ],
     Transfer: [
         {
             name: "Transfer",
@@ -553,10 +656,10 @@ const sidebarMenus = {
                     permission: ["b2b-home-sections", "view"],
                 },
                 {
-                    name:"Enquiry",
-                    link:"/b2b/home/enquiry",
+                    name: "Enquiry",
+                    link: "/b2b/home/enquiry",
                     permission: ["b2b-configurations", "view"],
-                }
+                },
             ],
         },
         {
@@ -912,45 +1015,45 @@ const sidebarMenus = {
                 },
             ],
         },
-        {
-            name: "Home Settings",
-            icon: <FiHome />,
-            link: "#",
-            role: "super-admin",
-            dropdown: [
-                {
-                    name: "Logo",
-                    link: "/home/settings/logo",
-                    permission: ["home-settings", "view"],
-                },
+        // {
+        //     name: "Home Settings",
+        //     icon: <FiHome />,
+        //     link: "#",
+        //     role: "super-admin",
+        //     dropdown: [
+        //         {
+        //             name: "Logo",
+        //             link: "/home/settings/logo",
+        //             permission: ["home-settings", "view"],
+        //         },
 
-                {
-                    name: "Hero",
-                    link: "/home/settings/hero",
-                    permission: ["home-settings", "view"],
-                },
-                {
-                    name: "Cards",
-                    link: "/home/settings/cards",
-                    permission: ["home-settings", "view"],
-                },
-                {
-                    name: "Sections",
-                    link: "/home/settings/sections",
-                    permission: ["home-settings", "view"],
-                },
-                {
-                    name: "Footer",
-                    link: "/home/settings/footer",
-                    permission: ["home-settings", "view"],
-                },
-                {
-                    name: "Contact Details",
-                    link: "/home/settings/contact-details",
-                    permission: ["home-settings", "view"],
-                },
-            ],
-        },
+        //         {
+        //             name: "Hero",
+        //             link: "/home/settings/hero",
+        //             permission: ["home-settings", "view"],
+        //         },
+        //         {
+        //             name: "Cards",
+        //             link: "/home/settings/cards",
+        //             permission: ["home-settings", "view"],
+        //         },
+        //         {
+        //             name: "Sections",
+        //             link: "/home/settings/sections",
+        //             permission: ["home-settings", "view"],
+        //         },
+        //         {
+        //             name: "Footer",
+        //             link: "/home/settings/footer",
+        //             permission: ["home-settings", "view"],
+        //         },
+        //         {
+        //             name: "Contact Details",
+        //             link: "/home/settings/contact-details",
+        //             permission: ["home-settings", "view"],
+        //         },
+        //     ],
+        // },
     ],
 };
 
