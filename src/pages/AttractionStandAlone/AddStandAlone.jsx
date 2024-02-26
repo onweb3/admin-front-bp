@@ -135,6 +135,7 @@ function AddStandAlone() {
                         value: e.target.value,
                       })
                     );
+                    setError("");
                   }}
                   type="text"
                   className="w-full h-10 outline-none border"
@@ -148,6 +149,7 @@ function AddStandAlone() {
                   value={value}
                   onChange={(e) => {
                     setValue(e.target.value);
+                    setError("");
                   }}
                   className="w-full h-10 outline-none border"
                 />
