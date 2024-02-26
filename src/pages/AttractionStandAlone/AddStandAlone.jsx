@@ -167,7 +167,7 @@ function AddStandAlone() {
                   <div className="grid md:grid-cols-8 pt-2 gap-2">
                     {attrData?.attractions?.map((ele) => {
                       return (
-                        <div className="bg-white shadow-md  xl:h-44 w-full border">
+                        <div className="bg-white shadow-md  xl:h-44 w-full border overflow-hidden">
                           <div className="relative">
                             <img
                               className="w-full h-32 object-cover"
