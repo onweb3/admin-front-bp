@@ -188,6 +188,7 @@ export const attractionFormSlice = createSlice({
                 displayOrder,
                 longitude,
                 latitude,
+                slug,
             } = action.payload;
 
             state.data.bookingType = bookingType || "ticket";
@@ -227,6 +228,7 @@ export const attractionFormSlice = createSlice({
             state.data.state = action.payload?.state || "";
             state.data.longitude = longitude || "";
             state.data.latitude = latitude || "";
+            state.data.slug = slug || "";
         },
         deleteAttractionActivity: (state, action) => {
             const filteredActivities = state.activities?.filter((activity) => {
@@ -237,7 +239,9 @@ export const attractionFormSlice = createSlice({
         isActiveActivity: (state, action) => {
             const activityId = action.payload;
 
-            const activity = state.activities.find((activity) => activity._id === activityId);
+            const activity = state.activities.find(
+                (activity) => activity._id === activityId
+            );
             if (!activity) {
                 return;
             }
@@ -250,7 +254,9 @@ export const attractionFormSlice = createSlice({
         updateAttractionActivity: (state, action) => {
             const { activities, newActivities } = action.payload;
             const updatedActivities = activities.map((activity) => {
-                const newActivity = newActivities.find((newActivity) => newActivity._id === activity._id);
+                const newActivity = newActivities.find(
+                    (newActivity) => newActivity._id === activity._id
+                );
                 if (newActivity) {
                     return { ...activity, ...newActivity };
                 } else {
@@ -258,7 +264,10 @@ export const attractionFormSlice = createSlice({
                 }
             });
             const addedActivities = newActivities.filter(
-                (newActivity) => !updatedActivities.find((activity) => activity._id === newActivity._id)
+                (newActivity) =>
+                    !updatedActivities.find(
+                        (activity) => activity._id === newActivity._id
+                    )
             );
             state.activities = [...updatedActivities, ...addedActivities];
         },
@@ -276,10 +285,12 @@ export const attractionFormSlice = createSlice({
             state.offDates = filteredOffDates;
         },
         changeOffDateData: (state, action) => {
-            state.offDates[action.payload?.index][action.payload?.name] = action.payload.value;
+            state.offDates[action.payload?.index][action.payload?.name] =
+                action.payload.value;
         },
         changeAvailabilityData: (state, action) => {
-            state.availability[action.payload?.index][action.payload?.name] = action.payload?.value;
+            state.availability[action.payload?.index][action.payload?.name] =
+                action.payload?.value;
         },
     },
     extraReducers: {

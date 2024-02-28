@@ -5,11 +5,20 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "../../../axios";
 import { BtnLoader } from "../../../components";
 
-export default function EditAttrSubmission({ setSection, newImages, next, update, prev, logoImg }) {
+export default function EditAttrSubmission({
+    setSection,
+    newImages,
+    next,
+    update,
+    prev,
+    logoImg,
+}) {
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
-    const { data, images, offDates, faqs, availability } = useSelector((state) => state.attractionForm);
+    const { data, images, offDates, faqs, availability } = useSelector(
+        (state) => state.attractionForm
+    );
     const { jwtToken } = useSelector((state) => state.admin);
     const { id } = useParams();
     const navigate = useNavigate();
@@ -68,14 +77,18 @@ export default function EditAttrSubmission({ setSection, newImages, next, update
             setIsLoading(false);
             navigate(-1);
         } catch (err) {
-            setError(err?.response?.data?.error || "Something went wrong, Try again");
+            setError(
+                err?.response?.data?.error || "Something went wrong, Try again"
+            );
             setIsLoading(false);
         }
     };
 
     return (
         <div>
-            {error && <span className="text-sm text-red-500 block mt-4">{error}</span>}
+            {error && (
+                <span className="text-sm text-red-500 block mt-4">{error}</span>
+            )}
 
             <div className="mt-4 flex items-center justify-end gap-[12px]">
                 {prev ? (
@@ -96,12 +109,19 @@ export default function EditAttrSubmission({ setSection, newImages, next, update
                     </button>
                 )}
                 {update && (
-                    <button className="w-[130px] bg-primaryColor" onClick={handleSubmit} disabled={isLoading}>
+                    <button
+                        className="w-[130px] bg-primaryColor"
+                        onClick={handleSubmit}
+                        disabled={isLoading}
+                    >
                         {isLoading ? <BtnLoader /> : "Update"}
                     </button>
                 )}
                 {next === true && (
-                    <button className="w-[130px]" onClick={() => setSection((prev) => prev + 1)}>
+                    <button
+                        className="w-[130px]"
+                        onClick={() => setSection((prev) => prev + 1)}
+                    >
                         Next
                     </button>
                 )}

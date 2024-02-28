@@ -2,18 +2,21 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { setData } from "../../../redux/slices/attractionFormSlice";
-import { SelectDropdown } from "../../../components";
+import { BtnLoader, SelectDropdown } from "../../../components";
 import axios from "../../../axios";
+import { useParams } from "react-router-dom";
 
 export default function AttrDetailsForm({ section, isEdit = false }) {
     const [apis, setApis] = useState([]);
-
+    const [error, setError] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const { data, categories } = useSelector((state) => state.attractionForm);
     const { destinations } = useSelector((state) => state.general);
     const { states, cities, countries, areas } = useSelector(
         (state) => state.general
     );
     const { jwtToken } = useSelector((state) => state.admin);
+    const { id } = useParams();
 
     const availableStates = states?.filter((item) => {
         return item?.country === data.country;
@@ -49,6 +52,28 @@ export default function AttrDetailsForm({ section, isEdit = false }) {
     useEffect(() => {
         fetchApisList();
     }, []);
+
+    const handleSubmit = async () => {
+        try {
+            setIsLoading(true);
+            setError("");
+
+            await axios.patch(
+                `/attractions/slug/update/${id}`,
+                { slug: data.slug },
+                {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                }
+            );
+            setIsLoading(false);
+            setError("");
+        } catch (err) {
+            setError(
+                err?.response?.data?.error || "Something went wrong, Try again"
+            );
+            setIsLoading(false);
+        }
+    };
 
     return (
         <div
@@ -428,9 +453,48 @@ export default function AttrDetailsForm({ section, isEdit = false }) {
                         placeholder="Ex: 1"
                     />
                     <span className="text-sm text-grayColor mt-1">
-                        This field is used to arrange the order of attractions list.
+                        This field is used to arrange the order of attractions
+                        list.
                     </span>
                 </div>
+            </div>
+            <div>
+                {" "}
+                {isEdit && (
+                    <div className="flex flex-col">
+                        <div className="grid grid-cols-3 gap-[20px] mt-5 ">
+                            <div className="flex flex-col justify-end h-full">
+                                <label htmlFor="">Slug </label>
+                                <input
+                                    type="text"
+                                    name="slug"
+                                    onChange={handleChange}
+                                    value={data?.slug || ""}
+                                    placeholder="Ex: 1"
+                                />
+                                <span className="text-sm text-grayColor mt-1">
+                                    This field is used to change slug .Please
+                                    donot use capital and any other characters
+                                    other than "-".
+                                </span>
+                            </div>
+                            <div className="flex flex-col justify-center h-full">
+                                <button
+                                    className="w-[130px] bg-primaryColor"
+                                    onClick={handleSubmit}
+                                    disabled={isLoading}
+                                >
+                                    {isLoading ? <BtnLoader /> : "Update Slug"}
+                                </button>{" "}
+                            </div>
+                        </div>{" "}
+                        {error && (
+                            <span className="text-sm text-red-500 block mt-4">
+                                {error}
+                            </span>
+                        )}
+                    </div>
+                )}
             </div>
         </div>
     );
