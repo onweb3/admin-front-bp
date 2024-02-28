@@ -98,6 +98,7 @@ export default function HotelAddFormButtons({
 
       setIsLoading(false);
       navigate(-1);
+      dispatch(clearHotelDraft());
     } catch (err) {
       setError(err?.response?.data?.error || "Something went wrong, Try again");
       setIsLoading(false);

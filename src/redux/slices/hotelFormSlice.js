@@ -310,7 +310,7 @@ export const hotelFormSlice = createSlice({
 
       state.faqs = payload?.hotelFaqObject || [];
 
-      state.selectedAmenities = payload?.hotelAmenety || [];
+      state.selectedAmenities = payload?.hotelAmenetyObject || [];
 
       state.restaurants = payload?.hotelRestaurantObject || [];
 
