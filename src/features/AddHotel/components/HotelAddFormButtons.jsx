@@ -38,8 +38,6 @@ export default function HotelAddFormButtons({
       setIsLoading(true);
       setError("");
 
-      console.log(selectedAmenities);
-
       const formData = new FormData();
 
       formData.append("hotelName", details?.hotelName);
@@ -105,35 +103,24 @@ export default function HotelAddFormButtons({
     }
   };
 
-  let hotelDetails = localStorage.getItem("hotelDetails");
-  let hotelDetailsObject = JSON.parse(hotelDetails);
-
-  let hotelDescription = localStorage.getItem("hotelDescription");
-  let hotelDescriptionObject = JSON.parse(hotelDescription);
-
-  let hotelFaq = localStorage.getItem("hotelFaq");
-  let hotelFaqObject = JSON.parse(hotelFaq);
-
-  let hotelAmenety = localStorage.getItem("hotelAmeneties");
-  let hotelAmenetyObject = JSON.parse(hotelAmenety);
-
-  let hotelRestaurant = localStorage.getItem("hotelRestaurant");
-  let hotelRestaurantObject = JSON.parse(hotelRestaurant);
-
-  let hotelBars = localStorage.getItem("hotelBars");
-  let hotelBarsObject = JSON.parse(hotelBars);
-
-  let salesContact = localStorage.getItem("salesContacts");
-  let salesObject = JSON.parse(salesContact);
-
-  let accountContacts = localStorage.getItem("accountContacts");
-  let accountContactObject = JSON.parse(accountContacts);
-
-  let hotelContact = localStorage.getItem("hotelContacts");
-  let hotelContactObject = JSON.parse(hotelContact);
-
-  let reservationContacts = localStorage.getItem("reservationContacts");
-  let reservationContactsObject = JSON.parse(reservationContacts);
+  let hotelDetailsObject = JSON.parse(localStorage.getItem("hotelDetails"));
+  let hotelDescriptionObject = JSON.parse(
+    localStorage.getItem("hotelDescription")
+  );
+  let hotelFaqObject = JSON.parse(localStorage.getItem("hotelFaq"));
+  let hotelAmenetyObject = JSON.parse(localStorage.getItem("hotelAmeneties"));
+  let hotelRestaurantObject = JSON.parse(
+    localStorage.getItem("hotelRestaurant")
+  );
+  let hotelBarsObject = JSON.parse(localStorage.getItem("hotelBars"));
+  let salesObject = JSON.parse(localStorage.getItem("salesContacts"));
+  let accountContactObject = JSON.parse(
+    localStorage.getItem("accountContacts")
+  );
+  let hotelContactObject = JSON.parse(localStorage.getItem("hotelContacts"));
+  let reservationContactsObject = JSON.parse(
+    localStorage.getItem("reservationContacts")
+  );
 
   return (
     <div className="mt-8">
