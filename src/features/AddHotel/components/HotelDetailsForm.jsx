@@ -92,8 +92,6 @@ export default function HotelDetailsForm({
   let reservationContacts = localStorage.getItem("reservationContacts");
   let reservationContactsObject = JSON.parse(reservationContacts);
 
-  console.log(hotelFaqObject, "show hotel faq obj");
-
   useEffect(() => {
     dispatch(
       initialHotelDetailsDraft({
