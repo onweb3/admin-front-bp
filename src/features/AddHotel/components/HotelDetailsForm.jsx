@@ -62,52 +62,52 @@ export default function HotelDetailsForm({
     };
   }, [isHbIdCopied]);
 
-  let hotelDetails = localStorage.getItem("hotelDetails");
-  let hotelDetailsObject = JSON.parse(hotelDetails);
+  // let hotelDetails = localStorage.getItem("hotelDetails");
+  // let hotelDetailsObject = JSON.parse(hotelDetails);
 
-  let hotelDescription = localStorage.getItem("hotelDescription");
-  let hotelDescriptionObject = JSON.parse(hotelDescription);
+  // let hotelDescription = localStorage.getItem("hotelDescription");
+  // let hotelDescriptionObject = JSON.parse(hotelDescription);
 
-  let hotelFaq = localStorage.getItem("hotelFaq");
-  let hotelFaqObject = JSON.parse(hotelFaq);
+  // let hotelFaq = localStorage.getItem("hotelFaq");
+  // let hotelFaqObject = JSON.parse(hotelFaq);
 
-  let hotelAmenety = localStorage.getItem("hotelAmeneties");
-  let hotelAmenetyObject = JSON.parse(hotelAmenety);
+  // let hotelAmenety = localStorage.getItem("hotelAmeneties");
+  // let hotelAmenetyObject = JSON.parse(hotelAmenety);
 
-  let hotelRestaurant = localStorage.getItem("hotelRestaurant");
-  let hotelRestaurantObject = JSON.parse(hotelRestaurant);
+  // let hotelRestaurant = localStorage.getItem("hotelRestaurant");
+  // let hotelRestaurantObject = JSON.parse(hotelRestaurant);
 
-  let hotelBars = localStorage.getItem("hotelBars");
-  let hotelBarsObject = JSON.parse(hotelBars);
+  // let hotelBars = localStorage.getItem("hotelBars");
+  // let hotelBarsObject = JSON.parse(hotelBars);
 
-  let salesContact = localStorage.getItem("salesContacts");
-  let salesObject = JSON.parse(salesContact);
+  // let salesContact = localStorage.getItem("salesContacts");
+  // let salesObject = JSON.parse(salesContact);
 
-  let accountContacts = localStorage.getItem("accountContacts");
-  let accountContactObject = JSON.parse(accountContacts);
+  // let accountContacts = localStorage.getItem("accountContacts");
+  // let accountContactObject = JSON.parse(accountContacts);
 
-  let hotelContacts = localStorage.getItem("hotelContacts");
-  let hotelContactObject = JSON.parse(hotelContacts);
+  // let hotelContacts = localStorage.getItem("hotelContacts");
+  // let hotelContactObject = JSON.parse(hotelContacts);
 
-  let reservationContacts = localStorage.getItem("reservationContacts");
-  let reservationContactsObject = JSON.parse(reservationContacts);
+  // let reservationContacts = localStorage.getItem("reservationContacts");
+  // let reservationContactsObject = JSON.parse(reservationContacts);
 
-  useEffect(() => {
-    dispatch(
-      initialHotelDetailsDraft({
-        hotelDetailsObject: hotelDetailsObject,
-        hoteDescription: hotelDescriptionObject,
-        hotelFaqObject: hotelFaqObject || [],
-        hotelAmenetyObject: hotelAmenetyObject || [],
-        hotelRestaurantObject: hotelRestaurantObject || [],
-        hotelBarsObject: hotelBarsObject || [],
-        salesObject: salesObject || [],
-        accountContactObject: accountContactObject || [],
-        hotelContactObject: hotelContactObject || [],
-        reservationContactsObject: reservationContactsObject || [],
-      })
-    );
-  }, []);
+  // useEffect(() => {
+  //   dispatch(
+  //     initialHotelDetailsDraft({
+  //       hotelDetailsObject: hotelDetailsObject,
+  //       hoteDescription: hotelDescriptionObject,
+  //       hotelFaqObject: hotelFaqObject || [],
+  //       hotelAmenetyObject: hotelAmenetyObject || [],
+  //       hotelRestaurantObject: hotelRestaurantObject || [],
+  //       hotelBarsObject: hotelBarsObject || [],
+  //       salesObject: salesObject || [],
+  //       accountContactObject: accountContactObject || [],
+  //       hotelContactObject: hotelContactObject || [],
+  //       reservationContactsObject: reservationContactsObject || [],
+  //     })
+  //   );
+  // }, []);
 
   return (
     <div className={selectedSection === "-details" ? "block" : "hidden"}>

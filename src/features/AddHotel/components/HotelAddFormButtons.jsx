@@ -103,24 +103,24 @@ export default function HotelAddFormButtons({
     }
   };
 
-  let hotelDetailsObject = JSON.parse(localStorage.getItem("hotelDetails"));
-  let hotelDescriptionObject = JSON.parse(
-    localStorage.getItem("hotelDescription")
-  );
-  let hotelFaqObject = JSON.parse(localStorage.getItem("hotelFaq"));
-  let hotelAmenetyObject = JSON.parse(localStorage.getItem("hotelAmeneties"));
-  let hotelRestaurantObject = JSON.parse(
-    localStorage.getItem("hotelRestaurant")
-  );
-  let hotelBarsObject = JSON.parse(localStorage.getItem("hotelBars"));
-  let salesObject = JSON.parse(localStorage.getItem("salesContacts"));
-  let accountContactObject = JSON.parse(
-    localStorage.getItem("accountContacts")
-  );
-  let hotelContactObject = JSON.parse(localStorage.getItem("hotelContacts"));
-  let reservationContactsObject = JSON.parse(
-    localStorage.getItem("reservationContacts")
-  );
+  // let hotelDetailsObject = JSON.parse(localStorage.getItem("hotelDetails"));
+  // let hotelDescriptionObject = JSON.parse(
+  //   localStorage.getItem("hotelDescription")
+  // );
+  // let hotelFaqObject = JSON.parse(localStorage.getItem("hotelFaq"));
+  // let hotelAmenetyObject = JSON.parse(localStorage.getItem("hotelAmeneties"));
+  // let hotelRestaurantObject = JSON.parse(
+  //   localStorage.getItem("hotelRestaurant")
+  // );
+  // let hotelBarsObject = JSON.parse(localStorage.getItem("hotelBars"));
+  // let salesObject = JSON.parse(localStorage.getItem("salesContacts"));
+  // let accountContactObject = JSON.parse(
+  //   localStorage.getItem("accountContacts")
+  // );
+  // let hotelContactObject = JSON.parse(localStorage.getItem("hotelContacts"));
+  // let reservationContactsObject = JSON.parse(
+  //   localStorage.getItem("reservationContacts")
+  // );
 
   return (
     <div className="mt-8">
@@ -129,7 +129,7 @@ export default function HotelAddFormButtons({
       )}
 
       <div className="mt-4 flex items-center justify-end gap-[12px]">
-        <div>
+        {/* <div>
           {hotelDetailsObject ||
           hotelDescriptionObject ||
           hotelFaqObject ||
@@ -151,7 +151,7 @@ export default function HotelAddFormButtons({
           ) : (
             ""
           )}
-        </div>
+        </div> */}
         {prev ? (
           <button
             className="bg-slate-300 text-textColor px-[15px]"
