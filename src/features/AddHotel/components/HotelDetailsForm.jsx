@@ -62,52 +62,57 @@ export default function HotelDetailsForm({
     };
   }, [isHbIdCopied]);
 
-  // let hotelDetails = localStorage.getItem("hotelDetails");
-  // let hotelDetailsObject = JSON.parse(hotelDetails);
+  const frontendURL = window.location.href.slice(22, 34);
+  console.log(frontendURL, "show this");
 
-  // let hotelDescription = localStorage.getItem("hotelDescription");
-  // let hotelDescriptionObject = JSON.parse(hotelDescription);
+  let hotelDetails = localStorage.getItem("hotelDetails");
+  let hotelDetailsObject = JSON.parse(hotelDetails);
 
-  // let hotelFaq = localStorage.getItem("hotelFaq");
-  // let hotelFaqObject = JSON.parse(hotelFaq);
+  let hotelDescription = localStorage.getItem("hotelDescription");
+  let hotelDescriptionObject = JSON.parse(hotelDescription);
 
-  // let hotelAmenety = localStorage.getItem("hotelAmeneties");
-  // let hotelAmenetyObject = JSON.parse(hotelAmenety);
+  let hotelFaq = localStorage.getItem("hotelFaq");
+  let hotelFaqObject = JSON.parse(hotelFaq);
 
-  // let hotelRestaurant = localStorage.getItem("hotelRestaurant");
-  // let hotelRestaurantObject = JSON.parse(hotelRestaurant);
+  let hotelAmenety = localStorage.getItem("hotelAmeneties");
+  let hotelAmenetyObject = JSON.parse(hotelAmenety);
 
-  // let hotelBars = localStorage.getItem("hotelBars");
-  // let hotelBarsObject = JSON.parse(hotelBars);
+  let hotelRestaurant = localStorage.getItem("hotelRestaurant");
+  let hotelRestaurantObject = JSON.parse(hotelRestaurant);
 
-  // let salesContact = localStorage.getItem("salesContacts");
-  // let salesObject = JSON.parse(salesContact);
+  let hotelBars = localStorage.getItem("hotelBars");
+  let hotelBarsObject = JSON.parse(hotelBars);
 
-  // let accountContacts = localStorage.getItem("accountContacts");
-  // let accountContactObject = JSON.parse(accountContacts);
+  let salesContact = localStorage.getItem("salesContacts");
+  let salesObject = JSON.parse(salesContact);
 
-  // let hotelContacts = localStorage.getItem("hotelContacts");
-  // let hotelContactObject = JSON.parse(hotelContacts);
+  let accountContacts = localStorage.getItem("accountContacts");
+  let accountContactObject = JSON.parse(accountContacts);
 
-  // let reservationContacts = localStorage.getItem("reservationContacts");
-  // let reservationContactsObject = JSON.parse(reservationContacts);
+  let hotelContacts = localStorage.getItem("hotelContacts");
+  let hotelContactObject = JSON.parse(hotelContacts);
 
-  // useEffect(() => {
-  //   dispatch(
-  //     initialHotelDetailsDraft({
-  //       hotelDetailsObject: hotelDetailsObject,
-  //       hoteDescription: hotelDescriptionObject,
-  //       hotelFaqObject: hotelFaqObject || [],
-  //       hotelAmenetyObject: hotelAmenetyObject || [],
-  //       hotelRestaurantObject: hotelRestaurantObject || [],
-  //       hotelBarsObject: hotelBarsObject || [],
-  //       salesObject: salesObject || [],
-  //       accountContactObject: accountContactObject || [],
-  //       hotelContactObject: hotelContactObject || [],
-  //       reservationContactsObject: reservationContactsObject || [],
-  //     })
-  //   );
-  // }, []);
+  let reservationContacts = localStorage.getItem("reservationContacts");
+  let reservationContactsObject = JSON.parse(reservationContacts);
+
+  useEffect(() => {
+    if (frontendURL === "hotels/add") {
+      dispatch(
+        initialHotelDetailsDraft({
+          hotelDetailsObject: hotelDetailsObject,
+          hoteDescription: hotelDescriptionObject,
+          hotelFaqObject: hotelFaqObject || [],
+          hotelAmenetyObject: hotelAmenetyObject || [],
+          hotelRestaurantObject: hotelRestaurantObject || [],
+          hotelBarsObject: hotelBarsObject || [],
+          salesObject: salesObject || [],
+          accountContactObject: accountContactObject || [],
+          hotelContactObject: hotelContactObject || [],
+          reservationContactsObject: reservationContactsObject || [],
+        })
+      );
+    }
+  }, []);
 
   return (
     <div className={selectedSection === "-details" ? "block" : "hidden"}>

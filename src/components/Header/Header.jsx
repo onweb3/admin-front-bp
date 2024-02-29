@@ -42,7 +42,7 @@ export default function Header() {
           <GlobalSearchInp />
         </div>
         <div className="flex items-center gap-[2em] h-full">
-          {/* {hotelDraft?.hotelName ||
+          {hotelDraft?.hotelName ||
           hotelDraft?.address ||
           hotelDraft?.postalCode ||
           hotelDraft?.carParkingSlots ||
@@ -83,7 +83,7 @@ export default function Header() {
             </div>
           ) : (
             ""
-          )} */}
+          )}
 
           <div className="relative h-full">
             <div
