@@ -11,7 +11,7 @@ function DraftModal({ setDraftModal, draftModal }) {
   });
 
   let hotelDetailsObject = JSON.parse(localStorage.getItem("hotelDetails"));
-
+  let attrDraft = JSON.parse(localStorage.getItem("attractionData"));
   return (
     <div>
       <div
@@ -45,14 +45,27 @@ function DraftModal({ setDraftModal, draftModal }) {
           ) : (
             ""
           )}
-          {/* <div
-            className=" cursor-pointer p-1 hover:bg-gray-100"
-            onClick={() => {
-              navigate("/attractions/add");
-            }}
-          >
-            <h1>Add Attraction</h1>
-          </div> */}
+
+          {attrDraft?.title ||
+          attrDraft?.destination ||
+          attrDraft?.category ||
+          attrDraft?.duration ||
+          attrDraft?.city ||
+          attrDraft?.mapLink ? (
+            <div
+              className=" cursor-pointer p-1 hover:bg-gray-100"
+              onClick={() => {
+                navigate("/attractions/add");
+              }}
+            >
+              <h1>
+                Add Attraction{" "}
+                <span className="text-xs">({attrDraft?.title})</span>{" "}
+              </h1>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </div>

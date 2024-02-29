@@ -20,12 +20,20 @@ export default function Header() {
   const { selectedCurrency } = useSelector((state) => state.general);
 
   const [hotelDraft, setHotelDraft] = useState();
+  const [attrDraft, setAttrDraft] = useState();
 
   const { details } = useSelector((state) => state.hotelForm);
+  const { data } = useSelector((state) => state.attractionForm);
 
   useEffect(() => {
     setHotelDraft(JSON.parse(localStorage.getItem("hotelDetails")));
-  }, [localStorage.getItem("hotelDetails"), details]);
+    setAttrDraft(JSON.parse(localStorage.getItem("attractionData")));
+  }, [
+    localStorage.getItem("hotelDetails"),
+    details,
+    data,
+    localStorage.getItem("attractionData"),
+  ]);
 
   return (
     <div className="w-full bg-white h-[70px] px-5">
@@ -34,7 +42,7 @@ export default function Header() {
           <GlobalSearchInp />
         </div>
         <div className="flex items-center gap-[2em] h-full">
-          {hotelDraft?.hotelName ||
+          {/* {hotelDraft?.hotelName ||
           hotelDraft?.address ||
           hotelDraft?.postalCode ||
           hotelDraft?.carParkingSlots ||
@@ -43,7 +51,13 @@ export default function Header() {
           hotelDraft?.starCategory ||
           hotelDraft?.landMark ||
           hotelDraft?.longitude ||
-          hotelDraft?.latitude ? (
+          hotelDraft?.latitude ||
+          attrDraft?.title ||
+          attrDraft?.destination ||
+          attrDraft?.category ||
+          attrDraft?.duration ||
+          attrDraft?.city ||
+          attrDraft?.mapLink ? (
             <div className="relative">
               <div
                 className="  flex gap-2 cursor-pointer"
@@ -69,7 +83,7 @@ export default function Header() {
             </div>
           ) : (
             ""
-          )}
+          )} */}
 
           <div className="relative h-full">
             <div
