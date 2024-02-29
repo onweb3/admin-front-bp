@@ -17,7 +17,7 @@ import {
 import { TiWeatherPartlySunny } from "react-icons/ti";
 import { HiMiniTicket, HiTicket } from "react-icons/hi2";
 import { RxDashboard } from "react-icons/rx";
-import { ImAirplane } from "react-icons/im";
+import { ImAirplane, ImBlog } from "react-icons/im";
 import {
     HiOutlineCurrencyDollar,
     HiOutlineDocumentReport,
@@ -1002,6 +1002,28 @@ const sidebarMenus = {
         //     icon: <MdPassword />,
         //     link: "/otp-settings",
         // },
+        {
+            name: "Blogs",
+            icon: <ImBlog />,
+            link: "#",
+            dropdown: [
+                {
+                    name: "Blogs List",
+                    link: "/blogs",
+                    permission: ["blogs", "view"],
+                },
+                {
+                    name: " Blog",
+                    link: "/blogs/add",
+                    permission: ["blogs", "view"],
+                },
+                {
+                    name: "Blogs Categories",
+                    link: "/blogs/categories",
+                    permission: ["blogs", "view"],
+                },
+            ],
+        },
         {
             name: "Invoice Settings",
             icon: <FiHome />,

@@ -498,6 +498,15 @@ const adminRoles = [
         permissions: [],
     },
 
+    //blogs
+
+    {
+        name: "blogs",
+        displayName: "Blogs",
+        category: "settings",
+        permissions: [],
+    },
+
     //orders
     {
         name: "attraction-order",
