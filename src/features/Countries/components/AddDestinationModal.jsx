@@ -5,18 +5,30 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHandleClickOutside, useImageChange } from "../../../hooks";
 import axios from "../../../axios";
 import { BtnLoader } from "../../../components";
-import { addDestination, updateDestination } from "../../../redux/slices/generalSlice";
+import {
+    addDestination,
+    updateDestination,
+} from "../../../redux/slices/generalSlice";
 import { config } from "../../../constants";
 
-export default function AddDestinationModal({ destinationModal, setDestinationModal, selectedDestination }) {
+export default function AddDestinationModal({
+    destinationModal,
+    setDestinationModal,
+    selectedDestination,
+}) {
     const [data, setData] = useState({
         name: (destinationModal?.isEdit && selectedDestination?.name) || "",
-        country: (destinationModal?.isEdit && selectedDestination?.country?._id) || "",
-        imageUrl: (destinationModal?.isEdit && selectedDestination?.image) || "",
+        country:
+            (destinationModal?.isEdit && selectedDestination?.country?._id) ||
+            "",
+        imageUrl:
+            (destinationModal?.isEdit && selectedDestination?.image) || "",
         code: (destinationModal?.isEdit && selectedDestination?.code) || "",
+        slug: (destinationModal?.isEdit && selectedDestination?.slug) || "",
     });
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
+    const [isSlugLoading, setIsSlugLoading] = useState(false);
 
     const handleChange = (e) => {
         setData((prev) => {
@@ -28,9 +40,33 @@ export default function AddDestinationModal({ destinationModal, setDestinationMo
     const { jwtToken } = useSelector((state) => state.admin);
     const wrapperRef = useRef();
     const dispatch = useDispatch();
-    useHandleClickOutside(wrapperRef, () => setDestinationModal({ isEdit: false, isOpen: false }));
+    useHandleClickOutside(wrapperRef, () =>
+        setDestinationModal({ isEdit: false, isOpen: false })
+    );
     const { image, handleImageChange, error: imageError } = useImageChange();
+    const handleSlugSubmit = async () => {
+        try {
+            setIsSlugLoading(true);
+            setError("");
 
+            let response = await axios.patch(
+                `/destinations/slug/update/${selectedDestination?._id}`,
+                { slug: data.slug },
+                {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                }
+            );
+            dispatch(updateDestination(response?.data));
+            setIsSlugLoading(false);
+            setError("");
+        } catch (err) {
+            console.log(err);
+            setError(
+                err?.response?.data?.error || "Something went wrong, Try again"
+            );
+            setIsSlugLoading(false);
+        }
+    };
     const handleSubmit = async (e) => {
         try {
             e.preventDefault();
@@ -53,15 +89,21 @@ export default function AddDestinationModal({ destinationModal, setDestinationMo
                 );
                 dispatch(updateDestination(response?.data));
             } else {
-                const response = await axios.post("/destinations/add", formData, {
-                    headers: { Authorization: `Bearer ${jwtToken}` },
-                });
+                const response = await axios.post(
+                    "/destinations/add",
+                    formData,
+                    {
+                        headers: { Authorization: `Bearer ${jwtToken}` },
+                    }
+                );
                 dispatch(addDestination(response?.data));
             }
             setIsLoading(false);
             setDestinationModal({ isOpen: false, isEdit: false });
         } catch (err) {
-            setError(err?.response?.data?.error || "Something went wrong, Try again");
+            setError(
+                err?.response?.data?.error || "Something went wrong, Try again"
+            );
             setIsLoading(false);
         }
     };
@@ -74,7 +116,9 @@ export default function AddDestinationModal({ destinationModal, setDestinationMo
             >
                 <div className="flex items-center justify-between border-b p-4">
                     <h2 className="font-medium mb-2">
-                        {destinationModal?.isEdit ? "Update Destination" : "Add Destination"}
+                        {destinationModal?.isEdit
+                            ? "Update Destination"
+                            : "Add Destination"}
                     </h2>
                     <button
                         className="h-auto bg-transparent text-textColor text-xl"
@@ -97,7 +141,7 @@ export default function AddDestinationModal({ destinationModal, setDestinationMo
                             value={data.code || ""}
                             onChange={handleChange}
                             placeholder="Ex: DXB"
-                            required
+                            // required
                         />
                     </div>
                     <div className="mt-4">
@@ -111,6 +155,35 @@ export default function AddDestinationModal({ destinationModal, setDestinationMo
                             placeholder="Ex: Dubai"
                         />
                     </div>
+                    {destinationModal?.isEdit && (
+                        <div className=" gap-2">
+                            <div className="mt-4 ">
+                                <label htmlFor="">Slug</label>
+                                <input
+                                    type="text"
+                                    name="slug"
+                                    value={data.slug || ""}
+                                    onChange={handleChange}
+                                    // required
+                                    placeholder="Ex: dubai"
+                                />
+                            </div>
+                            <div className="flex flex-col justify-center mt-4 ">
+                                <button
+                                    className="w-[130px] bg-primaryColor"
+                                    onClick={handleSlugSubmit}
+                                    disabled={isSlugLoading}
+                                >
+                                    {isSlugLoading ? (
+                                        <BtnLoader />
+                                    ) : (
+                                        "Update Slug"
+                                    )}
+                                </button>{" "}
+                            </div>
+                        </div>
+                    )}
+
                     <div className="mt-4">
                         <label htmlFor="">Image</label>
                         <input
@@ -118,7 +191,11 @@ export default function AddDestinationModal({ destinationModal, setDestinationMo
                             onChange={handleImageChange}
                             required={destinationModal?.isEdit === false}
                         />
-                        {imageError && <span className="text-sm block text-red-500 mt-2">{imageError}</span>}
+                        {imageError && (
+                            <span className="text-sm block text-red-500 mt-2">
+                                {imageError}
+                            </span>
+                        )}
                         {(image || destinationModal?.isEdit) && (
                             <div className="w-[130px] max-h-[80px] rounded overflow-hidden mt-2">
                                 <img
@@ -147,14 +224,22 @@ export default function AddDestinationModal({ destinationModal, setDestinationMo
                             </option>
                             {countries?.map((country, index) => {
                                 return (
-                                    <option value={country?._id} key={index} className="capitalize">
+                                    <option
+                                        value={country?._id}
+                                        key={index}
+                                        className="capitalize"
+                                    >
                                         {country?.countryName}
                                     </option>
                                 );
                             })}
                         </select>
                     </div>
-                    {error && <span className="block mt-2 text-sm text-red-500">{error}</span>}
+                    {error && (
+                        <span className="block mt-2 text-sm text-red-500">
+                            {error}
+                        </span>
+                    )}
                     <div className="flex items-center justify-end mt-5">
                         <button className="w-[160px]" disabled={isLoading}>
                             {isLoading ? (
