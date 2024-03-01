@@ -98,6 +98,10 @@ export default function AddSeoSearchModal({
                 response = await axios.get(`/seo/stand-alone`, {
                     headers: { Authorization: `Bearer ${jwtToken}` },
                 });
+            } else if (subCategoryId === "blog-products") {
+                response = await axios.get(`/seo/blogs`, {
+                    headers: { Authorization: `Bearer ${jwtToken}` },
+                });
             }
 
             setList(response?.data);
