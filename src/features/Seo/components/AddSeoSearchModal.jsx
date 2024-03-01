@@ -98,8 +98,12 @@ export default function AddSeoSearchModal({
                 response = await axios.get(`/seo/stand-alone`, {
                     headers: { Authorization: `Bearer ${jwtToken}` },
                 });
-            } else if (subCategoryId === "blog-products") {
-                response = await axios.get(`/seo/blogs`, {
+            } else if (subCategoryId === "blog-list") {
+                response = await axios.get(`/seo/blog-list`, {
+                    headers: { Authorization: `Bearer ${jwtToken}` },
+                });
+            } else if (subCategoryId === "blog-category") {
+                response = await axios.get(`/seo/blog-category`, {
                     headers: { Authorization: `Bearer ${jwtToken}` },
                 });
             }
@@ -215,7 +219,7 @@ export default function AddSeoSearchModal({
                                     });
                                 }}
                                 bracketValue={"slug"}
-                                // disabled={!isEditPermission}
+                                disabled={categoryModal?.isEdit}
                             />
                         </div>
                         <div>

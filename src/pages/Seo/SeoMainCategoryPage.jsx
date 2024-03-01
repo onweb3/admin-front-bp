@@ -185,27 +185,6 @@ export default function SeoMainCategoryPage() {
                                     })}
                                 </tbody>
                             </table>
-
-                            <div className="p-4">
-                                <Pagination
-                                    limit={filters?.limit}
-                                    skip={filters?.skip}
-                                    total={filters?.totalAirports}
-                                    incOrDecSkip={(number) =>
-                                        setFilters((prev) => {
-                                            return {
-                                                ...prev,
-                                                skip: prev.skip + number,
-                                            };
-                                        })
-                                    }
-                                    updateSkip={(skip) =>
-                                        setFilters((prev) => {
-                                            return { ...prev, skip };
-                                        })
-                                    }
-                                />
-                            </div>
                         </div>
                     )}
                 </div>

@@ -28,12 +28,27 @@ export default function SeoBlogSubCategoryTablePage({}) {
                         <tbody className="text-sm">
                             <tr className="border-b border-tableBorderColor">
                                 <td className="p-3">
-                                    <span className="block">Blog Products</span>
+                                    <span className="block">Blog List</span>
                                 </td>
 
                                 <td className="p-3">
                                     <div className="flex gap-[10px]">
-                                        <Link to={`blog-products`}>
+                                        <Link to={`blog-list`}>
+                                            <button className="h-auto bg-transparent text-green-500 text-xl">
+                                                <BsEyeFill />
+                                            </button>
+                                        </Link>
+                                    </div>
+                                </td>
+                            </tr>{" "}
+                            <tr className="border-b border-tableBorderColor">
+                                <td className="p-3">
+                                    <span className="block">Blog Category</span>
+                                </td>
+
+                                <td className="p-3">
+                                    <div className="flex gap-[10px]">
+                                        <Link to={`blog-category`}>
                                             <button className="h-auto bg-transparent text-green-500 text-xl">
                                                 <BsEyeFill />
                                             </button>
