@@ -111,6 +111,8 @@ export const attractionFormSlice = createSlice({
         city: payload?.attrData?.city,
         area: payload?.attrData?.area,
         displayOrder: payload?.attrData?.displayOrder,
+        latitude: payload?.attrData?.longitude,
+        longitude: payload?.attrData?.longitude,
       };
     },
 
