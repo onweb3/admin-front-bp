@@ -37,9 +37,12 @@ export default function AddAttractionPage() {
   }, []);
 
   let attrData = JSON.parse(localStorage.getItem("attractionData"));
+  let attrFaqs = JSON.parse(localStorage.getItem("attractionFaqs"));
 
   useEffect(() => {
-    dispatch(handleInitiateLocalStorageData({ attrData: attrData }));
+    dispatch(
+      handleInitiateLocalStorageData({ attrData: attrData, attrFaqs: attrFaqs })
+    );
   }, []);
 
   return (

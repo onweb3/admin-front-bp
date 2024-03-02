@@ -20,6 +20,7 @@ import {
   resetHotelForm,
 } from "../../redux/slices/hotelFormSlice";
 import { hasPermission } from "../../utils";
+import { useNavigate } from "react-router-dom";
 
 const sections = {
   "-details": "Details",
@@ -39,6 +40,7 @@ export default function EditHotelPage() {
   const dispatch = useDispatch();
   const { id } = useParams();
   const { jwtToken, admin } = useSelector((state) => state.admin);
+  const navigate = useNavigate();
 
   const isEditPermission = hasPermission({
     roles: admin?.roles,
@@ -92,6 +94,47 @@ export default function EditHotelPage() {
   useEffect(() => {
     return () => dispatch(resetHotelForm());
   }, []);
+
+  let hotelDetailsObject = JSON.parse(localStorage.getItem("hotelDetails"));
+  let hotelDescriptionObject = JSON.parse(
+    localStorage.getItem("hotelDescription")
+  );
+  let hotelFaqObject = JSON.parse(localStorage.getItem("hotelFaq"));
+  let hotelAmenetyObject = JSON.parse(localStorage.getItem("hotelAmeneties"));
+  let hotelRestaurantObject = JSON.parse(
+    localStorage.getItem("hotelRestaurant")
+  );
+  let hotelBarsObject = JSON.parse(localStorage.getItem("hotelBars"));
+  let salesObject = JSON.parse(localStorage.getItem("salesContacts"));
+  let accountContactObject = JSON.parse(
+    localStorage.getItem("accountContacts")
+  );
+  let hotelContactObject = JSON.parse(localStorage.getItem("hotelContacts"));
+  let reservationContactsObject = JSON.parse(
+    localStorage.getItem("reservationContacts")
+  );
+
+  const [draftWarningModal, setDraftWarningModal] = useState(false);
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (
+        hotelDetailsObject ||
+        hotelDescriptionObject ||
+        hotelFaqObject ||
+        hotelAmenetyObject
+      ) {
+        setDraftWarningModal(true);
+      }
+    }, 3000);
+
+    // Clear the timeout on component unmount or if the condition is met
+    return () => clearTimeout(timeoutId);
+  }, [
+    hotelDetailsObject,
+    hotelDescriptionObject,
+    hotelFaqObject,
+    hotelAmenetyObject,
+  ]);
 
   return (
     <div>
@@ -182,6 +225,48 @@ export default function EditHotelPage() {
             </div>
           </div>
         </div>
+      )}
+
+      {draftWarningModal ? (
+        <div className="fixed inset-0 w-full h-full bg-[#fff5] flex items-center justify-center z-20">
+          <div className="bg-[#fff] w-full max-h-[90vh] max-w-[500px]  shadow-[0_1rem_3rem_rgb(0_0_0_/_18%)] overflow-y-auto">
+            <div className="p-5">
+              <h1 className="text-center text-xl font-bold">
+                If you continue editing the Hotel, your draft will be cleared.
+              </h1>
+              <div className="flex gap-2 justify-end mt-10">
+                <button
+                  className="bg-red-500 w-28"
+                  onClick={() => {
+                    navigate("/hotels");
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="w-28"
+                  onClick={() => {
+                    localStorage.removeItem("hotelDetails");
+                    localStorage.removeItem("hotelDescription");
+                    localStorage.removeItem("hotelFaq");
+                    localStorage.removeItem("hotelAmeneties");
+                    localStorage.removeItem("hotelRestaurant");
+                    localStorage.removeItem("hotelBars");
+                    localStorage.removeItem("salesContacts");
+                    localStorage.removeItem("accountContacts");
+                    localStorage.removeItem("hotelContacts");
+                    localStorage.removeItem("reservationContacts");
+                    setDraftWarningModal(false);
+                  }}
+                >
+                  Clear
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
       )}
     </div>
   );

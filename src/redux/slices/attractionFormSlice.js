@@ -81,6 +81,7 @@ export const attractionFormSlice = createSlice({
     },
 
     handleInitiateLocalStorageData: (state, { payload }) => {
+      console.log(payload.attrData, "show attrdata");
       state.data = {
         title: payload?.attrData?.title,
         bookingType: payload?.attrData?.bookingType,
@@ -103,7 +104,7 @@ export const attractionFormSlice = createSlice({
         itineraryDescription: payload?.attrData?.itineraryDescription,
         highlights: payload?.attrData?.highlights,
         youtubeLink: payload?.attrData?.youtubeLink,
-        sections: payload?.attrData?.sections,
+        sections: payload?.attrData?.sections || [],
         isCombo: payload?.attrData?.isCombo,
         bookingPriorDays: payload?.attrData?.bookingPriorDays,
         country: payload?.attrData?.country,
@@ -114,6 +115,8 @@ export const attractionFormSlice = createSlice({
         latitude: payload?.attrData?.longitude,
         longitude: payload?.attrData?.longitude,
       };
+
+      state.faqs = payload?.attrFaqs;
     },
 
     clearLocalStorageAttraction: (state, { payload }) => {
@@ -149,6 +152,8 @@ export const attractionFormSlice = createSlice({
         area: "",
         displayOrder: 1,
       };
+      localStorage.removeItem("attractionFaqs");
+      state.faqs = [];
     },
 
     clearAttractionData: (state, action) => {
@@ -195,12 +200,14 @@ export const attractionFormSlice = createSlice({
         title: action.payload?.title,
         body: action.payload?.body,
       });
+      localStorage.setItem("attractionData", JSON.stringify(state.data));
     },
     deleteSection: (state, action) => {
       const filteredSections = state.data.sections?.filter((_, index) => {
         return index !== action.payload;
       });
       state.data.sections = filteredSections;
+      localStorage.setItem("attractionData", JSON.stringify(state.data));
     },
     updateSection: (state, action) => {
       state.data.sections[action.payload?.index] = {
@@ -213,12 +220,14 @@ export const attractionFormSlice = createSlice({
         question: action.payload?.question,
         answer: action.payload?.answer,
       });
+      localStorage.setItem("attractionFaqs", JSON.stringify(state.faqs));
     },
     deleteAttrFaq: (state, action) => {
       const filteredFaqs = state.faqs?.filter((_, index) => {
         return index !== action.payload;
       });
       state.faqs = filteredFaqs;
+      localStorage.setItem("attractionFaqs", JSON.stringify(state.faqs));
     },
     updateAttrFaq: (state, action) => {
       state.faqs[action.payload?.index] = {

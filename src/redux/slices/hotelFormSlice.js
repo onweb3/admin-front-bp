@@ -391,6 +391,7 @@ export const hotelFormSlice = createSlice({
     selectHotelOpenDay: (state, action) => {
       if (!state.details.openDays?.includes(action?.payload)) {
         state.details.openDays?.push(action.payload?.toLowerCase());
+        localStorage.setItem("hotelDetails", JSON.stringify(state.details));
       }
     },
     removeHotelOpenDay: (state, action) => {
@@ -398,6 +399,7 @@ export const hotelFormSlice = createSlice({
         return item !== action.payload;
       });
       state.details.openDays = filteredOpenDays;
+      localStorage.setItem("hotelDetails", JSON.stringify(state.details));
     },
     handleCorrespondenceAddressChange: (state, action) => {
       state.correspondenceAddress[action.payload?.name] = action.payload?.value;
