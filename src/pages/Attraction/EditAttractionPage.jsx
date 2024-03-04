@@ -23,7 +23,6 @@ import {
 import { PageLoader } from "../../components";
 import EditAttrSubmission from "../../features/Attractions/components/EditAttrSubmission";
 import { useImageChange } from "../../hooks";
-import { clearLocalStorageAttraction } from "../../redux/slices/attractionFormSlice";
 
 export default function EditAttractionPage() {
   const [section, setSection] = useState(1);
