@@ -36,11 +36,14 @@ export default function AddAttractionPage() {
     return () => dispatch(clearAttractionData());
   }, []);
 
-  //   let attrData = JSON.parse(localStorage.getItem("attractionData"));
+  let attrData = JSON.parse(localStorage.getItem("attractionData"));
+  let attrFaqs = JSON.parse(localStorage.getItem("attractionFaqs"));
 
-  //   useEffect(() => {
-  //     dispatch(handleInitiateLocalStorageData({ attrData: attrData }));
-  //   }, []);
+  useEffect(() => {
+    dispatch(
+      handleInitiateLocalStorageData({ attrData: attrData, attrFaqs: attrFaqs })
+    );
+  }, []);
 
   return (
     <div>

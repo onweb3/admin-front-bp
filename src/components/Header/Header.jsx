@@ -35,6 +35,8 @@ export default function Header() {
     localStorage.getItem("attractionData"),
   ]);
 
+  console.log(attrDraft, 'attr draft data');
+
   return (
     <div className="w-full bg-white h-[70px] px-5">
       <div className="h-full flex items-center justify-between">
@@ -42,7 +44,7 @@ export default function Header() {
           <GlobalSearchInp />
         </div>
         <div className="flex items-center gap-[2em] h-full">
-          {/* {hotelDraft?.hotelName ||
+          {hotelDraft?.hotelName ||
           hotelDraft?.address ||
           hotelDraft?.postalCode ||
           hotelDraft?.carParkingSlots ||
@@ -83,7 +85,7 @@ export default function Header() {
             </div>
           ) : (
             ""
-          )} */}
+          )}
 
           <div className="relative h-full">
             <div
