@@ -35,8 +35,6 @@ export default function Header() {
     localStorage.getItem("attractionData"),
   ]);
 
-  console.log(attrDraft, 'attr draft data');
-
   return (
     <div className="w-full bg-white h-[70px] px-5">
       <div className="h-full flex items-center justify-between">
@@ -54,10 +52,18 @@ export default function Header() {
           hotelDraft?.landMark ||
           hotelDraft?.longitude ||
           hotelDraft?.latitude ||
+          hotelDraft?.city ||
+          hotelDraft?.area ||
+          hotelDraft?.website ||
+          hotelDraft?.starCategory ||
+          hotelDraft?.floorsCount ||
           attrDraft?.title ||
           attrDraft?.destination ||
           attrDraft?.category ||
           attrDraft?.duration ||
+          attrDraft?.country ||
+          attrDraft?.area ||
+          attrDraft?.itineraryDescription ||
           attrDraft?.city ||
           attrDraft?.mapLink ? (
             <div className="relative">
