@@ -295,6 +295,7 @@ import EditBannerB2cPage from "../pages/B2cFrontend/EditBannerB2cPage";
 import FooterSettingsB2bPage from "../pages/B2bFrontend/FooterSettingsB2bPage";
 import CardsSettingsB2bPage from "../pages/B2bFrontend/CardsSettingsB2bPage";
 import SectionsSettingsB2cPage from "../pages/B2cFrontend/SectionsSettingsB2cPage";
+import WhatsappClientListPage from "../pages/Whatsapp/AddWhatsappPage";
 
 const ThemeRoutes = [
     {
@@ -1499,6 +1500,11 @@ const ThemeRoutes = [
             {
                 path: "/seo/main-category/:id/category/:categoryId/sub-category/:subCategoryId",
                 element: <SeoProductListPage />,
+            },
+
+            {
+                path: "/whatsapp/lists",
+                element: <WhatsappClientListPage />,
             },
         ],
     },

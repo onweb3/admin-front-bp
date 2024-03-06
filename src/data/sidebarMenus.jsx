@@ -808,6 +808,18 @@ const sidebarMenus = {
                 },
             ],
         },
+        {
+            name: "Whatsapp Settings",
+            icon: <HiOutlineShoppingCart />,
+            link: "#",
+            dropdown: [
+                {
+                    name: "Whatsapp ",
+                    link: "/whatsapp/lists",
+                    permission: ["whatsapp-list", "view"],
+                },
+            ],
+        },
     ],
     Accounts: [
         {
