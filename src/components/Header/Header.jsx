@@ -42,7 +42,7 @@ export default function Header() {
           <GlobalSearchInp />
         </div>
         <div className="flex items-center gap-[2em] h-full">
-          {/* {hotelDraft?.hotelName ||
+          {hotelDraft?.hotelName ||
           hotelDraft?.address ||
           hotelDraft?.postalCode ||
           hotelDraft?.carParkingSlots ||
@@ -52,10 +52,18 @@ export default function Header() {
           hotelDraft?.landMark ||
           hotelDraft?.longitude ||
           hotelDraft?.latitude ||
+          hotelDraft?.city ||
+          hotelDraft?.area ||
+          hotelDraft?.website ||
+          hotelDraft?.starCategory ||
+          hotelDraft?.floorsCount ||
           attrDraft?.title ||
           attrDraft?.destination ||
           attrDraft?.category ||
           attrDraft?.duration ||
+          attrDraft?.country ||
+          attrDraft?.area ||
+          attrDraft?.itineraryDescription ||
           attrDraft?.city ||
           attrDraft?.mapLink ? (
             <div className="relative">
@@ -83,7 +91,7 @@ export default function Header() {
             </div>
           ) : (
             ""
-          )} */}
+          )}
 
           <div className="relative h-full">
             <div

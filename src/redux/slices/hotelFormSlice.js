@@ -339,23 +339,15 @@ export const hotelFormSlice = createSlice({
         postalCode: "",
         longitude: "",
         latitude: "",
-        checkInTime: "12:00",
-        checkOutTime: "14:00",
+        checkInTime: "",
+        checkOutTime: "",
         distanceFromCity: "",
         website: "",
         starCategory: "",
         roomsCount: "",
         floorsCount: "",
         carParkingSlots: "",
-        openDays: [
-          "sunday",
-          "monday",
-          "tuesday",
-          "wednesday",
-          "thursday",
-          "friday",
-          "saturday",
-        ],
+        openDays: [],
         accommodationType: "",
         hotelChain: "",
         isApiConnected: false,
@@ -399,6 +391,7 @@ export const hotelFormSlice = createSlice({
     selectHotelOpenDay: (state, action) => {
       if (!state.details.openDays?.includes(action?.payload)) {
         state.details.openDays?.push(action.payload?.toLowerCase());
+        localStorage.setItem("hotelDetails", JSON.stringify(state.details));
       }
     },
     removeHotelOpenDay: (state, action) => {
@@ -406,6 +399,7 @@ export const hotelFormSlice = createSlice({
         return item !== action.payload;
       });
       state.details.openDays = filteredOpenDays;
+      localStorage.setItem("hotelDetails", JSON.stringify(state.details));
     },
     handleCorrespondenceAddressChange: (state, action) => {
       state.correspondenceAddress[action.payload?.name] = action.payload?.value;

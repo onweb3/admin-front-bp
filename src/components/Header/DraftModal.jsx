@@ -28,7 +28,12 @@ function DraftModal({ setDraftModal, draftModal }) {
           hotelDetailsObject?.starCategory ||
           hotelDetailsObject?.landMark ||
           hotelDetailsObject?.longitude ||
-          hotelDetailsObject?.latitude ? (
+          hotelDetailsObject?.latitude ||
+          hotelDetailsObject?.city ||
+          hotelDetailsObject?.area ||
+          hotelDetailsObject?.website ||
+          hotelDetailsObject?.starCategory ||
+          hotelDetailsObject?.floorsCount ? (
             <div
               className=" cursor-pointer p-1 hover:bg-gray-100"
               onClick={() => {
@@ -50,6 +55,9 @@ function DraftModal({ setDraftModal, draftModal }) {
           attrDraft?.destination ||
           attrDraft?.category ||
           attrDraft?.duration ||
+          attrDraft?.country ||
+          attrDraft?.area ||
+          attrDraft?.itineraryDescription ||
           attrDraft?.city ||
           attrDraft?.mapLink ? (
             <div

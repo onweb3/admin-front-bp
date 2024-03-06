@@ -82,6 +82,7 @@ export default function AddAttrSubmission({
   };
 
   let attrLocalData = JSON.parse(localStorage.getItem("attractionData"));
+  let attractionFaqs = JSON.parse(localStorage.getItem("attractionFaqs"));
 
   return (
     <div>
@@ -95,7 +96,9 @@ export default function AddAttrSubmission({
         attrLocalData?.category ||
         attrLocalData?.duration ||
         attrLocalData?.city ||
-        attrLocalData?.mapLink ? (
+        attrLocalData?.mapLink ||
+        attractionFaqs ||
+        attrLocalData?.sections ? (
           <div>
             <button
               className="bg-red-500 w-32"
