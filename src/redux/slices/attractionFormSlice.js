@@ -116,7 +116,7 @@ export const attractionFormSlice = createSlice({
         longitude: payload?.attrData?.longitude,
       };
 
-      state.faqs = payload?.attrFaqs;
+      state.faqs = payload?.attrFaqs || [];
     },
 
     clearLocalStorageAttraction: (state, { payload }) => {
