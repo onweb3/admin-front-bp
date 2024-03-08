@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { MdClose } from "react-icons/md";
 import { useHandleClickOutside } from "../../../hooks";
 import axios from "../../../axios";
-import { BtnLoader, PageLoader } from "../../../components";
+import { BtnLoader, PageLoader, SelectDropdown } from "../../../components";
 
 export default function WhatsappAddModal({
     setIsModal,
@@ -184,29 +184,23 @@ export default function WhatsappAddModal({
                                 />
                             </div>
                             <div className="mt-4">
-                                <label htmlFor="">Phone Code *</label>
-                                <select
-                                    name="phoneCode"
-                                    value={data.phoneCode || ""}
-                                    onChange={handleChange}
-                                    id=""
-                                    className="capitalize"
-                                    required
-                                >
-                                    <option value="" hidden>
-                                        Select Country
-                                    </option>
-                                    {countries?.map((country, index) => {
-                                        return (
-                                            <option
-                                                value={country?.phonecode}
-                                                key={index}
-                                            >
-                                                {country?.phonecode}
-                                            </option>
-                                        );
-                                    })}
-                                </select>
+                                <div className="mt-4">
+                                    <SelectDropdown
+                                        data={countries}
+                                        valueName={"phonecode"}
+                                        displayName={"phonecode"}
+                                        placeholder="Select phonecode"
+                                        selectedData={data.phoneCode || ""}
+                                        setSelectedData={(val) => {
+                                            setData((prevData) => ({
+                                                ...prevData,
+                                                ["phoneCode"]: val,
+                                            }));
+                                        }}
+                                        // bracketValue={"chainCode"}
+                                        // disabled={!isEditPermission}
+                                    />
+                                </div>
                             </div>
                             <div className="mt-4">
                                 <label htmlFor="">Phone Number </label>

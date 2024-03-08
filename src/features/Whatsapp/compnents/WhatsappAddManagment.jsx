@@ -3,18 +3,26 @@ import { useSelector } from "react-redux";
 import { MdClose } from "react-icons/md";
 import { useHandleClickOutside } from "../../../hooks";
 import axios from "../../../axios";
-import { BtnLoader, PageLoader } from "../../../components";
+import { BtnLoader, PageLoader, SelectDropdown } from "../../../components";
 
-export default function WhatsappAddModal({
+export default function WhatsappAddManagementModal({
     setIsModal,
     isModal,
     setWhatsappLists,
     whatsappLists,
+    selectedManagement,
 }) {
+    const names = [
+        { value: "attraction" },
+        { value: "visa" },
+        { value: "flights" },
+        { value: "quotation" },
+        { value: "insurance" },
+    ];
     const [data, setData] = useState({
-        name: whatsappLists[0].name || "",
-        phoneNumber: whatsappLists[0].phoneNumber || "",
-        phoneCode: whatsappLists[0].phoneCode || "",
+        name: (isModal?.isEdit && selectedManagement?.name) || "",
+        phoneNumber: (isModal?.isEdit && selectedManagement?.phoneNumber) || "",
+        phoneCode: (isModal?.isEdit && selectedManagement?.phoneCode) || "",
     });
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -38,60 +46,38 @@ export default function WhatsappAddModal({
             setIsLoading(true);
 
             const response = await axios.post(
-                "/whatsapp-service/add",
+                "/whatsapp-managment/update",
                 { ...data },
                 {
                     headers: { Authorization: `Bearer ${jwtToken}` },
                 }
             );
 
-            setQrCode(response.data.qrCode);
-            setIsLoading(false);
-            // setIsModal(false);
-        } catch (err) {
-            console.log(err);
-            setError(
-                err?.response?.data?.error || "Something went wrong, Try again"
+            let findIndex = await whatsappLists.findIndex(
+                (whatsapp) => whatsapp.name === data.name
             );
+            console.log(findIndex);
+
+            if (findIndex !== -1) {
+                // If the index is found
+                setWhatsappLists((prev) => {
+                    return prev.map((prevItem, index) => {
+                        if (index === findIndex) {
+                            return { ...prevItem, ...data }; // Update the found item with new data
+                        }
+                        return prevItem; // Return other items unchanged
+                    });
+                });
+            } else {
+                // If the index is not found, push new data
+                setWhatsappLists((prev) => [...prev, response.data]);
+            }
+            console.log(findIndex);
+
             setIsLoading(false);
-        }
-    };
+            console.log(findIndex);
 
-    const reloadQrCode = async (e) => {
-        try {
-            e.preventDefault();
-            setError("");
-            setQrLoading(true);
-
-            const response = await axios.get("/whatsapp-service/reload", {
-                headers: { Authorization: `Bearer ${jwtToken}` },
-            });
-
-            setQrCode(response.data);
-            setQrLoading(false);
-            // setIsModal(false);
-        } catch (err) {
-            console.log(err);
-            setError(
-                err?.response?.data?.error || "Something went wrong, Try again"
-            );
-            setQrLoading(false);
-        }
-    };
-
-    const verifyQrCode = async (e) => {
-        try {
-            e.preventDefault();
-            setError("");
-            setIsLoading(true);
-
-            const response = await axios.get("/whatsapp-service/confirm", {
-                headers: { Authorization: `Bearer ${jwtToken}` },
-            });
-            setWhatsappLists([response.data]);
-            setIsModal(false);
-            setIsLoading(false);
-            // setIsModal(false);
+            setIsModal({ isOpen: false, isEdit: false });
         } catch (err) {
             console.log(err);
             setError(
@@ -111,135 +97,84 @@ export default function WhatsappAddModal({
                     <h2 className="font-medium mb-2">Add Config</h2>
                     <button
                         className="h-auto bg-transparent text-textColor text-xl"
-                        onClick={() => setIsModal(false)}
+                        onClick={() => {
+                            setIsModal({ isOpen: false, isEdit: false });
+                        }}
                     >
                         <MdClose />
                     </button>
                 </div>
-                {qrCode ? (
-                    <div className="p-4">
-                        {" "}
-                        <div className="flex flex-col items-center justify-center ">
-                            {qrLoading ? (
-                                <PageLoader />
-                            ) : (
-                                <>
-                                    <div className="px-5">
-                                        <h3>Note</h3>
-                                        <ul className="list-disc">
-                                            {" "}
-                                            <li>
-                                                If the link expires, please
-                                                reload the image.
-                                            </li>
-                                            <li>
-                                                If WhatsApp is connected on your
-                                                device, click on confirm.
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <img src={qrCode} />
-                                </>
-                            )}
+
+                <div className="p-4">
+                    <form action="" onSubmit={handleSubmit}>
+                        <SelectDropdown
+                            data={names}
+                            valueName={"value"}
+                            displayName={"value"}
+                            placeholder="Select name"
+                            selectedData={data.name || ""}
+                            setSelectedData={(val) => {
+                                setData((prevData) => ({
+                                    ...prevData,
+                                    ["name"]: val,
+                                }));
+                            }}
+                            // bracketValue={"chainCode"}
+                            // disabled={!isEditPermission}
+                        />
+                        <div className="mt-4">
+                            <SelectDropdown
+                                data={countries}
+                                valueName={"phonecode"}
+                                displayName={"phonecode"}
+                                placeholder="Select phonecode"
+                                selectedData={data.phoneCode || ""}
+                                setSelectedData={(val) => {
+                                    setData((prevData) => ({
+                                        ...prevData,
+                                        ["phoneCode"]: val,
+                                    }));
+                                }}
+                                // bracketValue={"chainCode"}
+                                // disabled={!isEditPermission}
+                            />
+                        </div>
+                        <div className="mt-4">
+                            <label htmlFor="">Phone Number </label>
+                            <input
+                                type="number"
+                                value={data?.phoneNumber || ""}
+                                name="phoneNumber"
+                                onChange={handleChange}
+                                placeholder="Enter phone number"
+                                required
+                            />
                         </div>
                         {error && (
                             <span className="text-sm block text-red-500 mt-2">
                                 {error}
                             </span>
                         )}
+
                         <div className="mt-4 flex items-center justify-end gap-[12px]">
                             <button
                                 className="bg-slate-300 text-textColor px-[15px]"
                                 type="button"
-                                onClick={reloadQrCode}
+                                onClick={() => {
+                                    setIsModal({
+                                        isOpen: false,
+                                        isEdit: false,
+                                    });
+                                }}
                             >
-                                reload
+                                Cancel
                             </button>
-                            {isLoading ? (
-                                <button className="w-[160px]">
-                                    <BtnLoader />
-                                </button>
-                            ) : (
-                                <button
-                                    className="w-[160px]"
-                                    onClick={verifyQrCode}
-                                >
-                                    Confirm
-                                </button>
-                            )}
+                            <button className="w-[160px]">
+                                {isLoading ? <BtnLoader /> : "Update"}
+                            </button>
                         </div>
-                    </div>
-                ) : (
-                    <div className="p-4">
-                        <form action="" onSubmit={handleSubmit}>
-                            <div className="mt-4">
-                                <label htmlFor="">Name </label>
-                                <input
-                                    type="text"
-                                    value={data?.name || ""}
-                                    name="name"
-                                    onChange={handleChange}
-                                    placeholder="Enter name"
-                                    required
-                                />
-                            </div>
-                            <div className="mt-4">
-                                <label htmlFor="">Phone Code *</label>
-                                <select
-                                    name="phoneCode"
-                                    value={data.phoneCode || ""}
-                                    onChange={handleChange}
-                                    id=""
-                                    className="capitalize"
-                                    required
-                                >
-                                    <option value="" hidden>
-                                        Select Country
-                                    </option>
-                                    {countries?.map((country, index) => {
-                                        return (
-                                            <option
-                                                value={country?.phonecode}
-                                                key={index}
-                                            >
-                                                {country?.phonecode}
-                                            </option>
-                                        );
-                                    })}
-                                </select>
-                            </div>
-                            <div className="mt-4">
-                                <label htmlFor="">Phone Number </label>
-                                <input
-                                    type="number"
-                                    value={data?.phoneNumber || ""}
-                                    name="phoneNumber"
-                                    onChange={handleChange}
-                                    placeholder="Enter phone number"
-                                    required
-                                />
-                            </div>
-                            {error && (
-                                <span className="text-sm block text-red-500 mt-2">
-                                    {error}
-                                </span>
-                            )}
-
-                            <div className="mt-4 flex items-center justify-end gap-[12px]">
-                                <button
-                                    className="bg-slate-300 text-textColor px-[15px]"
-                                    type="button"
-                                    onClick={() => setIsModal(false)}
-                                >
-                                    Cancel
-                                </button>
-                                <button className="w-[160px]">
-                                    {isLoading ? <BtnLoader /> : "Get Qr"}
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                )}
+                    </form>
+                </div>
             </div>
         </div>
     );

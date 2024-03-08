@@ -8,25 +8,25 @@ import { PageLoader, Pagination } from "../../components";
 import { config } from "../../constants";
 import WhatsappAddModal from "../../features/Whatsapp/compnents/WhatsappAddModal";
 import { AiFillEdit, AiOutlineLogout } from "react-icons/ai";
+import WhatsappAddManagementModal from "../../features/Whatsapp/compnents/WhatsappAddManagment";
+import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 export default function WhatsappManagmentListPage() {
     const [whatsappLists, setWhatsappLists] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [filters, setFilters] = useState({
-        skip: 0,
-        limit: 10,
-        totalAirlines: 0,
-        searchQuery: "",
-    });
-    const [error, setError] = useState("");
 
-    const [isModal, setIsModal] = useState(false);
+    const [error, setError] = useState("");
+    const [selectedManagement, setSelectedManagement] = useState("");
+    const [isModal, setIsModal] = useState({
+        isOpen: false,
+        isEdit: false,
+    });
 
     const { jwtToken } = useSelector((state) => state.admin);
 
     const fetchList = async () => {
         try {
             setIsLoading(true);
-            const response = await axios.get("/whatsapp-service/all", {
+            const response = await axios.get("/whatsapp-managment/all", {
                 headers: { authorization: `Bearer ${jwtToken}` },
             });
 
@@ -38,25 +38,35 @@ export default function WhatsappManagmentListPage() {
         }
     };
 
-    const logout = async (id) => {
+    const statusChange = async (name, status) => {
         try {
-            const isConfirm = window.confirm("Are you sure ?");
+            const isConfirm = window.confirm(
+                "Are you sure want stop messaging?"
+            );
             if (isConfirm) {
-                let response = await axios.delete(`/whatsapp-service/logout`, {
-                    headers: { authorization: `Bearer ${jwtToken}` },
-                });
+                let response = await axios.patch(
+                    `/whatsapp-managment/status`,
+                    { name, status },
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
 
-                if (response.data === true) {
-                    const updatedWhatsappLists = whatsappLists.map(
-                        (item, index) => {
-                            if (index === 0) {
-                                return { ...item, status: false };
-                            } else {
-                                return item;
+                let findIndex = await whatsappLists.findIndex(
+                    (whatsapp) => whatsapp.name === name
+                );
+                console.log(findIndex);
+
+                if (findIndex !== -1) {
+                    // If the index is found
+                    setWhatsappLists((prev) => {
+                        return prev.map((prevItem, index) => {
+                            if (index === findIndex) {
+                                return { ...prevItem, status: status }; // Update the found item with new data
                             }
-                        }
-                    );
-                    setWhatsappLists(updatedWhatsappLists);
+                            return prevItem; // Return other items unchanged
+                        });
+                    });
                 }
             }
         } catch (err) {
@@ -90,14 +100,17 @@ export default function WhatsappManagmentListPage() {
                     <div className="flex items-center justify-between border-b border-dashed p-4">
                         <h1 className="font-medium">Whatsapp Managment List</h1>
                         <div className="flex items-center gap-3">
-                            {/* <button
+                            <button
                                 className="px-3"
                                 onClick={() => {
-                                    setIsModal(true);
+                                    setIsModal({
+                                        isOpen: true,
+                                        isEdit: false,
+                                    });
                                 }}
                             >
-                                + Add Whatsapp
-                            </button> */}
+                                + Add Management
+                            </button>
                         </div>
                     </div>
                     {isLoading ? (
@@ -121,9 +134,6 @@ export default function WhatsappManagmentListPage() {
                                             Phone Number
                                         </th>{" "}
                                         <th className="font-[500] p-3">
-                                            Status
-                                        </th>
-                                        <th className="font-[500] p-3">
                                             Action
                                         </th>
                                     </tr>
@@ -145,39 +155,33 @@ export default function WhatsappManagmentListPage() {
                                                 <td className="p-3 uppercase">
                                                     {whatsapp?.phoneNumber}
                                                 </td>
-                                                <td
-                                                    className={`p-3 uppercase ${
-                                                        whatsapp?.status ===
-                                                        true
-                                                            ? "text-green-500"
-                                                            : "text-red-500"
-                                                    }`}
-                                                >
-                                                    {whatsapp?.status === true
-                                                        ? "Active"
-                                                        : "NonActive"}
-                                                </td>
 
                                                 <td className="p-3">
                                                     <div className="flex gap-[10px]">
                                                         {whatsapp?.status ===
                                                         true ? (
                                                             <button
-                                                                className="h-auto bg-transparent text-red-500 text-xl"
-                                                                onClick={logout}
+                                                                className="h-auto bg-transparent text-green-500 text-xl"
+                                                                onClick={() => {
+                                                                    statusChange(
+                                                                        whatsapp?.name,
+                                                                        false
+                                                                    );
+                                                                }}
                                                             >
-                                                                <AiOutlineLogout />{" "}
+                                                                <BsEyeFill />{" "}
                                                             </button>
                                                         ) : (
                                                             <button
-                                                                className="h-auto bg-transparent text-green-500 text-xl"
+                                                                className="h-auto bg-transparent text-red-500 text-xl"
                                                                 onClick={() => {
-                                                                    setIsModal(
+                                                                    statusChange(
+                                                                        whatsapp?.name,
                                                                         true
                                                                     );
                                                                 }}
                                                             >
-                                                                <AiFillEdit />{" "}
+                                                                <BsEyeSlashFill />{" "}
                                                             </button>
                                                         )}
                                                     </div>
@@ -196,12 +200,13 @@ export default function WhatsappManagmentListPage() {
                     )}
                 </div>
             </div>
-            {isModal && (
-                <WhatsappAddModal
+            {isModal.isOpen && (
+                <WhatsappAddManagementModal
                     isModal={isModal}
                     setIsModal={setIsModal}
                     setWhatsappLists={setWhatsappLists}
                     whatsappLists={whatsappLists}
+                    selectedManagement={selectedManagement}
                 />
             )}
         </div>

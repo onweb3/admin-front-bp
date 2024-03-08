@@ -1508,7 +1508,7 @@ const ThemeRoutes = [
                 element: <WhatsappClientListPage />,
             },
             {
-                path: "/whatsapp/lists",
+                path: "/whatsapp/management/lists",
                 element: <WhatsappManagmentListPage />,
             },
         ],
