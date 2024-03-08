@@ -301,7 +301,7 @@ export const hotelFormSlice = createSlice({
         hbId: payload?.hotelDetailsObject?.hbId || "",
         ottilaId: payload?.hotelDetailsObject?.ottilaId || "",
         isPublished: payload?.hotelDetailsObject?.isPublished,
-        isActive: payload?.hotelDetailsObject?.isActive,
+        isActive: payload?.hotelDetailsObject?.isActive || true,
         allGuestDetailsRequired:
           payload?.hotelDetailsObject?.allGuestDetailsRequired || false,
       };
