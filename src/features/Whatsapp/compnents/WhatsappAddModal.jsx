@@ -119,8 +119,28 @@ export default function WhatsappAddModal({
                 {qrCode ? (
                     <div className="p-4">
                         {" "}
-                        <div className="flex items-center justify-center ">
-                            {qrLoading ? <PageLoader /> : <img src={qrCode} />}
+                        <div className="flex flex-col items-center justify-center ">
+                            {qrLoading ? (
+                                <PageLoader />
+                            ) : (
+                                <>
+                                    <div className="px-5">
+                                        <h3>Note</h3>
+                                        <ul className="list-disc">
+                                            {" "}
+                                            <li>
+                                                If the link expires, please
+                                                reload the image.
+                                            </li>
+                                            <li>
+                                                If WhatsApp is connected on your
+                                                device, click on confirm.
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <img src={qrCode} />
+                                </>
+                            )}
                         </div>
                         {error && (
                             <span className="text-sm block text-red-500 mt-2">
@@ -144,7 +164,7 @@ export default function WhatsappAddModal({
                                     className="w-[160px]"
                                     onClick={verifyQrCode}
                                 >
-                                    Add Config
+                                    Confirm
                                 </button>
                             )}
                         </div>
@@ -199,6 +219,11 @@ export default function WhatsappAddModal({
                                     required
                                 />
                             </div>
+                            {error && (
+                                <span className="text-sm block text-red-500 mt-2">
+                                    {error}
+                                </span>
+                            )}
 
                             <div className="mt-4 flex items-center justify-end gap-[12px]">
                                 <button
@@ -209,7 +234,7 @@ export default function WhatsappAddModal({
                                     Cancel
                                 </button>
                                 <button className="w-[160px]">
-                                    {isLoading ? <BtnLoader /> : "Add Config"}
+                                    {isLoading ? <BtnLoader /> : "Get Qr"}
                                 </button>
                             </div>
                         </form>
