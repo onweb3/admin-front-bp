@@ -473,6 +473,12 @@ const adminRoles = [
         category: "marketing",
         permissions: [],
     },
+    {
+        name: "whatsapp-managment",
+        displayName: "Whatsapp Management",
+        category: "marketing",
+        permissions: [],
+    },
 
     // Users
     {

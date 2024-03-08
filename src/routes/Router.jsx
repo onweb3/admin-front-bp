@@ -296,6 +296,7 @@ import FooterSettingsB2bPage from "../pages/B2bFrontend/FooterSettingsB2bPage";
 import CardsSettingsB2bPage from "../pages/B2bFrontend/CardsSettingsB2bPage";
 import SectionsSettingsB2cPage from "../pages/B2cFrontend/SectionsSettingsB2cPage";
 import WhatsappClientListPage from "../pages/Whatsapp/AddWhatsappPage";
+import WhatsappManagmentListPage from "../pages/Whatsapp/WhatsappMangementList";
 
 const ThemeRoutes = [
     {
@@ -1505,6 +1506,10 @@ const ThemeRoutes = [
             {
                 path: "/whatsapp/lists",
                 element: <WhatsappClientListPage />,
+            },
+            {
+                path: "/whatsapp/lists",
+                element: <WhatsappManagmentListPage />,
             },
         ],
     },

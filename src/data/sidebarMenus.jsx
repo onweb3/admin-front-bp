@@ -818,6 +818,11 @@ const sidebarMenus = {
                     link: "/whatsapp/lists",
                     permission: ["whatsapp-list", "view"],
                 },
+                {
+                    name: "Whatsapp Management ",
+                    link: "/whatsapp/management/lists",
+                    permission: ["whatsapp-managment", "view"],
+                },
             ],
         },
     ],
