@@ -18,6 +18,8 @@ export default function WhatsappAddManagementModal({
         { value: "flights" },
         { value: "quotation" },
         { value: "insurance" },
+        { value: "a2a" },
+        { value: "hotel" },
     ];
     const [data, setData] = useState({
         name: (isModal?.isEdit && selectedManagement?.name) || "",

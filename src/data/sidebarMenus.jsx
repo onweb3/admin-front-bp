@@ -7,6 +7,7 @@ import {
     MdEmojiPeople,
     MdEventAvailable,
     MdLocalAirport,
+    MdNotificationAdd,
     MdOutlineCategory,
     MdOutlineFastfood,
     MdOutlineHotelClass,
@@ -27,7 +28,12 @@ import {
     HiOutlineTicket,
     HiOutlineUsers,
 } from "react-icons/hi";
-import { RiHotelFill, RiHotelLine, RiSteeringFill } from "react-icons/ri";
+import {
+    RiHotelFill,
+    RiHotelLine,
+    RiSeoFill,
+    RiSteeringFill,
+} from "react-icons/ri";
 import {
     BiCategoryAlt,
     BiGitCompare,
@@ -49,7 +55,7 @@ import {
 } from "react-icons/ai";
 import { RiRefund2Line, RiProfileLine } from "react-icons/ri";
 import { GiWavyItinerary } from "react-icons/gi";
-import { FaGlobe, FaThList } from "react-icons/fa";
+import { FaGlobe, FaThList, FaWhatsapp } from "react-icons/fa";
 import { BsFillChatLeftQuoteFill, BsImage } from "react-icons/bs";
 import { IoBusiness, IoWalletOutline } from "react-icons/io5";
 import { TbLicense } from "react-icons/tb";
@@ -798,7 +804,7 @@ const sidebarMenus = {
         },
         {
             name: "SEO Settings",
-            icon: <HiOutlineShoppingCart />,
+            icon: <RiSeoFill />,
             link: "#",
             dropdown: [
                 {
@@ -810,7 +816,7 @@ const sidebarMenus = {
         },
         {
             name: "Whatsapp Settings",
-            icon: <HiOutlineShoppingCart />,
+            icon: <FaWhatsapp />,
             link: "#",
             dropdown: [
                 {
@@ -822,6 +828,23 @@ const sidebarMenus = {
                     name: "Whatsapp Management ",
                     link: "/whatsapp/management/lists",
                     permission: ["whatsapp-managment", "view"],
+                },
+            ],
+        },
+        {
+            name: "Notification ",
+            icon: <MdNotificationAdd />,
+            link: "#",
+            dropdown: [
+                {
+                    name: "Add Notification ",
+                    link: "/notification/add",
+                    permission: ["notification-add", "view"],
+                },
+                {
+                    name: "Notification List ",
+                    link: "/notification",
+                    permission: ["notification-list", "view"],
                 },
             ],
         },

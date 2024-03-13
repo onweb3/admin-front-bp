@@ -297,6 +297,9 @@ import CardsSettingsB2bPage from "../pages/B2bFrontend/CardsSettingsB2bPage";
 import SectionsSettingsB2cPage from "../pages/B2cFrontend/SectionsSettingsB2cPage";
 import WhatsappClientListPage from "../pages/Whatsapp/AddWhatsappPage";
 import WhatsappManagmentListPage from "../pages/Whatsapp/WhatsappMangementList";
+import AddNotificationPage from "../pages/Notification/AddNotificationPage";
+import NotificationListPage from "../pages/Notification/NotificationListPage";
+import EditNotificationPage from "../pages/Notification/EditNotificationPage";
 
 const ThemeRoutes = [
     {
@@ -1510,6 +1513,18 @@ const ThemeRoutes = [
             {
                 path: "/whatsapp/management/lists",
                 element: <WhatsappManagmentListPage />,
+            },
+            {
+                path: "/notification/add",
+                element: <AddNotificationPage />,
+            },
+            {
+                path: "/notification",
+                element: <NotificationListPage />,
+            },
+            {
+                path: "/notification/:id/edit",
+                element: <EditNotificationPage />,
             },
         ],
     },

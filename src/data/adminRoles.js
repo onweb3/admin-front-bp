@@ -479,6 +479,18 @@ const adminRoles = [
         category: "marketing",
         permissions: [],
     },
+    {
+        name: "notification-list",
+        displayName: "Notification List",
+        category: "marketing",
+        permissions: [],
+    },
+    {
+        name: "notification-add",
+        displayName: "Notification Add",
+        category: "marketing",
+        permissions: [],
+    },
 
     // Users
     {
