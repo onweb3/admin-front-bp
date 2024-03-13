@@ -101,7 +101,7 @@ function AddStandAlone() {
 
   return (
     <div className="">
-      <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t  py-2">
+      <div className="bg-white flex items-center  justify-between gap-[10px] px-6 shadow-sm border-t  py-2">
         <div>
           <h1>Add Attraction Stand Alone</h1>
         </div>
