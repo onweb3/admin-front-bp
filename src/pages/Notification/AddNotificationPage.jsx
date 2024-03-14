@@ -11,6 +11,7 @@ export default function AddNotificationPage() {
         title: "",
         body: "",
         page: "",
+        slug: "",
     });
 
     const names = [
@@ -29,12 +30,26 @@ export default function AddNotificationPage() {
     const { jwtToken } = useSelector((state) => state.admin);
     const navigate = useNavigate();
     const { image, handleImageChange, error: imageError } = useImageChange();
-
+    const [slugs, setSlugs] = useState([]);
     const handleChange = (e) => {
         setData((prev) => {
             return { ...prev, [e.target.name]: e.target.value };
         });
     };
+
+    const fetchSlug = async () => {
+        try {
+            let response = await axios.get(`/seo/attraction`, {
+                headers: { Authorization: `Bearer ${jwtToken}` },
+            });
+
+            setSlugs(response.data);
+        } catch (e) {}
+    };
+
+    useEffect(() => {
+        fetchSlug();
+    }, []);
 
     const handleSubmit = async (e) => {
         try {
@@ -46,6 +61,7 @@ export default function AddNotificationPage() {
             formData.append("title", data.title);
             formData.append("body", data.body);
             formData.append("page", data.page);
+            formData.append("slug", data.slug);
             formData.append("image", image);
 
             await axios.post("/notification/add", formData, {
@@ -53,7 +69,7 @@ export default function AddNotificationPage() {
             });
 
             setIsLoading(false);
-            navigate("/airlines");
+            navigate("/notification");
         } catch (err) {
             setError(
                 err?.response?.data?.error || "Something went wrong, Try again"
@@ -112,6 +128,24 @@ export default function AddNotificationPage() {
                                     // disabled={!isEditPermission}
                                 />
                             </div>
+                            <div className="">
+                                <label htmlFor="">Slug *</label>
+                                <SelectDropdown
+                                    data={slugs}
+                                    valueName={"slug"}
+                                    displayName={"slug"}
+                                    placeholder="Select Slug"
+                                    selectedData={data.slug || ""}
+                                    setSelectedData={(val) => {
+                                        setData((prevData) => ({
+                                            ...prevData,
+                                            ["slug"]: val,
+                                        }));
+                                    }}
+                                    bracketValue={"slug"}
+                                    // disabled={categoryModal?.isEdit}
+                                />
+                            </div>
                         </div>
                         <div>
                             <label htmlFor="">Body</label>
@@ -124,6 +158,7 @@ export default function AddNotificationPage() {
                                 required
                             />
                         </div>
+
                         <div className="mt-4">
                             <label htmlFor="">Image</label>
                             <input

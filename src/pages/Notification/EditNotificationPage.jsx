@@ -13,6 +13,7 @@ export default function EditNotificationPage() {
         body: "",
         page: "",
         imgUrl: "",
+        slug: "",
     });
 
     const names = [
@@ -26,6 +27,7 @@ export default function EditNotificationPage() {
     ];
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
+    const [slugs, setSlugs] = useState([]);
 
     const { jwtToken } = useSelector((state) => state.admin);
     const navigate = useNavigate();
@@ -48,6 +50,7 @@ export default function EditNotificationPage() {
             formData.append("title", data.title);
             formData.append("body", data.body);
             formData.append("page", data.page);
+            formData.append("slug", data.slug);
             formData.append("image", image);
 
             await axios.patch(`/notification/update/${id}`, formData, {
@@ -71,13 +74,14 @@ export default function EditNotificationPage() {
                 headers: { authorization: `Bearer ${jwtToken}` },
             });
             console.log(response);
-            const { title, image, body, page } = response.data;
+            const { title, image, body, page, slug } = response.data;
             setData((prev) => {
                 return {
                     title,
                     imgUrl: image,
                     body,
                     page,
+                    slug,
                 };
             });
             setIsLoading(false);
@@ -90,6 +94,19 @@ export default function EditNotificationPage() {
         fetchNotification();
     }, []);
 
+    const fetchSlug = async () => {
+        try {
+            let response = await axios.get(`/seo/attraction`, {
+                headers: { Authorization: `Bearer ${jwtToken}` },
+            });
+
+            setSlugs(response.data);
+        } catch (e) {}
+    };
+
+    useEffect(() => {
+        fetchSlug();
+    }, []);
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
@@ -140,6 +157,24 @@ export default function EditNotificationPage() {
                                     // disabled={!isEditPermission}
                                 />
                             </div>
+                            <div className="">
+                                <label htmlFor="">Slug *</label>
+                                <SelectDropdown
+                                    data={slugs}
+                                    valueName={"slug"}
+                                    displayName={"slug"}
+                                    placeholder="Select Slug"
+                                    selectedData={data.slug || ""}
+                                    setSelectedData={(val) => {
+                                        setData((prevData) => ({
+                                            ...prevData,
+                                            ["slug"]: val,
+                                        }));
+                                    }}
+                                    bracketValue={"slug"}
+                                    // disabled={categoryModal?.isEdit}
+                                />
+                            </div>
                         </div>
                         <div>
                             <label htmlFor="">Body</label>
@@ -154,11 +189,7 @@ export default function EditNotificationPage() {
                         </div>
                         <div className="mt-4">
                             <label htmlFor="">Image</label>
-                            <input
-                                type="file"
-                                onChange={handleImageChange}
-                                required
-                            />
+                            <input type="file" onChange={handleImageChange} />
                             {imageError && (
                                 <span className="block text-sm text-red-500 mt-2">
                                     {imageError}
