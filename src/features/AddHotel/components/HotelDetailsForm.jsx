@@ -259,6 +259,7 @@ export default function HotelDetailsForm({
             <option value="" hidden>
               Select Star Category
             </option>
+            <option value="1">1 Star</option>
             <option value="2">2 Star</option>
             <option value="3">3 Star</option>
             <option value="4">4 Star</option>
