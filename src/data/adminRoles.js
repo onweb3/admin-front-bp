@@ -345,6 +345,12 @@ const adminRoles = [
         permissions: [],
     },
     {
+        name: "b2c-markup-profile",
+        displayName: "B2c Markup Profile",
+        category: "settings",
+        permissions: [],
+    },
+    {
         name: "market-startegy",
         displayName: "Market Startegy",
         category: "settings",

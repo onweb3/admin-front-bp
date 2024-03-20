@@ -31,6 +31,7 @@ import {
 import {
     RiHotelFill,
     RiHotelLine,
+    RiProfileFill,
     RiSeoFill,
     RiSteeringFill,
 } from "react-icons/ri";
@@ -981,6 +982,13 @@ const sidebarMenus = {
                 },
             ],
         },
+        {
+            name: "B2c Markup Profile",
+            icon: <RiProfileFill />,
+            link: "/markup/b2c/profile",
+            permission: ["b2c-markup-profile", "view"],
+        },
+
         {
             name: "Market Strategy",
             icon: <IoBusiness />,

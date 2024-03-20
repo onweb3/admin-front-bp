@@ -769,7 +769,7 @@ const ThemeRoutes = [
                 element: <EditMarkupProfilePage />,
             },
             {
-                path: "/markup/b2c/profile/",
+                path: "/markup/b2c/profile",
                 element: <B2cMarkupProfilePage />,
             },
             {

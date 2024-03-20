@@ -306,7 +306,7 @@ export default function EditB2bMarkupProfilePage({ selectedProfile }) {
                                 }
                             >
                                 {" "}
-                                <QuotationProfileTable />
+                                <QuotationProfileTable type={"profile"} />
                             </div>
                         )}
                         {section === "flight" && (
@@ -318,7 +318,7 @@ export default function EditB2bMarkupProfilePage({ selectedProfile }) {
                                 }
                             >
                                 {" "}
-                                <FlightProfileTable />
+                                <FlightProfileTable type={"profile"} />
                             </div>
                         )}
                         {section === "insurance" && (
@@ -330,7 +330,7 @@ export default function EditB2bMarkupProfilePage({ selectedProfile }) {
                                 }
                             >
                                 {" "}
-                                <InsuranceProfileTable />
+                                <InsuranceProfileTable type={"profile"} />
                             </div>
                         )}
                         {section === "transfer" && (

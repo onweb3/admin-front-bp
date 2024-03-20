@@ -8,7 +8,7 @@ import AttractionProfileRow from "./AttractionProfileRow";
 import VisaProfileRow from "./visaProfileRow";
 // import BookingsOrdersSingleRow from "./BookingsOrdersSingleRow";
 
-export default function QuotationProfileTable({}) {
+export default function QuotationProfileTable({ type }) {
     const [quotation, setQuotation] = useState({
         hotelMarkupType: "flat",
         hotelMarkup: 0,
@@ -28,7 +28,7 @@ export default function QuotationProfileTable({}) {
     const [isPageLoading, setIsPageLoading] = useState(false);
 
     const [isVisaModalOpen, setIsVisaModalOpen] = useState(false);
-    const { profileId } = useParams();
+    const { profileId, marketId } = useParams();
     const { id } = useParams();
 
     const navigate = useNavigate();
@@ -44,51 +44,75 @@ export default function QuotationProfileTable({}) {
     const fetchQuotationInitialData = async () => {
         try {
             setIsPageLoading(true);
-            // const searchQuery = `skip=${filters?.skip}&limit=${filters.limit}`;
-
-            if (profileId) {
-                const response = await axios.get(
-                    `/profile/get-all-quotation/${profileId}`,
-                    {
-                        headers: { authorization: `Bearer ${jwtToken}` },
-                    }
-                );
-                const {
-                    hotelMarkupType,
-                    hotelMarkup,
-                    landAttractionMarkupType,
-                    landAttractionMarkup,
-                    landTransferMarkupType,
-                    landTransferMarkup,
-
-                    visaMarkupType,
-                    visaMarkup,
-                } = response.data;
-                console.log(
-                    hotelMarkup,
-                    landAttractionMarkupType,
-                    landAttractionMarkup,
-                    landTransferMarkupType,
-                    landTransferMarkup,
-
-                    visaMarkupType,
-                    visaMarkup,
-                    "11111"
-                );
-
-                setQuotation({
-                    hotelMarkup,
-                    landAttractionMarkupType,
-                    landAttractionMarkup,
-                    landTransferMarkupType,
-                    landTransferMarkup,
-
-                    visaMarkupType,
-                    visaMarkup,
-                });
+            let response;
+            if (type === "market") {
+                if (marketId) {
+                    response = await axios.get(
+                        `/market/get-all-quotation/${marketId}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
+                } else {
+                    response = await axios.get(
+                        `/market/b2b/get-all-quotation/${id}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
+                }
+            } else {
+                if (profileId) {
+                    response = await axios.get(
+                        `/profile/get-all-quotation/${profileId}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
+                } else {
+                    response = await axios.get(
+                        `/profile/b2b/get-all-quotation/${id}`,
+                        {
+                            headers: { authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
+                }
             }
+            const {
+                hotelMarkupType,
+                hotelMarkup,
+                landAttractionMarkupType,
+                landAttractionMarkup,
+                landTransferMarkupType,
+                landTransferMarkup,
 
+                visaMarkupType,
+                visaMarkup,
+            } = response.data;
+            console.log(
+                hotelMarkup,
+                landAttractionMarkupType,
+                landAttractionMarkup,
+                landTransferMarkupType,
+                landTransferMarkup,
+
+                visaMarkupType,
+                visaMarkup,
+                "11111"
+            );
+
+            setQuotation({
+                hotelMarkup,
+                landAttractionMarkupType,
+                landAttractionMarkup,
+                landTransferMarkupType,
+                landTransferMarkup,
+
+                visaMarkupType,
+                visaMarkup,
+            });
             setIsPageLoading(false);
+
         } catch (err) {
             console.log(err);
         }
