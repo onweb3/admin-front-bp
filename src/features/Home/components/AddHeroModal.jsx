@@ -54,7 +54,7 @@ export default function AddHeroModal({
                 const response = await axios.patch(
                     b2b
                         ? `/frontend/b2b/home/heros/update/${selectedHero?._id}`
-                        : `/frontend/b2c/home/heros/edit/${selectedHero?._id}`,
+                        : `/frontend/b2c/home/heros/update/${selectedHero?._id}`,
                     formData,
                     {
                         headers: { Authorization: `Bearer ${jwtToken}` },
