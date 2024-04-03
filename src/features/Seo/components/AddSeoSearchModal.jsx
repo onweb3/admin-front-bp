@@ -2,10 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { MdClose } from "react-icons/md";
 import { useSelector } from "react-redux";
 
-import { useHandleClickOutside } from "../../../hooks";
+import { useHandleClickOutside, useImageChange } from "../../../hooks";
 import { BtnLoader, SelectDropdown } from "../../../components";
 import axios from "../../../axios";
 import { useParams } from "react-router-dom";
+import { config } from "../../../constants";
 
 export default function AddSeoSearchModal({
     categoryModal,
@@ -16,11 +17,11 @@ export default function AddSeoSearchModal({
 }) {
     const [data, setData] = useState({
         slug: (categoryModal?.isEdit && selectedCategory?.slug) || "",
-        keyword: (categoryModal?.isEdit && selectedCategory?.keyword) || "",
         keywords: (categoryModal?.isEdit && selectedCategory?.keywords) || "",
         title: (categoryModal?.isEdit && selectedCategory?.title) || "",
         description:
             (categoryModal?.isEdit && selectedCategory?.description) || "",
+        imgUrl: (categoryModal?.isEdit && selectedCategory?.image) || "",
     });
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -37,6 +38,7 @@ export default function AddSeoSearchModal({
             return { ...prev, [e.target.name]: e.target.value };
         });
     };
+    const { image, handleImageChange, error: imageError } = useImageChange();
 
     const handleDataChange = ({ name, value }) => {
         setData((prev) => {
@@ -126,18 +128,29 @@ export default function AddSeoSearchModal({
             setIsLoading(true);
             setError("");
 
+            const formData = new FormData();
+            formData.append("type", id);
+            formData.append("name", categoryId);
+            formData.append("subName", subCategoryId);
+            formData.append("slug", data.slug);
+            formData.append("title", data.title);
+            formData.append("description", data.description);
+            formData.append("keywords", JSON.stringify(data.keywords));
+            formData.append("image", image);
+            console.log(
+                id,
+                categoryId,
+                subCategoryId,
+                data.slug,
+                data.title,
+                data.description,
+                "datas"
+            );
+
             if (categoryModal?.isEdit) {
                 const response = await axios.patch(
                     `/seo/subcategory/update`,
-                    {
-                        type: id,
-                        name: categoryId,
-                        subName: subCategoryId,
-                        slug: data.slug,
-                        title: data.title,
-                        description: data.description,
-                        keywords: data.keywords,
-                    },
+                    formData,
                     {
                         headers: { Authorization: `Bearer ${jwtToken}` },
                     }
@@ -148,19 +161,12 @@ export default function AddSeoSearchModal({
                     title: data.title,
                     description: data.description,
                     keywords: data.keywords,
+                    image: image,
                 });
             } else {
                 const response = await axios.post(
                     "/seo/subcategory/add",
-                    {
-                        type: id,
-                        name: categoryId,
-                        subName: subCategoryId,
-                        slug: data.slug,
-                        title: data.title,
-                        description: data.description,
-                        keywords: data.keywords,
-                    },
+                    formData,
                     {
                         headers: { Authorization: `Bearer ${jwtToken}` },
                     }
@@ -170,6 +176,7 @@ export default function AddSeoSearchModal({
                     title: data.title,
                     description: data.description,
                     keywords: data.keywords,
+                    image: image,
                 });
             }
             setCategoryModal({ isOpen: false, isEdit: false });
@@ -283,6 +290,30 @@ export default function AddSeoSearchModal({
                                 })}
                             </div>
                         )}
+
+                        <div className="mt-4">
+                            <label htmlFor="">Image</label>
+                            <input type="file" onChange={handleImageChange} />
+                            {imageError && (
+                                <span className="block text-sm text-red-500 mt-2">
+                                    {imageError}
+                                </span>
+                            )}
+                            {(image || data?.imgUrl) && (
+                                <div className="mt-4 w-[50px] h-[50px]">
+                                    <img
+                                        src={
+                                            image
+                                                ? URL.createObjectURL(image)
+                                                : config.SERVER_URL +
+                                                  data?.imgUrl
+                                        }
+                                        alt=""
+                                        className="w-[100%] h-[100%] object-cover"
+                                    />
+                                </div>
+                            )}
+                        </div>
 
                         {error && (
                             <span className="tdiv>ext-sm block text-red-500 mt-2">

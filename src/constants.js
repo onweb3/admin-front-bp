@@ -18,6 +18,9 @@ const devLocal = {
     COMPANY_NAME: "Travellers Choice",
     COMPANY_LOGO:
         "https://login.mytravellerschoice.com/assets/logo-2c140806.png",
+    COMPANY_FAVICON:
+        "https://res.cloudinary.com/dmsvc9pbz/image/upload/v1695210988/output-onlinepngtools_2_lsx8ax.png",
+    TITLE_SHORT_NAME: "Traveller's Choice",
 };
 
 const devLive = {
@@ -25,6 +28,9 @@ const devLive = {
     COMPANY_NAME: "Travellers Choice",
     COMPANY_LOGO:
         "https://login.mytravellerschoice.com/assets/logo-2c140806.png",
+    COMPANY_FAVICON:
+        "https://res.cloudinary.com/dmsvc9pbz/image/upload/v1695210988/output-onlinepngtools_2_lsx8ax.png",
+    TITLE_SHORT_NAME: "Traveller's Choice",
 };
 
 export const config =
