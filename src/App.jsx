@@ -3,8 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRoutes } from "react-router-dom";
 
 import { ThemeRoutes } from "./routes";
-import { fetchAdmin } from "./redux/slices/adminSlice";
-import { fetchGeneralData1, fetchGeneralData2 } from "./redux/slices/generalSlice";
+import { fetchAdmin, checkInstallation } from "./redux/slices/adminSlice";
+import {
+    fetchGeneralData1,
+    fetchGeneralData2,
+} from "./redux/slices/generalSlice";
 
 export default function App() {
     const { isSiteLoading, isLoggedIn } = useSelector((state) => state.admin);
@@ -12,6 +15,7 @@ export default function App() {
 
     useEffect(() => {
         dispatch(fetchAdmin());
+        dispatch(checkInstallation());
     }, [dispatch]);
 
     useEffect(() => {

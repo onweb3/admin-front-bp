@@ -300,6 +300,10 @@ import WhatsappManagmentListPage from "../pages/Whatsapp/WhatsappMangementList";
 import AddNotificationPage from "../pages/Notification/AddNotificationPage";
 import NotificationListPage from "../pages/Notification/NotificationListPage";
 import EditNotificationPage from "../pages/Notification/EditNotificationPage";
+import InstallationPage from "../pages/InstallationPage";
+import AdminLoginPrivateRoute from "./AdminLoginPrivateRouter";
+import AdminInstallationPrivateRouterPage from "./AdminInstallationPrivateRouterPage";
+import EditInitialDataPage from "../pages/Settings/EditInitalDataPage";
 
 const ThemeRoutes = [
     {
@@ -318,6 +322,7 @@ const ThemeRoutes = [
                     </DashboardPrivateRoute>
                 ),
             },
+
             {
                 path: "/dashboard/hotel",
                 element: (
@@ -326,6 +331,7 @@ const ThemeRoutes = [
                     </HotelDashboardPrivateRoute>
                 ),
             },
+
             {
                 path: "/dashboard/attraction",
                 element: <AttractionDashboardPage />,
@@ -1526,15 +1532,33 @@ const ThemeRoutes = [
                 path: "/notification/:id/edit",
                 element: <EditNotificationPage />,
             },
+            {
+                path: "/settings",
+                element: <EditInitialDataPage />,
+            },
         ],
     },
     {
         path: "/attractions/itineraries/:id/preview",
         element: <SingleAttractionItineraryPage />,
     },
+
+    {
+        path: "/installation",
+        element: (
+            <AdminInstallationPrivateRouterPage>
+                <InstallationPage />
+            </AdminInstallationPrivateRouterPage>
+        ),
+    },
+
     {
         path: "/login",
-        element: <LoginPage />,
+        element: (
+            <AdminLoginPrivateRoute>
+                <LoginPage />
+            </AdminLoginPrivateRoute>
+        ),
     },
     {
         path: "/page-not-found",

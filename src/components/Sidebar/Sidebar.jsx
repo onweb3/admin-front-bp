@@ -19,9 +19,12 @@ const names = [
 ];
 
 export default function Sidebar() {
-    const { admin } = useSelector((state) => state.admin);
+    const { admin, company } = useSelector((state) => state.admin);
 
-    const isHotelDashboard = hasAnyViewPermission({ roles: admin?.roles || [], names });
+    const isHotelDashboard = hasAnyViewPermission({
+        roles: admin?.roles || [],
+        names,
+    });
 
     const filteredSidebars = {};
     Object.keys(sidebarMenus)?.map((item) => {
@@ -32,7 +35,8 @@ export default function Sidebar() {
                         hasPermission({
                             roles: admin?.roles,
                             name: subMenu?.permission && subMenu?.permission[0],
-                            permission: subMenu?.permission && subMenu?.permission[1],
+                            permission:
+                                subMenu?.permission && subMenu?.permission[1],
                         })
                     ) {
                         return subMenu;
@@ -74,9 +78,9 @@ export default function Sidebar() {
         <div className="sidebar top-0 left-0 flex h-[100vh] w-[250px] fixed bg-primaryColor flex-col transition-all ">
             <Link to="/" className="flex items-center justify-center py-5">
                 <h2 className="text-lg font-[600] text-white uppercase">
-                    {config.COMPANY_NAME?.split(" ")[0]}{" "}
+                    {company?.COMPANY_NAME?.split(" ")[0]}{" "}
                     <span className="text-sm text-red-500">
-                        {config.COMPANY_NAME?.split(" ")[1]}
+                        {company.COMPANY_NAME?.split(" ")[1]}
                     </span>
                 </h2>
             </Link>
@@ -96,7 +100,9 @@ export default function Sidebar() {
                                     // ) {
                                     //     return <></>;
                                     // }
-                                    return <SidebarMenu key={index} {...item} />;
+                                    return (
+                                        <SidebarMenu key={index} {...item} />
+                                    );
                                 })}
                             </ul>
                         </div>

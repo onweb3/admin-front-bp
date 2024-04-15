@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import axios from "../axios";
@@ -13,6 +13,8 @@ export default function LoginPage() {
         email: "",
         password: "",
     });
+    const { company } = useSelector((state) => state.admin);
+
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
@@ -44,13 +46,17 @@ export default function LoginPage() {
     return (
         <div className="flex flex-col items-center justify-center min-h-screen">
             <div className="flex items-center gap-[10px] mb-10">
-                <img src={config.COMPANY_LOGO} alt="" className="w-[230px]" />
+                <img
+                    src={`${config.SERVER_URL}/${company.COMPANY_LOGO}`}
+                    alt=""
+                    className="w-[230px]"
+                />
             </div>
             <div className="w-full max-w-[420px] border p-7 rounded bg-white">
                 <div className="mb-5">
                     <h1 className="font-[600] text-xl text-center">Login</h1>
                     <span className="block text-center text-sm text-gray-500 mt-1">
-                        Welcome back to {config.COMPANY_NAME}
+                        Welcome back to {company?.COMPANY_NAME}
                     </span>
                 </div>
                 <form action="" onSubmit={handleSubmit}>
