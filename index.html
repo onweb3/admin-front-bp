@@ -27,12 +27,12 @@
             console.log(response, "response");
             const { data } = response.data;
             document.getElementById("title").textContent =
-                data[0].COMPANY_SHORT_NAME;
+                data[0]?.COMPANY_SHORT_NAME;
             document
                 .getElementById("companyLogo")
                 .setAttribute(
                     "href",
-                    `${config.SERVER_URL}/${data[0].FAV_IMAGE}`
+                    `${config.SERVER_URL}/${data[0]?.FAV_IMAGE}`
                 );
         </script>
     </body>

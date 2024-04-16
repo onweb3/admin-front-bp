@@ -48,6 +48,25 @@ export default function EditInitialDataPage() {
         DATA_FEED: "",
         FAV_IMAGE: "",
         COMPANY_SHORT_NAME: "",
+        NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: "",
+        CLOUDINARY_API_KEY: "",
+        CLOUDINARY_API_SECRET: "",
+        GOOGLE_CLIENT_ID: "",
+        GOOGLE_CLIENT_SECRET: "",
+        NEXTAUTH_SECRET: "",
+        NEXTAUTH_URL: "",
+        NEXT_PUBLIC_GOOGLE_ANALYTIC_ID: "",
+        NEXT_PUBLIC_TABBY_PUBLIC_KEY: "",
+        NEXT_PUBLIC_TABBY_MERCHANT_CODE: "",
+        NEXT_PUBLIC_TOURS_URL: "",
+        NEXT_PUBLIC_BANNER_IMAGE: "",
+        NEXT_PUBLIC_BANNER_VIDEO: "",
+        NEXT_PUBLIC_BANNER_VIDEO_MOBILE: "",
+        NEXT_PUBLIC_BANNER_IMAGE_MOBILE: "",
+        NEXT_PUBLIC_MOBILE_APP_iMAGE: "",
+        NEXT_PUBLIC_PLAYSTORE_URL: "",
+        NEXT_PUBLIC_COMPANYADDRESS1: "",
+        NEXT_PUBLIC_COMPANYADDRESS2: "",
     });
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
@@ -61,6 +80,16 @@ export default function EditInitialDataPage() {
         image: logoImg,
         handleImageChange: handleLogoImgChange,
         error: logoImgError,
+    } = useImageChange();
+    const {
+        image: bannerImg,
+        handleImageChange: handleBannerImgChange,
+        error: logoBanImgError,
+    } = useImageChange();
+    const {
+        image: bannerImgMob,
+        handleImageChange: handleBannerMobImgChange,
+        error: logoBanMobImgError,
     } = useImageChange();
     const { id } = useParams();
 
@@ -221,6 +250,25 @@ export default function EditInitialDataPage() {
                 DATA_FEED,
                 FAV_IMAGE,
                 COMPANY_SHORT_NAME,
+                NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+                CLOUDINARY_API_KEY,
+                CLOUDINARY_API_SECRET,
+                GOOGLE_CLIENT_ID,
+                GOOGLE_CLIENT_SECRET,
+                NEXTAUTH_SECRET,
+                NEXTAUTH_URL,
+                NEXT_PUBLIC_GOOGLE_ANALYTIC_ID,
+                NEXT_PUBLIC_TABBY_PUBLIC_KEY,
+                NEXT_PUBLIC_TABBY_MERCHANT_CODE,
+                NEXT_PUBLIC_TOURS_URL,
+                NEXT_PUBLIC_BANNER_IMAGE,
+                NEXT_PUBLIC_BANNER_VIDEO,
+                NEXT_PUBLIC_BANNER_VIDEO_MOBILE,
+                NEXT_PUBLIC_BANNER_IMAGE_MOBILE,
+                NEXT_PUBLIC_MOBILE_APP_iMAGE,
+                NEXT_PUBLIC_PLAYSTORE_URL,
+                NEXT_PUBLIC_COMPANYADDRESS1,
+                NEXT_PUBLIC_COMPANYADDRESS2,
             } = response?.data?.data[0];
             setData((prev) => {
                 return {
@@ -265,6 +313,25 @@ export default function EditInitialDataPage() {
                     DATA_FEED,
                     FAV_IMAGE,
                     COMPANY_SHORT_NAME,
+                    NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+                    CLOUDINARY_API_KEY,
+                    CLOUDINARY_API_SECRET,
+                    GOOGLE_CLIENT_ID,
+                    GOOGLE_CLIENT_SECRET,
+                    NEXTAUTH_SECRET,
+                    NEXTAUTH_URL,
+                    NEXT_PUBLIC_GOOGLE_ANALYTIC_ID,
+                    NEXT_PUBLIC_TABBY_PUBLIC_KEY,
+                    NEXT_PUBLIC_TABBY_MERCHANT_CODE,
+                    NEXT_PUBLIC_TOURS_URL,
+                    NEXT_PUBLIC_BANNER_IMAGE,
+                    NEXT_PUBLIC_BANNER_VIDEO,
+                    NEXT_PUBLIC_BANNER_VIDEO_MOBILE,
+                    NEXT_PUBLIC_BANNER_IMAGE_MOBILE,
+                    NEXT_PUBLIC_MOBILE_APP_iMAGE,
+                    NEXT_PUBLIC_PLAYSTORE_URL,
+                    NEXT_PUBLIC_COMPANYADDRESS1,
+                    NEXT_PUBLIC_COMPANYADDRESS2,
                 };
             });
             setIsPageLoading(false);
@@ -364,8 +431,7 @@ export default function EditInitialDataPage() {
                                                         ? URL.createObjectURL(
                                                               logoImg
                                                           )
-                                                        : process.env
-                                                              .SERVER_URL +
+                                                        : config.SERVER_URL +
                                                           data.COMPANY_LOGO
                                                 }
                                                 alt=""
@@ -393,8 +459,7 @@ export default function EditInitialDataPage() {
                                                         ? URL.createObjectURL(
                                                               image
                                                           )
-                                                        : process.env
-                                                              .SERVER_URL +
+                                                        : config.SERVER_URL +
                                                           data.FAV_IMAGE
                                                 }
                                                 alt=""
@@ -625,6 +690,136 @@ export default function EditInitialDataPage() {
                                         onChange={handleChange}
                                     />
                                 </div>
+                            </div>
+                            <div className="grid grid-cols-3 gap-4 mt-5">
+                                <div>
+                                    <label htmlFor="">Google Analytic ID</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Enter google analytics ID"
+                                        name="NEXT_PUBLIC_GOOGLE_ANALYTIC_ID"
+                                        value={
+                                            data.NEXT_PUBLIC_GOOGLE_ANALYTIC_ID ||
+                                            ""
+                                        }
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                            </div>{" "}
+                            <div className="grid grid-cols-3 gap-4 mt-5">
+                                <div>
+                                    <label htmlFor="">Tabby Public Key</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Enter tabby public key"
+                                        name="NEXT_PUBLIC_TABBY_PUBLIC_KEY"
+                                        value={
+                                            data.NEXT_PUBLIC_TABBY_PUBLIC_KEY ||
+                                            ""
+                                        }
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="">
+                                        {" "}
+                                        Tabby Merchant Code
+                                    </label>
+                                    <input
+                                        type="number"
+                                        placeholder="Enter tabby merchant code"
+                                        name="NEXT_PUBLIC_TABBY_MERCHANT_CODE"
+                                        value={
+                                            data.NEXT_PUBLIC_TABBY_MERCHANT_CODE ||
+                                            ""
+                                        }
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                            </div>{" "}
+                            <div className="grid grid-cols-3 gap-4 mt-5">
+                                <div>
+                                    <label htmlFor="">Company Address 1</label>
+                                    <input
+                                        type="text"
+                                        placeholder="company address"
+                                        name="NEXT_PUBLIC_COMPANYADDRESS1"
+                                        value={
+                                            data.NEXT_PUBLIC_COMPANYADDRESS1 ||
+                                            ""
+                                        }
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="">Company Address 2</label>
+                                    <input
+                                        type="text"
+                                        placeholder="company address"
+                                        name="NEXT_PUBLIC_COMPANYADDRESS2"
+                                        value={
+                                            data.NEXT_PUBLIC_COMPANYADDRESS2 ||
+                                            ""
+                                        }
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                            </div>
+                            <div className="mt-4">
+                                <label htmlFor="">Banner Image </label>
+                                <input
+                                    type="file"
+                                    onChange={handleBannerImgChange}
+                                />
+                                {logoBanImgError && (
+                                    <span className="block text-sm text-red-500 mt-2">
+                                        {logoBanImgError}
+                                    </span>
+                                )}
+                                {(bannerImg ||
+                                    data.NEXT_PUBLIC_BANNER_IMAGE) && (
+                                    <div className="mt-4 w-[50px] h-[50px]">
+                                        <img
+                                            src={
+                                                image
+                                                    ? URL.createObjectURL(
+                                                          logoImg
+                                                      )
+                                                    : config.SERVER_URL +
+                                                      data.NEXT_PUBLIC_BANNER_IMAGE
+                                            }
+                                            alt=""
+                                            className="w-[100%] h-[100%] object-cover"
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                            <div className="mt-4">
+                                <label htmlFor="">Banner Image Mobile</label>
+                                <input
+                                    type="file"
+                                    onChange={handleBannerMobImgChange}
+                                />
+                                {logoBanMobImgError && (
+                                    <span className="block text-sm text-red-500 mt-2">
+                                        {logoBanMobImgError}
+                                    </span>
+                                )}
+                                {(bannerImgMob ||
+                                    data.NEXT_PUBLIC_BANNER_IMAGE_MOBILE) && (
+                                    <div className="mt-4 w-[50px] h-[50px]">
+                                        <img
+                                            src={
+                                                image
+                                                    ? URL.createObjectURL(image)
+                                                    : config.SERVER_URL +
+                                                      data.NEXT_PUBLIC_BANNER_IMAGE_MOBILE
+                                            }
+                                            alt=""
+                                            className="w-[100%] h-[100%] object-cover"
+                                        />
+                                    </div>
+                                )}
                             </div>
                             {error && (
                                 <span className="text-sm block text-red-500 mt-2">
