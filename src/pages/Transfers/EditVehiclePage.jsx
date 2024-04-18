@@ -163,7 +163,8 @@ export default function EditVehiclePage() {
                                             src={
                                                 image
                                                     ? URL.createObjectURL(image)
-                                                    : config.SERVER_URL +
+                                                    : import.meta.env
+                                                          .VITE_SERVER_URL +
                                                       data.image
                                             }
                                             alt=""

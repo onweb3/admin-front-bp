@@ -112,7 +112,8 @@ export default function SingleAttractionItineraryPage() {
                                                     {item?.images?.map(
                                                         (img, index) => {
                                                             const url =
-                                                                config.SERVER_URL +
+                                                                import.meta.env
+                                                                    .VITE_SERVER_URL +
                                                                 img;
 
                                                             return (
@@ -175,7 +176,8 @@ export default function SingleAttractionItineraryPage() {
                                                     return (
                                                         <img
                                                             src={
-                                                                config.SERVER_URL +
+                                                                import.meta.env
+                                                                    .VITE_SERVER_URL +
                                                                 img
                                                             }
                                                             alt=""

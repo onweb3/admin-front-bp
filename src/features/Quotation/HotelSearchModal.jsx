@@ -112,7 +112,6 @@ export default function HotelSearchModal({
         return formattedDate;
     }
 
-
     const [data, setData] = useState({
         checkOutDate: hotel?.checkOutDate
             ? formatDate(hotel?.checkOutDate)
@@ -488,7 +487,6 @@ export default function HotelSearchModal({
         }
     };
 
-
     useEffect(() => {
         if (
             searchQuery.suggestionType &&
@@ -496,11 +494,9 @@ export default function HotelSearchModal({
             data.checkOutDate &&
             data.rooms
         ) {
-
             fetchAvailableHotels();
         }
     }, [filters.skip, filters.limit, filters.search]);
-
 
     return (
         <div className="fixed inset-0 w-full h-full bg-[#fff5] flex items-center justify-center z-10 ">
@@ -759,7 +755,9 @@ export default function HotelSearchModal({
                                                                 hotel?.hotel
                                                                     ?.image
                                                                     ?.isRelative
-                                                                    ? config.SERVER_URL +
+                                                                    ? import.meta
+                                                                          .env
+                                                                          .VITE_SERVER_URL +
                                                                       hotel
                                                                           ?.hotel
                                                                           ?.image

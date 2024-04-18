@@ -171,7 +171,8 @@ export default function PromotionBannerUpdatePage() {
                                                     ? URL.createObjectURL(
                                                           promotionImg
                                                       )
-                                                    : config.SERVER_URL +
+                                                    : import.meta.env
+                                                          .VITE_SERVER_URL +
                                                       data.promoBannerImage
                                             }
                                             alt=""
@@ -187,7 +188,8 @@ export default function PromotionBannerUpdatePage() {
                                                     };
                                                 });
                                                 setPromoImage("");
-                                                promoInputRef.current.value = null;
+                                                promoInputRef.current.value =
+                                                    null;
                                             }}
                                         >
                                             Remove

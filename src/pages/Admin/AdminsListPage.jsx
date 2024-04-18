@@ -117,7 +117,10 @@ export default function AdminsListPage() {
                                     }}
                                     value={filters.searchQuery || ""}
                                 />
-                                <button type="submit" className="px-3 bg-primaryColor">
+                                <button
+                                    type="submit"
+                                    className="px-3 bg-primaryColor"
+                                >
                                     Search
                                 </button>
                             </form>
@@ -140,13 +143,27 @@ export default function AdminsListPage() {
                                 <table className="w-full">
                                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                         <tr>
-                                            <th className="font-[500] p-3">Admin</th>
-                                            <th className="font-[500] p-3">Designation</th>
-                                            <th className="font-[500] p-3">PhoneNumber</th>
-                                            <th className="font-[500] p-3">Location</th>
-                                            <th className="font-[500] p-3">Roles</th>
-                                            <th className="font-[500] p-3">Last Logged In</th>
-                                            <th className="font-[500] p-3">Action</th>
+                                            <th className="font-[500] p-3">
+                                                Admin
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Designation
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                PhoneNumber
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Location
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Roles
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Last Logged In
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Action
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="text-sm">
@@ -161,7 +178,9 @@ export default function AdminsListPage() {
                                                             <img
                                                                 src={
                                                                     adm?.avatar
-                                                                        ? config.SERVER_URL +
+                                                                        ? import.meta
+                                                                              .env
+                                                                              .VITE_SERVER_URL +
                                                                           adm?.avatar
                                                                         : avatarImg
                                                                 }
@@ -181,7 +200,9 @@ export default function AdminsListPage() {
                                                     <td className="p-3 capitalize">
                                                         {adm?.designation}
                                                     </td>
-                                                    <td className="p-3">{adm?.phoneNumber}</td>
+                                                    <td className="p-3">
+                                                        {adm?.phoneNumber}
+                                                    </td>
                                                     <td className="p-3 capitalize">
                                                         {adm?.city || "N/A"}
                                                         {", "}
@@ -190,10 +211,18 @@ export default function AdminsListPage() {
                                                     <td className="p-3 max-w-[350px]">
                                                         {adm?.roles?.length > 0
                                                             ? adm?.roles?.map(
-                                                                  (item, index) =>
-                                                                      `${item?.roleName}${
+                                                                  (
+                                                                      item,
+                                                                      index
+                                                                  ) =>
+                                                                      `${
+                                                                          item?.roleName
+                                                                      }${
                                                                           index <
-                                                                          adm?.roles?.length - 1
+                                                                          adm
+                                                                              ?.roles
+                                                                              ?.length -
+                                                                              1
                                                                               ? ", "
                                                                               : ""
                                                                       }`
@@ -202,7 +231,10 @@ export default function AdminsListPage() {
                                                     </td>
                                                     <td className="p-3">
                                                         {adm?.lastLoggedIn
-                                                            ? formatDate(adm?.lastLoggedIn, true)
+                                                            ? formatDate(
+                                                                  adm?.lastLoggedIn,
+                                                                  true
+                                                              )
                                                             : "N/A"}
                                                     </td>
                                                     <td className="p-3">
@@ -210,12 +242,16 @@ export default function AdminsListPage() {
                                                             <button
                                                                 className="h-auto bg-transparent text-red-500 text-xl"
                                                                 onClick={() =>
-                                                                    deleteAdmin(adm?._id)
+                                                                    deleteAdmin(
+                                                                        adm?._id
+                                                                    )
                                                                 }
                                                             >
                                                                 <MdDelete />
                                                             </button>
-                                                            <Link to={`${adm?._id}/edit`}>
+                                                            <Link
+                                                                to={`${adm?._id}/edit`}
+                                                            >
                                                                 <button className="h-auto bg-transparent text-green-500 text-xl">
                                                                     <BiEditAlt />
                                                                 </button>

@@ -49,7 +49,9 @@ export default function FeaturedHotelsPage() {
                     headers: { authorization: `Bearer ${jwtToken}` },
                 });
 
-                const filteredFeaturedHotels = featuredHotels?.filter((item) => item?._id !== id);
+                const filteredFeaturedHotels = featuredHotels?.filter(
+                    (item) => item?._id !== id
+                );
                 setFeaturedHotels(filteredFeaturedHotels);
             }
         } catch (err) {
@@ -69,7 +71,10 @@ export default function FeaturedHotelsPage() {
 
             setFeaturedHotels(response?.data?.featuredHotels);
             setFilters((prev) => {
-                return { ...prev, totalFeaturedHotels: response?.data?.totalFeaturedHotels };
+                return {
+                    ...prev,
+                    totalFeaturedHotels: response?.data?.totalFeaturedHotels,
+                };
             });
             setIsLoading(false);
         } catch (err) {
@@ -84,7 +89,9 @@ export default function FeaturedHotelsPage() {
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">Featured Hotels</h1>
+                <h1 className="font-[600] text-[15px] uppercase">
+                    Featured Hotels
+                </h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
@@ -118,7 +125,10 @@ export default function FeaturedHotelsPage() {
                             <button
                                 className="px-3"
                                 onClick={() => {
-                                    setFeaturedModal({ isOpen: true, isEdit: false });
+                                    setFeaturedModal({
+                                        isOpen: true,
+                                        isEdit: false,
+                                    });
                                 }}
                             >
                                 + Add Featured Hotel
@@ -135,11 +145,21 @@ export default function FeaturedHotelsPage() {
                                 <table className="w-full">
                                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                         <tr>
-                                            <th className="font-[500] p-3">Hotel</th>
-                                            <th className="font-[500] p-3">Tag Line</th>
-                                            <th className="font-[500] p-3">Show Home Page</th>
-                                            <th className="font-[500] p-3">Priority</th>
-                                            <th className="font-[500] p-3">Action</th>
+                                            <th className="font-[500] p-3">
+                                                Hotel
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Tag Line
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Show Home Page
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Priority
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Action
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="text-sm">
@@ -153,19 +173,35 @@ export default function FeaturedHotelsPage() {
                                                         <div className="flex items-center gap-[10px]">
                                                             <img
                                                                 src={
-                                                                    item?.thumbnail?.isRelative ===
+                                                                    item
+                                                                        ?.thumbnail
+                                                                        ?.isRelative ===
                                                                     true
-                                                                        ? config.SERVER_URL +
-                                                                          item?.thumbnail?.path
-                                                                        : item?.thumbnail?.path
+                                                                        ? import.meta
+                                                                              .env
+                                                                              .VITE_SERVER_URL +
+                                                                          item
+                                                                              ?.thumbnail
+                                                                              ?.path
+                                                                        : item
+                                                                              ?.thumbnail
+                                                                              ?.path
                                                                 }
                                                                 alt=""
                                                                 className="w-[40px] rounded max-h-[40px]"
                                                             />
                                                             <div>
-                                                                <span>{item?.hotelName}</span>
+                                                                <span>
+                                                                    {
+                                                                        item?.hotelName
+                                                                    }
+                                                                </span>
                                                                 <span className="block text-grayColor text-[12px]">
-                                                                    {item?.hotelId?.address}
+                                                                    {
+                                                                        item
+                                                                            ?.hotelId
+                                                                            ?.address
+                                                                    }
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -174,17 +210,22 @@ export default function FeaturedHotelsPage() {
                                                         {item?.tagLine || "N/A"}
                                                     </td>
                                                     <td className="p-3">
-                                                        {item?.showHomePage === true
+                                                        {item?.showHomePage ===
+                                                        true
                                                             ? "True"
                                                             : "False"}
                                                     </td>
-                                                    <td className="p-3">{item?.priority || 0}</td>
+                                                    <td className="p-3">
+                                                        {item?.priority || 0}
+                                                    </td>
                                                     <td className="p-3">
                                                         <div className="flex gap-[10px]">
                                                             <button
                                                                 className="h-auto bg-transparent text-red-500 text-xl"
                                                                 onClick={() =>
-                                                                    deleteFeaturedHotel(item?._id)
+                                                                    deleteFeaturedHotel(
+                                                                        item?._id
+                                                                    )
                                                                 }
                                                             >
                                                                 <MdDelete />
@@ -192,11 +233,15 @@ export default function FeaturedHotelsPage() {
                                                             <button
                                                                 className="h-auto bg-transparent text-green-500 text-xl"
                                                                 onClick={() => {
-                                                                    setSelectedFeaturedHotel(item);
-                                                                    setFeaturedModal({
-                                                                        isOpen: true,
-                                                                        isEdit: true,
-                                                                    });
+                                                                    setSelectedFeaturedHotel(
+                                                                        item
+                                                                    );
+                                                                    setFeaturedModal(
+                                                                        {
+                                                                            isOpen: true,
+                                                                            isEdit: true,
+                                                                        }
+                                                                    );
                                                                 }}
                                                             >
                                                                 <BiEditAlt />

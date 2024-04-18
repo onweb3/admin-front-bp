@@ -94,7 +94,8 @@ export default function LogoSettingsB2cPage() {
                                 src={
                                     logoImg
                                         ? URL.createObjectURL(logoImg)
-                                        : config.SERVER_URL + logoUrl
+                                        : import.meta.env.VITE_SERVER_URL +
+                                          logoUrl
                                 }
                                 className="w-[250px]"
                                 alt=""

@@ -23,7 +23,9 @@
             import axios from "axios";
             import { config } from "/src/constants";
 
-            const response = await axios.get(`${config.SERVER_URL}/initial/`);
+            const response = await axios.get(
+                `${import.meta.env.VITE_SERVER_URL}/initial/`
+            );
             console.log(response, "response");
             const { data } = response.data;
             document.getElementById("title").textContent =
@@ -32,7 +34,7 @@
                 .getElementById("companyLogo")
                 .setAttribute(
                     "href",
-                    `${config.SERVER_URL}/${data[0]?.FAV_IMAGE}`
+                    `${import.meta.env.VITE_SERVER_URL}/${data[0]?.FAV_IMAGE}`
                 );
         </script>
     </body>

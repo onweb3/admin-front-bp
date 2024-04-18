@@ -20,7 +20,8 @@ export default function TourPackageSummaryForm({ selectedSection, newImages }) {
                             src={
                                 newImages && newImages[0]
                                     ? URL.createObjectURL(newImages[0])
-                                    : config.SERVER_URL + data?.thumbnail[0]
+                                    : import.meta.env.VITE_SERVER_URL +
+                                      data?.thumbnail[0]
                             }
                             alt=""
                             className="w-full h-full object-cover"
@@ -124,7 +125,8 @@ export default function TourPackageSummaryForm({ selectedSection, newImages }) {
                                                     <div className="w-[100px] h-[60px] rounded overflow-hidden bg-slate-300">
                                                         <img
                                                             src={
-                                                                config.SERVER_URL +
+                                                                import.meta.env
+                                                                    .VITE_SERVER_URL +
                                                                 itineraryItem
                                                                     ?.activity
                                                                     ?.attraction
@@ -254,7 +256,9 @@ export default function TourPackageSummaryForm({ selectedSection, newImages }) {
                                                                     ?.image
                                                                     ?.isRelative ===
                                                                 true
-                                                                    ? config.SERVER_URL +
+                                                                    ? import.meta
+                                                                          .env
+                                                                          .VITE_SERVER_URL +
                                                                       hOption
                                                                           ?.hotel
                                                                           ?.image

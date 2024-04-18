@@ -61,7 +61,7 @@ export default function AttrMediaForm({
                     src={
                         logoImg
                             ? URL.createObjectURL(logoImg)
-                            : config.SERVER_URL + logo
+                            : import.meta.env.VITE_SERVER_URL + logo
                     }
                     className="w-[150px]"
                     alt=""
@@ -105,7 +105,7 @@ export default function AttrMediaForm({
                             onClick={() => dispatch(removeImage(index))}
                         >
                             <img
-                                src={config.SERVER_URL + image}
+                                src={import.meta.env.VITE_SERVER_URL + image}
                                 alt=""
                                 className="w-full h-full object-cover"
                             />

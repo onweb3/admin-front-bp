@@ -31,7 +31,7 @@ export default function ProfilePage() {
                             <img
                                 src={
                                     admin?.avatar
-                                        ? config.SERVER_URL +
+                                        ? import.meta.env.VITE_SERVER_URL +
                                           admin?.avatar
                                         : avatarImg
                                 }
@@ -108,7 +108,10 @@ export default function ProfilePage() {
                     <div className="bg-white rounded p-4 shadow-sm h-max">
                         <h2 className="font-medium mb-3">About</h2>
                         <div className="text-sm text-grayColor leading-[28px]">
-                            <p>{admin?.description || "No description added..."}</p>
+                            <p>
+                                {admin?.description ||
+                                    "No description added..."}
+                            </p>
                         </div>
 
                         <div className="flex items-center gap-[15px] mt-9">

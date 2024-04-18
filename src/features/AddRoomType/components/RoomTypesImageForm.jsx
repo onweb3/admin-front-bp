@@ -54,7 +54,10 @@ export default function RoomTypesImageForm({
                         >
                             <img
                                 src={
-                                    image?.isRelative === true ? config.SERVER_URL + image?.path : image?.path
+                                    image?.isRelative === true
+                                        ? import.meta.env.VITE_SERVER_URL +
+                                          image?.path
+                                        : image?.path
                                 }
                                 alt=""
                                 className="w-full h-full object-cover"

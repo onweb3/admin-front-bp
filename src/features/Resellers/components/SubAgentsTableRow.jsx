@@ -40,13 +40,20 @@ export default function SubAgentsTableRow({ reseller, referredBy = true }) {
             <td className="p-3">
                 <div className="flex items-center gap-[10px]">
                     <img
-                        src={reseller?.avatar ? config.SERVER_URL + reseller?.avatar : avatarImg}
+                        src={
+                            reseller?.avatar
+                                ? import.meta.env.VITE_SERVER_URL +
+                                  reseller?.avatar
+                                : avatarImg
+                        }
                         alt=""
                         className="w-[40px] rounded-full h-[40px]"
                     />
                     <div>
                         <span>{reseller?.companyName}</span>
-                        <span className="block text-sm text-grayColor">{reseller?.website}</span>
+                        <span className="block text-sm text-grayColor">
+                            {reseller?.website}
+                        </span>
                     </div>
                 </div>
             </td>
@@ -65,7 +72,8 @@ export default function SubAgentsTableRow({ reseller, referredBy = true }) {
                         className="text-blue-500 hover:underline"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        {reseller?.referredBy?.companyName} - ({reseller?.referredBy?.agentCode})
+                        {reseller?.referredBy?.companyName} - (
+                        {reseller?.referredBy?.agentCode})
                     </Link>
                 </td>
             )}

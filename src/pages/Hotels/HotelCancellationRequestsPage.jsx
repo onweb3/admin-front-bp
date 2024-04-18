@@ -32,7 +32,8 @@ export default function HotelCancellationRequestsPage() {
             setFilters((prev) => {
                 return {
                     ...prev,
-                    totalCancellationRequests: response.data?.totalCancellationRequests,
+                    totalCancellationRequests:
+                        response.data?.totalCancellationRequests,
                 };
             });
             setIsLoading(false);
@@ -71,7 +72,9 @@ export default function HotelCancellationRequestsPage() {
             <div className="p-6">
                 <div className="bg-white rounded shadow-sm">
                     <div className="flex items-center justify-between border-b border-dashed p-4">
-                        <h1 className="font-medium">All Hotel Order Cancellation Requests</h1>
+                        <h1 className="font-medium">
+                            All Hotel Order Cancellation Requests
+                        </h1>
                         {/* <button
                             className="px-3 bg-[#299cdb] flex items-center justify-center gap-[10px]"
                             // onClick={handleDownload}
@@ -94,15 +97,33 @@ export default function HotelCancellationRequestsPage() {
                                 <table className="w-full">
                                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                         <tr>
-                                            <th className="font-[500] p-3">Ref.No</th>
-                                            <th className="font-[500] p-3">Hotel</th>
-                                            <th className="font-[500] p-3">Reseller</th>
-                                            <th className="font-[500] p-3">Date</th>
-                                            <th className="font-[500] p-3">Room</th>
-                                            <th className="font-[500] p-3">Pax</th>
-                                            <th className="font-[500] p-3">Price</th>
-                                            <th className="font-[500] p-3">Cancellation</th>
-                                            <th className="font-[500] p-3">Status</th>
+                                            <th className="font-[500] p-3">
+                                                Ref.No
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Hotel
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Reseller
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Date
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Room
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Pax
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Price
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Cancellation
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Status
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="text-sm">
@@ -119,10 +140,16 @@ export default function HotelCancellationRequestsPage() {
                                                 >
                                                     <td className="p-3">
                                                         <span>
-                                                            {item?.orderId?.referenceNumber}
+                                                            {
+                                                                item?.orderId
+                                                                    ?.referenceNumber
+                                                            }
                                                         </span>
                                                         <span className="block text-[13px] text-grayColor">
-                                                            {formatDate(item?.createdAt, true)}
+                                                            {formatDate(
+                                                                item?.createdAt,
+                                                                true
+                                                            )}
                                                         </span>
                                                     </td>
                                                     <td className="p-3">
@@ -130,13 +157,24 @@ export default function HotelCancellationRequestsPage() {
                                                             <div className="w-[40px] min-w-[40px] h-[40px] min-h-[40px] overflow-hidden rounded">
                                                                 <img
                                                                     src={
-                                                                        item?.orderId?.hotel?.image
+                                                                        item
+                                                                            ?.orderId
+                                                                            ?.hotel
+                                                                            ?.image
                                                                             ?.isRelative
-                                                                            ? config.SERVER_URL +
-                                                                              item?.orderId?.hotel
-                                                                                  ?.image?.path
-                                                                            : item?.orderId?.hotel
-                                                                                  ?.image?.path
+                                                                            ? import.meta
+                                                                                  .env
+                                                                                  .VITE_SERVER_URL +
+                                                                              item
+                                                                                  ?.orderId
+                                                                                  ?.hotel
+                                                                                  ?.image
+                                                                                  ?.path
+                                                                            : item
+                                                                                  ?.orderId
+                                                                                  ?.hotel
+                                                                                  ?.image
+                                                                                  ?.path
                                                                     }
                                                                     className="w-full h-full object-cover"
                                                                 />
@@ -144,35 +182,77 @@ export default function HotelCancellationRequestsPage() {
                                                             <div>
                                                                 <span>
                                                                     {
-                                                                        item?.orderId?.hotel
+                                                                        item
+                                                                            ?.orderId
+                                                                            ?.hotel
                                                                             ?.hotelName
                                                                     }
                                                                 </span>
                                                                 <span className="block text-[13px] text-grayColor">
-                                                                    {item?.orderId?.hotel?.address}
+                                                                    {
+                                                                        item
+                                                                            ?.orderId
+                                                                            ?.hotel
+                                                                            ?.address
+                                                                    }
                                                                 </span>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td className="p-3">
-                                                        <span>{item?.resellerId?.companyName}</span>{" "}
+                                                        <span>
+                                                            {
+                                                                item?.resellerId
+                                                                    ?.companyName
+                                                            }
+                                                        </span>{" "}
                                                         <span className=" text-[13px]">
-                                                            ({item?.resellerId?.agentCode})
+                                                            (
+                                                            {
+                                                                item?.resellerId
+                                                                    ?.agentCode
+                                                            }
+                                                            )
                                                         </span>
                                                     </td>
                                                     <td className="p-3">
-                                                        {formatDate(item?.orderId?.fromDate)} -{" "}
-                                                        {formatDate(item?.orderId?.toDate)}
+                                                        {formatDate(
+                                                            item?.orderId
+                                                                ?.fromDate
+                                                        )}{" "}
+                                                        -{" "}
+                                                        {formatDate(
+                                                            item?.orderId
+                                                                ?.toDate
+                                                        )}
                                                     </td>
                                                     <td className="p-3 whitespace-nowrap">
-                                                        {item?.orderId?.roomsCount || "N/A"} ROOM
+                                                        {item?.orderId
+                                                            ?.roomsCount ||
+                                                            "N/A"}{" "}
+                                                        ROOM
                                                     </td>
                                                     <td className="p-3 whitespace-nowrap">
-                                                        {item?.orderId?.totalAdults} ADT,{" "}
-                                                        {item?.orderId?.totalChildren} CHD
+                                                        {
+                                                            item?.orderId
+                                                                ?.totalAdults
+                                                        }{" "}
+                                                        ADT,{" "}
+                                                        {
+                                                            item?.orderId
+                                                                ?.totalChildren
+                                                        }{" "}
+                                                        CHD
                                                     </td>
-                                                    <td className={"p-3 whitespace-nowrap "}>
-                                                        {item?.orderId?.netPrice?.toFixed(2)} AED
+                                                    <td
+                                                        className={
+                                                            "p-3 whitespace-nowrap "
+                                                        }
+                                                    >
+                                                        {item?.orderId?.netPrice?.toFixed(
+                                                            2
+                                                        )}{" "}
+                                                        AED
                                                     </td>
                                                     <td className="p-3">
                                                         <span
@@ -187,29 +267,42 @@ export default function HotelCancellationRequestsPage() {
                                                                     : "bg-[#f7b84b1A] text-[#f7b84b]")
                                                             }
                                                         >
-                                                            {item?.cancellationStatus}
+                                                            {
+                                                                item?.cancellationStatus
+                                                            }
                                                         </span>
                                                         <span className="block mt-2 text-[13px] text-grayColor">
-                                                            {formatDate(item?.createdAt, true)}
+                                                            {formatDate(
+                                                                item?.createdAt,
+                                                                true
+                                                            )}
                                                         </span>
                                                     </td>
                                                     <td className="p-3">
                                                         <span
                                                             className={
                                                                 "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
-                                                                (item?.orderId?.status ===
+                                                                (item?.orderId
+                                                                    ?.status ===
                                                                 "cancelled"
                                                                     ? "bg-[#f065481A] text-[#f06548]"
-                                                                    : item?.orderId?.status ===
+                                                                    : item
+                                                                          ?.orderId
+                                                                          ?.status ===
                                                                       "confirmed"
                                                                     ? "text-[#0ab39c] bg-[#0ab39c1A]"
-                                                                    : item?.orderId?.status ===
+                                                                    : item
+                                                                          ?.orderId
+                                                                          ?.status ===
                                                                       "booked"
                                                                     ? "text-[#0a83b3] bg-[#0a83b31a]"
                                                                     : "bg-[#f7b84b1A] text-[#f7b84b]")
                                                             }
                                                         >
-                                                            {item?.orderId?.status}
+                                                            {
+                                                                item?.orderId
+                                                                    ?.status
+                                                            }
                                                         </span>
                                                     </td>
                                                 </tr>

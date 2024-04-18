@@ -18,7 +18,10 @@ export default function HotelBannerAdsPage() {
         hotelName: "",
         totalBannerAds: 0,
     });
-    const [hotelBannerModal, setHotelBannerModal] = useState({ isOpen: false, isEdit: false });
+    const [hotelBannerModal, setHotelBannerModal] = useState({
+        isOpen: false,
+        isEdit: false,
+    });
     const [selectedHotelBannerAd, setSelectedHotelBannerAd] = useState({});
 
     const { jwtToken } = useSelector((state) => state.admin);
@@ -46,7 +49,9 @@ export default function HotelBannerAdsPage() {
                     headers: { authorization: `Bearer ${jwtToken}` },
                 });
 
-                const filteredHotelBannerAds = bannerAds?.filter((item) => item._id !== id);
+                const filteredHotelBannerAds = bannerAds?.filter(
+                    (item) => item._id !== id
+                );
                 setBannerAds(filteredHotelBannerAds);
             }
         } catch (err) {
@@ -66,7 +71,11 @@ export default function HotelBannerAdsPage() {
 
             setBannerAds(response?.data?.hotelBannerAds?.data);
             setFilters((prev) => {
-                return { ...prev, totalBannerAds: response?.data?.hotelBannerAds?.totalBannerAds };
+                return {
+                    ...prev,
+                    totalBannerAds:
+                        response?.data?.hotelBannerAds?.totalBannerAds,
+                };
             });
             setIsLoading(false);
         } catch (err) {
@@ -81,7 +90,9 @@ export default function HotelBannerAdsPage() {
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">Hotel Banner Ads</h1>
+                <h1 className="font-[600] text-[15px] uppercase">
+                    Hotel Banner Ads
+                </h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
@@ -111,11 +122,16 @@ export default function HotelBannerAdsPage() {
                 <div className="p-6">
                     <div className="bg-white rounded shadow-sm">
                         <div className="flex items-center justify-between border-b border-dashed p-4">
-                            <h1 className="font-medium">All Hotel Banner Ads</h1>
+                            <h1 className="font-medium">
+                                All Hotel Banner Ads
+                            </h1>
                             <button
                                 className="px-3"
                                 onClick={() => {
-                                    setHotelBannerModal({ isOpen: true, isEdit: false });
+                                    setHotelBannerModal({
+                                        isOpen: true,
+                                        isEdit: false,
+                                    });
                                 }}
                             >
                                 + Add Banner
@@ -132,10 +148,18 @@ export default function HotelBannerAdsPage() {
                                 <table className="w-full">
                                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                         <tr>
-                                            <th className="font-[500] p-3">Hotel</th>
-                                            <th className="font-[500] p-3">Banner</th>
-                                            <th className="font-[500] p-3">Priority</th>
-                                            <th className="font-[500] p-3">Action</th>
+                                            <th className="font-[500] p-3">
+                                                Hotel
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Banner
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Priority
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Action
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="text-sm">
@@ -147,29 +171,42 @@ export default function HotelBannerAdsPage() {
                                                 >
                                                     <td className="p-3">
                                                         <div>
-                                                            <span>{item?.hotel?.hotelName}</span>
+                                                            <span>
+                                                                {
+                                                                    item?.hotel
+                                                                        ?.hotelName
+                                                                }
+                                                            </span>
                                                             <span className="block text-grayColor text-[12px]">
-                                                                {item?.hotel?.address}
+                                                                {
+                                                                    item?.hotel
+                                                                        ?.address
+                                                                }
                                                             </span>
                                                         </div>
                                                     </td>
                                                     <td className="p-3">
                                                         <img
                                                             src={
-                                                                config.SERVER_URL +
+                                                                import.meta.env
+                                                                    .VITE_SERVER_URL +
                                                                 item?.bannerImage
                                                             }
                                                             alt=""
                                                             className="w-[140px]"
                                                         />
                                                     </td>
-                                                    <td className="p-3">{item?.priority || 0}</td>
+                                                    <td className="p-3">
+                                                        {item?.priority || 0}
+                                                    </td>
                                                     <td className="p-3">
                                                         <div className="flex gap-[10px]">
                                                             <button
                                                                 className="h-auto bg-transparent text-red-500 text-xl"
                                                                 onClick={() =>
-                                                                    deleteHotelBannerAd(item?._id)
+                                                                    deleteHotelBannerAd(
+                                                                        item?._id
+                                                                    )
                                                                 }
                                                             >
                                                                 <MdDelete />
@@ -177,11 +214,15 @@ export default function HotelBannerAdsPage() {
                                                             <button
                                                                 className="h-auto bg-transparent text-green-500 text-xl"
                                                                 onClick={() => {
-                                                                    setSelectedHotelBannerAd(item);
-                                                                    setHotelBannerModal({
-                                                                        isOpen: true,
-                                                                        isEdit: true,
-                                                                    });
+                                                                    setSelectedHotelBannerAd(
+                                                                        item
+                                                                    );
+                                                                    setHotelBannerModal(
+                                                                        {
+                                                                            isOpen: true,
+                                                                            isEdit: true,
+                                                                        }
+                                                                    );
                                                                 }}
                                                             >
                                                                 <BiEditAlt />

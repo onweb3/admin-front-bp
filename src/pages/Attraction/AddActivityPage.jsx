@@ -798,7 +798,8 @@ export default function AddActivityPage() {
                                             >
                                                 <img
                                                     src={
-                                                        config.SERVER_URL +
+                                                        import.meta.env
+                                                            .VITE_SERVER_URL +
                                                         image
                                                     }
                                                     alt=""

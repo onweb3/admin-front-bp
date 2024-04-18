@@ -413,18 +413,16 @@ export default function HotelAlreadyAvailableSearchModal({
                                                     });
                                                     onClickHandler({
                                                         name: "hotelName",
-                                                        value: hotel
-                                                            ?.hotelName,
+                                                        value: hotel?.hotelName,
                                                     });
                                                     onClickHandler({
                                                         name: "placeName",
-                                                        value: hotel
-                                                            ?.city?.cityName,
+                                                        value: hotel?.city
+                                                            ?.cityName,
                                                     });
                                                     onClickHandler({
                                                         name: "starCategory",
-                                                        value: hotel
-                                                            ?.starCategory,
+                                                        value: hotel?.starCategory,
                                                     });
                                                     onClickHandler({
                                                         name: "hotelData",
@@ -432,24 +430,21 @@ export default function HotelAlreadyAvailableSearchModal({
                                                     });
                                                     onClickHandler({
                                                         name: "cityId",
-                                                        value: hotel
-                                                            ?.city?._id,
+                                                        value: hotel?.city?._id,
                                                     });
                                                     onClickHandler({
                                                         name: "areaId",
-                                                        value: hotel
-                                                            ?.area?._id,
+                                                        value: hotel?.area?._id,
                                                     });
                                                     onClickHandler({
                                                         name: "areaName",
-                                                        value: hotel
-                                                            ?.area?.areaName,
+                                                        value: hotel?.area
+                                                            ?.areaName,
                                                     });
                                                     setSelectedHotel(hotel);
                                                 }}
                                                 className={`${
-                                                    selectedHotel
-                                                        ?._id ===
+                                                    selectedHotel?._id ===
                                                     hotel?._id
                                                         ? " bg-green-50 "
                                                         : " bg-white "
@@ -460,12 +455,12 @@ export default function HotelAlreadyAvailableSearchModal({
                                                         src={
                                                             hotel?.image
                                                                 ?.isRelative
-                                                                ? config.SERVER_URL +
-                                                                  hotel
-                                                                      ?.image
+                                                                ? import.meta
+                                                                      .env
+                                                                      .VITE_SERVER_URL +
+                                                                  hotel?.image
                                                                       ?.path
-                                                                : hotel
-                                                                      ?.image
+                                                                : hotel?.image
                                                                       ?.path
                                                         }
                                                         alt={
@@ -475,8 +470,7 @@ export default function HotelAlreadyAvailableSearchModal({
                                                     />
                                                     <div
                                                         className={` ${
-                                                            selectedHotel
-                                                                ?._id ===
+                                                            selectedHotel?._id ===
                                                             hotel?._id
                                                                 ? " block "
                                                                 : " hidden "
@@ -488,27 +482,20 @@ export default function HotelAlreadyAvailableSearchModal({
                                                 <div className="p-2 text-left">
                                                     <div className="pt-2">
                                                         <p className="text-sm font-[500] text-gray-400">
-                                                            {
-                                                                hotel
-                                                                    ?.hotelName
-                                                            }
+                                                            {hotel?.hotelName}
                                                         </p>
                                                     </div>
                                                     <div className="text-xs text-grayColor">
                                                         {hotel?.address}
                                                     </div>
                                                     <div className="text-xs text-grayColor flex items-center gap-1">
-                                                        {
-                                                            hotel
-                                                                ?.starCategory
-                                                        }
+                                                        {hotel?.starCategory}
                                                         <span className="text-yellow-400 text-sm">
                                                             <AiFillStar />
                                                         </span>
                                                     </div>
                                                     <div className="text-xs text-grayColor">
-                                                        {hotel?.city
-                                                            ?.cityName +
+                                                        {hotel?.city?.cityName +
                                                             " , " +
                                                             hotel?.state
                                                                 ?.stateName}

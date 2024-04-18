@@ -15,8 +15,14 @@ export default function AddVehicleBodyTypeModal({
     updateVehicleBodyType,
 }) {
     const [data, setData] = useState({
-        bodyType: (vehicleBodyTypesModal?.isEdit && selectedVehicleBodyType?.bodyType) || "",
-        bodyImg: (vehicleBodyTypesModal?.isEdit && selectedVehicleBodyType?.bodyImg) || "",
+        bodyType:
+            (vehicleBodyTypesModal?.isEdit &&
+                selectedVehicleBodyType?.bodyType) ||
+            "",
+        bodyImg:
+            (vehicleBodyTypesModal?.isEdit &&
+                selectedVehicleBodyType?.bodyImg) ||
+            "",
     });
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -61,14 +67,20 @@ export default function AddVehicleBodyTypeModal({
 
                 updateVehicleBodyType(response.data);
             } else {
-                const response = await axios.post("/transfers/vehicles/body-types/add", formData, {
-                    headers: { Authorization: `Bearer ${jwtToken}` },
-                });
+                const response = await axios.post(
+                    "/transfers/vehicles/body-types/add",
+                    formData,
+                    {
+                        headers: { Authorization: `Bearer ${jwtToken}` },
+                    }
+                );
                 addVehicleBodyType(response.data);
             }
             setVehicleBodyTypesModal({ isOpen: false, isEdit: false });
         } catch (err) {
-            setError(err?.response?.data?.error || "Something went wrong, Try again");
+            setError(
+                err?.response?.data?.error || "Something went wrong, Try again"
+            );
             setIsLoading(false);
         }
     };
@@ -87,7 +99,12 @@ export default function AddVehicleBodyTypeModal({
                     </h2>
                     <button
                         className="h-auto bg-transparent text-textColor text-xl"
-                        onClick={() => setVehicleBodyTypesModal({ isOpen: false, isEdit: false })}
+                        onClick={() =>
+                            setVehicleBodyTypesModal({
+                                isOpen: false,
+                                isEdit: false,
+                            })
+                        }
                     >
                         <MdClose />
                     </button>
@@ -119,14 +136,20 @@ export default function AddVehicleBodyTypeModal({
                                         src={
                                             bodyImg
                                                 ? URL.createObjectURL(bodyImg)
-                                                : config.SERVER_URL + data.bodyImg
+                                                : import.meta.env
+                                                      .VITE_SERVER_URL +
+                                                  data.bodyImg
                                         }
                                         className="w-[100px] max-h-[100px]"
                                     />
                                 </div>
                             )}
                         </div>
-                        {error && <span className="text-sm block text-red-500 mt-2">{error}</span>}
+                        {error && (
+                            <span className="text-sm block text-red-500 mt-2">
+                                {error}
+                            </span>
+                        )}
                         <div className="mt-4 flex items-center justify-end gap-[12px]">
                             <button
                                 className="bg-slate-300 text-textColor px-[15px]"

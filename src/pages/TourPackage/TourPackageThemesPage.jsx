@@ -42,7 +42,9 @@ export default function TourPackageThemesPage() {
                 await axios.delete(`/tour-packages/themes/delete/${id}`, {
                     headers: { authorization: `Bearer ${jwtToken}` },
                 });
-                const filteredThemes = tpThemes.filter((theme) => theme._id !== id);
+                const filteredThemes = tpThemes.filter(
+                    (theme) => theme._id !== id
+                );
                 setTpThemes(filteredThemes);
             }
         } catch (err) {
@@ -72,7 +74,9 @@ export default function TourPackageThemesPage() {
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">Tour Package Themes</h1>
+                <h1 className="font-[600] text-[15px] uppercase">
+                    Tour Package Themes
+                </h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
@@ -92,11 +96,16 @@ export default function TourPackageThemesPage() {
                 <div className="p-6">
                     <div className="bg-white rounded shadow-sm">
                         <div className="flex items-center justify-between border-b border-dashed p-4">
-                            <h1 className="font-medium">All Tour Package Themes</h1>
+                            <h1 className="font-medium">
+                                All Tour Package Themes
+                            </h1>
                             <button
                                 className="px-3"
                                 onClick={() => {
-                                    setTpThemeModal({ isOpen: true, isEdit: false });
+                                    setTpThemeModal({
+                                        isOpen: true,
+                                        isEdit: false,
+                                    });
                                 }}
                             >
                                 + Add Theme
@@ -124,8 +133,12 @@ export default function TourPackageThemesPage() {
                                 <table className="w-full">
                                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                         <tr>
-                                            <th className="font-[500] p-3">Theme Name</th>
-                                            <th className="font-[500] p-3">Action</th>
+                                            <th className="font-[500] p-3">
+                                                Theme Name
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Action
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="text-sm">
@@ -139,7 +152,7 @@ export default function TourPackageThemesPage() {
                                                         <div className="flex items-center gap-[10px]">
                                                             <img
                                                                 src={
-                                                                    config.SERVER_URL +
+                                                                    import.meta.env.VITE_SERVER_URL +
                                                                     blog?.thumbnail
                                                                 }
                                                                 alt=""
@@ -149,7 +162,8 @@ export default function TourPackageThemesPage() {
                                                         </div>
                                                     </td> */}
                                                     <td className="p-3 capitalize">
-                                                        {theme?.themeName || "N/A"}
+                                                        {theme?.themeName ||
+                                                            "N/A"}
                                                     </td>
                                                     <td className="p-3">
                                                         <div className="flex gap-[10px]">
@@ -166,11 +180,15 @@ export default function TourPackageThemesPage() {
                                                             <button
                                                                 className="h-auto bg-transparent text-green-500 text-xl"
                                                                 onClick={() => {
-                                                                    setSelectedTpTheme(theme);
-                                                                    setTpThemeModal({
-                                                                        isOpen: true,
-                                                                        isEdit: true,
-                                                                    });
+                                                                    setSelectedTpTheme(
+                                                                        theme
+                                                                    );
+                                                                    setTpThemeModal(
+                                                                        {
+                                                                            isOpen: true,
+                                                                            isEdit: true,
+                                                                        }
+                                                                    );
                                                                 }}
                                                             >
                                                                 <BiEditAlt />

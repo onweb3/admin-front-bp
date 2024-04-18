@@ -46,13 +46,18 @@ export default function HotelDashboardPage() {
                 return {
                     ...prev,
                     recentHotelOrders: response.data?.recentHotelOrders || [],
-                    expiringHotelPayLaterOrders: response.data?.expiringHotelPayLaterOrders || [],
+                    expiringHotelPayLaterOrders:
+                        response.data?.expiringHotelPayLaterOrders || [],
                     topHotelsList: response.data?.topHotelsList || [],
                     topResellersList: response.data?.topResellersList || [],
-                    nextDayHotelArrivalsList: response.data?.nextDayHotelArrivalsList || [],
-                    nextDayHotelDeparturesList: response.data?.nextDayHotelDeparturesList || [],
-                    recentCancellationRequests: response.data?.recentCancellationRequests || [],
-                    unConfirmedBookings: response.data?.unConfirmedBookings || [],
+                    nextDayHotelArrivalsList:
+                        response.data?.nextDayHotelArrivalsList || [],
+                    nextDayHotelDeparturesList:
+                        response.data?.nextDayHotelDeparturesList || [],
+                    recentCancellationRequests:
+                        response.data?.recentCancellationRequests || [],
+                    unConfirmedBookings:
+                        response.data?.unConfirmedBookings || [],
                 };
             });
             setIsPageLoading(false);
@@ -88,7 +93,9 @@ export default function HotelDashboardPage() {
         <div className="p-6">
             <div className="flex items-center justify-between gap-[10px] mb-5">
                 <div>
-                    <span className="font-medium text-textColor">Good morning, {admin?.name}</span>
+                    <span className="font-medium text-textColor">
+                        Good morning, {admin?.name}
+                    </span>
                     <span className="block mt-1 text-[13px] text-grayColor">
                         Here's what's happening with your website.
                     </span>
@@ -184,92 +191,162 @@ export default function HotelDashboardPage() {
                             <table className="w-full">
                                 <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                     <tr>
-                                        <th className="font-[500] p-3">Ref.No</th>
-                                        <th className="font-[500] p-3">Hotel</th>
-                                        <th className="font-[500] p-3">Reseller</th>
+                                        <th className="font-[500] p-3">
+                                            Ref.No
+                                        </th>
+                                        <th className="font-[500] p-3">
+                                            Hotel
+                                        </th>
+                                        <th className="font-[500] p-3">
+                                            Reseller
+                                        </th>
                                         <th className="font-[500] p-3">Date</th>
                                         <th className="font-[500] p-3">Room</th>
                                         <th className="font-[500] p-3">Pax</th>
-                                        <th className="font-[500] p-3">Price</th>
-                                        <th className="font-[500] p-3">Status</th>
+                                        <th className="font-[500] p-3">
+                                            Price
+                                        </th>
+                                        <th className="font-[500] p-3">
+                                            Status
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody className="text-sm">
-                                    {data?.recentHotelOrders?.map((item, index) => {
-                                        return (
-                                            <tr
-                                                key={index}
-                                                className="border-b border-tableBorderColor transition-all cursor-pointer hover:bg-[#f3f6f9]"
-                                                onClick={() =>
-                                                    navigate(`/hotels/reservation/${item?._id}`)
-                                                }
-                                            >
-                                                <td className="p-3">
-                                                    <span>{item?.referenceNumber}</span>
-                                                    <span className="block text-[13px] text-grayColor">
-                                                        {formatDate(item?.createdAt, true)}
-                                                    </span>
-                                                </td>
-                                                <td className="p-3">
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-[40px] min-w-[40px] h-[40px] min-h-[40px] overflow-hidden rounded">
-                                                            <img
-                                                                src={
-                                                                    item?.hotel?.image?.isRelative
-                                                                        ? config.SERVER_URL +
-                                                                          item?.hotel?.image?.path
-                                                                        : item?.hotel?.image?.path
-                                                                }
-                                                                className="w-full h-full object-cover"
-                                                            />
+                                    {data?.recentHotelOrders?.map(
+                                        (item, index) => {
+                                            return (
+                                                <tr
+                                                    key={index}
+                                                    className="border-b border-tableBorderColor transition-all cursor-pointer hover:bg-[#f3f6f9]"
+                                                    onClick={() =>
+                                                        navigate(
+                                                            `/hotels/reservation/${item?._id}`
+                                                        )
+                                                    }
+                                                >
+                                                    <td className="p-3">
+                                                        <span>
+                                                            {
+                                                                item?.referenceNumber
+                                                            }
+                                                        </span>
+                                                        <span className="block text-[13px] text-grayColor">
+                                                            {formatDate(
+                                                                item?.createdAt,
+                                                                true
+                                                            )}
+                                                        </span>
+                                                    </td>
+                                                    <td className="p-3">
+                                                        <div className="flex items-center gap-2">
+                                                            <div className="w-[40px] min-w-[40px] h-[40px] min-h-[40px] overflow-hidden rounded">
+                                                                <img
+                                                                    src={
+                                                                        item
+                                                                            ?.hotel
+                                                                            ?.image
+                                                                            ?.isRelative
+                                                                            ? import.meta
+                                                                                  .env
+                                                                                  .VITE_SERVER_URL +
+                                                                              item
+                                                                                  ?.hotel
+                                                                                  ?.image
+                                                                                  ?.path
+                                                                            : item
+                                                                                  ?.hotel
+                                                                                  ?.image
+                                                                                  ?.path
+                                                                    }
+                                                                    className="w-full h-full object-cover"
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <span>
+                                                                    {
+                                                                        item
+                                                                            ?.hotel
+                                                                            ?.hotelName
+                                                                    }
+                                                                </span>
+                                                                <span className="block text-[13px] text-grayColor">
+                                                                    {
+                                                                        item
+                                                                            ?.hotel
+                                                                            ?.address
+                                                                    }
+                                                                </span>
+                                                            </div>
                                                         </div>
-                                                        <div>
-                                                            <span>{item?.hotel?.hotelName}</span>
-                                                            <span className="block text-[13px] text-grayColor">
-                                                                {item?.hotel?.address}
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td className="p-3">
-                                                    <span>{item?.reseller?.companyName}</span>{" "}
-                                                    <span className=" text-[13px]">
-                                                        ({item?.reseller?.agentCode})
-                                                    </span>
-                                                </td>
-                                                <td className="p-3">
-                                                    {formatDate(item?.fromDate)} -{" "}
-                                                    {formatDate(item?.toDate)}
-                                                </td>
-                                                <td className="p-3 whitespace-nowrap">
-                                                    {item?.roomsCount || "N/A"} ROOM
-                                                </td>
-                                                <td className="p-3 whitespace-nowrap">
-                                                    {item?.totalAdults} ADT, {item?.totalChildren}{" "}
-                                                    CHD
-                                                </td>
-                                                <td className={"p-3 whitespace-nowrap "}>
-                                                    {item?.netPrice?.toFixed(2)} AED
-                                                </td>
-                                                <td className="p-3">
-                                                    <span
+                                                    </td>
+                                                    <td className="p-3">
+                                                        <span>
+                                                            {
+                                                                item?.reseller
+                                                                    ?.companyName
+                                                            }
+                                                        </span>{" "}
+                                                        <span className=" text-[13px]">
+                                                            (
+                                                            {
+                                                                item?.reseller
+                                                                    ?.agentCode
+                                                            }
+                                                            )
+                                                        </span>
+                                                    </td>
+                                                    <td className="p-3">
+                                                        {formatDate(
+                                                            item?.fromDate
+                                                        )}{" "}
+                                                        -{" "}
+                                                        {formatDate(
+                                                            item?.toDate
+                                                        )}
+                                                    </td>
+                                                    <td className="p-3 whitespace-nowrap">
+                                                        {item?.roomsCount ||
+                                                            "N/A"}{" "}
+                                                        ROOM
+                                                    </td>
+                                                    <td className="p-3 whitespace-nowrap">
+                                                        {item?.totalAdults} ADT,{" "}
+                                                        {item?.totalChildren}{" "}
+                                                        CHD
+                                                    </td>
+                                                    <td
                                                         className={
-                                                            "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
-                                                            (item?.status === "cancelled"
-                                                                ? "bg-[#f065481A] text-[#f06548]"
-                                                                : item?.status === "confirmed"
-                                                                ? "text-[#0ab39c] bg-[#0ab39c1A]"
-                                                                : item?.status === "booked"
-                                                                ? "text-[#0a83b3] bg-[#0a83b31a]"
-                                                                : "bg-[#f7b84b1A] text-[#f7b84b]")
+                                                            "p-3 whitespace-nowrap "
                                                         }
                                                     >
-                                                        {item?.status}
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        );
-                                    })}
+                                                        {item?.netPrice?.toFixed(
+                                                            2
+                                                        )}{" "}
+                                                        AED
+                                                    </td>
+                                                    <td className="p-3">
+                                                        <span
+                                                            className={
+                                                                "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
+                                                                (item?.status ===
+                                                                "cancelled"
+                                                                    ? "bg-[#f065481A] text-[#f06548]"
+                                                                    : item?.status ===
+                                                                      "confirmed"
+                                                                    ? "text-[#0ab39c] bg-[#0ab39c1A]"
+                                                                    : item?.status ===
+                                                                      "booked"
+                                                                    ? "text-[#0a83b3] bg-[#0a83b31a]"
+                                                                    : "bg-[#f7b84b1A] text-[#f7b84b]")
+                                                            }
+                                                        >
+                                                            {item?.status}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        }
+                                    )}
                                 </tbody>
                             </table>
                         </div>
@@ -305,92 +382,162 @@ export default function HotelDashboardPage() {
                             <table className="w-full">
                                 <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                     <tr>
-                                        <th className="font-[500] p-3">Ref.No</th>
-                                        <th className="font-[500] p-3">Hotel</th>
-                                        <th className="font-[500] p-3">Reseller</th>
+                                        <th className="font-[500] p-3">
+                                            Ref.No
+                                        </th>
+                                        <th className="font-[500] p-3">
+                                            Hotel
+                                        </th>
+                                        <th className="font-[500] p-3">
+                                            Reseller
+                                        </th>
                                         <th className="font-[500] p-3">Date</th>
                                         <th className="font-[500] p-3">Room</th>
                                         <th className="font-[500] p-3">Pax</th>
-                                        <th className="font-[500] p-3">Price</th>
-                                        <th className="font-[500] p-3">Status</th>
+                                        <th className="font-[500] p-3">
+                                            Price
+                                        </th>
+                                        <th className="font-[500] p-3">
+                                            Status
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody className="text-sm">
-                                    {data?.unConfirmedBookings?.map((item, index) => {
-                                        return (
-                                            <tr
-                                                key={index}
-                                                className="border-b border-tableBorderColor transition-all cursor-pointer hover:bg-[#f3f6f9]"
-                                                onClick={() =>
-                                                    navigate(`/hotels/reservation/${item?._id}`)
-                                                }
-                                            >
-                                                <td className="p-3">
-                                                    <span>{item?.referenceNumber}</span>
-                                                    <span className="block text-[13px] text-grayColor">
-                                                        {formatDate(item?.createdAt, true)}
-                                                    </span>
-                                                </td>
-                                                <td className="p-3">
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-[40px] min-w-[40px] h-[40px] min-h-[40px] overflow-hidden rounded">
-                                                            <img
-                                                                src={
-                                                                    item?.hotel?.image?.isRelative
-                                                                        ? config.SERVER_URL +
-                                                                          item?.hotel?.image?.path
-                                                                        : item?.hotel?.image?.path
-                                                                }
-                                                                className="w-full h-full object-cover"
-                                                            />
+                                    {data?.unConfirmedBookings?.map(
+                                        (item, index) => {
+                                            return (
+                                                <tr
+                                                    key={index}
+                                                    className="border-b border-tableBorderColor transition-all cursor-pointer hover:bg-[#f3f6f9]"
+                                                    onClick={() =>
+                                                        navigate(
+                                                            `/hotels/reservation/${item?._id}`
+                                                        )
+                                                    }
+                                                >
+                                                    <td className="p-3">
+                                                        <span>
+                                                            {
+                                                                item?.referenceNumber
+                                                            }
+                                                        </span>
+                                                        <span className="block text-[13px] text-grayColor">
+                                                            {formatDate(
+                                                                item?.createdAt,
+                                                                true
+                                                            )}
+                                                        </span>
+                                                    </td>
+                                                    <td className="p-3">
+                                                        <div className="flex items-center gap-2">
+                                                            <div className="w-[40px] min-w-[40px] h-[40px] min-h-[40px] overflow-hidden rounded">
+                                                                <img
+                                                                    src={
+                                                                        item
+                                                                            ?.hotel
+                                                                            ?.image
+                                                                            ?.isRelative
+                                                                            ? import.meta
+                                                                                  .env
+                                                                                  .VITE_SERVER_URL +
+                                                                              item
+                                                                                  ?.hotel
+                                                                                  ?.image
+                                                                                  ?.path
+                                                                            : item
+                                                                                  ?.hotel
+                                                                                  ?.image
+                                                                                  ?.path
+                                                                    }
+                                                                    className="w-full h-full object-cover"
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <span>
+                                                                    {
+                                                                        item
+                                                                            ?.hotel
+                                                                            ?.hotelName
+                                                                    }
+                                                                </span>
+                                                                <span className="block text-[13px] text-grayColor">
+                                                                    {
+                                                                        item
+                                                                            ?.hotel
+                                                                            ?.address
+                                                                    }
+                                                                </span>
+                                                            </div>
                                                         </div>
-                                                        <div>
-                                                            <span>{item?.hotel?.hotelName}</span>
-                                                            <span className="block text-[13px] text-grayColor">
-                                                                {item?.hotel?.address}
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td className="p-3">
-                                                    <span>{item?.reseller?.companyName}</span>{" "}
-                                                    <span className=" text-[13px]">
-                                                        ({item?.reseller?.agentCode})
-                                                    </span>
-                                                </td>
-                                                <td className="p-3">
-                                                    {formatDate(item?.fromDate)} -{" "}
-                                                    {formatDate(item?.toDate)}
-                                                </td>
-                                                <td className="p-3 whitespace-nowrap">
-                                                    {item?.roomsCount || "N/A"} ROOM
-                                                </td>
-                                                <td className="p-3 whitespace-nowrap">
-                                                    {item?.totalAdults} ADT, {item?.totalChildren}{" "}
-                                                    CHD
-                                                </td>
-                                                <td className={"p-3 whitespace-nowrap "}>
-                                                    {item?.netPrice?.toFixed(2)} AED
-                                                </td>
-                                                <td className="p-3">
-                                                    <span
+                                                    </td>
+                                                    <td className="p-3">
+                                                        <span>
+                                                            {
+                                                                item?.reseller
+                                                                    ?.companyName
+                                                            }
+                                                        </span>{" "}
+                                                        <span className=" text-[13px]">
+                                                            (
+                                                            {
+                                                                item?.reseller
+                                                                    ?.agentCode
+                                                            }
+                                                            )
+                                                        </span>
+                                                    </td>
+                                                    <td className="p-3">
+                                                        {formatDate(
+                                                            item?.fromDate
+                                                        )}{" "}
+                                                        -{" "}
+                                                        {formatDate(
+                                                            item?.toDate
+                                                        )}
+                                                    </td>
+                                                    <td className="p-3 whitespace-nowrap">
+                                                        {item?.roomsCount ||
+                                                            "N/A"}{" "}
+                                                        ROOM
+                                                    </td>
+                                                    <td className="p-3 whitespace-nowrap">
+                                                        {item?.totalAdults} ADT,{" "}
+                                                        {item?.totalChildren}{" "}
+                                                        CHD
+                                                    </td>
+                                                    <td
                                                         className={
-                                                            "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
-                                                            (item?.status === "cancelled"
-                                                                ? "bg-[#f065481A] text-[#f06548]"
-                                                                : item?.status === "confirmed"
-                                                                ? "text-[#0ab39c] bg-[#0ab39c1A]"
-                                                                : item?.status === "booked"
-                                                                ? "text-[#0a83b3] bg-[#0a83b31a]"
-                                                                : "bg-[#f7b84b1A] text-[#f7b84b]")
+                                                            "p-3 whitespace-nowrap "
                                                         }
                                                     >
-                                                        {item?.status}
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        );
-                                    })}
+                                                        {item?.netPrice?.toFixed(
+                                                            2
+                                                        )}{" "}
+                                                        AED
+                                                    </td>
+                                                    <td className="p-3">
+                                                        <span
+                                                            className={
+                                                                "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
+                                                                (item?.status ===
+                                                                "cancelled"
+                                                                    ? "bg-[#f065481A] text-[#f06548]"
+                                                                    : item?.status ===
+                                                                      "confirmed"
+                                                                    ? "text-[#0ab39c] bg-[#0ab39c1A]"
+                                                                    : item?.status ===
+                                                                      "booked"
+                                                                    ? "text-[#0a83b3] bg-[#0a83b31a]"
+                                                                    : "bg-[#f7b84b1A] text-[#f7b84b]")
+                                                            }
+                                                        >
+                                                            {item?.status}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        }
+                                    )}
                                 </tbody>
                             </table>
                         </div>
@@ -405,7 +552,9 @@ export default function HotelDashboardPage() {
             }) && (
                 <div className="bg-white rounded shadow-sm mt-6">
                     <div className="flex items-center justify-between border-b border-dashed p-4">
-                        <h1 className="font-medium">Expiring Pay Later Bookings</h1>
+                        <h1 className="font-medium">
+                            Expiring Pay Later Bookings
+                        </h1>
                         <div>
                             <Link
                                 to="/hotels/reservation/expiring/paylater"
@@ -426,108 +575,190 @@ export default function HotelDashboardPage() {
                             <table className="w-full">
                                 <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                     <tr>
-                                        <th className="font-[500] p-3">Ref.No</th>
-                                        <th className="font-[500] p-3">Hotel</th>
-                                        <th className="font-[500] p-3">Reseller</th>
+                                        <th className="font-[500] p-3">
+                                            Ref.No
+                                        </th>
+                                        <th className="font-[500] p-3">
+                                            Hotel
+                                        </th>
+                                        <th className="font-[500] p-3">
+                                            Reseller
+                                        </th>
                                         <th className="font-[500] p-3">Date</th>
                                         <th className="font-[500] p-3">Room</th>
                                         <th className="font-[500] p-3">Pax</th>
-                                        <th className="font-[500] p-3">Due Amount</th>
-                                        <th className="font-[500] p-3">Last Date</th>
-                                        <th className="font-[500] p-3">Status</th>
+                                        <th className="font-[500] p-3">
+                                            Due Amount
+                                        </th>
+                                        <th className="font-[500] p-3">
+                                            Last Date
+                                        </th>
+                                        <th className="font-[500] p-3">
+                                            Status
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody className="text-sm">
-                                    {data?.expiringHotelPayLaterOrders?.map((item, index) => {
-                                        return (
-                                            <tr
-                                                key={index}
-                                                className="border-b border-tableBorderColor transition-all cursor-pointer hover:bg-[#f3f6f9]"
-                                                onClick={() =>
-                                                    navigate(`/hotels/reservation/${item?._id}`)
-                                                }
-                                            >
-                                                <td className="p-3">
-                                                    <span>{item?.referenceNumber}</span>
-                                                    <span className="block text-[13px] text-grayColor">
-                                                        {formatDate(item?.createdAt, true)}
-                                                    </span>
-                                                </td>
-                                                <td className="p-3">
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-[40px] min-w-[40px] h-[40px] min-h-[40px] overflow-hidden rounded">
-                                                            <img
-                                                                src={
-                                                                    item?.hotel?.image?.isRelative
-                                                                        ? config.SERVER_URL +
-                                                                          item?.hotel?.image?.path
-                                                                        : item?.hotel?.image?.path
-                                                                }
-                                                                className="w-full h-full object-cover"
-                                                            />
-                                                        </div>
-                                                        <div>
-                                                            <span>{item?.hotel?.hotelName}</span>
-                                                            <span className="block text-[13px] text-grayColor">
-                                                                {item?.hotel?.address}
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td className="p-3">
-                                                    <span>{item?.reseller?.companyName}</span>{" "}
-                                                    <span className=" text-[13px]">
-                                                        ({item?.reseller?.agentCode})
-                                                    </span>
-                                                </td>
-                                                <td className="p-3">
-                                                    {formatDate(item?.fromDate)} -{" "}
-                                                    {formatDate(item?.toDate)}
-                                                </td>
-                                                <td className="p-3 whitespace-nowrap">
-                                                    {item?.roomsCount || "N/A"} ROOM
-                                                </td>
-                                                <td className="p-3 whitespace-nowrap">
-                                                    {item?.totalAdults} ADT, {item?.totalChildren}{" "}
-                                                    CHD
-                                                </td>
-                                                <td className={"p-3 whitespace-nowrap "}>
-                                                    {item?.netPrice?.toFixed(2)} AED
-                                                </td>
-                                                <td
-                                                    className={
-                                                        "p-3 " +
-                                                        (new Date()
-                                                            .toISOString()
-                                                            .substring(0, 10) ===
-                                                        new Date(item?.lastDateForPayment)
-                                                            .toISOString()
-                                                            .substring(0, 10)
-                                                            ? "text-red-500"
-                                                            : "")
+                                    {data?.expiringHotelPayLaterOrders?.map(
+                                        (item, index) => {
+                                            return (
+                                                <tr
+                                                    key={index}
+                                                    className="border-b border-tableBorderColor transition-all cursor-pointer hover:bg-[#f3f6f9]"
+                                                    onClick={() =>
+                                                        navigate(
+                                                            `/hotels/reservation/${item?._id}`
+                                                        )
                                                     }
                                                 >
-                                                    {formatDate(item?.lastDateForPayment)}
-                                                </td>
-                                                <td className="p-3">
-                                                    <span
+                                                    <td className="p-3">
+                                                        <span>
+                                                            {
+                                                                item?.referenceNumber
+                                                            }
+                                                        </span>
+                                                        <span className="block text-[13px] text-grayColor">
+                                                            {formatDate(
+                                                                item?.createdAt,
+                                                                true
+                                                            )}
+                                                        </span>
+                                                    </td>
+                                                    <td className="p-3">
+                                                        <div className="flex items-center gap-2">
+                                                            <div className="w-[40px] min-w-[40px] h-[40px] min-h-[40px] overflow-hidden rounded">
+                                                                <img
+                                                                    src={
+                                                                        item
+                                                                            ?.hotel
+                                                                            ?.image
+                                                                            ?.isRelative
+                                                                            ? import.meta
+                                                                                  .env
+                                                                                  .VITE_SERVER_URL +
+                                                                              item
+                                                                                  ?.hotel
+                                                                                  ?.image
+                                                                                  ?.path
+                                                                            : item
+                                                                                  ?.hotel
+                                                                                  ?.image
+                                                                                  ?.path
+                                                                    }
+                                                                    className="w-full h-full object-cover"
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <span>
+                                                                    {
+                                                                        item
+                                                                            ?.hotel
+                                                                            ?.hotelName
+                                                                    }
+                                                                </span>
+                                                                <span className="block text-[13px] text-grayColor">
+                                                                    {
+                                                                        item
+                                                                            ?.hotel
+                                                                            ?.address
+                                                                    }
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td className="p-3">
+                                                        <span>
+                                                            {
+                                                                item?.reseller
+                                                                    ?.companyName
+                                                            }
+                                                        </span>{" "}
+                                                        <span className=" text-[13px]">
+                                                            (
+                                                            {
+                                                                item?.reseller
+                                                                    ?.agentCode
+                                                            }
+                                                            )
+                                                        </span>
+                                                    </td>
+                                                    <td className="p-3">
+                                                        {formatDate(
+                                                            item?.fromDate
+                                                        )}{" "}
+                                                        -{" "}
+                                                        {formatDate(
+                                                            item?.toDate
+                                                        )}
+                                                    </td>
+                                                    <td className="p-3 whitespace-nowrap">
+                                                        {item?.roomsCount ||
+                                                            "N/A"}{" "}
+                                                        ROOM
+                                                    </td>
+                                                    <td className="p-3 whitespace-nowrap">
+                                                        {item?.totalAdults} ADT,{" "}
+                                                        {item?.totalChildren}{" "}
+                                                        CHD
+                                                    </td>
+                                                    <td
                                                         className={
-                                                            "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
-                                                            (item?.status === "cancelled"
-                                                                ? "bg-[#f065481A] text-[#f06548]"
-                                                                : item?.status === "confirmed"
-                                                                ? "text-[#0ab39c] bg-[#0ab39c1A]"
-                                                                : item?.status === "booked"
-                                                                ? "text-[#0a83b3] bg-[#0a83b31a]"
-                                                                : "bg-[#f7b84b1A] text-[#f7b84b]")
+                                                            "p-3 whitespace-nowrap "
                                                         }
                                                     >
-                                                        {item?.status}
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        );
-                                    })}
+                                                        {item?.netPrice?.toFixed(
+                                                            2
+                                                        )}{" "}
+                                                        AED
+                                                    </td>
+                                                    <td
+                                                        className={
+                                                            "p-3 " +
+                                                            (new Date()
+                                                                .toISOString()
+                                                                .substring(
+                                                                    0,
+                                                                    10
+                                                                ) ===
+                                                            new Date(
+                                                                item?.lastDateForPayment
+                                                            )
+                                                                .toISOString()
+                                                                .substring(
+                                                                    0,
+                                                                    10
+                                                                )
+                                                                ? "text-red-500"
+                                                                : "")
+                                                        }
+                                                    >
+                                                        {formatDate(
+                                                            item?.lastDateForPayment
+                                                        )}
+                                                    </td>
+                                                    <td className="p-3">
+                                                        <span
+                                                            className={
+                                                                "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
+                                                                (item?.status ===
+                                                                "cancelled"
+                                                                    ? "bg-[#f065481A] text-[#f06548]"
+                                                                    : item?.status ===
+                                                                      "confirmed"
+                                                                    ? "text-[#0ab39c] bg-[#0ab39c1A]"
+                                                                    : item?.status ===
+                                                                      "booked"
+                                                                    ? "text-[#0a83b3] bg-[#0a83b31a]"
+                                                                    : "bg-[#f7b84b1A] text-[#f7b84b]")
+                                                            }
+                                                        >
+                                                            {item?.status}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        }
+                                    )}
                                 </tbody>
                             </table>
                         </div>
@@ -556,60 +787,98 @@ export default function HotelDashboardPage() {
                                 <table className="w-full">
                                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                         <tr>
-                                            <th className="font-[500] p-3">Ref.No</th>
-                                            <th className="font-[500] p-3">Hotel</th>
-                                            <th className="font-[500] p-3">Date</th>
+                                            <th className="font-[500] p-3">
+                                                Ref.No
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Hotel
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Date
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="text-sm">
-                                        {data?.nextDayHotelArrivalsList?.map((item, index) => {
-                                            return (
-                                                <tr
-                                                    key={index}
-                                                    className="border-b border-tableBorderColor transition-all cursor-pointer hover:bg-[#f3f6f9]"
-                                                    onClick={() =>
-                                                        navigate(`/hotels/reservation/${item?._id}`)
-                                                    }
-                                                >
-                                                    <td className="p-3">
-                                                        <span>{item?.referenceNumber}</span>
-                                                        <span className="block text-[13px] text-grayColor">
-                                                            {formatDate(item?.createdAt, true)}
-                                                        </span>
-                                                    </td>
-                                                    <td className="p-3">
-                                                        <div className="flex items-center gap-2">
-                                                            <div className="w-[40px] min-w-[40px] h-[40px] min-h-[40px] overflow-hidden rounded">
-                                                                <img
-                                                                    src={
-                                                                        item?.hotel?.image
-                                                                            ?.isRelative
-                                                                            ? config.SERVER_URL +
-                                                                              item?.hotel?.image
-                                                                                  ?.path
-                                                                            : item?.hotel?.image
-                                                                                  ?.path
-                                                                    }
-                                                                    className="w-full h-full object-cover"
-                                                                />
+                                        {data?.nextDayHotelArrivalsList?.map(
+                                            (item, index) => {
+                                                return (
+                                                    <tr
+                                                        key={index}
+                                                        className="border-b border-tableBorderColor transition-all cursor-pointer hover:bg-[#f3f6f9]"
+                                                        onClick={() =>
+                                                            navigate(
+                                                                `/hotels/reservation/${item?._id}`
+                                                            )
+                                                        }
+                                                    >
+                                                        <td className="p-3">
+                                                            <span>
+                                                                {
+                                                                    item?.referenceNumber
+                                                                }
+                                                            </span>
+                                                            <span className="block text-[13px] text-grayColor">
+                                                                {formatDate(
+                                                                    item?.createdAt,
+                                                                    true
+                                                                )}
+                                                            </span>
+                                                        </td>
+                                                        <td className="p-3">
+                                                            <div className="flex items-center gap-2">
+                                                                <div className="w-[40px] min-w-[40px] h-[40px] min-h-[40px] overflow-hidden rounded">
+                                                                    <img
+                                                                        src={
+                                                                            item
+                                                                                ?.hotel
+                                                                                ?.image
+                                                                                ?.isRelative
+                                                                                ? import.meta
+                                                                                      .env
+                                                                                      .VITE_SERVER_URL +
+                                                                                  item
+                                                                                      ?.hotel
+                                                                                      ?.image
+                                                                                      ?.path
+                                                                                : item
+                                                                                      ?.hotel
+                                                                                      ?.image
+                                                                                      ?.path
+                                                                        }
+                                                                        className="w-full h-full object-cover"
+                                                                    />
+                                                                </div>
+                                                                <div>
+                                                                    <span>
+                                                                        {
+                                                                            item
+                                                                                ?.hotel
+                                                                                ?.hotelName
+                                                                        }
+                                                                    </span>
+                                                                    <span className="block text-[13px] text-grayColor">
+                                                                        {
+                                                                            item
+                                                                                ?.hotel
+                                                                                ?.address
+                                                                        }
+                                                                    </span>
+                                                                </div>
                                                             </div>
-                                                            <div>
-                                                                <span>
-                                                                    {item?.hotel?.hotelName}
-                                                                </span>
-                                                                <span className="block text-[13px] text-grayColor">
-                                                                    {item?.hotel?.address}
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td className="p-3">
-                                                        {formatDate(item?.fromDate)} -{" "}
-                                                        {formatDate(item?.toDate)}
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })}
+                                                        </td>
+                                                        <td className="p-3">
+                                                            {formatDate(
+                                                                item?.fromDate
+                                                            )}{" "}
+                                                            -{" "}
+                                                            {formatDate(
+                                                                item?.toDate
+                                                            )}
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            }
+                                        )}
                                     </tbody>
                                 </table>
                             </div>
@@ -637,60 +906,98 @@ export default function HotelDashboardPage() {
                                 <table className="w-full">
                                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                         <tr>
-                                            <th className="font-[500] p-3">Ref.No</th>
-                                            <th className="font-[500] p-3">Hotel</th>
-                                            <th className="font-[500] p-3">Date</th>
+                                            <th className="font-[500] p-3">
+                                                Ref.No
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Hotel
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Date
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="text-sm">
-                                        {data?.nextDayHotelDeparturesList?.map((item, index) => {
-                                            return (
-                                                <tr
-                                                    key={index}
-                                                    className="border-b border-tableBorderColor transition-all cursor-pointer hover:bg-[#f3f6f9]"
-                                                    onClick={() =>
-                                                        navigate(`/hotels/reservation/${item?._id}`)
-                                                    }
-                                                >
-                                                    <td className="p-3">
-                                                        <span>{item?.referenceNumber}</span>
-                                                        <span className="block text-[13px] text-grayColor">
-                                                            {formatDate(item?.createdAt, true)}
-                                                        </span>
-                                                    </td>
-                                                    <td className="p-3">
-                                                        <div className="flex items-center gap-2">
-                                                            <div className="w-[40px] min-w-[40px] h-[40px] min-h-[40px] overflow-hidden rounded">
-                                                                <img
-                                                                    src={
-                                                                        item?.hotel?.image
-                                                                            ?.isRelative
-                                                                            ? config.SERVER_URL +
-                                                                              item?.hotel?.image
-                                                                                  ?.path
-                                                                            : item?.hotel?.image
-                                                                                  ?.path
-                                                                    }
-                                                                    className="w-full h-full object-cover"
-                                                                />
+                                        {data?.nextDayHotelDeparturesList?.map(
+                                            (item, index) => {
+                                                return (
+                                                    <tr
+                                                        key={index}
+                                                        className="border-b border-tableBorderColor transition-all cursor-pointer hover:bg-[#f3f6f9]"
+                                                        onClick={() =>
+                                                            navigate(
+                                                                `/hotels/reservation/${item?._id}`
+                                                            )
+                                                        }
+                                                    >
+                                                        <td className="p-3">
+                                                            <span>
+                                                                {
+                                                                    item?.referenceNumber
+                                                                }
+                                                            </span>
+                                                            <span className="block text-[13px] text-grayColor">
+                                                                {formatDate(
+                                                                    item?.createdAt,
+                                                                    true
+                                                                )}
+                                                            </span>
+                                                        </td>
+                                                        <td className="p-3">
+                                                            <div className="flex items-center gap-2">
+                                                                <div className="w-[40px] min-w-[40px] h-[40px] min-h-[40px] overflow-hidden rounded">
+                                                                    <img
+                                                                        src={
+                                                                            item
+                                                                                ?.hotel
+                                                                                ?.image
+                                                                                ?.isRelative
+                                                                                ? import.meta
+                                                                                      .env
+                                                                                      .VITE_SERVER_URL +
+                                                                                  item
+                                                                                      ?.hotel
+                                                                                      ?.image
+                                                                                      ?.path
+                                                                                : item
+                                                                                      ?.hotel
+                                                                                      ?.image
+                                                                                      ?.path
+                                                                        }
+                                                                        className="w-full h-full object-cover"
+                                                                    />
+                                                                </div>
+                                                                <div>
+                                                                    <span>
+                                                                        {
+                                                                            item
+                                                                                ?.hotel
+                                                                                ?.hotelName
+                                                                        }
+                                                                    </span>
+                                                                    <span className="block text-[13px] text-grayColor">
+                                                                        {
+                                                                            item
+                                                                                ?.hotel
+                                                                                ?.address
+                                                                        }
+                                                                    </span>
+                                                                </div>
                                                             </div>
-                                                            <div>
-                                                                <span>
-                                                                    {item?.hotel?.hotelName}
-                                                                </span>
-                                                                <span className="block text-[13px] text-grayColor">
-                                                                    {item?.hotel?.address}
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td className="p-3">
-                                                        {formatDate(item?.fromDate)} -{" "}
-                                                        {formatDate(item?.toDate)}
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })}
+                                                        </td>
+                                                        <td className="p-3">
+                                                            {formatDate(
+                                                                item?.fromDate
+                                                            )}{" "}
+                                                            -{" "}
+                                                            {formatDate(
+                                                                item?.toDate
+                                                            )}
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            }
+                                        )}
                                     </tbody>
                                 </table>
                             </div>
@@ -705,7 +1012,9 @@ export default function HotelDashboardPage() {
                 }) && (
                     <div className="bg-white rounded shadow-sm mt-6">
                         <div className="flex items-center justify-between border-b border-dashed p-4">
-                            <h1 className="font-medium">Recent Cancellation Requests</h1>
+                            <h1 className="font-medium">
+                                Recent Cancellation Requests
+                            </h1>
                             <div>
                                 <Link
                                     to="/hotels/reservation/cancellation-requests"
@@ -726,91 +1035,131 @@ export default function HotelDashboardPage() {
                                 <table className="w-full">
                                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                         <tr>
-                                            <th className="font-[500] p-3">Ref.No</th>
-                                            <th className="font-[500] p-3">Hotel</th>
-                                            <th className="font-[500] p-3">Date</th>
-                                            <th className="font-[500] p-3">Cancellation</th>
+                                            <th className="font-[500] p-3">
+                                                Ref.No
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Hotel
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Date
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Cancellation
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="text-sm">
-                                        {data.recentCancellationRequests?.map((item, index) => {
-                                            return (
-                                                <tr
-                                                    key={index}
-                                                    className="border-b border-tableBorderColor transition-all cursor-pointer hover:bg-[#f3f6f9]"
-                                                    onClick={() =>
-                                                        navigate(
-                                                            `/hotels/reservation/${item?.orderId?._id}`
-                                                        )
-                                                    }
-                                                >
-                                                    <td className="p-3">
-                                                        <span>
-                                                            {item?.orderId?.referenceNumber}
-                                                        </span>
-                                                        <span className="block text-[13px] text-grayColor">
-                                                            {formatDate(
-                                                                item?.orderId?.createdAt,
-                                                                true
-                                                            )}
-                                                        </span>
-                                                    </td>
-                                                    <td className="p-3">
-                                                        <div className="flex items-center gap-2">
-                                                            <div className="w-[40px] min-w-[40px] h-[40px] min-h-[40px] overflow-hidden rounded">
-                                                                <img
-                                                                    src={
-                                                                        item?.orderId?.hotel?.image
-                                                                            ?.isRelative
-                                                                            ? config.SERVER_URL +
-                                                                              item?.orderId?.hotel
-                                                                                  ?.image?.path
-                                                                            : item?.orderId?.hotel
-                                                                                  ?.image?.path
-                                                                    }
-                                                                    className="w-full h-full object-cover"
-                                                                />
-                                                            </div>
-                                                            <div>
-                                                                <span>
-                                                                    {
-                                                                        item?.orderId?.hotel
-                                                                            ?.hotelName
-                                                                    }
-                                                                </span>
-                                                                {/* <span className="block text-[13px] text-grayColor">
+                                        {data.recentCancellationRequests?.map(
+                                            (item, index) => {
+                                                return (
+                                                    <tr
+                                                        key={index}
+                                                        className="border-b border-tableBorderColor transition-all cursor-pointer hover:bg-[#f3f6f9]"
+                                                        onClick={() =>
+                                                            navigate(
+                                                                `/hotels/reservation/${item?.orderId?._id}`
+                                                            )
+                                                        }
+                                                    >
+                                                        <td className="p-3">
+                                                            <span>
+                                                                {
+                                                                    item
+                                                                        ?.orderId
+                                                                        ?.referenceNumber
+                                                                }
+                                                            </span>
+                                                            <span className="block text-[13px] text-grayColor">
+                                                                {formatDate(
+                                                                    item
+                                                                        ?.orderId
+                                                                        ?.createdAt,
+                                                                    true
+                                                                )}
+                                                            </span>
+                                                        </td>
+                                                        <td className="p-3">
+                                                            <div className="flex items-center gap-2">
+                                                                <div className="w-[40px] min-w-[40px] h-[40px] min-h-[40px] overflow-hidden rounded">
+                                                                    <img
+                                                                        src={
+                                                                            item
+                                                                                ?.orderId
+                                                                                ?.hotel
+                                                                                ?.image
+                                                                                ?.isRelative
+                                                                                ? import.meta
+                                                                                      .env
+                                                                                      .VITE_SERVER_URL +
+                                                                                  item
+                                                                                      ?.orderId
+                                                                                      ?.hotel
+                                                                                      ?.image
+                                                                                      ?.path
+                                                                                : item
+                                                                                      ?.orderId
+                                                                                      ?.hotel
+                                                                                      ?.image
+                                                                                      ?.path
+                                                                        }
+                                                                        className="w-full h-full object-cover"
+                                                                    />
+                                                                </div>
+                                                                <div>
+                                                                    <span>
+                                                                        {
+                                                                            item
+                                                                                ?.orderId
+                                                                                ?.hotel
+                                                                                ?.hotelName
+                                                                        }
+                                                                    </span>
+                                                                    {/* <span className="block text-[13px] text-grayColor">
                                                                 {item?.orderId?.hotel?.address}
                                                             </span> */}
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </td>
-                                                    <td className="p-3 whitespace-nowrap">
-                                                        {formatDate(item?.orderId?.fromDate)} -{" "}
-                                                        <br />
-                                                        {formatDate(item?.orderId?.toDate)}
-                                                    </td>
-                                                    <td className="p-3">
-                                                        <span
-                                                            className={
-                                                                "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
-                                                                (item?.cancellationStatus ===
-                                                                "failed"
-                                                                    ? "bg-[#f065481A] text-[#f06548]"
-                                                                    : item?.cancellationStatus ===
-                                                                      "success"
-                                                                    ? "text-[#0ab39c] bg-[#0ab39c1A]"
-                                                                    : "bg-[#f7b84b1A] text-[#f7b84b]")
-                                                            }
-                                                        >
-                                                            {item?.cancellationStatus}
-                                                        </span>
-                                                        <span className="block mt-2 text-[13px] text-grayColor">
-                                                            {formatDate(item?.createdAt, true)}
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })}
+                                                        </td>
+                                                        <td className="p-3 whitespace-nowrap">
+                                                            {formatDate(
+                                                                item?.orderId
+                                                                    ?.fromDate
+                                                            )}{" "}
+                                                            - <br />
+                                                            {formatDate(
+                                                                item?.orderId
+                                                                    ?.toDate
+                                                            )}
+                                                        </td>
+                                                        <td className="p-3">
+                                                            <span
+                                                                className={
+                                                                    "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
+                                                                    (item?.cancellationStatus ===
+                                                                    "failed"
+                                                                        ? "bg-[#f065481A] text-[#f06548]"
+                                                                        : item?.cancellationStatus ===
+                                                                          "success"
+                                                                        ? "text-[#0ab39c] bg-[#0ab39c1A]"
+                                                                        : "bg-[#f7b84b1A] text-[#f7b84b]")
+                                                                }
+                                                            >
+                                                                {
+                                                                    item?.cancellationStatus
+                                                                }
+                                                            </span>
+                                                            <span className="block mt-2 text-[13px] text-grayColor">
+                                                                {formatDate(
+                                                                    item?.createdAt,
+                                                                    true
+                                                                )}
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            }
+                                        )}
                                     </tbody>
                                 </table>
                             </div>
@@ -846,57 +1195,88 @@ export default function HotelDashboardPage() {
                                 <table className="w-full">
                                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                         <tr>
-                                            <th className="font-[500] p-3">Hotel</th>
-                                            <th className="font-[500] p-3">Orders</th>
-                                            <th className="font-[500] p-3">Volume</th>
+                                            <th className="font-[500] p-3">
+                                                Hotel
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Orders
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Volume
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="text-sm">
-                                        {data.topHotelsList?.map((item, index) => {
-                                            return (
-                                                <tr
-                                                    key={index}
-                                                    className="border-b border-tableBorderColor transition-all cursor-pointer hover:bg-[#f3f6f9]"
-                                                    onClick={() =>
-                                                        navigate(`/hotels/${item?._id}/edit`)
-                                                    }
-                                                >
-                                                    <td className="p-3">
-                                                        <div className="flex items-center gap-2">
-                                                            <div className="h-[35px] w-[35px] min-w-[35px] min-h-[35px] overflow-hidden rounded-sm">
-                                                                <img
-                                                                    src={
-                                                                        item?.hotel?.image
-                                                                            ?.isRelative === true
-                                                                            ? config.SERVER_URL +
-                                                                              item?.hotel?.image
-                                                                                  ?.path
-                                                                            : item?.hotel?.image
-                                                                                  ?.path
-                                                                    }
-                                                                    alt=""
-                                                                    className="w-full h-full object-cover"
-                                                                />
+                                        {data.topHotelsList?.map(
+                                            (item, index) => {
+                                                return (
+                                                    <tr
+                                                        key={index}
+                                                        className="border-b border-tableBorderColor transition-all cursor-pointer hover:bg-[#f3f6f9]"
+                                                        onClick={() =>
+                                                            navigate(
+                                                                `/hotels/${item?._id}/edit`
+                                                            )
+                                                        }
+                                                    >
+                                                        <td className="p-3">
+                                                            <div className="flex items-center gap-2">
+                                                                <div className="h-[35px] w-[35px] min-w-[35px] min-h-[35px] overflow-hidden rounded-sm">
+                                                                    <img
+                                                                        src={
+                                                                            item
+                                                                                ?.hotel
+                                                                                ?.image
+                                                                                ?.isRelative ===
+                                                                            true
+                                                                                ? import.meta
+                                                                                      .env
+                                                                                      .VITE_SERVER_URL +
+                                                                                  item
+                                                                                      ?.hotel
+                                                                                      ?.image
+                                                                                      ?.path
+                                                                                : item
+                                                                                      ?.hotel
+                                                                                      ?.image
+                                                                                      ?.path
+                                                                        }
+                                                                        alt=""
+                                                                        className="w-full h-full object-cover"
+                                                                    />
+                                                                </div>
+                                                                <div>
+                                                                    <span>
+                                                                        {
+                                                                            item
+                                                                                ?.hotel
+                                                                                ?.hotelName
+                                                                        }
+                                                                    </span>
+                                                                    <span className="block text-[13px] text-grayColor">
+                                                                        {
+                                                                            item
+                                                                                ?.hotel
+                                                                                ?.address
+                                                                        }
+                                                                    </span>
+                                                                </div>
                                                             </div>
-                                                            <div>
-                                                                <span>
-                                                                    {item?.hotel?.hotelName}
-                                                                </span>
-                                                                <span className="block text-[13px] text-grayColor">
-                                                                    {item?.hotel?.address}
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td className="p-3 ">
-                                                        {item?.totalOrders || 0}
-                                                    </td>
-                                                    <td className="p-3 whitespace-nowrap">
-                                                        {item?.totalVolume?.toFixed(2) || 0} AED
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })}
+                                                        </td>
+                                                        <td className="p-3 ">
+                                                            {item?.totalOrders ||
+                                                                0}
+                                                        </td>
+                                                        <td className="p-3 whitespace-nowrap">
+                                                            {item?.totalVolume?.toFixed(
+                                                                2
+                                                            ) || 0}{" "}
+                                                            AED
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            }
+                                        )}
                                     </tbody>
                                 </table>
                             </div>
@@ -932,53 +1312,82 @@ export default function HotelDashboardPage() {
                                 <table className="w-full">
                                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                         <tr>
-                                            <th className="font-[500] p-3">Reseller</th>
-                                            <th className="font-[500] p-3">Orders</th>
-                                            <th className="font-[500] p-3">Volume</th>
+                                            <th className="font-[500] p-3">
+                                                Reseller
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Orders
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Volume
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="text-sm">
-                                        {data.topResellersList?.map((item, index) => {
-                                            return (
-                                                <tr
-                                                    key={index}
-                                                    className="border-b border-tableBorderColor transition-all cursor-pointer hover:bg-[#f3f6f9]"
-                                                    onClick={() =>
-                                                        navigate(`/b2b/${item?._id}/details`)
-                                                    }
-                                                >
-                                                    <td className="p-3">
-                                                        <div className="flex items-center gap-2">
-                                                            <div className="h-[35px] w-[35px] min-w-[35px] min-h-[35px] overflow-hidden rounded-full">
-                                                                <img
-                                                                    src={
-                                                                        item?.reseller?.companyLogo
-                                                                            ? config.SERVER_URL +
-                                                                              item?.reseller
-                                                                                  ?.companyLogo
-                                                                            : avatarImg
-                                                                    }
-                                                                    alt=""
-                                                                    className="w-full h-full object-cover"
-                                                                />
+                                        {data.topResellersList?.map(
+                                            (item, index) => {
+                                                return (
+                                                    <tr
+                                                        key={index}
+                                                        className="border-b border-tableBorderColor transition-all cursor-pointer hover:bg-[#f3f6f9]"
+                                                        onClick={() =>
+                                                            navigate(
+                                                                `/b2b/${item?._id}/details`
+                                                            )
+                                                        }
+                                                    >
+                                                        <td className="p-3">
+                                                            <div className="flex items-center gap-2">
+                                                                <div className="h-[35px] w-[35px] min-w-[35px] min-h-[35px] overflow-hidden rounded-full">
+                                                                    <img
+                                                                        src={
+                                                                            item
+                                                                                ?.reseller
+                                                                                ?.companyLogo
+                                                                                ? import.meta
+                                                                                      .env
+                                                                                      .VITE_SERVER_URL +
+                                                                                  item
+                                                                                      ?.reseller
+                                                                                      ?.companyLogo
+                                                                                : avatarImg
+                                                                        }
+                                                                        alt=""
+                                                                        className="w-full h-full object-cover"
+                                                                    />
+                                                                </div>
+                                                                <div>
+                                                                    <span>
+                                                                        {
+                                                                            item
+                                                                                ?.reseller
+                                                                                ?.companyName
+                                                                        }{" "}
+                                                                        (
+                                                                        {
+                                                                            item
+                                                                                ?.reseller
+                                                                                ?.agentCode
+                                                                        }
+                                                                        )
+                                                                    </span>
+                                                                </div>
                                                             </div>
-                                                            <div>
-                                                                <span>
-                                                                    {item?.reseller?.companyName} (
-                                                                    {item?.reseller?.agentCode})
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td className="p-3 ">
-                                                        {item?.totalOrders || 0}
-                                                    </td>
-                                                    <td className="p-3 whitespace-nowrap">
-                                                        {item?.totalVolume?.toFixed(2) || 0} AED
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })}
+                                                        </td>
+                                                        <td className="p-3 ">
+                                                            {item?.totalOrders ||
+                                                                0}
+                                                        </td>
+                                                        <td className="p-3 whitespace-nowrap">
+                                                            {item?.totalVolume?.toFixed(
+                                                                2
+                                                            ) || 0}{" "}
+                                                            AED
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            }
+                                        )}
                                     </tbody>
                                 </table>
                             </div>

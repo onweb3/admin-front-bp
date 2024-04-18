@@ -53,14 +53,19 @@ export default function HotelMediaForm({
                             className="relative group w-[130px] aspect-video rounded overflow-hidden cursor-pointer"
                             key={index}
                             onClick={() => {
-                                if (isEditPermission) dispatch(removeHotelImage(index));
+                                if (isEditPermission)
+                                    dispatch(removeHotelImage(index));
                             }}
                         >
                             <img
                                 src={
                                     item?.isRelative === false
-                                        ? item?.path?.replace("/original/", "/medium/")
-                                        : config.SERVER_URL + item?.path
+                                        ? item?.path?.replace(
+                                              "/original/",
+                                              "/medium/"
+                                          )
+                                        : import.meta.env.VITE_SERVER_URL +
+                                          item?.path
                                 }
                                 alt=""
                                 className="object-cover"

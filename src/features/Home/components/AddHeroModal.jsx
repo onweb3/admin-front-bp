@@ -146,7 +146,7 @@ export default function AddHeroModal({
                                     src={
                                         image
                                             ? URL.createObjectURL(image)
-                                            : config.SERVER_URL +
+                                            : import.meta.env.VITE_SERVER_URL +
                                               selectedHero?.image
                                     }
                                     alt=""

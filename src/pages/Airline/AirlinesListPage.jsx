@@ -111,7 +111,10 @@ export default function AirlinesListPage() {
                                     }}
                                     value={filters.searchQuery || ""}
                                 />
-                                <button type="submit" className="px-3 bg-primaryColor">
+                                <button
+                                    type="submit"
+                                    className="px-3 bg-primaryColor"
+                                >
                                     Search
                                 </button>
                             </form>
@@ -133,11 +136,21 @@ export default function AirlinesListPage() {
                             <table className="w-full">
                                 <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                     <tr>
-                                        <th className="font-[500] p-3">Airline</th>
-                                        <th className="font-[500] p-3">Airline Code</th>
-                                        <th className="font-[500] p-3">IATA Code</th>
-                                        <th className="font-[500] p-3">ICAO Code</th>
-                                        <th className="font-[500] p-3">Action</th>
+                                        <th className="font-[500] p-3">
+                                            Airline
+                                        </th>
+                                        <th className="font-[500] p-3">
+                                            Airline Code
+                                        </th>
+                                        <th className="font-[500] p-3">
+                                            IATA Code
+                                        </th>
+                                        <th className="font-[500] p-3">
+                                            ICAO Code
+                                        </th>
+                                        <th className="font-[500] p-3">
+                                            Action
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody className="text-sm">
@@ -150,14 +163,24 @@ export default function AirlinesListPage() {
                                                 <td className="p-3">
                                                     <div className="flex items-center gap-[10px]">
                                                         <img
-                                                            src={config.SERVER_URL + airline?.image}
+                                                            src={
+                                                                import.meta.env
+                                                                    .VITE_SERVER_URL +
+                                                                airline?.image
+                                                            }
                                                             alt=""
                                                             className="w-[40px] h-[40px] rounded object-cover"
                                                         />
-                                                        <span>{airline?.airlineName}</span>
+                                                        <span>
+                                                            {
+                                                                airline?.airlineName
+                                                            }
+                                                        </span>
                                                     </div>
                                                 </td>
-                                                <td className="p-3">{airline?.airlineCode}</td>
+                                                <td className="p-3">
+                                                    {airline?.airlineCode}
+                                                </td>
                                                 <td className="p-3 uppercase">
                                                     {airline?.iataCode}
                                                 </td>
@@ -169,12 +192,16 @@ export default function AirlinesListPage() {
                                                         <button
                                                             className="h-auto bg-transparent text-red-500 text-xl"
                                                             onClick={() =>
-                                                                deleteAirline(airline?._id)
+                                                                deleteAirline(
+                                                                    airline?._id
+                                                                )
                                                             }
                                                         >
                                                             <MdDelete />
                                                         </button>
-                                                        <Link to={`${airline?._id}/edit`}>
+                                                        <Link
+                                                            to={`${airline?._id}/edit`}
+                                                        >
                                                             <button className="h-auto bg-transparent text-green-500 text-xl">
                                                                 <BiEditAlt />
                                                             </button>

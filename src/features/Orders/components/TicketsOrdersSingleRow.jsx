@@ -17,7 +17,8 @@ export default function TicketsOrdersSingleRow({ order, section }) {
         drivers: order?.activities?.drivers || [],
         driversRequired: 0,
     });
-    const [isDriverAssignModalOpen, setIsDriverAssignModalOpen] = useState(false);
+    const [isDriverAssignModalOpen, setIsDriverAssignModalOpen] =
+        useState(false);
 
     const { jwtToken } = useSelector((state) => state.admin);
 
@@ -65,7 +66,9 @@ export default function TicketsOrdersSingleRow({ order, section }) {
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             >
                 <td className="p-3">{order?.referenceNumber}</td>
-                <td className="p-3 min-w-[250px]">{order?.activities?.activity?.name}</td>
+                <td className="p-3 min-w-[250px]">
+                    {order?.activities?.activity?.name}
+                </td>
                 {section !== "b2c" && (
                     <td className="p-3 whitespace-nowrap">
                         <span className="block text-sm capitalize">
@@ -74,7 +77,9 @@ export default function TicketsOrdersSingleRow({ order, section }) {
                         <span>{order?.reseller?.agentCode}</span>
                     </td>
                 )}
-                <td className="p-3 whitespace-nowrap">{formatDate(order?.activities?.date)}</td>
+                <td className="p-3 whitespace-nowrap">
+                    {formatDate(order?.activities?.date)}
+                </td>
                 <td className="p-3 ">{order?.activities?.adultsCount || 0}</td>
                 <td className="p-3">{order?.activities?.childrenCount || 0}</td>
                 <td className="p-3">{order?.activities?.infantCount || 0}</td>
@@ -106,7 +111,10 @@ export default function TicketsOrdersSingleRow({ order, section }) {
                             <div className="flex items-start gap-[1em]">
                                 <div className="w-[150px] max-h-[100px] rounded overflow-hidden">
                                     <img
-                                        src={config.SERVER_URL + order?.attraction?.images[0]}
+                                        src={
+                                            import.meta.env.VITE_SERVER_URL +
+                                            order?.attraction?.images[0]
+                                        }
                                         alt=""
                                         className="w-full h-full object-cover"
                                     />
@@ -119,17 +127,23 @@ export default function TicketsOrdersSingleRow({ order, section }) {
                                         {order?.activities?.activity?.name}
                                     </span>
                                     <span className="block mt-2">
-                                        <span className="text-grayColor">Purchase Date -</span>{" "}
+                                        <span className="text-grayColor">
+                                            Purchase Date -
+                                        </span>{" "}
                                         {formatDate(order?.createdAt)}
                                     </span>
                                     <span className="block mt-2">
-                                        <span className="text-grayColor">Booking Date -</span>{" "}
+                                        <span className="text-grayColor">
+                                            Booking Date -
+                                        </span>{" "}
                                         {formatDate(order?.activities?.date)}
                                     </span>
                                 </div>
                             </div>
                             <div>
-                                <h2 className="font-medium text-grayColor">Traveller Details</h2>
+                                <h2 className="font-medium text-grayColor">
+                                    Traveller Details
+                                </h2>
                                 <span className="flex items-center gap-[7px] mt-2">
                                     <BiUser /> {order?.name}
                                 </span>
@@ -140,22 +154,31 @@ export default function TicketsOrdersSingleRow({ order, section }) {
                                     <FiMapPin /> {order?.country?.countryName}
                                 </span>
                                 <span className="flex items-center gap-[7px] mt-2">
-                                    <BiPhone /> {order?.country?.phonecode} {order?.phoneNumber}
+                                    <BiPhone /> {order?.country?.phonecode}{" "}
+                                    {order?.phoneNumber}
                                 </span>
                             </div>
                             <div>
-                                <h2 className="font-medium text-grayColor">Transfer Option</h2>
-                                {order?.activities?.transferType === "without" ? (
+                                <h2 className="font-medium text-grayColor">
+                                    Transfer Option
+                                </h2>
+                                {order?.activities?.transferType ===
+                                "without" ? (
                                     <span className="flex items-center gap-[7px] mt-2 capitalize">
-                                        <MdNoTransfer /> {order?.activities?.transferType} Transfer
+                                        <MdNoTransfer />{" "}
+                                        {order?.activities?.transferType}{" "}
+                                        Transfer
                                     </span>
                                 ) : (
                                     <div>
                                         <span className="flex items-center gap-[7px] mt-2 capitalize">
-                                            <FaBus /> {order?.activities?.transferType} Transfer
+                                            <FaBus />{" "}
+                                            {order?.activities?.transferType}{" "}
+                                            Transfer
                                         </span>
                                         <div>
-                                            {order?.activities?.transferType === "private" &&
+                                            {order?.activities?.transferType ===
+                                                "private" &&
                                                 order?.activities?.privateTransfers?.map(
                                                     (transfer, index) => {
                                                         return (
@@ -163,17 +186,24 @@ export default function TicketsOrdersSingleRow({ order, section }) {
                                                                 key={index}
                                                                 className="block mt-[6px]"
                                                             >
-                                                                {transfer?.name} x {transfer?.count}
+                                                                {transfer?.name}{" "}
+                                                                x{" "}
+                                                                {
+                                                                    transfer?.count
+                                                                }
                                                             </span>
                                                         );
                                                     }
                                                 )}
                                         </div>
                                         {isDriverAssignModalOpen &&
-                                            orderData.status === "confirmed" && (
+                                            orderData.status ===
+                                                "confirmed" && (
                                                 <DriverAssignModal
                                                     orderId={order?._id}
-                                                    orderItemId={order?.activities?._id}
+                                                    orderItemId={
+                                                        order?.activities?._id
+                                                    }
                                                     setIsDriverAssignModalOpen={
                                                         setIsDriverAssignModalOpen
                                                     }
@@ -183,30 +213,40 @@ export default function TicketsOrdersSingleRow({ order, section }) {
                                             )}
                                     </div>
                                 )}
-                                {order?.activities?.transferType !== "without" &&
-                                    order?.activities?.status === "confirmed" && (
+                                {order?.activities?.transferType !==
+                                    "without" &&
+                                    order?.activities?.status ===
+                                        "confirmed" && (
                                         <div className="block mt-3">
                                             <h2 className="font-medium text-grayColor flex items-center gap-[10px]">
                                                 Drivers{" "}
                                                 <span
                                                     className="text-green-500 cursor-pointer"
-                                                    onClick={() => setIsDriverAssignModalOpen(true)}
+                                                    onClick={() =>
+                                                        setIsDriverAssignModalOpen(
+                                                            true
+                                                        )
+                                                    }
                                                 >
                                                     <FaEdit />
                                                 </span>
                                             </h2>
                                             {orderData?.drivers?.length > 0 ? (
                                                 <div className="flex flex-wrap gap-[10px] mt-2">
-                                                    {orderData?.drivers?.map((driver, index) => {
-                                                        return (
-                                                            <span
-                                                                key={index}
-                                                                className="flex items-center gap-[5px] bg-slate-200 rounded py-1 px-2 text-sm cursor-pointer"
-                                                            >
-                                                                {driver?.driverName}
-                                                            </span>
-                                                        );
-                                                    })}
+                                                    {orderData?.drivers?.map(
+                                                        (driver, index) => {
+                                                            return (
+                                                                <span
+                                                                    key={index}
+                                                                    className="flex items-center gap-[5px] bg-slate-200 rounded py-1 px-2 text-sm cursor-pointer"
+                                                                >
+                                                                    {
+                                                                        driver?.driverName
+                                                                    }
+                                                                </span>
+                                                            );
+                                                        }
+                                                    )}
                                                 </div>
                                             ) : (
                                                 <span className="text-sm font-medium">
@@ -218,8 +258,10 @@ export default function TicketsOrdersSingleRow({ order, section }) {
                             </div>
                             {order?.activities?.bookingType === "ticket" &&
                                 (order?.activities?.adultTickets?.length > 0 ||
-                                    order?.activities?.childTickets?.length > 0 ||
-                                    order?.activities?.infantTickets?.length > 0) && (
+                                    order?.activities?.childTickets?.length >
+                                        0 ||
+                                    order?.activities?.infantTickets?.length >
+                                        0) && (
                                     <div>
                                         <span className="block font-medium text-grayColor">
                                             Tickets
@@ -232,10 +274,14 @@ export default function TicketsOrdersSingleRow({ order, section }) {
                                                             key={index}
                                                             className="bg-[#f3f6f9] py-1 px-2 text-sm rounded"
                                                             onMouseDown={() =>
-                                                                handleMouseDownOnTicketNumber({
-                                                                    ticketNo: ticket?.ticketNo,
-                                                                    loggedFrom: "orders-list",
-                                                                })
+                                                                handleMouseDownOnTicketNumber(
+                                                                    {
+                                                                        ticketNo:
+                                                                            ticket?.ticketNo,
+                                                                        loggedFrom:
+                                                                            "orders-list",
+                                                                    }
+                                                                )
                                                             }
                                                         >
                                                             {ticket?.ticketNo}
@@ -250,10 +296,14 @@ export default function TicketsOrdersSingleRow({ order, section }) {
                                                             key={index}
                                                             className="bg-[#f3f6f9] py-1 px-2 text-sm rounded"
                                                             onMouseDown={() =>
-                                                                handleMouseDownOnTicketNumber({
-                                                                    ticketNo: ticket?.ticketNo,
-                                                                    loggedFrom: "orders-list",
-                                                                })
+                                                                handleMouseDownOnTicketNumber(
+                                                                    {
+                                                                        ticketNo:
+                                                                            ticket?.ticketNo,
+                                                                        loggedFrom:
+                                                                            "orders-list",
+                                                                    }
+                                                                )
                                                             }
                                                         >
                                                             {ticket?.ticketNo}
@@ -268,10 +318,14 @@ export default function TicketsOrdersSingleRow({ order, section }) {
                                                             key={index}
                                                             className="bg-[#f3f6f9] py-1 px-2 text-sm rounded"
                                                             onMouseDown={() =>
-                                                                handleMouseDownOnTicketNumber({
-                                                                    ticketNo: ticket?.ticketNo,
-                                                                    loggedFrom: "orders-list",
-                                                                })
+                                                                handleMouseDownOnTicketNumber(
+                                                                    {
+                                                                        ticketNo:
+                                                                            ticket?.ticketNo,
+                                                                        loggedFrom:
+                                                                            "orders-list",
+                                                                    }
+                                                                )
                                                             }
                                                         >
                                                             {ticket?.ticketNo}

@@ -54,7 +54,8 @@ export default function ResellersTableRow({ reseller }) {
                         <img
                             src={
                                 reseller?.avatar
-                                    ? config.SERVER_URL + reseller?.avatar
+                                    ? import.meta.env.VITE_SERVER_URL +
+                                      reseller?.avatar
                                     : avatarImg
                             }
                             alt=""

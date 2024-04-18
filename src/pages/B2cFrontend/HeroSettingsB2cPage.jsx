@@ -155,7 +155,8 @@ export default function HeroSettingsB2cPage() {
                                                     <div className="flex items-center gap-[10px]">
                                                         <img
                                                             src={
-                                                                config.SERVER_URL +
+                                                                import.meta.env
+                                                                    .VITE_SERVER_URL +
                                                                 hero?.image
                                                             }
                                                             alt=""

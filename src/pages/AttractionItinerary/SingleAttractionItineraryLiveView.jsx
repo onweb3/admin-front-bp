@@ -98,7 +98,9 @@ const SingleAttractionItineraryLiveView = ({
                                                                         index
                                                                     ) => {
                                                                         const url =
-                                                                            config.SERVER_URL +
+                                                                            import.meta
+                                                                                .env
+                                                                                .VITE_SERVER_URL +
                                                                             img;
 
                                                                         return (
@@ -178,7 +180,9 @@ const SingleAttractionItineraryLiveView = ({
                                                                         <>
                                                                             <img
                                                                                 src={
-                                                                                    config.SERVER_URL +
+                                                                                    import.meta
+                                                                                        .env
+                                                                                        .VITE_SERVER_URL +
                                                                                     img
                                                                                 }
                                                                                 alt=""

@@ -49,7 +49,8 @@ export default function EditProfileLayout() {
                                         avatar
                                             ? URL.createObjectURL(avatar)
                                             : admin?.avatar
-                                            ? config.SERVER_URL + admin?.avatar
+                                            ? import.meta.env.VITE_SERVER_URL +
+                                              admin?.avatar
                                             : avatarImg
                                     }
                                     alt=""

@@ -142,7 +142,9 @@ export default function TourPackagesListPage() {
                                                                             ?.thumbnail[0] && (
                                                                             <img
                                                                                 src={
-                                                                                    config.SERVER_URL +
+                                                                                    import.meta
+                                                                                        .env
+                                                                                        .VITE_SERVER_URL +
                                                                                     tPackage
                                                                                         ?.thumbnail[0]
                                                                                 }

@@ -125,7 +125,9 @@ export default function CardsSettingsPage() {
                                                         <div className="">
                                                             <img
                                                                 src={
-                                                                    config.SERVER_URL +
+                                                                    import.meta
+                                                                        .env
+                                                                        .VITE_SERVER_URL +
                                                                     card?.backgroundImage
                                                                 }
                                                                 alt=""
@@ -141,7 +143,9 @@ export default function CardsSettingsPage() {
                                                         <div className="">
                                                             <img
                                                                 src={
-                                                                    config.SERVER_URL +
+                                                                    import.meta
+                                                                        .env
+                                                                        .VITE_SERVER_URL +
                                                                     card?.icon
                                                                 }
                                                                 alt=""

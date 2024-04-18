@@ -1004,7 +1004,8 @@ export default function CreateAttractionOrder() {
                                                         selectedActivity
                                                             ?.attraction
                                                             ?.images[0]
-                                                            ? config.SERVER_URL +
+                                                            ? import.meta.env
+                                                                  .VITE_SERVER_URL +
                                                               selectedActivity
                                                                   ?.attraction
                                                                   ?.images[0]

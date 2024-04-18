@@ -13,7 +13,10 @@ import axios from "../../../axios";
 import TourPackageHotelAddModal from "./TourPackageHotelSelectModal";
 import { config } from "../../../constants";
 
-export default function TourPackageHotelFormHotelsRow({ tpHotel, tpHotelIndex }) {
+export default function TourPackageHotelFormHotelsRow({
+    tpHotel,
+    tpHotelIndex,
+}) {
     const [cities, setCities] = useState([]);
     const [isHotelLoading, setIsHotelLoading] = useState(false);
     const [hotels, setHotels] = useState([]);
@@ -29,9 +32,12 @@ export default function TourPackageHotelFormHotelsRow({ tpHotel, tpHotelIndex })
         if (tpHotel?.country) {
             const fetchAllCitiesByCountry = async () => {
                 try {
-                    const resposne = await axios.get(`/cities/country/${tpHotel?.country}`, {
-                        headers: { Authorization: `Bearer ${jwtToken}` },
-                    });
+                    const resposne = await axios.get(
+                        `/cities/country/${tpHotel?.country}`,
+                        {
+                            headers: { Authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
                     setCities(resposne?.data?.cities);
                 } catch (err) {
                     console.log(err);
@@ -181,8 +187,11 @@ export default function TourPackageHotelFormHotelsRow({ tpHotel, tpHotelIndex })
                                 <div className="w-full rounded group/card overflow-hidden relative aspect-[5/3]">
                                     <img
                                         src={
-                                            hOption?.hotel?.image?.isRelative === true
-                                                ? config.SERVER_URL + hOption?.hotel?.image?.path
+                                            hOption?.hotel?.image
+                                                ?.isRelative === true
+                                                ? import.meta.env
+                                                      .VITE_SERVER_URL +
+                                                  hOption?.hotel?.image?.path
                                                 : hOption?.hotel?.image?.path
                                         }
                                         alt=""
@@ -194,10 +203,12 @@ export default function TourPackageHotelFormHotelsRow({ tpHotel, tpHotelIndex })
                                             className="w-[30px] h-[30px] rounded-full flex items-center justify-center bg-red-100 text-red-500 cursor-pointer"
                                             onClick={() => {
                                                 dispatch(
-                                                    removeTourPackageHotelOption({
-                                                        index: tpHotelIndex,
-                                                        hOptIndex,
-                                                    })
+                                                    removeTourPackageHotelOption(
+                                                        {
+                                                            index: tpHotelIndex,
+                                                            hOptIndex,
+                                                        }
+                                                    )
                                                 );
                                             }}
                                         >
@@ -212,7 +223,8 @@ export default function TourPackageHotelFormHotelsRow({ tpHotel, tpHotelIndex })
                                     {hOption?.hotel?.address}
                                 </span>
                                 <span className="text-sm capitalize">
-                                    {hOption?.roomType?.roomName} | {hOption?.boardCode}
+                                    {hOption?.roomType?.roomName} |{" "}
+                                    {hOption?.boardCode}
                                 </span>
                                 {data?.packageType === "dynamic" && (
                                     <span className="block mt-1 text-[13px] font-medium text-green-600">
@@ -246,7 +258,9 @@ export default function TourPackageHotelFormHotelsRow({ tpHotel, tpHotelIndex })
                         <TourPackageHotelAddModal
                             hotels={hotels}
                             isHotelLoading={isHotelLoading}
-                            setIsHotelSelectModalOpen={setIsHotelSelectModalOpen}
+                            setIsHotelSelectModalOpen={
+                                setIsHotelSelectModalOpen
+                            }
                             tpHotelIndex={tpHotelIndex}
                         />
                     )}
@@ -255,7 +269,9 @@ export default function TourPackageHotelFormHotelsRow({ tpHotel, tpHotelIndex })
                     <div className="absolute bottom-[100%] right-0">
                         <button
                             className="h-auto py-1 px-2 bg-transparent text-[#444] border rounded-tr-none font-[500] text-[13px]"
-                            onClick={() => dispatch(removeTPackageHotelRow(tpHotelIndex))}
+                            onClick={() =>
+                                dispatch(removeTPackageHotelRow(tpHotelIndex))
+                            }
                         >
                             Remove
                         </button>

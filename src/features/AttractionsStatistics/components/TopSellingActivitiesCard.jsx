@@ -35,9 +35,7 @@ export default function TopSellingActivitiesCard({ data }) {
                                             key={index}
                                             className="border-b border-tableBorderColor"
                                         >
-                                            <td className="p-3">
-                                                {index + 1}
-                                            </td>
+                                            <td className="p-3">{index + 1}</td>
                                             <td className="p-3">
                                                 <Link
                                                     to={`/attractions/${item?.attraction?._id}/edit?section=2`}
@@ -45,7 +43,8 @@ export default function TopSellingActivitiesCard({ data }) {
                                                     <div className="flex items-center gap-[10px]">
                                                         <img
                                                             src={
-                                                                config.SERVER_URL +
+                                                                import.meta.env
+                                                                    .VITE_SERVER_URL +
                                                                 item?.attraction
                                                                     ?.images[0]
                                                             }

@@ -47,7 +47,10 @@ export default function SingleAttrOrderActivitiesTableRow({ orderItem }) {
                 <div className="flex gap-3">
                     <div className="w-[80px] max-h-[50px] rounded overflow-hidden">
                         <img
-                            src={config.SERVER_URL + orderItem?.attraction?.images[0]}
+                            src={
+                                import.meta.env.VITE_SERVER_URL +
+                                orderItem?.attraction?.images[0]
+                            }
                             alt=""
                             className="w-full h-full object-cover"
                         />
@@ -55,15 +58,22 @@ export default function SingleAttrOrderActivitiesTableRow({ orderItem }) {
                     <div>
                         <span className="font-[500] block mt-1">
                             {orderItem?.activity?.name}{" "}
-                            <span className="capitalize">({orderItem?.bookingType})</span>
+                            <span className="capitalize">
+                                ({orderItem?.bookingType})
+                            </span>
                         </span>
-                        <span className="block mt-1">{orderItem?.attraction?.title}</span>
+                        <span className="block mt-1">
+                            {orderItem?.attraction?.title}
+                        </span>
                     </div>
                 </div>
             </td>
-            <td className="p-3">{moment(orderItem?.date).format("MMM D, YYYY")}</td>
             <td className="p-3">
-                {orderItem?.adultsCount} ADT, {orderItem?.childrenCount} CHD, {orderItem?.infantCount} INF
+                {moment(orderItem?.date).format("MMM D, YYYY")}
+            </td>
+            <td className="p-3">
+                {orderItem?.adultsCount} ADT, {orderItem?.childrenCount} CHD,{" "}
+                {orderItem?.infantCount} INF
             </td>
             <td className="p-3">
                 {orderItem?.transferType === "without" ? (
@@ -77,13 +87,19 @@ export default function SingleAttrOrderActivitiesTableRow({ orderItem }) {
                         </span>
                         <div>
                             {orderItem?.transferType === "private" &&
-                                orderItem?.privateTransfers?.map((transfer, index) => {
-                                    return (
-                                        <span key={index} className="block mt-[6px]">
-                                            {transfer?.name} x {transfer?.count}
-                                        </span>
-                                    );
-                                })}
+                                orderItem?.privateTransfers?.map(
+                                    (transfer, index) => {
+                                        return (
+                                            <span
+                                                key={index}
+                                                className="block mt-[6px]"
+                                            >
+                                                {transfer?.name} x{" "}
+                                                {transfer?.count}
+                                            </span>
+                                        );
+                                    }
+                                )}
                         </div>
                     </div>
                 )}

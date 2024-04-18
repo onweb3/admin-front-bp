@@ -48,9 +48,9 @@ export default function AddAttrCategoryModal({
             setError("");
 
             const formData = new FormData();
-            formData.append("categoryName", data.categoryName)
-            formData.append("description", data.description)
-            formData.append("icon", iconImg)
+            formData.append("categoryName", data.categoryName);
+            formData.append("description", data.description);
+            formData.append("icon", iconImg);
 
             if (categoryModal?.isEdit) {
                 const response = await axios.patch(
@@ -132,7 +132,7 @@ export default function AddAttrCategoryModal({
                                     src={
                                         iconImg
                                             ? URL.createObjectURL(iconImg)
-                                            : config.SERVER_URL +
+                                            : import.meta.env.VITE_SERVER_URL +
                                               data.iconUrl
                                     }
                                     alt=""

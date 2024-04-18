@@ -209,7 +209,8 @@ function VisaApplicationSingleTableRow({
                                         <div
                                             onClick={(e) =>
                                                 handleDownload(
-                                                    config.SERVER_URL +
+                                                    import.meta.env
+                                                        .VITE_SERVER_URL +
                                                         item?.documents
                                                             ?.passportFistPagePhoto
                                                 )
@@ -230,7 +231,8 @@ function VisaApplicationSingleTableRow({
                                                 ) : (
                                                     <img
                                                         src={
-                                                            config.SERVER_URL +
+                                                            import.meta.env
+                                                                .VITE_SERVER_URL +
                                                             item?.documents
                                                                 ?.passportFistPagePhoto
                                                         }
@@ -248,7 +250,8 @@ function VisaApplicationSingleTableRow({
                                         <div
                                             onClick={(e) =>
                                                 handleDownload(
-                                                    config.SERVER_URL +
+                                                    import.meta.env
+                                                        .VITE_SERVER_URL +
                                                         item?.documents
                                                             ?.passportLastPagePhoto
                                                 )
@@ -269,7 +272,8 @@ function VisaApplicationSingleTableRow({
                                                 ) : (
                                                     <img
                                                         src={
-                                                            config.SERVER_URL +
+                                                            import.meta.env
+                                                                .VITE_SERVER_URL +
                                                             item?.documents
                                                                 ?.passportLastPagePhoto
                                                         }
@@ -287,7 +291,8 @@ function VisaApplicationSingleTableRow({
                                         <div
                                             onClick={(e) =>
                                                 handleDownload(
-                                                    config.SERVER_URL +
+                                                    import.meta.env
+                                                        .VITE_SERVER_URL +
                                                         item?.documents
                                                             ?.passportSizePhoto
                                                 )
@@ -308,7 +313,8 @@ function VisaApplicationSingleTableRow({
                                                 ) : (
                                                     <img
                                                         src={
-                                                            config.SERVER_URL +
+                                                            import.meta.env
+                                                                .VITE_SERVER_URL +
                                                             item?.documents
                                                                 ?.passportSizePhoto
                                                         }
@@ -326,7 +332,8 @@ function VisaApplicationSingleTableRow({
                                         <div
                                             onClick={(e) =>
                                                 handleDownload(
-                                                    config.SERVER_URL +
+                                                    import.meta.env
+                                                        .VITE_SERVER_URL +
                                                         item?.documents
                                                             ?.supportiveDoc1
                                                 )
@@ -347,7 +354,8 @@ function VisaApplicationSingleTableRow({
                                                 ) : (
                                                     <img
                                                         src={
-                                                            config.SERVER_URL +
+                                                            import.meta.env
+                                                                .VITE_SERVER_URL +
                                                             item?.documents
                                                                 ?.supportiveDoc1
                                                         }
@@ -365,7 +373,8 @@ function VisaApplicationSingleTableRow({
                                         <div
                                             onClick={(e) =>
                                                 handleDownload(
-                                                    config.SERVER_URL +
+                                                    import.meta.env
+                                                        .VITE_SERVER_URL +
                                                         item?.documents
                                                             ?.supportiveDoc2
                                                 )
@@ -386,7 +395,8 @@ function VisaApplicationSingleTableRow({
                                                 ) : (
                                                     <img
                                                         src={
-                                                            config.SERVER_URL +
+                                                            import.meta.env
+                                                                .VITE_SERVER_URL +
                                                             item?.documents
                                                                 ?.supportiveDoc2
                                                         }

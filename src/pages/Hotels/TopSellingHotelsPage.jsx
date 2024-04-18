@@ -89,10 +89,18 @@ export default function TopSellingHotelsPage() {
                                 <table className="w-full">
                                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                         <tr>
-                                            <th className="font-[500] p-3">#</th>
-                                            <th className="font-[500] p-3">Hotel</th>
-                                            <th className="font-[500] p-3">Total Orders</th>
-                                            <th className="font-[500] p-3">Total Volume</th>
+                                            <th className="font-[500] p-3">
+                                                #
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Hotel
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Total Orders
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Total Volume
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="text-sm">
@@ -102,23 +110,35 @@ export default function TopSellingHotelsPage() {
                                                     key={index}
                                                     className="border-b border-tableBorderColor transition-all cursor-pointer hover:bg-[#f3f6f9]"
                                                     onClick={() =>
-                                                        navigate(`/hotels/${item?.hote?._id}/edit`)
+                                                        navigate(
+                                                            `/hotels/${item?.hote?._id}/edit`
+                                                        )
                                                     }
                                                 >
                                                     <td className="p-3">
-                                                        {filters.skip * filters.limit + (index + 1)}
+                                                        {filters.skip *
+                                                            filters.limit +
+                                                            (index + 1)}
                                                     </td>
                                                     <td className="p-3">
                                                         <div className="flex items-center gap-2">
                                                             <div className="w-[40px] min-w-[40px] h-[40px] min-h-[40px] overflow-hidden rounded">
                                                                 <img
                                                                     src={
-                                                                        item?.hotel?.image
+                                                                        item
+                                                                            ?.hotel
+                                                                            ?.image
                                                                             ?.isRelative
-                                                                            ? config.SERVER_URL +
-                                                                              item?.hotel?.image
+                                                                            ? import.meta
+                                                                                  .env
+                                                                                  .VITE_SERVER_URL +
+                                                                              item
+                                                                                  ?.hotel
+                                                                                  ?.image
                                                                                   ?.path
-                                                                            : item?.hotel?.image
+                                                                            : item
+                                                                                  ?.hotel
+                                                                                  ?.image
                                                                                   ?.path
                                                                     }
                                                                     className="w-full h-full object-cover"
@@ -126,10 +146,18 @@ export default function TopSellingHotelsPage() {
                                                             </div>
                                                             <div>
                                                                 <span>
-                                                                    {item?.hotel?.hotelName}
+                                                                    {
+                                                                        item
+                                                                            ?.hotel
+                                                                            ?.hotelName
+                                                                    }
                                                                 </span>
                                                                 <span className="block text-[13px] text-grayColor">
-                                                                    {item?.hotel?.address}
+                                                                    {
+                                                                        item
+                                                                            ?.hotel
+                                                                            ?.address
+                                                                    }
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -138,7 +166,10 @@ export default function TopSellingHotelsPage() {
                                                         {item?.totalOrders || 0}
                                                     </td>
                                                     <td className="p-3">
-                                                        {item?.totalVolume?.toFixed(2) || 0} AED
+                                                        {item?.totalVolume?.toFixed(
+                                                            2
+                                                        ) || 0}{" "}
+                                                        AED
                                                     </td>
                                                 </tr>
                                             );

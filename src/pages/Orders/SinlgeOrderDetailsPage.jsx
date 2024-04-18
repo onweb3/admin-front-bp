@@ -103,7 +103,7 @@ export default function SingleOrderDetailsPage() {
                                     {/* <div className="w-[200px] h-[100px] rounded overflow-hidden bg-gray-200">
                                         <img
                                             src={
-                                                config.SERVER_URL +
+                                                import.meta.env.VITE_SERVER_URL +
                                                 order?.activities[0]?.attraction
                                                     ?.images[0]
                                             }
@@ -665,7 +665,9 @@ export default function SingleOrderDetailsPage() {
                                                                         <div className="w-[80px] max-h-[50px] rounded overflow-hidden">
                                                                             <img
                                                                                 src={
-                                                                                    config.SERVER_URL +
+                                                                                    import.meta
+                                                                                        .env
+                                                                                        .VITE_SERVER_URL +
                                                                                     orderItem
                                                                                         ?.attraction
                                                                                         ?.images[0]

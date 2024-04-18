@@ -194,7 +194,8 @@ export default function NotificationListPage() {
                                                     <td className="p-3 uppercase">
                                                         <img
                                                             src={
-                                                                config.SERVER_URL +
+                                                                import.meta.env
+                                                                    .VITE_SERVER_URL +
                                                                 notification?.image
                                                             }
                                                             alt=""

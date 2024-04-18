@@ -88,7 +88,7 @@ export default function LogoSettingsPage() {
                                 src={
                                     logoImg
                                         ? URL.createObjectURL(logoImg)
-                                        : config.SERVER_URL +
+                                        : import.meta.env.VITE_SERVER_URL +
                                           logoUrl
                                 }
                                 className="w-[250px]"

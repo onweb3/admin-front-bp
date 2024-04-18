@@ -36,7 +36,7 @@ export default function AttractionTicketImageModal({
                 </div>
                 <div>
                     <img
-                        src={config.SERVER_URL + image}
+                        src={import.meta.env.VITE_SERVER_URL + image}
                         alt=""
                         className=" object-cover"
                     />

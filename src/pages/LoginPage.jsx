@@ -47,7 +47,9 @@ export default function LoginPage() {
         <div className="flex flex-col items-center justify-center min-h-screen">
             <div className="flex items-center gap-[10px] mb-10">
                 <img
-                    src={`${config.SERVER_URL}/${company.COMPANY_LOGO}`}
+                    src={`${import.meta.env.VITE_SERVER_URL}/${
+                        company.COMPANY_LOGO
+                    }`}
                     alt=""
                     className="w-[230px]"
                 />

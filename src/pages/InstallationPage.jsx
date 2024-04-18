@@ -52,7 +52,7 @@ export default function InstallationPage() {
                 data.COMPANY_SHORT_NAME || ""
             );
             const response = await axios.post(
-                `${config.SERVER_URL}/initial`,
+                `${import.meta.env.VITE_SERVER_URL}/initial`,
                 formData
             );
             console.log(response);
@@ -73,7 +73,9 @@ export default function InstallationPage() {
         <div className="flex flex-col items-center justify-center min-h-screen">
             <div className="flex items-center gap-[10px] mb-10">
                 <img
-                    src={`${config.SERVER_URL}/${company.COMPANY_LOGO}`}
+                    src={`${import.meta.env.VITE_SERVER_URL}/${
+                        company.COMPANY_LOGO
+                    }`}
                     alt=""
                     className="w-[230px]"
                 />
@@ -121,7 +123,7 @@ export default function InstallationPage() {
                                     src={
                                         image
                                             ? URL.createObjectURL(logoImg)
-                                            : config.SERVER_URL +
+                                            : import.meta.env.VITE_SERVER_URL +
                                               data.COMPANY_LOGO
                                     }
                                     alt=""
@@ -144,7 +146,8 @@ export default function InstallationPage() {
                                     src={
                                         image
                                             ? URL.createObjectURL(image)
-                                            : config.SERVER_URL + data.FAV_IMAGE
+                                            : import.meta.env.VITE_SERVER_URL +
+                                              data.FAV_IMAGE
                                     }
                                     alt=""
                                     className="w-[100%] h-[100%] object-cover"

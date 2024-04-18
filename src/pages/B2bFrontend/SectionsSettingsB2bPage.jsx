@@ -234,7 +234,8 @@ export default function SectionsSettingsB2bPage() {
                                                 <div className="group relative w-full aspect-video rounded overflow-hidden">
                                                     <img
                                                         src={
-                                                            config.SERVER_URL +
+                                                            import.meta.env
+                                                                .VITE_SERVER_URL +
                                                             attraction
                                                                 ?.images[0]
                                                         }
@@ -329,7 +330,8 @@ export default function SectionsSettingsB2bPage() {
                                                 <div className="group relative w-full aspect-video rounded overflow-hidden">
                                                     <img
                                                         src={
-                                                            config.SERVER_URL +
+                                                            import.meta.env
+                                                                .VITE_SERVER_URL +
                                                             attraction
                                                                 ?.images[0]
                                                         }

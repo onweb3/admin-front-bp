@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { BtnLoader, MultipleSelectDropdown, PageLoader, RichTextEditor } from "../../components";
+import {
+    BtnLoader,
+    MultipleSelectDropdown,
+    PageLoader,
+    RichTextEditor,
+} from "../../components";
 import { useImageChange } from "../../hooks";
 import { config } from "../../constants";
 import axios from "../../axios";
@@ -54,7 +59,10 @@ export default function InvoiceSettingsPage() {
             formData.append("companyName", data.companyName);
             formData.append("phoneNumber", data.phoneNumber);
             formData.append("address", data.address);
-            formData.append("showTermsAndConditions", data.showTermsAndConditions);
+            formData.append(
+                "showTermsAndConditions",
+                data.showTermsAndConditions
+            );
             formData.append("termsAndConditions", data.termsAndConditions);
             formData.append("showBankDetails", data.showBankDetails);
             formData.append("bankAccounts", JSON.stringify(data.bankAccounts));
@@ -78,7 +86,9 @@ export default function InvoiceSettingsPage() {
             setIsLoading(false);
         } catch (err) {
             console.log(err);
-            setError(err?.response?.data?.error || "Something went wrong, try again");
+            setError(
+                err?.response?.data?.error || "Something went wrong, try again"
+            );
             setIsLoading(false);
         }
     };
@@ -98,13 +108,16 @@ export default function InvoiceSettingsPage() {
                         response?.data?.emails?.length > 0
                             ? response?.data?.emails
                                   ?.map((item, index) => {
-                                      return `${index !== 0 ? ", " : ""}${item}`;
+                                      return `${
+                                          index !== 0 ? ", " : ""
+                                      }${item}`;
                                   })
                                   ?.join("")
                             : "",
                     phoneNumber: response?.data?.phoneNumber,
                     address: response?.data?.address,
-                    showTermsAndConditions: response?.data?.showTermsAndConditions || false,
+                    showTermsAndConditions:
+                        response?.data?.showTermsAndConditions || false,
                     termsAndConditions: response?.data?.termsAndConditions,
                     showBankDetails: response?.data?.showBankDetails || false,
                     logoUrl: response?.data?.companyLogo,
@@ -125,9 +138,12 @@ export default function InvoiceSettingsPage() {
     useEffect(() => {
         const fetchBankNames = async () => {
             try {
-                const response = await axios.get("/company/bank-info/all/names", {
-                    headers: { Authorization: `Bearer ${jwtToken}` },
-                });
+                const response = await axios.get(
+                    "/company/bank-info/all/names",
+                    {
+                        headers: { Authorization: `Bearer ${jwtToken}` },
+                    }
+                );
                 setBanks(response.data);
             } catch (err) {
                 console.log(err);
@@ -139,7 +155,9 @@ export default function InvoiceSettingsPage() {
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">Invoice Setting</h1>
+                <h1 className="font-[600] text-[15px] uppercase">
+                    Invoice Setting
+                </h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
@@ -197,15 +215,22 @@ export default function InvoiceSettingsPage() {
                                 <div className="col-span-3">
                                     <div>
                                         <label htmlFor="">Company Logo *</label>
-                                        <input type="file" onChange={handleLogoImgChange} />
+                                        <input
+                                            type="file"
+                                            onChange={handleLogoImgChange}
+                                        />
                                     </div>
                                     {(logoImg || data.logoUrl) && (
                                         <div className="mt-6">
                                             <img
                                                 src={
                                                     logoImg
-                                                        ? URL.createObjectURL(logoImg)
-                                                        : config.SERVER_URL + data.logoUrl
+                                                        ? URL.createObjectURL(
+                                                              logoImg
+                                                          )
+                                                        : import.meta.env
+                                                              .VITE_SERVER_URL +
+                                                          data.logoUrl
                                                 }
                                                 className="w-[200px]"
                                                 alt=""
@@ -231,7 +256,9 @@ export default function InvoiceSettingsPage() {
                                 </div>
                             </div>
                             <div className="mt-6">
-                                <h2 className="font-medium tex-[15px] mb-3">→ Bank Details</h2>
+                                <h2 className="font-medium tex-[15px] mb-3">
+                                    → Bank Details
+                                </h2>
                                 <div className="flex items-center gap-2 mb-3">
                                     <input
                                         type="checkbox"
@@ -241,7 +268,10 @@ export default function InvoiceSettingsPage() {
                                         checked={data.showBankDetails}
                                         onChange={handleDataCheckBoxChange}
                                     />
-                                    <label htmlFor="showBankDetails" className="mb-0">
+                                    <label
+                                        htmlFor="showBankDetails"
+                                        className="mb-0"
+                                    >
                                         Show Bank Details *
                                     </label>
                                 </div>
@@ -253,7 +283,10 @@ export default function InvoiceSettingsPage() {
                                         selectedData={data.bankAccounts}
                                         setSelectedData={(val) => {
                                             setData((prev) => {
-                                                return { ...prev, bankAccounts: val };
+                                                return {
+                                                    ...prev,
+                                                    bankAccounts: val,
+                                                };
                                             });
                                         }}
                                         randomIndex={"banksList0"}
@@ -273,18 +306,28 @@ export default function InvoiceSettingsPage() {
                                         checked={data.showTermsAndConditions}
                                         onChange={handleDataCheckBoxChange}
                                     />
-                                    <label htmlFor="showTermsAndConditions" className="mb-0">
+                                    <label
+                                        htmlFor="showTermsAndConditions"
+                                        className="mb-0"
+                                    >
                                         Show Terms And Conditions *
                                     </label>
                                 </div>
                                 <div>
-                                    <label htmlFor="">Terms And Conditions</label>
+                                    <label htmlFor="">
+                                        Terms And Conditions
+                                    </label>
                                     <div>
                                         <RichTextEditor
-                                            initialValue={data.termsAndConditions || ""}
+                                            initialValue={
+                                                data.termsAndConditions || ""
+                                            }
                                             getValue={(val) => {
                                                 setData((prev) => {
-                                                    return { ...prev, termsAndConditions: val };
+                                                    return {
+                                                        ...prev,
+                                                        termsAndConditions: val,
+                                                    };
                                                 });
                                             }}
                                         />
@@ -292,10 +335,15 @@ export default function InvoiceSettingsPage() {
                                 </div>
                             </div>
                             {error && (
-                                <span className="block text-sm text-red-500 mt-4">{error}</span>
+                                <span className="block text-sm text-red-500 mt-4">
+                                    {error}
+                                </span>
                             )}
                             <div className="mt-4 flex items-center justify-end">
-                                <button className="w-[100px]" disabled={isLoading}>
+                                <button
+                                    className="w-[100px]"
+                                    disabled={isLoading}
+                                >
                                     {isLoading ? <BtnLoader /> : "Submit"}
                                 </button>
                             </div>

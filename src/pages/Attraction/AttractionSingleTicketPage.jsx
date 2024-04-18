@@ -20,9 +20,12 @@ function AttractionSingleTicketPage() {
         try {
             setIsLoading(true);
 
-            const response = await axios.get(`/attractions/tickets/single/${ticketId}`, {
-                headers: { authorization: `Bearer ${jwtToken}` },
-            });
+            const response = await axios.get(
+                `/attractions/tickets/single/${ticketId}`,
+                {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                }
+            );
 
             setTicket(response.data);
             setIsLoading(false);
@@ -44,7 +47,10 @@ function AttractionSingleTicketPage() {
                     <div className="flex justify-between pt-7">
                         <div className="h-[100px]">
                             <img
-                                src={config.SERVER_URL + ticket?.activity?.attraction?.logo}
+                                src={
+                                    import.meta.env.VITE_SERVER_URL +
+                                    ticket?.activity?.attraction?.logo
+                                }
                                 alt="qr"
                                 className="w-full h-full object-cover"
                             />
@@ -71,16 +77,23 @@ function AttractionSingleTicketPage() {
                             <div className="grid grid-cols-2 text-[10px] mt-4">
                                 <div className="grid grid-cols-2 gap-x-1 gap-y-2">
                                     <div className="">Ticket Type:</div>
-                                    <div className="capitalize">{ticket?.ticketFor}</div>
+                                    <div className="capitalize">
+                                        {ticket?.ticketFor}
+                                    </div>
                                     <div className="">Destination:</div>
                                     <div className="capitalize">
-                                        {ticket?.activity?.attraction?.destination?.name}
+                                        {
+                                            ticket?.activity?.attraction
+                                                ?.destination?.name
+                                        }
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-2 gap-x-1 gap-y-2">
                                     <div className="">Validity Till:</div>
                                     <div className="">
-                                        {ticket?.validity ? formatDate(ticket?.validTill) : "N/A"}
+                                        {ticket?.validity
+                                            ? formatDate(ticket?.validTill)
+                                            : "N/A"}
                                     </div>
                                     <div className="">Number:</div>
                                     <div className="">{ticket?.lotNo}</div>
@@ -106,8 +119,12 @@ function AttractionSingleTicketPage() {
                                             />
                                         </div>
                                     </div>
-                                    <p className="text-[9px] text-center mt-2">{ticket?.ticketNo}</p>
-                                    <p className="text-[9px] text-center">Place Image against the scanner</p>
+                                    <p className="text-[9px] text-center mt-2">
+                                        {ticket?.ticketNo}
+                                    </p>
+                                    <p className="text-[9px] text-center">
+                                        Place Image against the scanner
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -116,17 +133,22 @@ function AttractionSingleTicketPage() {
 
                 <div className="last__section">
                     <div className="grid grid-cols-3 rounded-2xl overflow-hidden mt-7 h-[200px]">
-                        {ticket?.activity?.attraction?.images?.slice(0, 3)?.map((img, index) => {
-                            return (
-                                <div className="h-[100%]" key={index}>
-                                    <img
-                                        src={config.SERVER_URL + img}
-                                        alt="qr"
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
-                            );
-                        })}
+                        {ticket?.activity?.attraction?.images
+                            ?.slice(0, 3)
+                            ?.map((img, index) => {
+                                return (
+                                    <div className="h-[100%]" key={index}>
+                                        <img
+                                            src={
+                                                import.meta.env
+                                                    .VITE_SERVER_URL + img
+                                            }
+                                            alt="qr"
+                                            className="w-full h-full object-cover"
+                                        />
+                                    </div>
+                                );
+                            })}
                     </div>
                 </div>
 

@@ -7,14 +7,19 @@ import { formatDate } from "../../../utils";
 import { config } from "../../../constants";
 import axios from "../../../axios";
 
-export default function B2bWalletDepositRequestsTableRow({ deposit, updateDepositRequestStatus }) {
+export default function B2bWalletDepositRequestsTableRow({
+    deposit,
+    updateDepositRequestStatus,
+}) {
     const [isStatusLoading, setIsStatusLoading] = useState(false);
 
     const { jwtToken } = useSelector((state) => state.admin);
 
     const handleDepositRequestApprove = async () => {
         try {
-            const isConfirm = window.confirm("Are you sure to approve this deposit request?");
+            const isConfirm = window.confirm(
+                "Are you sure to approve this deposit request?"
+            );
             if (isConfirm) {
                 setIsStatusLoading(true);
 
@@ -37,7 +42,9 @@ export default function B2bWalletDepositRequestsTableRow({ deposit, updateDeposi
 
     const handleDepositRequestCancel = async () => {
         try {
-            const isConfirm = window.confirm("Are you sure to cancel this deposit request?");
+            const isConfirm = window.confirm(
+                "Are you sure to cancel this deposit request?"
+            );
             if (isConfirm) {
                 setIsStatusLoading(true);
 
@@ -63,14 +70,15 @@ export default function B2bWalletDepositRequestsTableRow({ deposit, updateDeposi
             <td className="p-3">{deposit?.referenceNumber || "N/A"}</td>
             <td className="p-3">{formatDate(deposit?.createdAt, true)}</td>
             <td className="p-3 capitalize">
-                {deposit?.resellerId?.companyName} ({deposit?.resellerId?.agentCode})
+                {deposit?.resellerId?.companyName} (
+                {deposit?.resellerId?.agentCode})
             </td>
             <td className="p-3">{deposit?.amount} AED</td>
             <td className="p-3">{deposit?.companyBankId?.bankName}</td>
             <td className="p-3">
                 {deposit?.receipt ? (
                     <a
-                        href={config.SERVER_URL + deposit.receipt}
+                        href={import.meta.env.VITE_SERVER_URL + deposit.receipt}
                         className="underline text-blue-500 font-medium"
                         target="_blank"
                     >

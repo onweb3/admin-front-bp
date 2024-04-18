@@ -69,7 +69,9 @@ export default function TourPackageHotelAddModal({
                             placeholder="Select Hotel"
                         />
                         {isHotelLoading && (
-                            <span className="text-sm text-grayColor">Hotel Loading...</span>
+                            <span className="text-sm text-grayColor">
+                                Hotel Loading...
+                            </span>
                         )}
                     </div>
                     <div className="mt-4">
@@ -80,9 +82,11 @@ export default function TourPackageHotelAddModal({
                             displayName={"roomName"}
                             selectedData={hotelData.roomTypeId}
                             setSelectedData={(val) => {
-                                const rmType = hotelData.hotel?.roomTypes?.find((item) => {
-                                    return item?._id === val;
-                                });
+                                const rmType = hotelData.hotel?.roomTypes?.find(
+                                    (item) => {
+                                        return item?._id === val;
+                                    }
+                                );
                                 if (rmType) {
                                     setHotelData((prev) => {
                                         return {
@@ -122,7 +126,10 @@ export default function TourPackageHotelAddModal({
                                 value={hotelData.price || ""}
                                 onChange={(e) => {
                                     setHotelData((prev) => {
-                                        return { ...prev, price: e.target.value };
+                                        return {
+                                            ...prev,
+                                            price: e.target.value,
+                                        };
                                     });
                                 }}
                             />
@@ -158,7 +165,7 @@ export default function TourPackageHotelAddModal({
                                         <img
                                             src={
                                                 hotel?.image?.isRelative === true
-                                                    ? config.SERVER_URL + hotel?.image?.path
+                                                    ? import.meta.env.VITE_SERVER_URL + hotel?.image?.path
                                                     : hotel?.image?.path
                                             }
                                             alt=""

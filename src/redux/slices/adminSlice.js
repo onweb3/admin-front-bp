@@ -24,7 +24,9 @@ export const checkInstallation = createAsyncThunk(
     "adminSlice/checkInstallation",
     async (_, { getState }) => {
         const { jwtToken } = getState().admin;
-        const response = await axios.get(`${config.SERVER_URL}/initial/`);
+        const response = await axios.get(
+            `${import.meta.env.VITE_SERVER_URL}/initial/`
+        );
         return response.data;
     }
 );

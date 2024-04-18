@@ -186,7 +186,8 @@ export default function EditCardSettingsPage() {
                                                     ? URL.createObjectURL(
                                                           bgImgage
                                                       )
-                                                    : config.SERVER_URL +
+                                                    : import.meta.env
+                                                          .VITE_SERVER_URL +
                                                       data.backgroundImageUrl
                                             }
                                             alt=""
@@ -213,7 +214,8 @@ export default function EditCardSettingsPage() {
                                             src={
                                                 icon
                                                     ? URL.createObjectURL(icon)
-                                                    : config.SERVER_URL +
+                                                    : import.meta.env
+                                                          .VITE_SERVER_URL +
                                                       data.iconUrl
                                             }
                                             alt=""

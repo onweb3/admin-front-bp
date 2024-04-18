@@ -293,7 +293,9 @@ function A2ATicketListPage() {
                                                             <div className="w-10 h-10">
                                                                 <img
                                                                     src={
-                                                                        config.SERVER_URL +
+                                                                        import.meta
+                                                                            .env
+                                                                            .VITE_SERVER_URL +
                                                                         item?.airlineOnwardLogo
                                                                     }
                                                                     alt=""
@@ -322,7 +324,9 @@ function A2ATicketListPage() {
                                                             <div className="w-10 h-10">
                                                                 <img
                                                                     src={
-                                                                        config.SERVER_URL +
+                                                                        import.meta
+                                                                            .env
+                                                                            .VITE_SERVER_URL +
                                                                         item?.airlineReturnLogo
                                                                     }
                                                                     alt=""

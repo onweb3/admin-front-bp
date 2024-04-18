@@ -36,7 +36,11 @@ export default function VehicleBodyTypesListPage() {
             );
             setVehicleBodyTypes(response?.data?.vehicleBodyTypes);
             setFilters((prev) => {
-                return { ...prev, totalVehicleBodyTypes: response?.data?.totalVehicleBodyTypes };
+                return {
+                    ...prev,
+                    totalVehicleBodyTypes:
+                        response?.data?.totalVehicleBodyTypes,
+                };
             });
             setIsLoading(false);
         } catch (err) {
@@ -64,13 +68,18 @@ export default function VehicleBodyTypesListPage() {
             const isConfirm = window.confirm("Are you sure to delete?");
 
             if (isConfirm) {
-                await axios.delete(`/transfers/vehicles/body-types/delete/${id}`, {
-                    headers: { authorization: `Bearer ${jwtToken}` },
-                });
+                await axios.delete(
+                    `/transfers/vehicles/body-types/delete/${id}`,
+                    {
+                        headers: { authorization: `Bearer ${jwtToken}` },
+                    }
+                );
 
-                const filteredBodyTypes = vehicleBodyTypes.filter((bodyType) => {
-                    return bodyType?._id !== id;
-                });
+                const filteredBodyTypes = vehicleBodyTypes.filter(
+                    (bodyType) => {
+                        return bodyType?._id !== id;
+                    }
+                );
                 setVehicleBodyTypes(filteredBodyTypes);
             }
         } catch (err) {
@@ -85,7 +94,9 @@ export default function VehicleBodyTypesListPage() {
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">Vehicle Body Types</h1>
+                <h1 className="font-[600] text-[15px] uppercase">
+                    Vehicle Body Types
+                </h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
@@ -119,7 +130,9 @@ export default function VehicleBodyTypesListPage() {
                 <div className="p-6">
                     <div className="bg-white rounded shadow-sm">
                         <div className="flex items-center justify-between border-b border-dashed p-4">
-                            <h1 className="font-medium">All Vehicle Body Types</h1>
+                            <h1 className="font-medium">
+                                All Vehicle Body Types
+                            </h1>
                             <button
                                 className="px-3"
                                 onClick={() =>
@@ -143,64 +156,76 @@ export default function VehicleBodyTypesListPage() {
                                 <table className="w-full">
                                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                         <tr>
-                                            <th className="font-[500] p-3">Image</th>
-                                            <th className="font-[500] p-3">Body Type</th>
-                                            <th className="font-[500] p-3">Action</th>
+                                            <th className="font-[500] p-3">
+                                                Image
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Body Type
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Action
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="text-sm">
-                                        {vehicleBodyTypes?.map((bodyType, index) => {
-                                            return (
-                                                <tr
-                                                    key={index}
-                                                    className="border-b border-tableBorderColor"
-                                                >
-                                                    <td className="p-3 capitalize">
-                                                        <div>
-                                                            <img
-                                                                src={
-                                                                    config.SERVER_URL +
-                                                                    bodyType?.bodyImg
-                                                                }
-                                                                className="w-[90px]"
-                                                                alt=""
-                                                            />
-                                                        </div>
-                                                    </td>
-                                                    <td className="p-3 capitalize">
-                                                        {bodyType?.bodyType}
-                                                    </td>
-                                                    <td className="p-3">
-                                                        <div className="flex gap-[10px]">
-                                                            <button
-                                                                className="h-auto bg-transparent text-red-500 text-xl"
-                                                                onClick={() =>
-                                                                    deleteVehicleBodyType(
-                                                                        bodyType?._id
-                                                                    )
-                                                                }
-                                                            >
-                                                                <MdDelete />
-                                                            </button>
-                                                            <button
-                                                                className="h-auto bg-transparent text-green-500 text-xl"
-                                                                onClick={() => {
-                                                                    setSelectedVehicleBodyType(
-                                                                        bodyType
-                                                                    );
-                                                                    setVehicleBodyTypesModal({
-                                                                        isOpen: true,
-                                                                        isEdit: true,
-                                                                    });
-                                                                }}
-                                                            >
-                                                                <BiEditAlt />
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })}
+                                        {vehicleBodyTypes?.map(
+                                            (bodyType, index) => {
+                                                return (
+                                                    <tr
+                                                        key={index}
+                                                        className="border-b border-tableBorderColor"
+                                                    >
+                                                        <td className="p-3 capitalize">
+                                                            <div>
+                                                                <img
+                                                                    src={
+                                                                        import.meta
+                                                                            .env
+                                                                            .VITE_SERVER_URL +
+                                                                        bodyType?.bodyImg
+                                                                    }
+                                                                    className="w-[90px]"
+                                                                    alt=""
+                                                                />
+                                                            </div>
+                                                        </td>
+                                                        <td className="p-3 capitalize">
+                                                            {bodyType?.bodyType}
+                                                        </td>
+                                                        <td className="p-3">
+                                                            <div className="flex gap-[10px]">
+                                                                <button
+                                                                    className="h-auto bg-transparent text-red-500 text-xl"
+                                                                    onClick={() =>
+                                                                        deleteVehicleBodyType(
+                                                                            bodyType?._id
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <MdDelete />
+                                                                </button>
+                                                                <button
+                                                                    className="h-auto bg-transparent text-green-500 text-xl"
+                                                                    onClick={() => {
+                                                                        setSelectedVehicleBodyType(
+                                                                            bodyType
+                                                                        );
+                                                                        setVehicleBodyTypesModal(
+                                                                            {
+                                                                                isOpen: true,
+                                                                                isEdit: true,
+                                                                            }
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <BiEditAlt />
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            }
+                                        )}
                                     </tbody>
                                 </table>
 

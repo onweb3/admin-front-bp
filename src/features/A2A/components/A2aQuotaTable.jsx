@@ -60,7 +60,7 @@ export default function A2aQuotaTable({ reseller, setResellers, index }) {
                         <img
                             src={
                                 reseller?.avatar
-                                    ? config.SERVER_URL +
+                                    ? import.meta.env.VITE_SERVER_URL +
                                       reseller?.avatar
                                     : avatarImg
                             }

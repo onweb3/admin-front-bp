@@ -17,15 +17,24 @@ export default function AddVehicleModelModal({
     bodyTypes,
 }) {
     const [data, setData] = useState({
-        modelName: (vehicleModelModal?.isEdit && selectedVehicleModel?.modelName) || "",
-        bodyType: (vehicleModelModal?.isEdit && selectedVehicleModel?.bodyType?._id) || "",
-        vehicleImage: (vehicleModelModal?.isEdit && selectedVehicleModel?.vehicleImage) || "",
+        modelName:
+            (vehicleModelModal?.isEdit && selectedVehicleModel?.modelName) ||
+            "",
+        bodyType:
+            (vehicleModelModal?.isEdit &&
+                selectedVehicleModel?.bodyType?._id) ||
+            "",
+        vehicleImage:
+            (vehicleModelModal?.isEdit && selectedVehicleModel?.vehicleImage) ||
+            "",
     });
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
     const wrapperRef = useRef();
-    useHandleClickOutside(wrapperRef, () => setVehicleModelModal({ isEdit: false, isOpen: false }));
+    useHandleClickOutside(wrapperRef, () =>
+        setVehicleModelModal({ isEdit: false, isOpen: false })
+    );
     const { jwtToken } = useSelector((state) => state.admin);
     const {
         image: vehicleImage,
@@ -65,14 +74,20 @@ export default function AddVehicleModelModal({
 
                 updateVehicleModel(response.data);
             } else {
-                const response = await axios.post("/transfers/vehicles/models/add", formData, {
-                    headers: { Authorization: `Bearer ${jwtToken}` },
-                });
+                const response = await axios.post(
+                    "/transfers/vehicles/models/add",
+                    formData,
+                    {
+                        headers: { Authorization: `Bearer ${jwtToken}` },
+                    }
+                );
                 addVehicleModel(response.data);
             }
             setVehicleModelModal({ isOpen: false, isEdit: false });
         } catch (err) {
-            setError(err?.response?.data?.error || "Something went wrong, Try again");
+            setError(
+                err?.response?.data?.error || "Something went wrong, Try again"
+            );
             setIsLoading(false);
         }
     };
@@ -85,11 +100,18 @@ export default function AddVehicleModelModal({
             >
                 <div className="flex items-center justify-between border-b p-4">
                     <h2 className="font-medium">
-                        {vehicleModelModal?.isEdit ? "Update Vehicle Model" : "Add Vehicle Model"}
+                        {vehicleModelModal?.isEdit
+                            ? "Update Vehicle Model"
+                            : "Add Vehicle Model"}
                     </h2>
                     <button
                         className="h-auto bg-transparent text-textColor text-xl"
-                        onClick={() => setVehicleModelModal({ isOpen: false, isEdit: false })}
+                        onClick={() =>
+                            setVehicleModelModal({
+                                isOpen: false,
+                                isEdit: false,
+                            })
+                        }
                     >
                         <MdClose />
                     </button>
@@ -129,7 +151,10 @@ export default function AddVehicleModelModal({
                         </div>
                         <div className="mt-4">
                             <label htmlFor="">Image *</label>
-                            <input type="file" onChange={handleVehicleImgChange} />
+                            <input
+                                type="file"
+                                onChange={handleVehicleImgChange}
+                            />
                             {vehicleImgError && (
                                 <span className="block text-sm mt-2 text-red-500">
                                     {vehicleImgError}
@@ -140,15 +165,23 @@ export default function AddVehicleModelModal({
                                     <img
                                         src={
                                             vehicleImage
-                                                ? URL.createObjectURL(vehicleImage)
-                                                : config.SERVER_URL + data.vehicleImage
+                                                ? URL.createObjectURL(
+                                                      vehicleImage
+                                                  )
+                                                : import.meta.env
+                                                      .VITE_SERVER_URL +
+                                                  data.vehicleImage
                                         }
                                         className="w-[100px] max-h-[100px]"
                                     />
                                 </div>
                             )}
                         </div>
-                        {error && <span className="text-sm block text-red-500 mt-2">{error}</span>}
+                        {error && (
+                            <span className="text-sm block text-red-500 mt-2">
+                                {error}
+                            </span>
+                        )}
                         <div className="mt-4 flex items-center justify-end gap-[12px]">
                             <button
                                 className="bg-slate-300 text-textColor px-[15px]"

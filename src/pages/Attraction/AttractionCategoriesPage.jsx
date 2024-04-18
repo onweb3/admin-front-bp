@@ -75,7 +75,9 @@ export default function AttractionCategoriesPage() {
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">Attraction Categories</h1>
+                <h1 className="font-[600] text-[15px] uppercase">
+                    Attraction Categories
+                </h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
@@ -129,43 +131,73 @@ export default function AttractionCategoriesPage() {
                                 <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                     <tr>
                                         <th className="font-[500] p-3">Code</th>
-                                        <th className="font-[500] p-3">Category Name</th>
-                                        <th className="font-[500] p-3">Category Description</th>
-                                        <th className="font-[500] p-3">Action</th>
+                                        <th className="font-[500] p-3">
+                                            Category Name
+                                        </th>
+                                        <th className="font-[500] p-3">
+                                            Category Description
+                                        </th>
+                                        <th className="font-[500] p-3">
+                                            Action
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody className="text-sm">
                                     {categories?.map((category, index) => {
                                         return (
-                                            <tr key={index} className="border-b border-tableBorderColor">
-                                                <td className="p-3">{category?.code}</td>
+                                            <tr
+                                                key={index}
+                                                className="border-b border-tableBorderColor"
+                                            >
+                                                <td className="p-3">
+                                                    {category?.code}
+                                                </td>
                                                 <td className="p-3">
                                                     <div className="flex items-center gap-[15px]">
                                                         <img
-                                                            src={config.SERVER_URL + category?.icon}
+                                                            src={
+                                                                import.meta.env
+                                                                    .VITE_SERVER_URL +
+                                                                category?.icon
+                                                            }
                                                             alt=""
                                                             className="w-[40px] max-h-[40px]"
                                                         />
-                                                        <span>{category?.categoryName}</span>
+                                                        <span>
+                                                            {
+                                                                category?.categoryName
+                                                            }
+                                                        </span>
                                                     </div>
                                                 </td>
-                                                <td className="p-3">{category?.description || "N/A"}</td>
+                                                <td className="p-3">
+                                                    {category?.description ||
+                                                        "N/A"}
+                                                </td>
                                                 <td className="p-3">
                                                     <div className="flex gap-[10px]">
                                                         <button
                                                             className="h-auto bg-transparent text-red-500 text-xl"
-                                                            onClick={() => deleteCategory(category?._id)}
+                                                            onClick={() =>
+                                                                deleteCategory(
+                                                                    category?._id
+                                                                )
+                                                            }
                                                         >
                                                             <MdDelete />
                                                         </button>
                                                         <button
                                                             className="h-auto bg-transparent text-green-500 text-xl"
                                                             onClick={() => {
-                                                                setSelectedCategory(category);
-                                                                setCategoryModal({
-                                                                    isOpen: true,
-                                                                    isEdit: true,
-                                                                });
+                                                                setSelectedCategory(
+                                                                    category
+                                                                );
+                                                                setCategoryModal(
+                                                                    {
+                                                                        isOpen: true,
+                                                                        isEdit: true,
+                                                                    }
+                                                                );
                                                             }}
                                                         >
                                                             <BiEditAlt />

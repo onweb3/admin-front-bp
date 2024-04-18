@@ -15,17 +15,27 @@ export default function HotelBannerAdModal({
     updateHotelBannerAd,
 }) {
     const [data, setData] = useState({
-        country: (hotelBannerModal?.isEdit && selectedHotelBannerAd?.hotel?.country) || "",
-        hotelId: (hotelBannerModal?.isEdit && selectedHotelBannerAd?.hotel?._id) || "",
-        priority: (hotelBannerModal?.isEdit && selectedHotelBannerAd?.priority) || "",
-        bannerImage: (hotelBannerModal?.isEdit && selectedHotelBannerAd?.bannerImage) || "",
+        country:
+            (hotelBannerModal?.isEdit &&
+                selectedHotelBannerAd?.hotel?.country) ||
+            "",
+        hotelId:
+            (hotelBannerModal?.isEdit && selectedHotelBannerAd?.hotel?._id) ||
+            "",
+        priority:
+            (hotelBannerModal?.isEdit && selectedHotelBannerAd?.priority) || "",
+        bannerImage:
+            (hotelBannerModal?.isEdit && selectedHotelBannerAd?.bannerImage) ||
+            "",
     });
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [hotels, setHotels] = useState([]);
 
     const wrapperRef = useRef();
-    useHandleClickOutside(wrapperRef, () => setHotelBannerModal({ isEdit: false, isOpen: false }));
+    useHandleClickOutside(wrapperRef, () =>
+        setHotelBannerModal({ isEdit: false, isOpen: false })
+    );
     const { jwtToken } = useSelector((state) => state.admin);
     const { countries } = useSelector((state) => state.general);
     const {
@@ -64,14 +74,20 @@ export default function HotelBannerAdModal({
 
                 updateHotelBannerAd(response.data);
             } else {
-                const response = await axios.post("/hotels/banner-ads/add", formData, {
-                    headers: { Authorization: `Bearer ${jwtToken}` },
-                });
+                const response = await axios.post(
+                    "/hotels/banner-ads/add",
+                    formData,
+                    {
+                        headers: { Authorization: `Bearer ${jwtToken}` },
+                    }
+                );
                 addHotelBannerAd(response.data);
             }
             setHotelBannerModal({ isOpen: false, isEdit: false });
         } catch (err) {
-            setError(err?.response?.data?.error || "Something went wrong, Try again");
+            setError(
+                err?.response?.data?.error || "Something went wrong, Try again"
+            );
             setIsLoading(false);
         }
     };
@@ -80,9 +96,12 @@ export default function HotelBannerAdModal({
         const fetchHotels = async () => {
             try {
                 if (data.country) {
-                    const response = await axios.get(`/hotels/all/names?country=${data.country}`, {
-                        headers: { Authorization: `Bearer ${jwtToken}` },
-                    });
+                    const response = await axios.get(
+                        `/hotels/all/names?country=${data.country}`,
+                        {
+                            headers: { Authorization: `Bearer ${jwtToken}` },
+                        }
+                    );
                     setHotels(response?.data);
                 }
             } catch (err) {
@@ -106,7 +125,12 @@ export default function HotelBannerAdModal({
                     </h2>
                     <button
                         className="h-auto bg-transparent text-textColor text-xl"
-                        onClick={() => setHotelBannerModal({ isOpen: false, isEdit: false })}
+                        onClick={() =>
+                            setHotelBannerModal({
+                                isOpen: false,
+                                isEdit: false,
+                            })
+                        }
                     >
                         <MdClose />
                     </button>
@@ -156,14 +180,22 @@ export default function HotelBannerAdModal({
                         </div>
                         <div className="mt-4">
                             <label htmlFor="">Banner Image *</label>
-                            <input type="file" name="bannerImage" onChange={handleBannerChange} />
+                            <input
+                                type="file"
+                                name="bannerImage"
+                                onChange={handleBannerChange}
+                            />
                             {(bannerImage || data.bannerImage) && (
                                 <div className="mt-3">
                                     <img
                                         src={
                                             bannerImage
-                                                ? URL.createObjectURL(bannerImage)
-                                                : config.SERVER_URL + data.bannerImage
+                                                ? URL.createObjectURL(
+                                                      bannerImage
+                                                  )
+                                                : import.meta.env
+                                                      .VITE_SERVER_URL +
+                                                  data.bannerImage
                                         }
                                         alt=""
                                         className="w-[100%] max-w-[500px] object-cover "
@@ -171,9 +203,15 @@ export default function HotelBannerAdModal({
                                 </div>
                             )}
 
-                            <span className="block text-red-500 mt-2 text-sm">{bannerError}</span>
+                            <span className="block text-red-500 mt-2 text-sm">
+                                {bannerError}
+                            </span>
                         </div>
-                        {error && <span className="text-sm block text-red-500 mt-2">{error}</span>}
+                        {error && (
+                            <span className="text-sm block text-red-500 mt-2">
+                                {error}
+                            </span>
+                        )}
                         <div className="mt-4 flex items-center justify-end gap-[12px]">
                             <button
                                 className="bg-slate-300 text-textColor px-[15px]"

@@ -29,7 +29,7 @@ function VisaCountrySingleRow({ visaList, setIsDeleted, isDeleted }) {
             <td className="p-3 capitalize">{visaList.description}</td>
             <td className="p-3 font-[500]">
                 <img
-                    src={config.SERVER_URL + visaList?.sampleVisa}
+                    src={import.meta.env.VITE_SERVER_URL + visaList?.sampleVisa}
                     alt=""
                     className="w-12 h-12 object-fill"
                 />

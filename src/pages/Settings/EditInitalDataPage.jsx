@@ -237,9 +237,13 @@ export default function EditInitialDataPage() {
                 data.COMPANY_SHORT_NAME || ""
             );
 
-            await axios.patch(`${config.SERVER_URL}/initial`, formData, {
-                headers: { authorization: `Bearer ${jwtToken}` },
-            });
+            await axios.patch(
+                `${import.meta.env.VITE_SERVER_URL}/initial`,
+                formData,
+                {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                }
+            );
 
             setIsLoading(false);
             navigate("/settings");
@@ -345,9 +349,13 @@ export default function EditInitialDataPage() {
                 data?.NEXT_PUBLIC_COMPANYADDRESS2 || ""
             );
 
-            await axios.patch(`${config.SERVER_URL}/initial`, formData, {
-                headers: { authorization: `Bearer ${jwtToken}` },
-            });
+            await axios.patch(
+                `${import.meta.env.VITE_SERVER_URL}/initial`,
+                formData,
+                {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                }
+            );
 
             setIsLoading(false);
             navigate("/settings");
@@ -436,9 +444,13 @@ export default function EditInitialDataPage() {
                 data?.B2C_COMAPNY_COUNTRY || ""
             );
 
-            await axios.patch(`${config.SERVER_URL}/initial`, formData, {
-                headers: { authorization: `Bearer ${jwtToken}` },
-            });
+            await axios.patch(
+                `${import.meta.env.VITE_SERVER_URL}/initial`,
+                formData,
+                {
+                    headers: { authorization: `Bearer ${jwtToken}` },
+                }
+            );
 
             setIsLoading(false);
             navigate("/settings");
@@ -455,7 +467,7 @@ export default function EditInitialDataPage() {
             setIsPageLoading(true);
 
             const response = await axios.get(
-                `${config.SERVER_URL}/initial/company`,
+                `${import.meta.env.VITE_SERVER_URL}/initial/company`,
                 {
                     headers: { authorization: `Bearer ${jwtToken}` },
                 }
@@ -820,7 +832,8 @@ export default function EditInitialDataPage() {
                                                             ? URL?.createObjectURL(
                                                                   logoImg
                                                               )
-                                                            : config.SERVER_URL +
+                                                            : import.meta.env
+                                                                  .VITE_SERVER_URL +
                                                               data.COMPANY_LOGO
                                                     }
                                                     alt=""
@@ -850,7 +863,8 @@ export default function EditInitialDataPage() {
                                                             ? URL.createObjectURL(
                                                                   image
                                                               )
-                                                            : config.SERVER_URL +
+                                                            : import.meta.env
+                                                                  .VITE_SERVER_URL +
                                                               data.FAV_IMAGE
                                                     }
                                                     alt=""
@@ -1208,7 +1222,8 @@ export default function EditInitialDataPage() {
                                                             ? URL.createObjectURL(
                                                                   logoImg
                                                               )
-                                                            : config.SERVER_URL +
+                                                            : import.meta.env
+                                                                  .VITE_SERVER_URL +
                                                               data.NEXT_PUBLIC_COMPANY_LOGO
                                                     }
                                                     alt=""
@@ -1239,7 +1254,8 @@ export default function EditInitialDataPage() {
                                                             ? URL.createObjectURL(
                                                                   image
                                                               )
-                                                            : config.SERVER_URL +
+                                                            : import.meta.env
+                                                                  .VITE_SERVER_URL +
                                                               data.NEXT_PUBLIC_COMPANY_FAVICON
                                                     }
                                                     alt=""
@@ -1532,7 +1548,8 @@ export default function EditInitialDataPage() {
                                                         ? URL.createObjectURL(
                                                               logoImg
                                                           )
-                                                        : config.SERVER_URL +
+                                                        : import.meta.env
+                                                              .VITE_SERVER_URL +
                                                           data.NEXT_PUBLIC_BANNER_IMAGE
                                                 }
                                                 alt=""
@@ -1563,7 +1580,8 @@ export default function EditInitialDataPage() {
                                                         ? URL.createObjectURL(
                                                               image
                                                           )
-                                                        : config.SERVER_URL +
+                                                        : import.meta.env
+                                                              .VITE_SERVER_URL +
                                                           data.NEXT_PUBLIC_BANNER_IMAGE_MOBILE
                                                 }
                                                 alt=""
@@ -1592,7 +1610,8 @@ export default function EditInitialDataPage() {
                                                         ? URL.createObjectURL(
                                                               appImg
                                                           )
-                                                        : config.SERVER_URL +
+                                                        : import.meta.env
+                                                              .VITE_SERVER_URL +
                                                           data?.NEXT_PUBLIC_MOBILE_APP_IMAGE
                                                 }
                                                 alt=""
@@ -1757,7 +1776,8 @@ export default function EditInitialDataPage() {
                                                         ? URL?.createObjectURL(
                                                               logoImg
                                                           )
-                                                        : config.SERVER_URL +
+                                                        : import.meta.env
+                                                              .VITE_SERVER_URL +
                                                           data.B2C_COMPANY_LOGO
                                                 }
                                                 alt=""
@@ -1785,7 +1805,8 @@ export default function EditInitialDataPage() {
                                                         ? URL.createObjectURL(
                                                               image
                                                           )
-                                                        : config.SERVER_URL +
+                                                        : import.meta.env
+                                                              .VITE_SERVER_URL +
                                                           data.B2C_COMPANY_FAVICON
                                                 }
                                                 alt=""

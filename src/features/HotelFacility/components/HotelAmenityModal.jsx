@@ -135,7 +135,7 @@ export default function HotelAmenityModal({
                                     src={
                                         iconImg
                                             ? URL.createObjectURL(iconImg)
-                                            : config.SERVER_URL +
+                                            : import.meta.env.VITE_SERVER_URL +
                                               data.iconUrl
                                     }
                                     alt=""

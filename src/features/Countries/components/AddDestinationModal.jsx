@@ -202,7 +202,8 @@ export default function AddDestinationModal({
                                     src={
                                         image
                                             ? URL.createObjectURL(image)
-                                            : config.SERVER_URL + data?.imageUrl
+                                            : import.meta.env.VITE_SERVER_URL +
+                                              data?.imageUrl
                                     }
                                     alt=""
                                     className="w-full h-full object-cover"

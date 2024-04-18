@@ -152,12 +152,20 @@ const AmendmentTable = ({
                             <FiMail /> View Email
                         </button>
                     </Link>
-                    <a href={config.SERVER_URL + amendment?.pdf} target="blank">
+                    <a
+                        href={import.meta.env.VITE_SERVER_URL + amendment?.pdf}
+                        target="blank"
+                    >
                         <button className="px-3 flex items-center gap-[10px]">
                             <FiDownload /> Download Pdf
                         </button>
                     </a>
-                    <a href={config.SERVER_URL + amendment?.sheet} download>
+                    <a
+                        href={
+                            import.meta.env.VITE_SERVER_URL + amendment?.sheet
+                        }
+                        download
+                    >
                         <button className="flex items-center gap-[10px] px-3">
                             <FiDownload />
                             Download Sheet

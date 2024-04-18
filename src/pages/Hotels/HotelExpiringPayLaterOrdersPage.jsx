@@ -45,7 +45,9 @@ export default function HotelExpiringPayLaterOrdersPage() {
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">Expiring Hotel Pay Later</h1>
+                <h1 className="font-[600] text-[15px] uppercase">
+                    Expiring Hotel Pay Later
+                </h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
@@ -68,7 +70,9 @@ export default function HotelExpiringPayLaterOrdersPage() {
             <div className="p-6">
                 <div className="bg-white rounded shadow-sm">
                     <div className="flex items-center justify-between border-b border-dashed p-4">
-                        <h1 className="font-medium">All Hotel Expiring Paylater Reservations</h1>
+                        <h1 className="font-medium">
+                            All Hotel Expiring Paylater Reservations
+                        </h1>
                         {/* <button
                             className="px-3 bg-[#299cdb] flex items-center justify-center gap-[10px]"
                             // onClick={handleDownload}
@@ -91,15 +95,33 @@ export default function HotelExpiringPayLaterOrdersPage() {
                                 <table className="w-full">
                                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                         <tr>
-                                            <th className="font-[500] p-3">Ref.No</th>
-                                            <th className="font-[500] p-3">Hotel</th>
-                                            <th className="font-[500] p-3">Reseller</th>
-                                            <th className="font-[500] p-3">Date</th>
-                                            <th className="font-[500] p-3">Room</th>
-                                            <th className="font-[500] p-3">Pax</th>
-                                            <th className="font-[500] p-3">Due Amount</th>
-                                            <th className="font-[500] p-3">Last Date</th>
-                                            <th className="font-[500] p-3">Status</th>
+                                            <th className="font-[500] p-3">
+                                                Ref.No
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Hotel
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Reseller
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Date
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Room
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Pax
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Due Amount
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Last Date
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Status
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="text-sm">
@@ -109,13 +131,22 @@ export default function HotelExpiringPayLaterOrdersPage() {
                                                     key={index}
                                                     className="border-b border-tableBorderColor transition-all cursor-pointer hover:bg-[#f3f6f9]"
                                                     onClick={() =>
-                                                        navigate(`/hotels/reservation/${item?._id}`)
+                                                        navigate(
+                                                            `/hotels/reservation/${item?._id}`
+                                                        )
                                                     }
                                                 >
                                                     <td className="p-3">
-                                                        <span>{item?.referenceNumber}</span>
+                                                        <span>
+                                                            {
+                                                                item?.referenceNumber
+                                                            }
+                                                        </span>
                                                         <span className="block text-[13px] text-grayColor">
-                                                            {formatDate(item?.createdAt, true)}
+                                                            {formatDate(
+                                                                item?.createdAt,
+                                                                true
+                                                            )}
                                                         </span>
                                                     </td>
                                                     <td className="p-3">
@@ -123,12 +154,20 @@ export default function HotelExpiringPayLaterOrdersPage() {
                                                             <div className="w-[40px] min-w-[40px] h-[40px] min-h-[40px] overflow-hidden rounded">
                                                                 <img
                                                                     src={
-                                                                        item?.hotel?.image
+                                                                        item
+                                                                            ?.hotel
+                                                                            ?.image
                                                                             ?.isRelative
-                                                                            ? config.SERVER_URL +
-                                                                              item?.hotel?.image
+                                                                            ? import.meta
+                                                                                  .env
+                                                                                  .VITE_SERVER_URL +
+                                                                              item
+                                                                                  ?.hotel
+                                                                                  ?.image
                                                                                   ?.path
-                                                                            : item?.hotel?.image
+                                                                            : item
+                                                                                  ?.hotel
+                                                                                  ?.image
                                                                                   ?.path
                                                                     }
                                                                     className="w-full h-full object-cover"
@@ -136,58 +175,104 @@ export default function HotelExpiringPayLaterOrdersPage() {
                                                             </div>
                                                             <div>
                                                                 <span>
-                                                                    {item?.hotel?.hotelName}
+                                                                    {
+                                                                        item
+                                                                            ?.hotel
+                                                                            ?.hotelName
+                                                                    }
                                                                 </span>
                                                                 <span className="block text-[13px] text-grayColor">
-                                                                    {item?.hotel?.address}
+                                                                    {
+                                                                        item
+                                                                            ?.hotel
+                                                                            ?.address
+                                                                    }
                                                                 </span>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td className="p-3">
-                                                        <span>{item?.reseller?.companyName}</span>{" "}
+                                                        <span>
+                                                            {
+                                                                item?.reseller
+                                                                    ?.companyName
+                                                            }
+                                                        </span>{" "}
                                                         <span className=" text-[13px]">
-                                                            ({item?.reseller?.agentCode})
+                                                            (
+                                                            {
+                                                                item?.reseller
+                                                                    ?.agentCode
+                                                            }
+                                                            )
                                                         </span>
                                                     </td>
                                                     <td className="p-3">
-                                                        {formatDate(item?.fromDate)} -{" "}
-                                                        {formatDate(item?.toDate)}
+                                                        {formatDate(
+                                                            item?.fromDate
+                                                        )}{" "}
+                                                        -{" "}
+                                                        {formatDate(
+                                                            item?.toDate
+                                                        )}
                                                     </td>
                                                     <td className="p-3 whitespace-nowrap">
-                                                        {item?.roomsCount || "N/A"} ROOM
+                                                        {item?.roomsCount ||
+                                                            "N/A"}{" "}
+                                                        ROOM
                                                     </td>
                                                     <td className="p-3 whitespace-nowrap">
                                                         {item?.totalAdults} ADT,{" "}
-                                                        {item?.totalChildren} CHD
+                                                        {item?.totalChildren}{" "}
+                                                        CHD
                                                     </td>
-                                                    <td className={"p-3 whitespace-nowrap "}>
-                                                        {item?.netPrice?.toFixed(2)} AED
+                                                    <td
+                                                        className={
+                                                            "p-3 whitespace-nowrap "
+                                                        }
+                                                    >
+                                                        {item?.netPrice?.toFixed(
+                                                            2
+                                                        )}{" "}
+                                                        AED
                                                     </td>
                                                     <td
                                                         className={
                                                             "p-3 " +
                                                             (new Date()
                                                                 .toISOString()
-                                                                .substring(0, 10) ===
-                                                            new Date(item?.lastDateForPayment)
+                                                                .substring(
+                                                                    0,
+                                                                    10
+                                                                ) ===
+                                                            new Date(
+                                                                item?.lastDateForPayment
+                                                            )
                                                                 .toISOString()
-                                                                .substring(0, 10)
+                                                                .substring(
+                                                                    0,
+                                                                    10
+                                                                )
                                                                 ? "text-red-500"
                                                                 : "")
                                                         }
                                                     >
-                                                        {formatDate(item?.lastDateForPayment)}
+                                                        {formatDate(
+                                                            item?.lastDateForPayment
+                                                        )}
                                                     </td>
                                                     <td className="p-3">
                                                         <span
                                                             className={
                                                                 "text-[12px] capitalize px-3 rounded py-[2px] font-medium " +
-                                                                (item?.status === "cancelled"
+                                                                (item?.status ===
+                                                                "cancelled"
                                                                     ? "bg-[#f065481A] text-[#f06548]"
-                                                                    : item?.status === "confirmed"
+                                                                    : item?.status ===
+                                                                      "confirmed"
                                                                     ? "text-[#0ab39c] bg-[#0ab39c1A]"
-                                                                    : item?.status === "booked"
+                                                                    : item?.status ===
+                                                                      "booked"
                                                                     ? "text-[#0a83b3] bg-[#0a83b31a]"
                                                                     : "bg-[#f7b84b1A] text-[#f7b84b]")
                                                             }

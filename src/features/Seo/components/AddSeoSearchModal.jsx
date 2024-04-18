@@ -305,7 +305,8 @@ export default function AddSeoSearchModal({
                                         src={
                                             image
                                                 ? URL.createObjectURL(image)
-                                                : config.SERVER_URL +
+                                                : import.meta.env
+                                                      .VITE_SERVER_URL +
                                                   data?.imgUrl
                                         }
                                         alt=""

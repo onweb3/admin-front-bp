@@ -29,7 +29,10 @@ export default function TopHotelSellingResllersPage() {
 
             setResellers(response?.data?.topResellers || []);
             setFilters((prev) => {
-                return { ...prev, totalResellers: response?.data?.totalResellers };
+                return {
+                    ...prev,
+                    totalResellers: response?.data?.totalResellers,
+                };
             });
             setIsLoading(false);
         } catch (err) {
@@ -44,7 +47,9 @@ export default function TopHotelSellingResllersPage() {
     return (
         <div>
             <div className="bg-white flex items-center justify-between gap-[10px] px-6 shadow-sm border-t py-2">
-                <h1 className="font-[600] text-[15px] uppercase">Hotel Order Top Resellers</h1>
+                <h1 className="font-[600] text-[15px] uppercase">
+                    Hotel Order Top Resellers
+                </h1>
                 <div className="text-sm text-grayColor">
                     <Link to="/" className="text-textColor">
                         Dashboard{" "}
@@ -65,7 +70,9 @@ export default function TopHotelSellingResllersPage() {
             <div className="p-6">
                 <div className="bg-white rounded shadow-sm">
                     <div className="flex items-center justify-between border-b border-dashed p-4">
-                        <h1 className="font-medium">All Hotel Order Top Resellers List</h1>
+                        <h1 className="font-medium">
+                            All Hotel Order Top Resellers List
+                        </h1>
                         {/* <button
                     className="px-3 bg-[#299cdb] flex items-center justify-center gap-[10px]"
                     // onClick={handleDownload}
@@ -88,10 +95,18 @@ export default function TopHotelSellingResllersPage() {
                                 <table className="w-full">
                                     <thead className="bg-[#f3f6f9] text-grayColor text-[14px] text-left">
                                         <tr>
-                                            <th className="font-[500] p-3">#</th>
-                                            <th className="font-[500] p-3">Reseller</th>
-                                            <th className="font-[500] p-3">Total Orders</th>
-                                            <th className="font-[500] p-3">Total Volume</th>
+                                            <th className="font-[500] p-3">
+                                                #
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Reseller
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Total Orders
+                                            </th>
+                                            <th className="font-[500] p-3">
+                                                Total Volume
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="text-sm">
@@ -107,16 +122,23 @@ export default function TopHotelSellingResllersPage() {
                                                     }
                                                 >
                                                     <td className="p-3">
-                                                        {filters.skip * filters.limit + (index + 1)}
+                                                        {filters.skip *
+                                                            filters.limit +
+                                                            (index + 1)}
                                                     </td>
                                                     <td className="p-3">
                                                         <div className="flex items-center gap-2">
                                                             <div className="h-[35px] w-[35px] min-w-[35px] min-h-[35px] overflow-hidden rounded-full">
                                                                 <img
                                                                     src={
-                                                                        item?.reseller?.companyLogo
-                                                                            ? config.SERVER_URL +
-                                                                              item?.reseller
+                                                                        item
+                                                                            ?.reseller
+                                                                            ?.companyLogo
+                                                                            ? import.meta
+                                                                                  .env
+                                                                                  .VITE_SERVER_URL +
+                                                                              item
+                                                                                  ?.reseller
                                                                                   ?.companyLogo
                                                                             : avatarImg
                                                                     }
@@ -126,8 +148,18 @@ export default function TopHotelSellingResllersPage() {
                                                             </div>
                                                             <div>
                                                                 <span>
-                                                                    {item?.reseller?.companyName} (
-                                                                    {item?.reseller?.agentCode})
+                                                                    {
+                                                                        item
+                                                                            ?.reseller
+                                                                            ?.companyName
+                                                                    }{" "}
+                                                                    (
+                                                                    {
+                                                                        item
+                                                                            ?.reseller
+                                                                            ?.agentCode
+                                                                    }
+                                                                    )
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -136,7 +168,10 @@ export default function TopHotelSellingResllersPage() {
                                                         {item?.totalOrders || 0}
                                                     </td>
                                                     <td className="p-3">
-                                                        {item?.totalVolume?.toFixed(2) || 0} AED
+                                                        {item?.totalVolume?.toFixed(
+                                                            2
+                                                        ) || 0}{" "}
+                                                        AED
                                                     </td>
                                                 </tr>
                                             );

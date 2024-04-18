@@ -182,7 +182,8 @@ export default function EditBlogPage() {
                                                     ? URL.createObjectURL(
                                                           thumbnail
                                                       )
-                                                    : config.SERVER_URL +
+                                                    : import.meta.env
+                                                          .VITE_SERVER_URL +
                                                       data?.thumbnailUrl
                                             }
                                             alt=""
