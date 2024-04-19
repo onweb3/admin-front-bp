@@ -1,41 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <!-- <link rel="icon" type="image/svg+xml" href="" /> -->
+  <head>
+    <meta charset="UTF-8" />
+    <!-- <link rel="icon" type="image/svg+xml" href="" /> -->
 
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
-            rel="stylesheet"
-        />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <link rel="icon" id="companyLogo" type="image/svg+xml" href="" />
-        <title id="title"></title>
-    </head>
-    <body>
-        <div id="root"></div>
-        <script type="module" src="/src/main.jsx"></script>
-        <script type="module">
-            import axios from "axios";
-            import { config } from "/src/constants";
+    <link rel="icon" id="companyLogo" type="image/svg+xml" href="" />
+    <title id="title"></title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+    <script type="module">
+      import axios from "axios";
+      // import { config } from "/src/constants";
 
-            const response = await axios.get(
-                `${import.meta.env.VITE_SERVER_URL}/initial/`
-            );
-            console.log(response, "response");
-            const { data } = response.data;
-            document.getElementById("title").textContent =
-                data[0]?.COMPANY_SHORT_NAME;
-            document
-                .getElementById("companyLogo")
-                .setAttribute(
-                    "href",
-                    `${import.meta.env.VITE_SERVER_URL}/${data[0]?.FAV_IMAGE}`
-                );
-        </script>
-    </body>
+      const response = await axios.get(
+        `${import.meta.env.VITE_SERVER_URL}/initial/`
+      );
+      console.log(response, "response");
+      const { data } = response.data;
+      document.getElementById("title").textContent =
+        data[0]?.COMPANY_SHORT_NAME;
+      document
+        .getElementById("companyLogo")
+        .setAttribute(
+          "href",
+          `${import.meta.env.VITE_SERVER_URL}/${data[0]?.FAV_IMAGE}`
+        );
+    </script>
+  </body>
 </html>
